@@ -1,1 +1,863 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>A/L Accounting Answers</title><link rel="stylesheet" href="styles.css"></head><body class="viewer" oncontextmenu="return false"><header><span>BookFair Digital</span><span>A/L Accounting — Answer Resource</span><button onclick="history.back()">← Back</button></header><div class="notice">View-only resource · Downloading and printing disabled</div><main class="paper"><h1>A/L ACCOUNTING</h1><small>ANSWER RESOURCE · CHAPTER 01</small><hr><h2>Part A — Multiple Choice Answers</h2><div class="answers">01. <b>B</b>　02. <b>A</b>　03. <b>D</b>　04. <b>C</b>　05. <b>B</b><br>06. <b>D</b>　07. <b>C</b>　08. <b>B</b>　09. <b>A</b>　10. <b>D</b></div><h2>Part B — Structured Answers</h2><p>Answer content will be placed here.</p></main><script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <title>A/L Accounting · BookFair Digital</title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+    }
+
+    body {
+      background: #07111f;
+      color: #fff;
+      font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    .topbar {
+      height: 68px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 0 28px;
+
+      background:
+        rgba(7,17,31,.94);
+
+      border-bottom: 1px solid
+        rgba(255,255,255,.08);
+
+      position: sticky;
+      top: 0;
+      z-index: 100;
+
+      backdrop-filter: blur(18px);
+    }
+
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      color: #fff;
+      text-decoration: none;
+
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 10px;
+
+      background: #fff;
+      color: #07111f;
+
+      font-weight: 900;
+      font-size: 17px;
+    }
+
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+
+      padding: 9px 14px;
+
+      border-radius: 10px;
+
+      border: 1px solid
+        rgba(255,255,255,.12);
+
+      background:
+        rgba(255,255,255,.05);
+
+      color: rgba(255,255,255,.82);
+
+      text-decoration: none;
+
+      font-size: 12px;
+      font-weight: 700;
+
+      transition: .2s ease;
+    }
+
+
+    .back:hover {
+      background:
+        rgba(255,255,255,.1);
+
+      color: #fff;
+    }
+
+
+    /* =========================
+       TITLE AREA
+    ========================= */
+
+    .viewer-head {
+      width: min(1180px, 92%);
+      margin: 0 auto;
+
+      padding: 32px 0 22px;
+    }
+
+
+    .eyebrow {
+      margin-bottom: 8px;
+
+      color:
+        rgba(255,255,255,.42);
+
+      font-size: 10px;
+      font-weight: 800;
+
+      letter-spacing: .15em;
+    }
+
+
+    .viewer-head h1 {
+      margin: 0;
+
+      font-size:
+        clamp(25px, 4vw, 38px);
+
+      letter-spacing: -.03em;
+    }
+
+
+    .viewer-head p {
+      margin: 8px 0 0;
+
+      color:
+        rgba(255,255,255,.5);
+
+      font-size: 13px;
+    }
+
+
+    /* =========================
+       VIEWER
+    ========================= */
+
+    .viewer-shell {
+      width: min(1100px, 94%);
+      margin: 0 auto 70px;
+
+      border-radius: 18px;
+
+      overflow: hidden;
+
+      border: 1px solid
+        rgba(255,255,255,.1);
+
+      background: #202a38;
+
+      box-shadow:
+        0 30px 90px
+        rgba(0,0,0,.42);
+    }
+
+
+    .viewer-toolbar {
+      height: 58px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 0 16px;
+
+      background:
+        #111c2b;
+
+      border-bottom: 1px solid
+        rgba(255,255,255,.08);
+    }
+
+
+    .toolbar-left,
+    .toolbar-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+
+    .tool {
+      min-width: 36px;
+      height: 34px;
+
+      padding: 0 11px;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      border: 1px solid
+        rgba(255,255,255,.1);
+
+      border-radius: 8px;
+
+      background:
+        rgba(255,255,255,.045);
+
+      color:
+        rgba(255,255,255,.8);
+
+      cursor: pointer;
+
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+
+    .tool:hover {
+      background:
+        rgba(255,255,255,.1);
+
+      color: #fff;
+    }
+
+
+    .page-info {
+      min-width: 85px;
+
+      text-align: center;
+
+      color:
+        rgba(255,255,255,.65);
+
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+
+    .security {
+      padding: 8px 13px;
+
+      border-radius: 999px;
+
+      background:
+        rgba(255,255,255,.055);
+
+      color:
+        rgba(255,255,255,.52);
+
+      font-size: 10px;
+      font-weight: 700;
+
+      letter-spacing: .04em;
+    }
+
+
+    /* =========================
+       PDF AREA
+    ========================= */
+
+    .pdf-area {
+      padding: 34px;
+
+      min-height: 700px;
+
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(255,255,255,.05),
+          transparent 35%
+        ),
+        #1b2635;
+    }
+
+
+    #pdf-pages {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+    }
+
+
+    .pdf-page {
+      display: block;
+
+      max-width: 100%;
+      height: auto;
+
+      background: #fff;
+
+      box-shadow:
+        0 12px 35px
+        rgba(0,0,0,.3);
+    }
+
+
+    .loading {
+      min-height: 500px;
+
+      display: grid;
+      place-items: center;
+
+      color:
+        rgba(255,255,255,.5);
+
+      font-size: 14px;
+    }
+
+
+    .error {
+      min-height: 400px;
+
+      display: grid;
+      place-items: center;
+
+      text-align: center;
+
+      color:
+        rgba(255,255,255,.55);
+
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 700px) {
+
+      .topbar {
+        height: 60px;
+        padding: 0 14px;
+      }
+
+      .brand span {
+        display: none;
+      }
+
+      .viewer-head {
+        padding: 24px 0 18px;
+      }
+
+      .viewer-shell {
+        width: 96%;
+        border-radius: 14px;
+      }
+
+      .viewer-toolbar {
+        height: auto;
+        min-height: 54px;
+
+        padding: 10px;
+
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .security {
+        display: none;
+      }
+
+      .pdf-area {
+        padding: 12px;
+      }
+
+      #pdf-pages {
+        gap: 15px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body
+  class="viewer"
+  oncontextmenu="return false"
+>
+
+
+  <!-- =========================
+       HEADER
+  ========================= -->
+
+  <header class="topbar">
+
+    <a
+      class="brand"
+      href="dashboard.html"
+    >
+
+      <span class="brand-mark">
+        B
+      </span>
+
+      <span>
+        BookFair Digital
+      </span>
+
+    </a>
+
+
+    <a
+      class="back"
+      href="dashboard.html"
+    >
+      ← Back
+    </a>
+
+  </header>
+
+
+  <!-- =========================
+       TITLE
+  ========================= -->
+
+  <section class="viewer-head">
+
+    <div class="eyebrow">
+      BOOK 01 · DIGITAL ANSWER RESOURCE
+    </div>
+
+    <h1>
+      A/L Accounting
+    </h1>
+
+    <p>
+      View-only digital answer resource
+    </p>
+
+  </section>
+
+
+  <!-- =========================
+       PDF VIEWER
+  ========================= -->
+
+  <main class="viewer-shell">
+
+
+    <div class="viewer-toolbar">
+
+      <div class="toolbar-left">
+
+        <button
+          class="tool"
+          id="prev"
+          type="button"
+        >
+          ←
+        </button>
+
+        <div class="page-info">
+          <span id="page-num">1</span>
+          /
+          <span id="page-count">—</span>
+        </div>
+
+        <button
+          class="tool"
+          id="next"
+          type="button"
+        >
+          →
+        </button>
+
+      </div>
+
+
+      <div class="toolbar-right">
+
+        <button
+          class="tool"
+          id="zoom-out"
+          type="button"
+        >
+          −
+        </button>
+
+        <button
+          class="tool"
+          id="zoom-in"
+          type="button"
+        >
+          +
+        </button>
+
+        <div class="security">
+          VIEW ONLY
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="pdf-area">
+
+      <div id="pdf-pages">
+
+        <div class="loading">
+          Loading answer resource…
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <!-- PDF.JS -->
+
+  <script
+    type="module"
+  >
+
+    import * as pdfjsLib from
+      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.min.mjs";
+
+
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.worker.min.mjs";
+
+
+    const PDF_FILE =
+      "assets/accounting.pdf";
+
+
+    const pagesContainer =
+      document.getElementById("pdf-pages");
+
+    const pageNum =
+      document.getElementById("page-num");
+
+    const pageCount =
+      document.getElementById("page-count");
+
+    const prev =
+      document.getElementById("prev");
+
+    const next =
+      document.getElementById("next");
+
+    const zoomIn =
+      document.getElementById("zoom-in");
+
+    const zoomOut =
+      document.getElementById("zoom-out");
+
+
+    let pdf = null;
+
+    let currentPage = 1;
+
+    let scale = 1.35;
+
+
+    async function loadPDF() {
+
+      try {
+
+        pdf =
+          await pdfjsLib.getDocument(
+            PDF_FILE
+          ).promise;
+
+
+        pageCount.textContent =
+          pdf.numPages;
+
+
+        await renderAllPages();
+
+      } catch (error) {
+
+        console.error(
+          "PDF ERROR:",
+          error
+        );
+
+        pagesContainer.innerHTML = `
+          <div class="error">
+            <div>
+              <strong>
+                Answer resource could not be loaded.
+              </strong>
+              <br><br>
+              Please try again later.
+            </div>
+          </div>
+        `;
+
+      }
+
+    }
+
+
+    async function renderAllPages() {
+
+      pagesContainer.innerHTML = "";
+
+
+      for (
+        let number = 1;
+        number <= pdf.numPages;
+        number++
+      ) {
+
+        const page =
+          await pdf.getPage(number);
+
+
+        const viewport =
+          page.getViewport({
+            scale
+          });
+
+
+        const canvas =
+          document.createElement(
+            "canvas"
+          );
+
+
+        canvas.className =
+          "pdf-page";
+
+
+        const context =
+          canvas.getContext("2d");
+
+
+        canvas.width =
+          viewport.width;
+
+        canvas.height =
+          viewport.height;
+
+
+        pagesContainer.appendChild(
+          canvas
+        );
+
+
+        await page.render({
+          canvasContext: context,
+          viewport
+        }).promise;
+
+      }
+
+
+      pageNum.textContent =
+        currentPage;
+
+    }
+
+
+    prev.addEventListener(
+      "click",
+      () => {
+
+        if (currentPage > 1) {
+
+          currentPage--;
+
+          document
+            .querySelectorAll(".pdf-page")
+            [currentPage - 1]
+            ?.scrollIntoView({
+              behavior: "smooth",
+              block: "start"
+            });
+
+          pageNum.textContent =
+            currentPage;
+        }
+
+      }
+    );
+
+
+    next.addEventListener(
+      "click",
+      () => {
+
+        if (
+          pdf &&
+          currentPage < pdf.numPages
+        ) {
+
+          currentPage++;
+
+          document
+            .querySelectorAll(".pdf-page")
+            [currentPage - 1]
+            ?.scrollIntoView({
+              behavior: "smooth",
+              block: "start"
+            });
+
+          pageNum.textContent =
+            currentPage;
+        }
+
+      }
+    );
+
+
+    zoomIn.addEventListener(
+      "click",
+      async () => {
+
+        scale += 0.15;
+
+        await renderAllPages();
+
+      }
+    );
+
+
+    zoomOut.addEventListener(
+      "click",
+      async () => {
+
+        if (scale > 0.65) {
+
+          scale -= 0.15;
+
+          await renderAllPages();
+
+        }
+
+      }
+    );
+
+
+    /* Disable common shortcuts */
+
+    document.addEventListener(
+      "keydown",
+      (event) => {
+
+        const key =
+          event.key.toLowerCase();
+
+
+        if (
+          (event.ctrlKey ||
+           event.metaKey) &&
+          [
+            "p",
+            "s",
+            "u",
+            "c"
+          ].includes(key)
+        ) {
+
+          event.preventDefault();
+
+        }
+
+
+        if (
+          event.key === "PrintScreen"
+        ) {
+
+          event.preventDefault();
+
+        }
+
+      }
+    );
+
+
+    /* Disable drag */
+
+    document.addEventListener(
+      "dragstart",
+      event => {
+        event.preventDefault();
+      }
+    );
+
+
+    loadPDF();
+
+  </script>
+
+
+  <!-- =========================
+       ACCESS CHECK
+  ========================= -->
+
+  <script>
+
+    const student =
+      localStorage.getItem(
+        "bf_student"
+      );
+
+    const login =
+      localStorage.getItem(
+        "bf_login"
+      );
+
+
+    if (!student || !login) {
+
+      location.href =
+        "login.html";
+
+    }
+
+  </script>
+
+</body>
+
+</html>
