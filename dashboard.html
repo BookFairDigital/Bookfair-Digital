@@ -3,69 +3,50 @@
 
 <head>
   <meta charset="utf-8">
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1"
-  >
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>My Books · BookFair Digital</title>
 
-  <link
-    rel="stylesheet"
-    href="styles.css"
-  >
+  <link rel="stylesheet" href="styles.css">
 
   <style>
 
-    /* =========================
-       DASHBOARD
-    ========================= */
-
-    .dash {
-      min-height: 100vh;
-      background:
-        radial-gradient(
-          circle at 15% 10%,
-          rgba(60, 100, 180, .14),
-          transparent 35%
-        ),
-        radial-gradient(
-          circle at 85% 20%,
-          rgba(200, 160, 70, .08),
-          transparent 35%
-        ),
-        #07111f;
-      color: #fff;
+    * {
+      box-sizing: border-box;
     }
 
+    body.dash {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(50,100,190,.15), transparent 35%),
+        radial-gradient(circle at 85% 15%, rgba(190,150,60,.08), transparent 35%),
+        #07111f;
+      color: #fff;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
 
-    /* =========================
-       HEADER
-    ========================= */
+    /* HEADER */
 
-    .dash header {
-      width: 100%;
-      box-sizing: border-box;
+    .dash-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+
+      height: 70px;
+      padding: 0 6%;
 
       display: flex;
       align-items: center;
       justify-content: space-between;
 
-      padding: 20px 6%;
+      background: rgba(7,17,31,.88);
+      backdrop-filter: blur(18px);
 
-      border-bottom: 1px solid
-        rgba(255,255,255,.08);
-
-      background: rgba(7,17,31,.72);
-
-      backdrop-filter: blur(16px);
-
-      position: sticky;
-      top: 0;
-      z-index: 20;
+      border-bottom: 1px solid rgba(255,255,255,.08);
     }
 
-    .dash header a {
+    .brand {
       display: flex;
       align-items: center;
       gap: 10px;
@@ -73,13 +54,13 @@
       color: #fff;
       text-decoration: none;
 
+      font-weight: 800;
       font-size: 15px;
-      font-weight: 700;
     }
 
-    .dash header a b {
-      width: 34px;
-      height: 34px;
+    .brand-mark {
+      width: 35px;
+      height: 35px;
 
       display: grid;
       place-items: center;
@@ -89,19 +70,16 @@
       background: #fff;
       color: #07111f;
 
-      font-size: 18px;
+      font-weight: 900;
     }
 
-    .dash header button {
-      border: 1px solid
-        rgba(255,255,255,.14);
-
+    .logout-btn {
+      border: 1px solid rgba(255,255,255,.13);
       background: rgba(255,255,255,.05);
 
       color: rgba(255,255,255,.8);
 
-      padding: 9px 15px;
-
+      padding: 9px 16px;
       border-radius: 10px;
 
       cursor: pointer;
@@ -112,57 +90,51 @@
       transition: .2s ease;
     }
 
-    .dash header button:hover {
+    .logout-btn:hover {
       background: rgba(255,255,255,.1);
       color: #fff;
     }
 
 
-    /* =========================
-       MAIN
-    ========================= */
+    /* MAIN */
 
-    .dash .section {
-      width: min(1180px, 88%);
-      margin: 0 auto;
+    .dashboard-main {
+      width: min(1180px, 90%);
+      margin: auto;
 
       padding: 70px 0 90px;
     }
 
-    .dash .section > small {
-      color: rgba(255,255,255,.45);
+    .eyebrow {
+      color: rgba(255,255,255,.42);
 
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 800;
 
       letter-spacing: .16em;
     }
 
-    .dash .section h1 {
+    .dashboard-main h1 {
       margin: 10px 0 8px;
 
-      font-size: clamp(32px, 5vw, 52px);
-
+      font-size: clamp(34px, 5vw, 52px);
       line-height: 1.05;
 
-      letter-spacing: -.035em;
+      letter-spacing: -.04em;
     }
 
-    .dash .section > p {
+    .dashboard-main > p {
       margin: 0 0 42px;
 
-      color: rgba(255,255,255,.58);
+      color: rgba(255,255,255,.55);
 
-      font-size: 15px;
-      line-height: 1.6;
+      font-size: 14px;
     }
 
 
-    /* =========================
-       BOOK GRID
-    ========================= */
+    /* GRID */
 
-    .dash .grid {
+    .book-grid {
       display: grid;
 
       grid-template-columns:
@@ -172,12 +144,13 @@
     }
 
 
-    /* =========================
-       BOOK CARD
-    ========================= */
+    /* CARD */
 
     .book-card {
+      position: relative;
       overflow: hidden;
+
+      min-width: 0;
 
       border-radius: 22px;
 
@@ -188,32 +161,29 @@
           rgba(255,255,255,.025)
         );
 
-      border: 1px solid
-        rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.11);
 
       box-shadow:
         0 25px 70px rgba(0,0,0,.3);
 
       transition:
         transform .3s ease,
-        box-shadow .3s ease,
-        border-color .3s ease;
+        border-color .3s ease,
+        box-shadow .3s ease;
     }
 
-    .book-card:hover {
+    .book-unlocked:hover {
       transform: translateY(-7px);
 
       border-color:
-        rgba(255,255,255,.24);
+        rgba(255,255,255,.25);
 
       box-shadow:
-        0 32px 80px rgba(0,0,0,.4);
+        0 32px 80px rgba(0,0,0,.42);
     }
 
 
-    /* =========================
-       BOOK COVER
-    ========================= */
+    /* COVER */
 
     .book-cover {
       position: relative;
@@ -233,54 +203,42 @@
 
       object-fit: cover;
 
-      transition:
-        transform .5s ease;
+      transition: transform .5s ease;
     }
 
-    .book-card:hover
-    .book-cover img {
+    .book-unlocked:hover .book-cover img {
       transform: scale(1.035);
     }
 
 
-    /* =========================
-       ASSIGNED BADGE
-    ========================= */
+    /* STATUS */
 
-    .book-status {
+    .status {
       position: absolute;
 
       left: 16px;
       bottom: 16px;
 
-      padding: 9px 13px;
+      padding: 8px 12px;
 
       border-radius: 999px;
 
-      background:
-        rgba(4,10,20,.82);
+      background: rgba(4,10,20,.82);
 
       backdrop-filter: blur(12px);
 
-      border: 1px solid
-        rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.14);
 
       color: #fff;
 
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 800;
 
       letter-spacing: .09em;
     }
 
-    .book-status span {
-      margin-right: 5px;
-    }
 
-
-    /* =========================
-       BOOK CONTENT
-    ========================= */
+    /* CONTENT */
 
     .book-content {
       padding: 22px;
@@ -289,54 +247,47 @@
     .book-meta {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
 
       margin-bottom: 10px;
 
-      color:
-        rgba(255,255,255,.42);
+      color: rgba(255,255,255,.4);
 
       font-size: 9px;
       font-weight: 800;
 
-      letter-spacing: .13em;
+      letter-spacing: .12em;
     }
 
     .book-content h3 {
       margin: 0 0 9px;
 
-      color: #fff;
-
-      font-size: 24px;
+      font-size: 23px;
       line-height: 1.15;
     }
 
     .book-content p {
       margin: 0 0 20px;
 
-      color:
-        rgba(255,255,255,.58);
+      color: rgba(255,255,255,.53);
 
       font-size: 13px;
-      line-height: 1.65;
+      line-height: 1.6;
     }
 
 
-    /* =========================
-       OPEN ANSWERS BUTTON
-    ========================= */
+    /* OPEN BUTTON */
 
-    .book-button {
+    .open-btn {
+      width: 100%;
+
       display: flex;
       align-items: center;
       justify-content: space-between;
 
-      width: 100%;
-      box-sizing: border-box;
-
       padding: 13px 16px;
 
-      border-radius: 12px;
+      border-radius: 11px;
 
       background: #fff;
       color: #07111f;
@@ -346,151 +297,174 @@
       font-size: 12px;
       font-weight: 800;
 
-      transition:
-        transform .2s ease,
-        background .2s ease;
+      transition: .2s ease;
     }
 
-    .book-button:hover {
+    .open-btn:hover {
       transform: translateY(-2px);
-
       background: #eef2f6;
     }
 
-    .book-button span {
+    .open-btn span {
       font-size: 18px;
-      line-height: 1;
     }
 
 
-    /* =========================
-       COMING SOON
-    ========================= */
+    /* LOCKED CARD */
 
-    .coming-card {
+    .locked-card {
       min-height: 520px;
-
-      padding: 30px;
-
-      box-sizing: border-box;
 
       display: flex;
       flex-direction: column;
       justify-content: center;
 
+      padding: 32px;
+
       background:
         radial-gradient(
-          circle at top right,
-          rgba(255,255,255,.08),
-          transparent 45%
+          circle at 85% 10%,
+          rgba(255,255,255,.06),
+          transparent 35%
         ),
         rgba(255,255,255,.025);
+
+      cursor: not-allowed;
+
+      opacity: .78;
     }
 
-    .coming-number {
+    .lock-icon {
+      width: 58px;
+      height: 58px;
+
+      display: grid;
+      place-items: center;
+
       margin-bottom: 25px;
 
-      font-size: 76px;
-      line-height: 1;
+      border-radius: 17px;
 
-      font-weight: 900;
+      background: rgba(255,255,255,.06);
 
-      color:
-        rgba(255,255,255,.07);
+      border: 1px solid
+        rgba(255,255,255,.1);
+
+      font-size: 24px;
     }
 
-    .coming-card small {
-      color:
-        rgba(255,255,255,.4);
+    .locked-label {
+      display: inline-flex;
+      width: fit-content;
+
+      padding: 7px 10px;
+
+      margin-bottom: 12px;
+
+      border-radius: 999px;
+
+      background: rgba(255,255,255,.06);
+
+      color: rgba(255,255,255,.48);
 
       font-size: 9px;
       font-weight: 800;
 
-      letter-spacing: .15em;
+      letter-spacing: .12em;
     }
 
-    .coming-card h3 {
-      margin: 8px 0;
+    .locked-card h3 {
+      margin: 0 0 9px;
 
-      color: #fff;
-
-      font-size: 21px;
+      font-size: 22px;
     }
 
-    .coming-card p {
-      max-width: 260px;
+    .locked-card p {
+      max-width: 250px;
 
-      color:
-        rgba(255,255,255,.45);
+      margin: 0;
+
+      color: rgba(255,255,255,.4);
 
       font-size: 13px;
-      line-height: 1.6;
+      line-height: 1.65;
+    }
+
+    .locked-access {
+      margin-top: 25px;
+
+      padding-top: 17px;
+
+      border-top: 1px solid
+        rgba(255,255,255,.08);
+
+      color: rgba(255,255,255,.32);
+
+      font-size: 10px;
+      font-weight: 700;
+
+      letter-spacing: .05em;
     }
 
 
-    /* =========================
-       MOBILE
-    ========================= */
+    /* MOBILE */
 
     @media (max-width: 900px) {
 
-      .dash .grid {
+      .book-grid {
         grid-template-columns:
           repeat(2, minmax(0, 1fr));
       }
 
-      .coming-card {
-        min-height: 400px;
-      }
     }
-
 
     @media (max-width: 620px) {
 
-      .dash header {
-        padding: 16px 5%;
+      .dash-header {
+        height: 62px;
+        padding: 0 5%;
       }
 
-      .dash .section {
+      .brand span {
+        display: none;
+      }
+
+      .dashboard-main {
         width: 90%;
         padding: 50px 0 70px;
       }
 
-      .dash .grid {
+      .book-grid {
         grid-template-columns: 1fr;
         gap: 20px;
       }
 
-      .coming-card {
-        min-height: 260px;
+      .locked-card {
+        min-height: 300px;
       }
 
-      .book-content {
-        padding: 19px;
-      }
-
-      .book-content h3 {
-        font-size: 21px;
-      }
-
-      .coming-number {
-        font-size: 58px;
-      }
     }
 
   </style>
+
 </head>
 
 
 <body class="dash">
 
+
   <!-- HEADER -->
 
-  <header>
+  <header class="dash-header">
 
-    <a href="index.html">
+    <a
+      class="brand"
+      href="index.html"
+    >
 
-      <b>B</b>
+      <span class="brand-mark">
+        B
+      </span>
 
       <span>
         BookFair Digital
@@ -498,7 +472,9 @@
 
     </a>
 
+
     <button
+      class="logout-btn"
       type="button"
       onclick="logout()"
     >
@@ -510,13 +486,13 @@
 
   <!-- MAIN -->
 
-  <main class="section">
+  <main class="dashboard-main">
 
-    <small>
+    <div class="eyebrow">
       STUDENT PORTAL
-    </small>
+    </div>
 
-    <h1 id="welcome">
+    <h1>
       My Digital Books
     </h1>
 
@@ -525,14 +501,14 @@
     </p>
 
 
-    <!-- BOOK GRID -->
-
-    <div class="grid">
+    <div class="book-grid">
 
 
-      <!-- BOOK 01 -->
+      <!-- BOOK 01 — OPEN -->
 
-      <article class="book-card">
+      <article
+        class="book-card book-unlocked"
+      >
 
         <div class="book-cover">
 
@@ -541,9 +517,8 @@
             alt="A/L Accounting"
           >
 
-          <div class="book-status">
-            <span>●</span>
-            ASSIGNED TO YOU
+          <div class="status">
+            ● ASSIGNED TO YOU
           </div>
 
         </div>
@@ -552,38 +527,24 @@
         <div class="book-content">
 
           <div class="book-meta">
-
-            <span>
-              BOOK 01
-            </span>
-
-            <span>
-              •
-            </span>
-
-            <span>
-              DIGITAL RESOURCE
-            </span>
-
+            <span>BOOK 01</span>
+            <span>•</span>
+            <span>DIGITAL RESOURCE</span>
           </div>
-
 
           <h3>
             A/L Accounting
           </h3>
-
 
           <p>
             Complete digital answer resource
             for your A/L Accounting book.
           </p>
 
-
           <a
-            class="book-button"
+            class="open-btn"
             href="accounting.html"
           >
-
             <span>
               Open Answers
             </span>
@@ -591,7 +552,6 @@
             <span>
               →
             </span>
-
           </a>
 
         </div>
@@ -599,57 +559,61 @@
       </article>
 
 
-      <!-- BOOK 02 -->
+      <!-- BOOK 02 — LOCKED -->
 
-      <article class="book-card coming-card">
+      <article
+        class="book-card locked-card"
+      >
 
-        <div class="coming-number">
-          02
+        <div class="lock-icon">
+          🔒
         </div>
 
-        <div>
+        <div class="locked-label">
+          LOCKED
+        </div>
 
-          <small>
-            COMING SOON
-          </small>
+        <h3>
+          Book 02
+        </h3>
 
-          <h3>
-            Next Book
-          </h3>
+        <p>
+          This digital resource has not
+          been assigned to your account.
+        </p>
 
-          <p>
-            Digital resource will be
-            available soon.
-          </p>
-
+        <div class="locked-access">
+          ACCESS NOT ASSIGNED
         </div>
 
       </article>
 
 
-      <!-- BOOK 03 -->
+      <!-- BOOK 03 — LOCKED -->
 
-      <article class="book-card coming-card">
+      <article
+        class="book-card locked-card"
+      >
 
-        <div class="coming-number">
-          03
+        <div class="lock-icon">
+          🔒
         </div>
 
-        <div>
+        <div class="locked-label">
+          LOCKED
+        </div>
 
-          <small>
-            COMING SOON
-          </small>
+        <h3>
+          Book 03
+        </h3>
 
-          <h3>
-            Next Book
-          </h3>
+        <p>
+          This digital resource has not
+          been assigned to your account.
+        </p>
 
-          <p>
-            Digital resource will be
-            available soon.
-          </p>
-
+        <div class="locked-access">
+          ACCESS NOT ASSIGNED
         </div>
 
       </article>
@@ -660,11 +624,9 @@
   </main>
 
 
-  <!-- DASHBOARD LOGIC -->
-
   <script
     type="module"
-    src="dashboard.js?v=2"
+    src="dashboard.js?v=3"
   ></script>
 
 </body>
