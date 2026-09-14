@@ -8,7 +8,9 @@ const username =
   localStorage.getItem("bf_login");
 
 if (!username) {
+
   location.href = "login.html";
+
 } else {
 
   try {
@@ -24,6 +26,7 @@ if (!username) {
       await getDoc(ref);
 
     if (!snap.exists()) {
+
       localStorage.removeItem("bf_login");
       localStorage.removeItem("bf_student");
 
@@ -43,13 +46,16 @@ if (!username) {
 
       } else {
 
-        // Keep local student data updated
         localStorage.setItem(
           "bf_student",
           JSON.stringify(data)
         );
 
-        // Show student name wherever needed
+
+        /* =========================
+           STUDENT NAME
+        ========================= */
+
         document
           .querySelectorAll(
             "[data-student-name]"
@@ -62,14 +68,75 @@ if (!username) {
               username;
 
           });
+
+
+        /* =========================
+           BOOK ACCESS
+        ========================= */
+
+        const assignedBook =
+          data.assignedBook;
+
+
+        const bookCards =
+          document.querySelectorAll(
+            ".book-card"
+          );
+
+
+        bookCards.forEach(
+          (card, index) => {
+
+            const bookNumber =
+              index + 1;
+
+            const allowed =
+              assignedBook ===
+              `Book 0${bookNumber}`;
+
+
+            if (bookNumber === 1) {
+
+              if (allowed) {
+
+                card.classList.add(
+                  "book-unlocked"
+                );
+
+              } else {
+
+                card.classList.add(
+                  "book-locked"
+                );
+
+              }
+
+            }
+
+
+            if (
+              bookNumber === 2 ||
+              bookNumber === 3
+            ) {
+
+              card.classList.add(
+                "book-locked"
+              );
+
+            }
+
+          }
+        );
+
       }
+
     }
 
-  } catch (err) {
+  } catch (error) {
 
     console.error(
       "Dashboard error:",
-      err
+      error
     );
 
     location.href =
@@ -78,9 +145,9 @@ if (!username) {
 }
 
 
-// =========================
-// LOGOUT
-// =========================
+/* =========================
+   LOGOUT
+========================= */
 
 window.logout = function () {
 
