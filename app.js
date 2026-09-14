@@ -1,1 +1,179 @@
-const KEY="bf_login",STUDENT="bf_student",ACCOUNTS="bf_accounts";function accounts(){try{return JSON.parse(localStorage.getItem(ACCOUNTS)||"[]")}catch(e){return[]}}function student(){try{return JSON.parse(localStorage.getItem(STUDENT)||"null")}catch(e){return null}}function putStudent(s){localStorage.setItem(STUDENT,JSON.stringify(s))}const login=document.getElementById("login");if(login)login.addEventListener("submit",e=>{e.preventDefault();let u=document.getElementById("u").value.trim(),p=document.getElementById("p").value,m=document.getElementById("m"),a=accounts().find(x=>x.username===u);if(!a)return m.textContent="This username is not in the assigned account list.",m.className="error-msg";if(a.active===false)return m.textContent="This account is inactive.",m.className="error-msg";if(a.password!==p)return m.textContent="Incorrect password.",m.className="error-msg";localStorage.setItem(KEY,u);a.registered?(putStudent(a),location.href="dashboard.html"):location.href="register.html"});const reg=document.getElementById("reg");if(reg){document.getElementById("ru").value=localStorage.getItem(KEY)||"";reg.addEventListener("submit",e=>{e.preventDefault();let u=document.getElementById("ru").value,list=accounts(),a=list.find(x=>x.username===u),m=document.getElementById("rm");if(!a)return m.textContent="Assigned account not found.",m.className="error-msg";a.fullName=document.getElementById("name").value.trim();a.district=document.getElementById("district").value;a.contact=document.getElementById("phone").value.trim();a.registered=true;localStorage.setItem(ACCOUNTS,JSON.stringify(list));putStudent(a);location.href="dashboard.html"})}if(document.getElementById("dashboard")&&!student())location.href="login.html";document.querySelectorAll("[data-logout]").forEach(b=>b.addEventListener("click",()=>{localStorage.removeItem(KEY);localStorage.removeItem(STUDENT);location.href="login.html"}));document.addEventListener("contextmenu",e=>{if(document.body.classList.contains("viewer"))e.preventDefault()});document.addEventListener("keydown",e=>{if(document.body.classList.contains("viewer")){let k=e.key.toLowerCase();if((e.ctrlKey||e.metaKey)&&["p","s","u"].includes(k))e.preventDefault();if(k==="printscreen")e.preventDefault()}});
+import {
+  auth,
+  db,
+  signInWithEmailAndPassword,
+  signOut,
+  doc,
+  getDoc
+} from "./firebase.js";
+
+const KEY = "bf_login";
+const STUDENT = "bf_student";
+
+function student() {
+  try {
+    return JSON.parse(localStorage.getItem(STUDENT) || "null");
+  } catch (e) {
+    return null;
+  }
+}
+
+function putStudent(data) {
+  localStorage.setItem(STUDENT, JSON.stringify(data));
+}
+
+const login = document.getElementById("login");
+
+if (login) {
+  login.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const username = document.getElementById("u").value.trim();
+    const password = document.getElementById("p").value;
+    const message = document.getElementById("m");
+    const button = login.querySelector('button[type="submit"]');
+
+    if (!username || !password) {
+      message.textContent = "Please enter your username and password.";
+      message.className = "error-msg";
+      return;
+    }
+
+    button.disabled = true;
+    button.innerHTML = "Signing in…";
+
+    try {
+      /*
+       * Firebase Authentication uses an internal email format.
+       * Students still use only their assigned username/password
+       * on the website.
+       */
+      const email =
+        username.toLowerCase() + "@bookfairdigital.local";
+
+      await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+      /*
+       * Student data is stored using the username as the
+       * Firestore document ID.
+       *
+       * students/TEST26-00001
+       */
+      const ref = doc(db, "students", username);
+      const snap = await getDoc(ref);
+
+      if (!snap.exists()) {
+        await signOut(auth);
+
+        message.textContent =
+          "This student account is not configured yet. Please contact the administrator.";
+        message.className = "error-msg";
+        return;
+      }
+
+      const data = snap.data();
+
+      if (data.active === false) {
+        await signOut(auth);
+
+        message.textContent =
+          "This account is inactive. Please contact the administrator.";
+        message.className = "error-msg";
+        return;
+      }
+
+      /*
+       * Keep the username in the browser only as a session helper.
+       * The actual student record remains in Firestore.
+       */
+      localStorage.setItem(KEY, username);
+      putStudent(data);
+
+      if (data.registered === true) {
+        location.href = "dashboard.html";
+      } else {
+        location.href = "register.html";
+      }
+
+    } catch (err) {
+      console.error("Login error:", err);
+
+      let text = "Login failed. Please check your username and password.";
+
+      if (
+        err?.code === "auth/invalid-credential" ||
+        err?.code === "auth/wrong-password" ||
+        err?.code === "auth/user-not-found"
+      ) {
+        text = "Incorrect username or password.";
+      }
+
+      message.textContent = text;
+      message.className = "error-msg";
+
+    } finally {
+      button.disabled = false;
+      button.innerHTML = "Login <span>→</span>";
+    }
+  });
+}
+
+/*
+ * Dashboard protection
+ */
+if (
+  document.getElementById("dashboard") &&
+  !student()
+) {
+  location.href = "login.html";
+}
+
+/*
+ * Logout
+ */
+document.querySelectorAll("[data-logout]").forEach((button) => {
+  button.addEventListener("click", async () => {
+    try {
+      await signOut(auth);
+    } catch (e) {
+      console.error("Logout error:", e);
+    }
+
+    localStorage.removeItem(KEY);
+    localStorage.removeItem(STUDENT);
+
+    location.href = "login.html";
+  });
+});
+
+/*
+ * View-only answer protection
+ */
+document.addEventListener("contextmenu", (e) => {
+  if (document.body.classList.contains("viewer")) {
+    e.preventDefault();
+  }
+});
+
+document.addEventListener("keydown", (e) => {
+  if (!document.body.classList.contains("viewer")) {
+    return;
+  }
+
+  const key = e.key.toLowerCase();
+
+  if (
+    (e.ctrlKey || e.metaKey) &&
+    ["p", "s", "u"].includes(key)
+  ) {
+    e.preventDefault();
+  }
+
+  if (key === "printscreen") {
+    e.preventDefault();
+  }
+});
