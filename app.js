@@ -1,31 +1,34 @@
 import {
-  auth,
   db,
-  signInWithEmailAndPassword,
-  signOut,
   doc,
-  getDoc
+  getDoc,
+  signOut
 } from "./firebase.js";
 
 const KEY = "bf_login";
 const STUDENT = "bf_student";
 
-function student() {
-  try {
-    return JSON.parse(
-      localStorage.getItem(STUDENT) || "null"
-    );
-  } catch (e) {
-    return null;
-  }
-}
-
-function putStudent(data) {
+function saveStudent(data) {
   localStorage.setItem(
     STUDENT,
     JSON.stringify(data)
   );
 }
+
+function getStudent() {
+  try {
+    return JSON.parse(
+      localStorage.getItem(STUDENT) || "null"
+    );
+  } catch {
+    return null;
+  }
+}
+
+
+// =========================
+// SIMPLE STUDENT LOGIN
+// =========================
 
 const login = document.getElementById("login");
 
@@ -50,7 +53,6 @@ if (login) {
       );
 
     if (!username || !password) {
-
       message.textContent =
         "Please enter your username and password.";
 
@@ -61,47 +63,12 @@ if (login) {
     }
 
     button.disabled = true;
-
-    button.innerHTML =
-      "Signing in…";
-
+    button.innerHTML = "Checking…";
     message.textContent = "";
 
     try {
 
-      /*
-       * Student username is converted into the
-       * internal Firebase Authentication email.
-       *
-       * Example:
-       * TEST26-00001
-       * becomes
-       * test26-00001@bookfairdigital.local
-       */
-
-      const email =
-        username.toLowerCase() +
-        "@bookfairdigital.local";
-
-
-      /*
-       * Firebase Authentication login
-       */
-
-      await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-
-
-      /*
-       * Student Firestore document uses
-       * the username as the document ID.
-       *
-       * students/TEST26-00001
-       */
-
+      // Find student document using username
       const ref =
         doc(
           db,
@@ -109,43 +76,28 @@ if (login) {
           username
         );
 
-
       const snap =
         await getDoc(ref);
 
-
-      /*
-       * Student document must exist.
-       */
-
       if (!snap.exists()) {
 
-        await signOut(auth);
-
         message.textContent =
-          "Student account was found in Login, but the Firestore student record was not found.";
+          "Invalid username or password.";
 
         message.className =
           "error-msg";
 
         return;
       }
-
 
       const data =
         snap.data();
 
-
-      /*
-       * Check account status.
-       */
-
+      // Check active status
       if (data.active === false) {
 
-        await signOut(auth);
-
         message.textContent =
-          "This student account is inactive. Please contact the administrator.";
+          "This account is inactive. Please contact the administrator.";
 
         message.className =
           "error-msg";
@@ -153,30 +105,32 @@ if (login) {
         return;
       }
 
+      // Check password
+      if (
+        data.password !== password
+      ) {
 
-      /*
-       * Save username locally only as a
-       * session helper.
-       *
-       * Student data itself remains in Firestore.
-       */
+        message.textContent =
+          "Invalid username or password.";
 
+        message.className =
+          "error-msg";
+
+        return;
+      }
+
+      // Save login
       localStorage.setItem(
         KEY,
-        username
+        data.username || username
       );
 
-      putStudent(data);
+      saveStudent(data);
 
-
-      /*
-       * First-time student:
-       * registered = false
-       *
-       * Go to registration.
-       */
-
-      if (data.registered !== true) {
+      // First login
+      if (
+        data.registered !== true
+      ) {
 
         location.href =
           "register.html";
@@ -184,12 +138,7 @@ if (login) {
         return;
       }
 
-
-      /*
-       * Already registered:
-       * Go directly to dashboard.
-       */
-
+      // Already registered
       location.href =
         "dashboard.html";
 
@@ -200,22 +149,8 @@ if (login) {
         err
       );
 
-
-      /*
-       * Show the REAL Firebase error
-       * temporarily so we can identify
-       * the exact problem.
-       */
-
-      let errorText =
-        err?.code ||
-        err?.message ||
-        "Unknown error";
-
-
       message.textContent =
-        "Login error: " +
-        errorText;
+        "Could not connect to the database. Please try again.";
 
       message.className =
         "error-msg";
@@ -231,13 +166,13 @@ if (login) {
 }
 
 
-/*
- * Dashboard protection
- */
+// =========================
+// DASHBOARD PROTECTION
+// =========================
 
 if (
   document.getElementById("dashboard") &&
-  !student()
+  !getStudent()
 ) {
 
   location.href =
@@ -245,9 +180,9 @@ if (
 }
 
 
-/*
- * Logout
- */
+// =========================
+// LOGOUT
+// =========================
 
 document
   .querySelectorAll("[data-logout]")
@@ -257,25 +192,8 @@ document
       "click",
       async () => {
 
-        try {
-
-          await signOut(auth);
-
-        } catch (e) {
-
-          console.error(
-            "Logout error:",
-            e
-          );
-        }
-
-        localStorage.removeItem(
-          KEY
-        );
-
-        localStorage.removeItem(
-          STUDENT
-        );
+        localStorage.removeItem(KEY);
+        localStorage.removeItem(STUDENT);
 
         location.href =
           "login.html";
@@ -284,9 +202,9 @@ document
   });
 
 
-/*
- * View-only answer protection
- */
+// =========================
+// VIEWER PROTECTION
+// =========================
 
 document.addEventListener(
   "contextmenu",
@@ -318,7 +236,6 @@ document.addEventListener(
     const key =
       e.key.toLowerCase();
 
-
     if (
       (e.ctrlKey || e.metaKey) &&
       ["p", "s", "u"].includes(key)
@@ -326,7 +243,6 @@ document.addEventListener(
 
       e.preventDefault();
     }
-
 
     if (
       key === "printscreen"
