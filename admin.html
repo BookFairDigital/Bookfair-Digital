@@ -244,6 +244,18 @@
     }
 
 
+    .db-status.error {
+      background:
+        rgba(220,80,80,.08);
+
+      border-color:
+        rgba(220,80,80,.18);
+
+      color:
+        rgba(255,150,150,.8);
+    }
+
+
     .admin-btn {
       padding: 11px 15px;
 
@@ -288,6 +300,25 @@
     }
 
 
+    .admin-btn.danger {
+      color: #ffb2b2;
+
+      border-color:
+        rgba(255,100,100,.16);
+
+      background:
+        rgba(255,70,70,.05);
+    }
+
+
+    .admin-btn.danger:hover {
+      background:
+        rgba(255,70,70,.12);
+
+      color: #fff;
+    }
+
+
     /* =========================
        STATISTICS
     ========================= */
@@ -300,7 +331,7 @@
 
       gap: 15px;
 
-      margin-bottom: 30px;
+      margin-bottom: 15px;
     }
 
 
@@ -344,6 +375,8 @@
 
       margin-top: 9px;
 
+      color: #fff;
+
       font-size: 30px;
 
       letter-spacing: -.03em;
@@ -351,13 +384,12 @@
 
 
     .stat-grid.secondary {
-      margin-top: -15px;
       margin-bottom: 30px;
     }
 
 
     /* =========================
-       CARDS
+       ADMIN CARD
     ========================= */
 
     .admin-card {
@@ -457,7 +489,7 @@
 
       border-collapse: collapse;
 
-      min-width: 1000px;
+      min-width: 1050px;
     }
 
 
@@ -498,13 +530,59 @@
     tbody tr {
       cursor: pointer;
 
-      transition: background .2s ease;
+      transition:
+        background .2s ease;
     }
 
 
     tbody tr:hover {
       background:
         rgba(255,255,255,.035);
+    }
+
+
+    .muted {
+      color:
+        rgba(255,255,255,.45);
+    }
+
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+
+      padding: 5px 8px;
+
+      border-radius: 999px;
+
+      font-size: 8px;
+      font-weight: 800;
+
+      letter-spacing: .04em;
+    }
+
+
+    .pill.green {
+      background:
+        rgba(70,210,130,.1);
+
+      color:
+        #8ce9b0;
+
+      border:
+        1px solid rgba(70,210,130,.14);
+    }
+
+
+    .pill.gold {
+      background:
+        rgba(220,170,70,.1);
+
+      color:
+        #e9c879;
+
+      border:
+        1px solid rgba(220,170,70,.14);
     }
 
 
@@ -521,7 +599,7 @@
 
 
     /* =========================
-       IMPORT
+       IMPORT SECTION
     ========================= */
 
     .import-guide {
@@ -576,8 +654,99 @@
     }
 
 
+    .import-status {
+      display: none;
+
+      margin-top: 22px;
+
+      padding: 18px;
+
+      border-radius: 14px;
+
+      background:
+        rgba(255,255,255,.025);
+
+      border:
+        1px solid rgba(255,255,255,.08);
+    }
+
+
+    .import-status.visible {
+      display: block;
+    }
+
+
+    .import-status-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 15px;
+    }
+
+
+    .import-status-head > div {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+
+    .import-status-head strong {
+      color: #fff;
+
+      font-size: 13px;
+    }
+
+
+    .import-count {
+      color:
+        rgba(255,255,255,.55);
+
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+
+    .progress-track {
+      height: 7px;
+
+      margin: 16px 0;
+
+      overflow: hidden;
+
+      border-radius: 999px;
+
+      background:
+        rgba(255,255,255,.07);
+    }
+
+
+    .progress-bar {
+      width: 0;
+      height: 100%;
+
+      border-radius: inherit;
+
+      background: #fff;
+
+      transition: width .2s ease;
+    }
+
+
+    .import-meta {
+      display: flex;
+      gap: 18px;
+
+      color:
+        rgba(255,255,255,.45);
+
+      font-size: 10px;
+    }
+
+
     /* =========================
-       MODAL
+       MODALS
     ========================= */
 
     .modal {
@@ -595,9 +764,10 @@
       padding: 20px;
 
       background:
-        rgba(0,0,0,.7);
+        rgba(0,0,0,.72);
 
-      backdrop-filter: blur(10px);
+      backdrop-filter:
+        blur(10px);
     }
 
 
@@ -609,13 +779,13 @@
     .modal-box {
       position: relative;
 
-      width: min(520px, 100%);
+      width: min(540px, 100%);
 
       max-height: 90vh;
 
       overflow-y: auto;
 
-      padding: 28px;
+      padding: 30px;
 
       border-radius: 20px;
 
@@ -634,23 +804,39 @@
       position: absolute;
 
       right: 18px;
-      top: 15px;
+      top: 14px;
+
+      width: 32px;
+      height: 32px;
 
       border: 0;
 
-      background: transparent;
+      border-radius: 8px;
+
+      background:
+        rgba(255,255,255,.04);
 
       color:
-        rgba(255,255,255,.5);
+        rgba(255,255,255,.55);
 
-      font-size: 25px;
+      font-size: 22px;
 
       cursor: pointer;
     }
 
 
+    .modal-x:hover {
+      background:
+        rgba(255,255,255,.09);
+
+      color: #fff;
+    }
+
+
     .modal-box h2 {
       margin: 8px 0;
+
+      color: #fff;
 
       font-size: 23px;
     }
@@ -697,6 +883,15 @@
       color: #fff;
 
       outline: none;
+
+      font-size: 12px;
+    }
+
+
+    .modal-box input:focus,
+    .modal-box select:focus {
+      border-color:
+        rgba(255,255,255,.25);
     }
 
 
@@ -722,6 +917,237 @@
 
 
     /* =========================
+       DETAIL GRID
+    ========================= */
+
+    .detail-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, minmax(0,1fr));
+
+      gap: 10px;
+
+      margin-top: 20px;
+    }
+
+
+    .detail-grid > div {
+      padding: 15px;
+
+      border-radius: 12px;
+
+      background:
+        rgba(255,255,255,.035);
+
+      border:
+        1px solid rgba(255,255,255,.07);
+    }
+
+
+    .detail-grid small {
+      display: block;
+
+      margin-bottom: 7px;
+
+      color:
+        rgba(255,255,255,.35);
+
+      font-size: 8px;
+      font-weight: 800;
+
+      letter-spacing: .08em;
+    }
+
+
+    .detail-grid strong {
+      display: block;
+
+      color: #fff;
+
+      font-size: 12px;
+
+      word-break: break-word;
+    }
+
+
+    /* =========================
+       IMPORT RESULT
+    ========================= */
+
+    .result-cards {
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, minmax(0,1fr));
+
+      gap: 12px;
+
+      margin: 22px 0;
+    }
+
+
+    .result-cards > div {
+      min-height: 105px;
+
+      padding: 18px;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      border-radius: 14px;
+
+      background:
+        #172335 !important;
+
+      border:
+        1px solid rgba(255,255,255,.1);
+
+      color: #fff !important;
+    }
+
+
+    .result-cards span {
+      display: block;
+
+      color:
+        rgba(255,255,255,.55) !important;
+
+      font-size: 9px;
+      font-weight: 800;
+
+      letter-spacing: .07em;
+    }
+
+
+    .result-cards strong {
+      display: block;
+
+      color:
+        #ffffff !important;
+
+      font-size: 34px;
+
+      line-height: 1;
+
+      font-weight: 900;
+    }
+
+
+    .failed-list-wrap {
+      margin-top: 20px;
+    }
+
+
+    .failed-list-wrap h3 {
+      margin: 0 0 12px;
+
+      color: #fff;
+
+      font-size: 13px;
+    }
+
+
+    .failed-item {
+      display: flex;
+      justify-content: space-between;
+
+      gap: 15px;
+
+      padding: 12px 14px;
+
+      margin-top: 8px;
+
+      border-radius: 10px;
+
+      background:
+        rgba(255,255,255,.04);
+
+      border:
+        1px solid rgba(255,255,255,.07);
+    }
+
+
+    .failed-item strong {
+      color: #fff;
+
+      font-size: 11px;
+    }
+
+
+    .failed-item span {
+      color:
+        rgba(255,255,255,.5);
+
+      font-size: 10px;
+
+      text-align: right;
+    }
+
+
+    /* =========================
+       TOAST
+    ========================= */
+
+    .toast {
+      position: fixed;
+
+      right: 25px;
+      bottom: 25px;
+
+      z-index: 900;
+
+      max-width: 360px;
+
+      padding: 13px 17px;
+
+      border-radius: 12px;
+
+      background:
+        #fff;
+
+      color:
+        #07111f;
+
+      box-shadow:
+        0 20px 60px rgba(0,0,0,.35);
+
+      font-size: 11px;
+      font-weight: 700;
+
+      opacity: 0;
+
+      pointer-events: none;
+
+      transform:
+        translateY(10px);
+
+      transition: .25s ease;
+    }
+
+
+    .toast.show {
+      opacity: 1;
+
+      transform:
+        translateY(0);
+    }
+
+
+    .toast.error {
+      background:
+        #301820;
+
+      color:
+        #ffb6b6;
+
+      border:
+        1px solid rgba(255,100,100,.18);
+    }
+
+
+    /* =========================
        RESPONSIVE
     ========================= */
 
@@ -734,6 +1160,7 @@
 
       .admin-heading {
         align-items: flex-start;
+
         flex-direction: column;
       }
 
@@ -753,22 +1180,37 @@
 
       .admin-wrap {
         width: 92%;
+
         padding-top: 40px;
       }
 
       .card-head {
         align-items: stretch;
+
         flex-direction: column;
       }
 
       .filters {
         width: 100%;
+
+        flex-wrap: wrap;
       }
 
       .filters select,
       .search {
         flex: 1;
+
         width: auto;
+
+        min-width: 130px;
+      }
+
+      .result-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .detail-grid {
+        grid-template-columns: 1fr;
       }
 
     }
@@ -790,6 +1232,18 @@
 
       .admin-heading h1 {
         font-size: 34px;
+      }
+
+      .modal-box {
+        padding: 23px;
+      }
+
+      .failed-item {
+        flex-direction: column;
+      }
+
+      .failed-item span {
+        text-align: left;
       }
 
     }
@@ -881,6 +1335,7 @@
         <button
           class="admin-btn"
           id="downloadBtn"
+          type="button"
         >
           Export Excel
         </button>
@@ -888,6 +1343,7 @@
         <button
           class="admin-btn primary"
           id="newBtn"
+          type="button"
         >
           ＋ New Student
         </button>
@@ -897,99 +1353,123 @@
     </section>
 
 
-    <!-- PRIMARY STATS -->
+    <!-- PRIMARY STATISTICS -->
 
     <section class="stat-grid">
 
       <div class="stat">
+
         <span>
           TOTAL STUDENTS
         </span>
+
         <strong id="total">
           0
         </strong>
+
       </div>
 
 
       <div class="stat">
+
         <span>
           BOOK 01
         </span>
+
         <strong id="b1">
           0
         </strong>
+
       </div>
 
 
       <div class="stat">
+
         <span>
           BOOK 02
         </span>
+
         <strong id="b2">
           0
         </strong>
+
       </div>
 
 
       <div class="stat">
+
         <span>
           BOOK 03
         </span>
+
         <strong id="b3">
           0
         </strong>
+
       </div>
 
     </section>
 
 
-    <!-- SECONDARY STATS -->
+    <!-- SECONDARY STATISTICS -->
 
     <section class="stat-grid secondary">
 
       <div class="stat">
+
         <span>
           REGISTERED
         </span>
+
         <strong id="registered">
           0
         </strong>
+
       </div>
 
 
       <div class="stat">
+
         <span>
           FIRST LOGIN / PENDING
         </span>
+
         <strong id="pending">
           0
         </strong>
+
       </div>
 
 
       <div class="stat">
+
         <span>
           ACTIVE
         </span>
+
         <strong id="active">
           0
         </strong>
+
       </div>
 
 
       <div class="stat">
+
         <span>
           INACTIVE
         </span>
+
         <strong id="inactive">
           0
         </strong>
+
       </div>
 
     </section>
 
 
-    <!-- STUDENTS -->
+    <!-- STUDENT ACCOUNTS -->
 
     <section class="admin-card">
 
@@ -1002,9 +1482,9 @@
           </h2>
 
           <p>
-            View registration information,
-            filter access and manage individual
-            student accounts.
+            View student information, monitor
+            registration and manage individual
+            accounts.
           </p>
 
         </div>
@@ -1168,6 +1648,7 @@
         <button
           class="admin-btn"
           id="templateBtn"
+          type="button"
         >
           Download Excel Template
         </button>
@@ -1176,6 +1657,7 @@
         <button
           class="admin-btn primary"
           id="importBtn"
+          type="button"
         >
           Import Excel
         </button>
@@ -1202,6 +1684,7 @@
             </strong>
 
           </div>
+
 
           <span
             class="import-count"
@@ -1246,7 +1729,9 @@
   </main>
 
 
-  <!-- IMPORT RESULT -->
+  <!-- =========================
+       IMPORT RESULT MODAL
+  ========================= -->
 
   <div
     class="modal"
@@ -1263,9 +1748,11 @@
         ×
       </button>
 
+
       <div class="eyebrow">
         IMPORT COMPLETE
       </div>
+
 
       <h2>
         Excel Import Summary
@@ -1275,35 +1762,41 @@
       <div class="result-cards">
 
         <div>
+
           <span>
-            Successfully added
+            SUCCESSFULLY ADDED
           </span>
 
           <strong id="resultSuccess">
             0
           </strong>
+
         </div>
 
 
         <div>
+
           <span>
-            Failed
+            FAILED
           </span>
 
           <strong id="resultFailed">
             0
           </strong>
+
         </div>
 
 
         <div>
+
           <span>
-            Skipped
+            SKIPPED
           </span>
 
           <strong id="resultSkipped">
             0
           </strong>
+
         </div>
 
       </div>
@@ -1328,6 +1821,7 @@
         <button
           class="admin-btn"
           id="importResultCloseBtn"
+          type="button"
         >
           Close
         </button>
@@ -1339,7 +1833,9 @@
   </div>
 
 
-  <!-- STUDENT DETAILS -->
+  <!-- =========================
+       STUDENT DETAILS MODAL
+  ========================= -->
 
   <div
     class="modal"
@@ -1356,18 +1852,22 @@
         ×
       </button>
 
+
       <div class="eyebrow">
         STUDENT DETAILS
       </div>
+
 
       <h2>
         Registration Information
       </h2>
 
+
       <p>
         Complete information for the selected
         student account.
       </p>
+
 
       <div id="detailContent"></div>
 
@@ -1376,7 +1876,9 @@
   </div>
 
 
-  <!-- NEW STUDENT -->
+  <!-- =========================
+       NEW STUDENT MODAL
+  ========================= -->
 
   <div
     class="modal"
@@ -1393,13 +1895,16 @@
         ×
       </button>
 
+
       <div class="eyebrow">
         NEW STUDENT ACCOUNT
       </div>
 
+
       <h2>
         Create Credentials
       </h2>
+
 
       <p>
         Create a username and password and assign
@@ -1434,6 +1939,7 @@
 
       <input
         id="newUser"
+        type="text"
         placeholder="BF26-00001"
       >
 
@@ -1442,12 +1948,15 @@
         Password
       </label>
 
+
       <div class="password-row">
 
         <input
           id="newPass"
+          type="text"
           placeholder="Auto generate"
         >
+
 
         <button
           type="button"
@@ -1465,13 +1974,16 @@
         <button
           class="admin-btn"
           id="cancel"
+          type="button"
         >
           Cancel
         </button>
 
+
         <button
           class="admin-btn primary"
           id="create"
+          type="button"
         >
           Create Student
         </button>
@@ -1493,6 +2005,8 @@
   >
 
 
+  <!-- TOAST -->
+
   <div
     class="toast"
     id="toast"
@@ -1510,7 +2024,7 @@
 
   <script
     type="module"
-    src="admin.js?v=2"
+    src="admin.js?v=3"
   ></script>
 
 
@@ -1536,6 +2050,7 @@
       };
 
   </script>
+
 
 </body>
 
