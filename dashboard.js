@@ -6,7 +6,7 @@ import {
 
 
 /* =========================
-   CONFIG
+   STORAGE KEYS
 ========================= */
 
 const LOGIN_KEY = "bf_login";
@@ -14,7 +14,7 @@ const STUDENT_KEY = "bf_student";
 
 
 /* =========================
-   GET STUDENT
+   LOGIN CHECK
 ========================= */
 
 const username =
@@ -29,7 +29,11 @@ if (!username) {
 
   try {
 
-    const ref =
+    /* =========================
+       GET STUDENT
+    ========================= */
+
+    const studentRef =
       doc(
         db,
         "students",
@@ -37,15 +41,11 @@ if (!username) {
       );
 
 
-    const snap =
-      await getDoc(ref);
+    const snapshot =
+      await getDoc(studentRef);
 
 
-    /* =========================
-       ACCOUNT NOT FOUND
-    ========================= */
-
-    if (!snap.exists()) {
+    if (!snapshot.exists()) {
 
       localStorage.removeItem(
         LOGIN_KEY
@@ -60,15 +60,17 @@ if (!username) {
 
     } else {
 
-      const data =
-        snap.data();
+      const student =
+        snapshot.data();
 
 
       /* =========================
-         ACCOUNT INACTIVE
+         ACTIVE CHECK
       ========================= */
 
-      if (data.active === false) {
+      if (
+        student.active === false
+      ) {
 
         localStorage.removeItem(
           LOGIN_KEY
@@ -85,12 +87,12 @@ if (!username) {
 
 
         /* =========================
-           SAVE STUDENT DATA
+           SAVE STUDENT
         ========================= */
 
         localStorage.setItem(
           STUDENT_KEY,
-          JSON.stringify(data)
+          JSON.stringify(student)
         );
 
 
@@ -106,8 +108,8 @@ if (!username) {
             (element) => {
 
               element.textContent =
-                data.fullName ||
-                data.username ||
+                student.fullName ||
+                student.username ||
                 username;
 
             }
@@ -120,54 +122,52 @@ if (!username) {
 
         const assignedBook =
           String(
-            data.assignedBook ||
-            ""
+            student.assignedBook || ""
           )
             .trim()
             .toLowerCase();
 
 
         console.log(
+          "Student:",
+          student.username
+        );
+
+        console.log(
           "Assigned book:",
-          data.assignedBook
+          student.assignedBook
         );
 
 
         /* =========================
-           BOOK CARDS
+           FIND ALL BOOK CARDS
         ========================= */
 
-        const bookCards =
+        const cards =
           document.querySelectorAll(
             ".book-card"
           );
 
 
-        bookCards.forEach(
+        cards.forEach(
           (card, index) => {
 
-            /*
-              Card 1 = Book 01
-              Card 2 = Book 02
-              Card 3 = Book 03
-            */
-
-            const bookNumber =
+            const number =
               String(index + 1)
                 .padStart(2, "0");
 
 
-            const bookName =
-              `book ${bookNumber}`;
+            const currentBook =
+              `book ${number}`;
 
 
-            const allowed =
+            const isAllowed =
               assignedBook ===
-              bookName;
+              currentBook;
 
 
             /* =====================
-               REMOVE OLD STATES
+               RESET CARD
             ===================== */
 
             card.classList.remove(
@@ -176,172 +176,187 @@ if (!username) {
             );
 
 
+            card.dataset.access =
+              isAllowed
+                ? "allowed"
+                : "locked";
+
+
             /* =====================
-               UNLOCK ASSIGNED BOOK
+               REMOVE OLD LOCK UI
             ===================== */
 
-            if (allowed) {
+            card
+              .querySelectorAll(
+                ".lock-message"
+              )
+              .forEach(
+                (element) =>
+                  element.remove()
+              );
+
+
+            card
+              .querySelectorAll(
+                ".locked-overlay"
+              )
+              .forEach(
+                (element) =>
+                  element.remove()
+              );
+
+
+            /* =====================
+               FIND ANSWER LINK
+            ===================== */
+
+            const answerLink =
+              card.querySelector(
+                'a[href*=".html"]'
+              );
+
+
+            /* =====================
+               ASSIGNED BOOK
+            ===================== */
+
+            if (isAllowed) {
 
               card.classList.add(
                 "book-unlocked"
               );
 
 
-              card.dataset.access =
-                "allowed";
+              if (answerLink) {
 
+                answerLink.style.display =
+                  "";
 
-              /* ---------------------
-                 OPEN BUTTON
-              --------------------- */
+                answerLink.style.pointerEvents =
+                  "auto";
 
-              const link =
-                card.querySelector(
-                  "a"
-                );
-
-
-              if (link) {
-
-                link.classList.remove(
-                  "locked-link"
-                );
-
-                link.removeAttribute(
+                answerLink.removeAttribute(
                   "aria-disabled"
                 );
 
-                link.style.pointerEvents =
-                  "auto";
+                answerLink.classList.remove(
+                  "locked-link"
+                );
 
               }
 
 
-              /* ---------------------
-                 STATUS
-              --------------------- */
+              /* Remove any
+                 lock text */
 
-              const status =
-                card.querySelector(
+              card
+                .querySelectorAll(
                   ".book-status"
+                )
+                .forEach(
+                  (status) => {
+
+                    status.textContent =
+                      "● ASSIGNED TO YOU";
+
+                  }
                 );
 
 
-              if (status) {
-
-                status.textContent =
-                  "● AVAILABLE";
-
-              }
+            }
 
 
-              /* ---------------------
-                 LOCK MESSAGE
-              --------------------- */
+            /* =====================
+               LOCKED BOOK
+            ===================== */
 
-              const lock =
-                card.querySelector(
-                  ".lock-message"
-                );
-
-
-              if (lock) {
-
-                lock.remove();
-
-              }
-
-
-            } else {
-
-
-              /* =====================
-                 LOCK OTHER BOOKS
-              ===================== */
+            else {
 
               card.classList.add(
                 "book-locked"
               );
 
 
-              card.dataset.access =
-                "locked";
-
-
               /* ---------------------
-                 DISABLE LINK
+                 REMOVE OPEN ANSWERS
               --------------------- */
 
-              const link =
-                card.querySelector(
-                  "a"
-                );
+              if (answerLink) {
 
+                answerLink.style.display =
+                  "none";
 
-              if (link) {
+                answerLink.style.pointerEvents =
+                  "none";
 
-                link.classList.add(
-                  "locked-link"
-                );
-
-                link.setAttribute(
+                answerLink.setAttribute(
                   "aria-disabled",
                   "true"
                 );
 
-                link.style.pointerEvents =
-                  "none";
+                answerLink.classList.add(
+                  "locked-link"
+                );
 
               }
 
 
               /* ---------------------
-                 STATUS
+                 CHANGE STATUS
               --------------------- */
 
-              const status =
-                card.querySelector(
+              card
+                .querySelectorAll(
                   ".book-status"
+                )
+                .forEach(
+                  (status) => {
+
+                    status.textContent =
+                      "🔒 LOCKED";
+
+                  }
                 );
-
-
-              if (status) {
-
-                status.textContent =
-                  "🔒 LOCKED";
-
-              }
 
 
               /* ---------------------
-                 ADD LOCK MESSAGE
+                 PROFESSIONAL LOCK BOX
               --------------------- */
 
-              if (
-                !card.querySelector(
-                  ".lock-message"
-                )
-              ) {
-
-                const message =
-                  document.createElement(
-                    "div"
-                  );
-
-
-                message.className =
-                  "lock-message";
-
-
-                message.textContent =
-                  "Not assigned to your account";
-
-
-                card.appendChild(
-                  message
+              const lockBox =
+                document.createElement(
+                  "div"
                 );
 
-              }
+
+              lockBox.className =
+                "lock-message";
+
+
+              lockBox.innerHTML = `
+
+                <div class="lock-icon">
+                  🔒
+                </div>
+
+                <div class="lock-copy">
+
+                  <strong>
+                    ACCESS NOT ASSIGNED
+                  </strong>
+
+                  <span>
+                    Not assigned to your account
+                  </span>
+
+                </div>
+
+              `;
+
+
+              card.appendChild(
+                lockBox
+              );
 
             }
 
@@ -391,7 +406,6 @@ window.logout =
     localStorage.removeItem(
       STUDENT_KEY
     );
-
 
     location.href =
       "login.html";
