@@ -10,3 +10,12 @@ SECURITY NOTE:
 A signed-in user is not automatically an admin. For production, enforce admin authorization
 with Firebase custom claims / a trusted backend and Firestore rules. Never put an Admin SDK
 service-account private key in GitHub Pages.
+
+
+FIRESTORE STUDENT ACCOUNT MODE
+- Admin dashboard now creates real Firebase Authentication student users using internal emails like username@bookfairdigital.local.
+- Student profile/access data is stored in Firestore under students/{uid}.
+- The admin UID is locked to the UID configured in admin.js and firestore.rules.
+- Passwords are intentionally not stored in Firestore. The password is shown once after account creation and can be downloaded as a credential CSV.
+- CSV import creates Firebase Auth users and Firestore records.
+- Client-side provisioning is suitable for a small controlled book-fair admin workflow; for large-scale production provisioning, move account creation to a trusted Cloud Function/Admin SDK backend.

@@ -11,7 +11,7 @@
 </header>
 <main class="admin-wrap">
 <section class="admin-heading">
-<div><div class="eyebrow">BOOKFAIR DIGITAL · ADMIN</div><h1>Account Management</h1><p>Create and prepare separate student credentials for each launch book.</p></div>
+<div><div class="eyebrow">BOOKFAIR DIGITAL · ADMIN</div><h1>Account Management</h1><p>Create student credentials, assign a launch book, and monitor registration status.</p></div>
 <div class="admin-actions"><button class="admin-btn" id="downloadBtn">Export CSV</button><button class="admin-btn primary" id="newBtn">＋ New Account</button></div>
 </section>
 
@@ -25,11 +25,11 @@
 <section class="admin-card">
 <div class="card-head"><div><h2>Book Access</h2><p>Each account is assigned to one specific book.</p></div>
 <div class="filters"><select id="bookFilter"><option value="all">All Books</option><option value="01">Book 01 · A/L Accounting</option><option value="02">Book 02</option><option value="03">Book 03</option></select><input id="search" class="search" placeholder="Search username…"></div></div>
-<div class="table-wrap"><table><thead><tr><th>Username</th><th>Password</th><th>Assigned Book</th><th>Student</th><th>Status</th><th></th></tr></thead><tbody id="rows"></tbody></table><div id="empty" class="empty">No accounts created yet.</div></div>
+<div class="table-wrap"><table><thead><tr><th>Username</th><th>Password</th><th>Assigned Book</th><th>Student</th><th>Registration</th><th>Account</th></tr></thead><tbody id="rows"></tbody></table><div id="empty" class="empty">No accounts created yet.</div></div>
 </section>
 
 <section class="admin-card import-guide">
-<div><div class="eyebrow">BULK IMPORT</div><h2>Import prepared credentials</h2><p>CSV format: username,password,book. Book values should be 01, 02 or 03.</p></div>
+<div><div class="eyebrow">BULK IMPORT</div><h2>Import prepared credentials</h2><p>CSV format: username,password,book. New Firebase student accounts are created automatically.</p></div>
 <div class="csv-code">username,password,book<br>ACC26-00001,Abc12345,01<br>ACC26-00002,Qwe98765,02</div>
 <div class="admin-actions"><button class="admin-btn" id="templateBtn">CSV Template</button><button class="admin-btn primary" id="importBtn">Import CSV</button></div>
 </section>
