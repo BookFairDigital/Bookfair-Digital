@@ -4,8 +4,22 @@ import {
   getDoc
 } from "./firebase.js";
 
+
+/* =========================
+   CONFIG
+========================= */
+
+const LOGIN_KEY = "bf_login";
+const STUDENT_KEY = "bf_student";
+
+
+/* =========================
+   GET STUDENT
+========================= */
+
 const username =
-  localStorage.getItem("bf_login");
+  localStorage.getItem(LOGIN_KEY);
+
 
 if (!username) {
 
@@ -22,32 +36,60 @@ if (!username) {
         username
       );
 
+
     const snap =
       await getDoc(ref);
 
+
+    /* =========================
+       ACCOUNT NOT FOUND
+    ========================= */
+
     if (!snap.exists()) {
 
-      localStorage.removeItem("bf_login");
-      localStorage.removeItem("bf_student");
+      localStorage.removeItem(
+        LOGIN_KEY
+      );
 
-      location.href = "login.html";
+      localStorage.removeItem(
+        STUDENT_KEY
+      );
+
+      location.href =
+        "login.html";
 
     } else {
 
       const data =
         snap.data();
 
+
+      /* =========================
+         ACCOUNT INACTIVE
+      ========================= */
+
       if (data.active === false) {
 
-        localStorage.removeItem("bf_login");
-        localStorage.removeItem("bf_student");
+        localStorage.removeItem(
+          LOGIN_KEY
+        );
 
-        location.href = "login.html";
+        localStorage.removeItem(
+          STUDENT_KEY
+        );
+
+        location.href =
+          "login.html";
 
       } else {
 
+
+        /* =========================
+           SAVE STUDENT DATA
+        ========================= */
+
         localStorage.setItem(
-          "bf_student",
+          STUDENT_KEY,
           JSON.stringify(data)
         );
 
@@ -60,23 +102,40 @@ if (!username) {
           .querySelectorAll(
             "[data-student-name]"
           )
-          .forEach((element) => {
+          .forEach(
+            (element) => {
 
-            element.textContent =
-              data.fullName ||
-              data.username ||
-              username;
+              element.textContent =
+                data.fullName ||
+                data.username ||
+                username;
 
-          });
+            }
+          );
 
 
         /* =========================
-           BOOK ACCESS
+           ASSIGNED BOOK
         ========================= */
 
         const assignedBook =
-          data.assignedBook;
+          String(
+            data.assignedBook ||
+            ""
+          )
+            .trim()
+            .toLowerCase();
 
+
+        console.log(
+          "Assigned book:",
+          data.assignedBook
+        );
+
+
+        /* =========================
+           BOOK CARDS
+        ========================= */
 
         const bookCards =
           document.querySelectorAll(
@@ -87,41 +146,202 @@ if (!username) {
         bookCards.forEach(
           (card, index) => {
 
+            /*
+              Card 1 = Book 01
+              Card 2 = Book 02
+              Card 3 = Book 03
+            */
+
             const bookNumber =
-              index + 1;
+              String(index + 1)
+                .padStart(2, "0");
+
+
+            const bookName =
+              `book ${bookNumber}`;
+
 
             const allowed =
               assignedBook ===
-              `Book 0${bookNumber}`;
+              bookName;
 
 
-            if (bookNumber === 1) {
+            /* =====================
+               REMOVE OLD STATES
+            ===================== */
 
-              if (allowed) {
+            card.classList.remove(
+              "book-unlocked",
+              "book-locked"
+            );
 
-                card.classList.add(
-                  "book-unlocked"
+
+            /* =====================
+               UNLOCK ASSIGNED BOOK
+            ===================== */
+
+            if (allowed) {
+
+              card.classList.add(
+                "book-unlocked"
+              );
+
+
+              card.dataset.access =
+                "allowed";
+
+
+              /* ---------------------
+                 OPEN BUTTON
+              --------------------- */
+
+              const link =
+                card.querySelector(
+                  "a"
                 );
 
-              } else {
 
-                card.classList.add(
-                  "book-locked"
+              if (link) {
+
+                link.classList.remove(
+                  "locked-link"
                 );
+
+                link.removeAttribute(
+                  "aria-disabled"
+                );
+
+                link.style.pointerEvents =
+                  "auto";
 
               }
 
-            }
+
+              /* ---------------------
+                 STATUS
+              --------------------- */
+
+              const status =
+                card.querySelector(
+                  ".book-status"
+                );
 
 
-            if (
-              bookNumber === 2 ||
-              bookNumber === 3
-            ) {
+              if (status) {
+
+                status.textContent =
+                  "● AVAILABLE";
+
+              }
+
+
+              /* ---------------------
+                 LOCK MESSAGE
+              --------------------- */
+
+              const lock =
+                card.querySelector(
+                  ".lock-message"
+                );
+
+
+              if (lock) {
+
+                lock.remove();
+
+              }
+
+
+            } else {
+
+
+              /* =====================
+                 LOCK OTHER BOOKS
+              ===================== */
 
               card.classList.add(
                 "book-locked"
               );
+
+
+              card.dataset.access =
+                "locked";
+
+
+              /* ---------------------
+                 DISABLE LINK
+              --------------------- */
+
+              const link =
+                card.querySelector(
+                  "a"
+                );
+
+
+              if (link) {
+
+                link.classList.add(
+                  "locked-link"
+                );
+
+                link.setAttribute(
+                  "aria-disabled",
+                  "true"
+                );
+
+                link.style.pointerEvents =
+                  "none";
+
+              }
+
+
+              /* ---------------------
+                 STATUS
+              --------------------- */
+
+              const status =
+                card.querySelector(
+                  ".book-status"
+                );
+
+
+              if (status) {
+
+                status.textContent =
+                  "🔒 LOCKED";
+
+              }
+
+
+              /* ---------------------
+                 ADD LOCK MESSAGE
+              --------------------- */
+
+              if (
+                !card.querySelector(
+                  ".lock-message"
+                )
+              ) {
+
+                const message =
+                  document.createElement(
+                    "div"
+                  );
+
+
+                message.className =
+                  "lock-message";
+
+
+                message.textContent =
+                  "Not assigned to your account";
+
+
+                card.appendChild(
+                  message
+                );
+
+              }
 
             }
 
@@ -139,9 +359,21 @@ if (!username) {
       error
     );
 
+
+    localStorage.removeItem(
+      LOGIN_KEY
+    );
+
+    localStorage.removeItem(
+      STUDENT_KEY
+    );
+
+
     location.href =
       "login.html";
+
   }
+
 }
 
 
@@ -149,16 +381,19 @@ if (!username) {
    LOGOUT
 ========================= */
 
-window.logout = function () {
+window.logout =
+  function () {
 
-  localStorage.removeItem(
-    "bf_login"
-  );
+    localStorage.removeItem(
+      LOGIN_KEY
+    );
 
-  localStorage.removeItem(
-    "bf_student"
-  );
+    localStorage.removeItem(
+      STUDENT_KEY
+    );
 
-  location.href =
-    "login.html";
-};
+
+    location.href =
+      "login.html";
+
+  };
