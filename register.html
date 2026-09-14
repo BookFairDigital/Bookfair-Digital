@@ -8,42 +8,85 @@
 </head>
 <body class="auth">
   <div class="auth-bg"></div>
+
   <form class="box" id="reg">
-    <a class="auth-brand" href="index.html"><b>B</b><span>BookFair Digital</span></a>
+    <a class="auth-brand" href="index.html">
+      <b>B</b><span>BookFair Digital</span>
+    </a>
+
     <div class="eyebrow">FIRST-TIME REGISTRATION</div>
+
     <h1>Complete Registration</h1>
-    <p>Enter your details below. Your physical-book username is permanently linked to this account.</p>
+
+    <p>
+      Enter your details below. Your physical-book username is permanently linked to this account.
+    </p>
 
     <label>Username <span>🔒 LOCKED</span></label>
     <input id="ru" readonly>
 
     <label>Full Name</label>
-    <input id="name" required autocomplete="name" placeholder="Enter your full name">
+    <input
+      id="name"
+      required
+      autocomplete="name"
+      placeholder="Enter your full name"
+    >
 
     <label>District</label>
     <select id="district" required>
       <option value="">Select your district</option>
-      <option>Ampara</option><option>Anuradhapura</option><option>Badulla</option>
-      <option>Batticaloa</option><option>Colombo</option><option>Galle</option>
-      <option>Gampaha</option><option>Hambantota</option><option>Jaffna</option>
-      <option>Kalutara</option><option>Kandy</option><option>Kegalle</option>
-      <option>Kurunegala</option><option>Mannar</option><option>Matale</option>
-      <option>Matara</option><option>Monaragala</option><option>Mullaitivu</option>
-      <option>Nuwara Eliya</option><option>Polonnaruwa</option><option>Puttalam</option>
-      <option>Ratnapura</option><option>Trincomalee</option><option>Vavuniya</option>
+      <option>Ampara</option>
+      <option>Anuradhapura</option>
+      <option>Badulla</option>
+      <option>Batticaloa</option>
+      <option>Colombo</option>
+      <option>Galle</option>
+      <option>Gampaha</option>
+      <option>Hambantota</option>
+      <option>Jaffna</option>
+      <option>Kalutara</option>
+      <option>Kandy</option>
+      <option>Kegalle</option>
+      <option>Kurunegala</option>
+      <option>Mannar</option>
+      <option>Matale</option>
+      <option>Matara</option>
+      <option>Monaragala</option>
+      <option>Mullaitivu</option>
+      <option>Nuwara Eliya</option>
+      <option>Polonnaruwa</option>
+      <option>Puttalam</option>
+      <option>Ratnapura</option>
+      <option>Trincomalee</option>
+      <option>Vavuniya</option>
     </select>
 
     <label>Contact Number</label>
-    <input id="phone" type="tel" inputmode="numeric" autocomplete="tel" required placeholder="07XXXXXXXX">
+    <input
+      id="phone"
+      type="tel"
+      inputmode="numeric"
+      autocomplete="tel"
+      required
+      placeholder="07XXXXXXXX"
+    >
 
-    <button class="btn" type="submit">Complete Registration <span>→</span></button>
+    <button class="btn" type="submit">
+      Complete Registration <span>→</span>
+    </button>
+
     <div id="rm"></div>
 
     <div class="registration-note">
       <strong>Username is locked.</strong>
-      <span>Your full name, district and contact number can be entered/updated by you.</span>
+      <span>
+        Your full name, district and contact number can be entered/updated by you.
+      </span>
     </div>
   </form>
-  <script src="app.js"></script>
+
+  <!-- Firebase registration logic -->
+  <script type="module" src="register.js?v=18"></script>
 </body>
 </html>
