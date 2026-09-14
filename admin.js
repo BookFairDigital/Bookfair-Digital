@@ -1,4 +1,7 @@
-const KEY="bf_admin_accounts";
+import {auth} from "./firebase.js";
+import {onAuthStateChanged,signOut} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+onAuthStateChanged(auth,user=>{if(!user){location.href="admin-login.html";return;} initAdmin();});
+async function initAdmin(){const KEY="bf_admin_accounts";
 const get=()=>{try{return JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){return[]}};
 const save=a=>localStorage.setItem(KEY,JSON.stringify(a));
 const $=id=>document.getElementById(id), rows=$("rows"), empty=$("empty"), modal=$("modal"), toast=$("toast");
@@ -40,4 +43,4 @@ $("downloadBtn").onclick=()=>{
  let csv="username,password,book,fullName,district,contact,registered,active\n"+data.map(x=>[x.username,x.password,x.book,x.fullName,x.district,x.contact,x.registered,x.active].map(v=>`"${String(v??"").replaceAll('"','""')}"`).join(",")).join("\n");
  let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download="bookfair-accounts-export.csv";a.click();
 };
-render();
+render();\n}\n

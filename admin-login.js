@@ -1,0 +1,3 @@
+import {auth,signInWithEmailAndPassword} from "./firebase.js";
+const f=document.getElementById("adminLogin"),m=document.getElementById("adminMsg");
+f.onsubmit=async e=>{e.preventDefault();m.textContent="Signing in…";try{await signInWithEmailAndPassword(auth,document.getElementById("adminEmail").value.trim(),document.getElementById("adminPassword").value);location.href="admin.html"}catch(err){m.textContent="Admin login failed. Check the email and password.";m.className="error-msg"}};
