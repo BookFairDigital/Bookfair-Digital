@@ -1,1 +1,672 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>My Books</title><link rel="stylesheet" href="styles.css"></head><body class="dash"><header><a href="index.html"><b>B</b> BookFair Digital</a><button onclick="logout()">Logout</button></header><main class="section"><small>STUDENT PORTAL</small><h1 id="welcome">My Digital Books</h1><p>Your assigned resources are shown below.</p><div class="grid"><article><img src="assets/accounting.jpg"><small class="ok">● ASSIGNED TO YOU</small><h3>A/L Accounting</h3><p>Digital answer resource</p><a href="accounting.html">View Answers →</a></article><article class="soon"><b>02</b><strong>COMING<br>SOON</strong></article><article class="soon"><b>03</b><strong>COMING<br>SOON</strong></article></div></main><script type="module" src="dashboard.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <title>My Books · BookFair Digital</title>
+
+  <link
+    rel="stylesheet"
+    href="styles.css"
+  >
+
+  <style>
+
+    /* =========================
+       DASHBOARD
+    ========================= */
+
+    .dash {
+      min-height: 100vh;
+      background:
+        radial-gradient(
+          circle at 15% 10%,
+          rgba(60, 100, 180, .14),
+          transparent 35%
+        ),
+        radial-gradient(
+          circle at 85% 20%,
+          rgba(200, 160, 70, .08),
+          transparent 35%
+        ),
+        #07111f;
+      color: #fff;
+    }
+
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    .dash header {
+      width: 100%;
+      box-sizing: border-box;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 20px 6%;
+
+      border-bottom: 1px solid
+        rgba(255,255,255,.08);
+
+      background: rgba(7,17,31,.72);
+
+      backdrop-filter: blur(16px);
+
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .dash header a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      color: #fff;
+      text-decoration: none;
+
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .dash header a b {
+      width: 34px;
+      height: 34px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 10px;
+
+      background: #fff;
+      color: #07111f;
+
+      font-size: 18px;
+    }
+
+    .dash header button {
+      border: 1px solid
+        rgba(255,255,255,.14);
+
+      background: rgba(255,255,255,.05);
+
+      color: rgba(255,255,255,.8);
+
+      padding: 9px 15px;
+
+      border-radius: 10px;
+
+      cursor: pointer;
+
+      font-size: 12px;
+      font-weight: 700;
+
+      transition: .2s ease;
+    }
+
+    .dash header button:hover {
+      background: rgba(255,255,255,.1);
+      color: #fff;
+    }
+
+
+    /* =========================
+       MAIN
+    ========================= */
+
+    .dash .section {
+      width: min(1180px, 88%);
+      margin: 0 auto;
+
+      padding: 70px 0 90px;
+    }
+
+    .dash .section > small {
+      color: rgba(255,255,255,.45);
+
+      font-size: 11px;
+      font-weight: 800;
+
+      letter-spacing: .16em;
+    }
+
+    .dash .section h1 {
+      margin: 10px 0 8px;
+
+      font-size: clamp(32px, 5vw, 52px);
+
+      line-height: 1.05;
+
+      letter-spacing: -.035em;
+    }
+
+    .dash .section > p {
+      margin: 0 0 42px;
+
+      color: rgba(255,255,255,.58);
+
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+
+    /* =========================
+       BOOK GRID
+    ========================= */
+
+    .dash .grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+      gap: 24px;
+    }
+
+
+    /* =========================
+       BOOK CARD
+    ========================= */
+
+    .book-card {
+      overflow: hidden;
+
+      border-radius: 22px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,.09),
+          rgba(255,255,255,.025)
+        );
+
+      border: 1px solid
+        rgba(255,255,255,.12);
+
+      box-shadow:
+        0 25px 70px rgba(0,0,0,.3);
+
+      transition:
+        transform .3s ease,
+        box-shadow .3s ease,
+        border-color .3s ease;
+    }
+
+    .book-card:hover {
+      transform: translateY(-7px);
+
+      border-color:
+        rgba(255,255,255,.24);
+
+      box-shadow:
+        0 32px 80px rgba(0,0,0,.4);
+    }
+
+
+    /* =========================
+       BOOK COVER
+    ========================= */
+
+    .book-cover {
+      position: relative;
+
+      aspect-ratio: 1 / 1.28;
+
+      overflow: hidden;
+
+      background: #101a2a;
+    }
+
+    .book-cover img {
+      width: 100%;
+      height: 100%;
+
+      display: block;
+
+      object-fit: cover;
+
+      transition:
+        transform .5s ease;
+    }
+
+    .book-card:hover
+    .book-cover img {
+      transform: scale(1.035);
+    }
+
+
+    /* =========================
+       ASSIGNED BADGE
+    ========================= */
+
+    .book-status {
+      position: absolute;
+
+      left: 16px;
+      bottom: 16px;
+
+      padding: 9px 13px;
+
+      border-radius: 999px;
+
+      background:
+        rgba(4,10,20,.82);
+
+      backdrop-filter: blur(12px);
+
+      border: 1px solid
+        rgba(255,255,255,.15);
+
+      color: #fff;
+
+      font-size: 10px;
+      font-weight: 800;
+
+      letter-spacing: .09em;
+    }
+
+    .book-status span {
+      margin-right: 5px;
+    }
+
+
+    /* =========================
+       BOOK CONTENT
+    ========================= */
+
+    .book-content {
+      padding: 22px;
+    }
+
+    .book-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      margin-bottom: 10px;
+
+      color:
+        rgba(255,255,255,.42);
+
+      font-size: 9px;
+      font-weight: 800;
+
+      letter-spacing: .13em;
+    }
+
+    .book-content h3 {
+      margin: 0 0 9px;
+
+      color: #fff;
+
+      font-size: 24px;
+      line-height: 1.15;
+    }
+
+    .book-content p {
+      margin: 0 0 20px;
+
+      color:
+        rgba(255,255,255,.58);
+
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+
+    /* =========================
+       OPEN ANSWERS BUTTON
+    ========================= */
+
+    .book-button {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      width: 100%;
+      box-sizing: border-box;
+
+      padding: 13px 16px;
+
+      border-radius: 12px;
+
+      background: #fff;
+      color: #07111f;
+
+      text-decoration: none;
+
+      font-size: 12px;
+      font-weight: 800;
+
+      transition:
+        transform .2s ease,
+        background .2s ease;
+    }
+
+    .book-button:hover {
+      transform: translateY(-2px);
+
+      background: #eef2f6;
+    }
+
+    .book-button span {
+      font-size: 18px;
+      line-height: 1;
+    }
+
+
+    /* =========================
+       COMING SOON
+    ========================= */
+
+    .coming-card {
+      min-height: 520px;
+
+      padding: 30px;
+
+      box-sizing: border-box;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      background:
+        radial-gradient(
+          circle at top right,
+          rgba(255,255,255,.08),
+          transparent 45%
+        ),
+        rgba(255,255,255,.025);
+    }
+
+    .coming-number {
+      margin-bottom: 25px;
+
+      font-size: 76px;
+      line-height: 1;
+
+      font-weight: 900;
+
+      color:
+        rgba(255,255,255,.07);
+    }
+
+    .coming-card small {
+      color:
+        rgba(255,255,255,.4);
+
+      font-size: 9px;
+      font-weight: 800;
+
+      letter-spacing: .15em;
+    }
+
+    .coming-card h3 {
+      margin: 8px 0;
+
+      color: #fff;
+
+      font-size: 21px;
+    }
+
+    .coming-card p {
+      max-width: 260px;
+
+      color:
+        rgba(255,255,255,.45);
+
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 900px) {
+
+      .dash .grid {
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+      }
+
+      .coming-card {
+        min-height: 400px;
+      }
+    }
+
+
+    @media (max-width: 620px) {
+
+      .dash header {
+        padding: 16px 5%;
+      }
+
+      .dash .section {
+        width: 90%;
+        padding: 50px 0 70px;
+      }
+
+      .dash .grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .coming-card {
+        min-height: 260px;
+      }
+
+      .book-content {
+        padding: 19px;
+      }
+
+      .book-content h3 {
+        font-size: 21px;
+      }
+
+      .coming-number {
+        font-size: 58px;
+      }
+    }
+
+  </style>
+</head>
+
+
+<body class="dash">
+
+  <!-- HEADER -->
+
+  <header>
+
+    <a href="index.html">
+
+      <b>B</b>
+
+      <span>
+        BookFair Digital
+      </span>
+
+    </a>
+
+    <button
+      type="button"
+      onclick="logout()"
+    >
+      Logout
+    </button>
+
+  </header>
+
+
+  <!-- MAIN -->
+
+  <main class="section">
+
+    <small>
+      STUDENT PORTAL
+    </small>
+
+    <h1 id="welcome">
+      My Digital Books
+    </h1>
+
+    <p>
+      Your assigned digital resources are shown below.
+    </p>
+
+
+    <!-- BOOK GRID -->
+
+    <div class="grid">
+
+
+      <!-- BOOK 01 -->
+
+      <article class="book-card">
+
+        <div class="book-cover">
+
+          <img
+            src="assets/accounting.jpg"
+            alt="A/L Accounting"
+          >
+
+          <div class="book-status">
+            <span>●</span>
+            ASSIGNED TO YOU
+          </div>
+
+        </div>
+
+
+        <div class="book-content">
+
+          <div class="book-meta">
+
+            <span>
+              BOOK 01
+            </span>
+
+            <span>
+              •
+            </span>
+
+            <span>
+              DIGITAL RESOURCE
+            </span>
+
+          </div>
+
+
+          <h3>
+            A/L Accounting
+          </h3>
+
+
+          <p>
+            Complete digital answer resource
+            for your A/L Accounting book.
+          </p>
+
+
+          <a
+            class="book-button"
+            href="accounting.html"
+          >
+
+            <span>
+              Open Answers
+            </span>
+
+            <span>
+              →
+            </span>
+
+          </a>
+
+        </div>
+
+      </article>
+
+
+      <!-- BOOK 02 -->
+
+      <article class="book-card coming-card">
+
+        <div class="coming-number">
+          02
+        </div>
+
+        <div>
+
+          <small>
+            COMING SOON
+          </small>
+
+          <h3>
+            Next Book
+          </h3>
+
+          <p>
+            Digital resource will be
+            available soon.
+          </p>
+
+        </div>
+
+      </article>
+
+
+      <!-- BOOK 03 -->
+
+      <article class="book-card coming-card">
+
+        <div class="coming-number">
+          03
+        </div>
+
+        <div>
+
+          <small>
+            COMING SOON
+          </small>
+
+          <h3>
+            Next Book
+          </h3>
+
+          <p>
+            Digital resource will be
+            available soon.
+          </p>
+
+        </div>
+
+      </article>
+
+
+    </div>
+
+  </main>
+
+
+  <!-- DASHBOARD LOGIC -->
+
+  <script
+    type="module"
+    src="dashboard.js?v=2"
+  ></script>
+
+</body>
+
+</html>
