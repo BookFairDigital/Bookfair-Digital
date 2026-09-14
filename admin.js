@@ -34,13 +34,16 @@ async function initAdmin(){
   function msg(t,error=false){toast.textContent=t;toast.className="toast show"+(error?" error":"");setTimeout(()=>toast.classList.remove("show"),2600)}
 
   async function load(){
+    const dbStatus=$("dbStatus");
     try{
       const snap=await getDocs(collection(db,"students"));
       data=snap.docs.map(d=>({id:d.id,...d.data()}));
+      if(dbStatus){dbStatus.textContent="● Firestore connected";dbStatus.classList.remove("error");}
       render();
     }catch(e){
       console.error(e);
-      msg("Could not load student accounts from Firestore.",true);
+      if(dbStatus){dbStatus.textContent="● Firestore unavailable";dbStatus.classList.add("error");}
+      msg("Could not load student accounts from Firestore. Check Firestore Rules and admin authorization.",true);
     }
   }
 
@@ -253,12 +256,16 @@ async function initAdmin(){
       const ku=keyMap["username"],kp=keyMap["password"],kb=keyMap["assigned book"],kf=keyMap["full name"],kd=keyMap["district"],kc=keyMap["contact number"];
       if(!ku||!kp||!kb) throw new Error("Excel must contain: Username, Password, Assigned Book.");
       let created=[],failed=[],skipped=0,processed=0,total=rows.length;
+      const seen=new Set();
       setImportStatus(0,total,0,0,0,`Importing ${f.name}`);
       for(const row of rows){
         const u=String(row[ku]??"").trim(),p=String(row[kp]??"").trim(),b=normalizeBook(row[kb]);
         const name=String(row[kf]??"").trim();
         if(!u&&!p&&!b&&!name){skipped++;processed++;setImportStatus(processed,total,created.length,failed.length,skipped,"Importing accounts…");continue;}
         if(!u||!p||!b){failed.push({username:u||`Row ${processed+2}`,reason:"Username, Password or Assigned Book is missing"});processed++;setImportStatus(processed,total,created.length,failed.length,skipped,"Importing accounts…");continue;}
+        const key=u.toLowerCase();
+        if(seen.has(key)){failed.push({username:u,reason:"Duplicate username in this Excel file"});processed++;setImportStatus(processed,total,created.length,failed.length,skipped,"Importing accounts…");continue;}
+        seen.add(key);
         if(!validUsername(u)){failed.push({username:u,reason:"Invalid username format"});processed++;setImportStatus(processed,total,created.length,failed.length,skipped,"Importing accounts…");continue;}
         if(p.length<6){failed.push({username:u,reason:"Password must be at least 6 characters"});processed++;setImportStatus(processed,total,created.length,failed.length,skipped,"Importing accounts…");continue;}
         try{
