@@ -162,7 +162,7 @@ async function initAdmin(){
       "District":x.district||"",
       "Contact Number":x.contact||""
     }));
-    const ws=XLSX.utils.json_to_sheet(rows,{header:["Username","Password","Assigned Book","Full Name","District","Contact Number"]});
+    const ws=XLSX.utils.json_to_sheet(rows,{header:["Username","Password","Assigned Book"]});
     ws["!cols"]=[{wch:20},{wch:20},{wch:28},{wch:20},{wch:20}];
     const wb=XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb,ws,"Student Accounts");
@@ -171,9 +171,9 @@ async function initAdmin(){
 
   function downloadTemplate(){
     const rows=[
-      {"Username":"ACC26-00001","Password":"BookFair@123","Assigned Book":"Book 01","Full Name":"","District":"","Contact Number":""},
-      {"Username":"ACC26-00002","Password":"BookFair@456","Assigned Book":"Book 02","Full Name":"","District":"","Contact Number":""},
-      {"Username":"ACC26-00003","Password":"BookFair@789","Assigned Book":"Book 03","Full Name":"","District":"","Contact Number":""}
+      {"Username":"ACC26-00001","Password":"BookFair@123","Assigned Book":"Book 01"},
+      {"Username":"ACC26-00002","Password":"BookFair@456","Assigned Book":"Book 02"},
+      {"Username":"ACC26-00003","Password":"BookFair@789","Assigned Book":"Book 03"}
     ];
     const ws=XLSX.utils.json_to_sheet(rows,{header:["Username","Password","Assigned Book","Full Name","District","Contact Number"]});
     ws["!cols"]=[{wch:20},{wch:20},{wch:28},{wch:20},{wch:20}];
@@ -214,51 +214,67 @@ async function initAdmin(){
   $("search").oninput=render;$("bookFilter").onchange=render;
   $("templateBtn").onclick=downloadTemplate;
 
+  function setImportStatus(processed,total,success,failed,skipped,title){
+    const box=$("importStatus");
+    box.classList.add("visible");
+    $("importTitle").textContent=title;
+    $("importCount").textContent=`${processed} / ${total}`;
+    $("importProgress").style.width=(total?Math.round(processed/total*100):0)+"%";
+    $("importSuccess").textContent=`${success} successful`;
+    $("importFailed").textContent=`${failed} failed`;
+    $("importSkipped").textContent=`${skipped} skipped`;
+  }
+
+  function showImportResult(success,failed,skipped){
+    $("resultSuccess").textContent=success.length;
+    $("resultFailed").textContent=failed.length;
+    $("resultSkipped").textContent=skipped;
+    const wrap=$("failedWrap"), list=$("failedList");
+    if(failed.length){
+      wrap.style.display="block";
+      list.innerHTML=failed.map(x=>`<div class="failed-item"><strong>${esc(x.username)}</strong><span>${esc(x.reason)}</span></div>`).join("");
+    }else{ wrap.style.display="none"; list.innerHTML=""; }
+    $("importResultModal").classList.add("show");
+  }
+  $("importResultClose").onclick=()=>$("importResultModal").classList.remove("show");
+  $("importResultCloseBtn").onclick=()=>$("importResultModal").classList.remove("show");
+
   $("importBtn").onclick=()=>$("fileInput").click();
   $("fileInput").onchange=async()=>{
     const f=$("fileInput").files[0]; if(!f)return;
+    const btn=$("importBtn"); btn.disabled=true; btn.textContent="Reading Excel…";
     try{
       if(typeof XLSX==="undefined") throw new Error("Excel reader could not be loaded. Refresh the page and try again.");
-      const buf=await f.arrayBuffer();
-      const wb=XLSX.read(buf,{type:"array"});
+      const wb=XLSX.read(await f.arrayBuffer(),{type:"array"});
       const first=wb.Sheets[wb.SheetNames[0]];
-      const rows=XLSX.utils.sheet_to_json(first,{defval:""});
-      if(!rows.length) throw new Error("The Excel sheet is empty.");
-      const keyMap={};
-      Object.keys(rows[0]).forEach(k=>keyMap[k.trim().toLowerCase()]=k);
-      const ku=keyMap["username"], kp=keyMap["password"], kb=keyMap["assigned book"], kf=keyMap["full name"], kd=keyMap["district"], kc=keyMap["contact number"];
-      if(!ku||!kp||!kb) throw new Error("Excel must contain Username, Password and Assigned Book columns.");
-      let created=[],failed=[];
+      const rows=XLSX.utils.sheet_to_json(first,{defval:"",raw:false});
+      if(!rows.length) throw new Error("The first Excel sheet is empty.");
+      const keyMap={}; Object.keys(rows[0]).forEach(k=>keyMap[k.trim().toLowerCase()]=k);
+      const ku=keyMap["username"],kp=keyMap["password"],kb=keyMap["assigned book"],kf=keyMap["full name"],kd=keyMap["district"],kc=keyMap["contact number"];
+      if(!ku||!kp||!kb) throw new Error("Excel must contain: Username, Password, Assigned Book.");
+      let created=[],failed=[],skipped=0,processed=0,total=rows.length;
+      setImportStatus(0,total,0,0,0,`Importing ${f.name}`);
       for(const row of rows){
-        const u=String(row[ku]??"").trim();
-        const p=String(row[kp]??"").trim();
-        const b=normalizeBook(row[kb]);
-        if(!u && !p && !b && !String(row[kf]??"").trim()) continue;
-        if(!u||!p||!b){failed.push({username:u||"(blank)",reason:"Username, Password or Assigned Book missing"});continue;}
-        if(p.length<6){failed.push({username:u,reason:"Password must be at least 6 characters"});continue;}
+        const u=String(row[ku]??"").trim(),p=String(row[kp]??"").trim(),b=normalizeBook(row[kb]);
+        const name=String(row[kf]??"").trim();
+        if(!u&&!p&&!b&&!name){skipped++;processed++;setImportStatus(processed,total,created.length,failed.length,skipped,"Importing accounts…");continue;}
+        if(!u||!p||!b){failed.push({username:u||`Row ${processed+2}`,reason:"Username, Password or Assigned Book is missing"});processed++;setImportStatus(processed,total,created.length,failed.length,skipped,"Importing accounts…");continue;}
+        if(!validUsername(u)){failed.push({username:u,reason:"Invalid username format"});processed++;setImportStatus(processed,total,created.length,failed.length,skipped,"Importing accounts…");continue;}
+        if(p.length<6){failed.push({username:u,reason:"Password must be at least 6 characters"});processed++;setImportStatus(processed,total,created.length,failed.length,skipped,"Importing accounts…");continue;}
         try{
-          const createdAccount=await createStudent(u,p,b);
-          // Preserve any optional pre-registration data supplied in the Excel sheet.
-          const fullName=String(row[kf]??"").trim();
-          const district=String(row[kd]??"").trim();
-          const contact=String(row[kc]??"").trim();
-          if(fullName||district||contact){
-            await setDoc(doc(db,"students",createdAccount.uid),{fullName,district,contact,registered:Boolean(fullName&&district&&contact)},{merge:true});
-          }
-          created.push({...createdAccount,fullName,district,contact});
-        }catch(e){
-          console.error(e);
-          failed.push({username:u,reason:e.code==="auth/email-already-in-use"?"Username already exists":(e.message||"Creation failed")});
-        }
+          const account=await createStudent(u,p,b);
+          const fullName=String(row[kf]??"").trim(),district=String(row[kd]??"").trim(),contact=String(row[kc]??"").trim();
+          if(fullName||district||contact) await setDoc(doc(db,"students",account.uid),{fullName,district,contact,registered:Boolean(fullName&&district&&contact)},{merge:true});
+          created.push({...account,fullName,district,contact});
+        }catch(e){console.error(e);failed.push({username:u,reason:e.code==="auth/email-already-in-use"?"Username already exists":(e.message||"Account creation failed")});}
+        processed++; setImportStatus(processed,total,created.length,failed.length,skipped,processed===total?"Import finished":"Importing accounts…");
       }
-      $("fileInput").value="";
-      await load();
+      $("fileInput").value=""; await load();
       if(created.length) downloadExcel(created,"bookfair-created-accounts.xlsx");
-      msg(`${created.length} account(s) created. ${failed.length?failed.length+" row(s) failed.":"All rows imported successfully."}`,failed.length>0);
-      if(failed.length) console.table(failed);
-    }catch(e){
-      console.error(e); $("fileInput").value=""; msg(e.message||"Excel import failed.",true);
-    }
+      showImportResult(created,failed,skipped);
+      msg(`${created.length} account(s) added successfully${failed.length?`. ${failed.length} failed.`:"."}`,failed.length>0);
+    }catch(e){console.error(e);$("fileInput").value="";setImportStatus(0,0,0,0,0,"Import failed");msg(e.message||"Excel import failed.",true);}
+    finally{btn.disabled=false;btn.textContent="Import Excel";}
   };
 
   $("downloadBtn").onclick=()=>downloadExcel(data,"bookfair-students-export.xlsx");
