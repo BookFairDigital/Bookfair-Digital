@@ -3,7 +3,7 @@ import {
   db,
   doc,
   getDoc,
-  setDoc,
+  updateDoc,
   onAuthStateChanged
 } from "./firebase.js";
 
@@ -27,12 +27,7 @@ async function loadRegistration(user) {
   }
 
   try {
-    /*
-     * The student's username is stored locally after login.
-     * Firestore document ID is the username.
-     */
-    const username =
-      localStorage.getItem("bf_login") || "";
+    const username = localStorage.getItem("bf_login") || "";
 
     if (!username) {
       showMessage(
@@ -60,15 +55,9 @@ async function loadRegistration(user) {
       return;
     }
 
-    /*
-     * Username is permanently assigned and locked.
-     */
     usernameInput.value = data.username || username;
     usernameInput.dataset.username = data.username || username;
 
-    /*
-     * Load existing registration data if available.
-     */
     if (data.fullName) {
       nameInput.value = data.fullName;
     }
@@ -134,6 +123,7 @@ form.onsubmit = async (e) => {
 
   try {
     const ref = doc(db, "students", username);
+
     const existing = await getDoc(ref);
 
     if (!existing.exists()) {
@@ -152,24 +142,30 @@ form.onsubmit = async (e) => {
       return;
     }
 
-    await setDoc(
-      ref,
-      {
-        username: old.username || username,
-        password: old.password || "",
-        assignedBook: old.assignedBook || "Book 01",
+    /*
+     * IMPORTANT:
+     * Only update registration fields.
+     *
+     * Username, password, assignedBook and active
+     * remain unchanged.
+     */
+    await updateDoc(ref, {
+      fullName: fullName,
+      district: district,
+      contact: contact,
+      registered: true
+    });
 
-        fullName: fullName,
-        district: district,
-        contact: contact,
-
-        registered: true,
-        active: old.active !== false
-      },
-      {
-        merge: true
-      }
-    );
+    /*
+     * Keep local session information updated.
+     */
+    const updatedStudent = {
+      ...old,
+      fullName: fullName,
+      district: district,
+      contact: contact,
+      registered: true
+    };
 
     localStorage.setItem(
       "bf_login",
@@ -178,16 +174,12 @@ form.onsubmit = async (e) => {
 
     localStorage.setItem(
       "bf_student",
-      JSON.stringify({
-        ...old,
-        username: old.username || username,
-        fullName,
-        district,
-        contact,
-        registered: true
-      })
+      JSON.stringify(updatedStudent)
     );
 
+    /*
+     * Registration completed.
+     */
     location.href = "dashboard.html";
 
   } catch (err) {
@@ -208,16 +200,15 @@ form.onsubmit = async (e) => {
 
   } finally {
     button.disabled = false;
+
     button.innerHTML =
       'Complete Registration <span>→</span>';
   }
 };
 
 /*
- * IMPORTANT:
- * Wait for Firebase Authentication to finish
- * restoring the signed-in user before loading
- * the registration page.
+ * Wait for Firebase Authentication
+ * before loading the student record.
  */
 onAuthStateChanged(auth, (user) => {
   loadRegistration(user);
