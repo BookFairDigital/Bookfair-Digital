@@ -4,8 +4,16 @@ service cloud.firestore {
     function isAdmin() {
       return request.auth != null && request.auth.uid == "SU2kLL2ovwPXGyJ436s8PJpLJQZ2";
     }
+
     match /students/{uid} {
-      allow read, create, update: if isAdmin() || (request.auth != null && request.auth.uid == uid);
+      allow read: if isAdmin() || (request.auth != null && request.auth.uid == uid);
+      allow create: if isAdmin();
+      allow update: if isAdmin() || (
+        request.auth != null && request.auth.uid == uid &&
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          "fullName", "district", "contact", "registered"
+        ])
+      );
       allow delete: if isAdmin();
     }
   }

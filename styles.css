@@ -49,3 +49,14 @@ footer{background:#061426;color:#788ba5;text-align:center;padding:30px 20px;font
 @media(max-width:850px){.stat-grid{grid-template-columns:repeat(2,1fr)}.admin-heading,.card-head{align-items:start;flex-direction:column}.filters{width:100%;flex-wrap:wrap}.search{flex:1}.import-guide{grid-template-columns:1fr}}
 @media(max-width:520px){.admin-wrap{padding-top:35px}.admin-heading h1{font-size:34px}.admin-actions{width:100%}.admin-actions .admin-btn{flex:1}.stat{padding:17px}.stat strong{font-size:25px}}
 .admin-top button{margin-left:10px;border:1px solid #40516a;background:transparent;color:#dce8f8;padding:7px 11px;border-radius:7px;font-size:10px;cursor:pointer}
+/* Admin student details */
+.student-row{cursor:pointer}
+.student-row:hover{background:rgba(20,60,110,.04)}
+.password-note{font-size:12px;white-space:nowrap}
+.detail-box{max-width:760px}
+.detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:20px 0}
+.detail-grid>div{padding:14px;border:1px solid rgba(20,40,70,.12);border-radius:12px;background:#f8fafc}
+.detail-grid small{display:block;font-size:10px;font-weight:800;letter-spacing:.08em;opacity:.6;margin-bottom:5px}
+.detail-grid strong{display:block;font-size:15px;color:#17253a;word-break:break-word}
+.security-note{padding:14px 16px;border-radius:12px;background:#fff8e7;border:1px solid #f0d89a;font-size:13px;line-height:1.55}
+@media(max-width:900px){.table-wrap{overflow-x:auto}.detail-grid{grid-template-columns:1fr}}

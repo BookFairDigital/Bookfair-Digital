@@ -12,7 +12,7 @@
 <main class="admin-wrap">
 <section class="admin-heading">
 <div><div class="eyebrow">BOOKFAIR DIGITAL · ADMIN</div><h1>Account Management</h1><p>Create student credentials, assign a launch book, and monitor registration status.</p></div>
-<div class="admin-actions"><button class="admin-btn" id="downloadBtn">Export CSV</button><button class="admin-btn primary" id="newBtn">＋ New Account</button></div>
+<div class="admin-actions"><button class="admin-btn" id="downloadBtn">Export Excel</button><button class="admin-btn primary" id="newBtn">＋ New Account</button></div>
 </section>
 
 <section class="stat-grid">
@@ -25,21 +25,23 @@
 <section class="admin-card">
 <div class="card-head"><div><h2>Book Access</h2><p>Each account is assigned to one specific book.</p></div>
 <div class="filters"><select id="bookFilter"><option value="all">All Books</option><option value="01">Book 01 · A/L Accounting</option><option value="02">Book 02</option><option value="03">Book 03</option></select><input id="search" class="search" placeholder="Search username…"></div></div>
-<div class="table-wrap"><table><thead><tr><th>Username</th><th>Password</th><th>Assigned Book</th><th>Student</th><th>Registration</th><th>Account</th></tr></thead><tbody id="rows"></tbody></table><div id="empty" class="empty">No accounts created yet.</div></div>
+<div class="table-wrap"><table><thead><tr><th>Username</th><th>Password</th><th>Assigned Book</th><th>Full Name</th><th>District</th><th>Contact</th><th>Registration</th><th>Account</th></tr></thead><tbody id="rows"></tbody></table><div id="empty" class="empty">No accounts created yet.</div></div>
 </section>
 
 <section class="admin-card import-guide">
-<div><div class="eyebrow">BULK IMPORT</div><h2>Import prepared credentials</h2><p>CSV format: username,password,book. New Firebase student accounts are created automatically.</p></div>
-<div class="csv-code">username,password,book<br>ACC26-00001,Abc12345,01<br>ACC26-00002,Qwe98765,02</div>
-<div class="admin-actions"><button class="admin-btn" id="templateBtn">CSV Template</button><button class="admin-btn primary" id="importBtn">Import CSV</button></div>
+<div><div class="eyebrow">BULK IMPORT</div><h2>Import student accounts from Excel</h2><p>Use the official Excel template. Fill <b>Username</b> and <b>Assigned Book</b>; Full Name, District and Contact Number can be left blank until registration.</p></div>
+<div class="csv-code">Username · Assigned Book · Full Name · District · Contact Number<br>Book assignment: Book 01 / Book 02 / Book 03</div>
+<div class="admin-actions"><button class="admin-btn" id="templateBtn">Download Excel Template</button><button class="admin-btn primary" id="importBtn">Import Excel</button></div>
 </section>
 </main>
+
+<div class="modal" id="detailModal"><div class="modal-box detail-box"><button class="modal-x" id="detailClose">×</button><div class="eyebrow">STUDENT DETAILS</div><h2>Registration Information</h2><p>Click any student row to view the full registration data.</p><div id="detailContent"></div></div></div>
 
 <div class="modal" id="modal"><div class="modal-box"><button class="modal-x" id="close">×</button><div class="eyebrow">NEW STUDENT ACCOUNT</div><h2>Create Credentials</h2><p>Generate a unique username and password and assign the account to a book.</p>
 <label>Book</label><select id="newBook"><option value="01">Book 01 · A/L Accounting</option><option value="02">Book 02</option><option value="03">Book 03</option></select>
 <label>Username</label><input id="newUser" placeholder="ACC26-00001">
 <label>Password</label><div class="password-row"><input id="newPass" placeholder="Auto generate"><button type="button" class="admin-btn" id="gen">Generate</button></div>
 <div class="modal-actions"><button class="admin-btn" id="cancel">Cancel</button><button class="admin-btn primary" id="create">Create Account</button></div></div></div>
-<input type="file" id="fileInput" accept=".csv,text/csv" hidden><div class="toast" id="toast"></div>
-<script type="module" src="admin.js"></script><script type="module">import {auth,signOut} from "./firebase.js";document.getElementById("adminLogout").onclick=()=>signOut(auth).then(()=>location.href="admin-login.html");</script>
+<input type="file" id="fileInput" accept=".xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" hidden><div class="toast" id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script><script type="module" src="admin.js"></script><script type="module">import {auth,signOut} from "./firebase.js";document.getElementById("adminLogout").onclick=()=>signOut(auth).then(()=>location.href="admin-login.html");</script>
 </body></html>
