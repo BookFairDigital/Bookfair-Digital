@@ -1,4 +1,4 @@
-import {auth,db,doc,setDoc,getDocs,collection} from "./firebase.js";
+import {auth,db,doc,setDoc,getDocs,collection,deleteDoc} from "./firebase.js";
 import {onAuthStateChanged,signOut} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 import {initializeApp,getApps} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 import {firebaseConfig} from "./firebase-config.js";
@@ -56,13 +56,35 @@ async function initAdmin(){
       <td>${esc(x.contact||"—")}</td>
       <td><span class="pill ${x.registered?"green":"gold"}">${x.registered?"REGISTERED":"PENDING"}</span></td>
       <td><span class="pill ${x.active===false?"gold":"green"}">${x.active===false?"INACTIVE":"ACTIVE"}</span></td>
+      <td><button class="delete-student admin-btn danger" data-id="${esc(x.id)}" data-username="${esc(x.username||"")}">Delete</button></td>
     </tr>`).join("");
     empty.style.display=a.length?"none":"block";
     $("total").textContent=data.length;
     $("b1").textContent=data.filter(x=>x.book==="01").length;
     $("b2").textContent=data.filter(x=>x.book==="02").length;
     $("b3").textContent=data.filter(x=>x.book==="03").length;
-    document.querySelectorAll(".student-row").forEach(r=>r.onclick=()=>showDetails(r.dataset.id));
+    document.querySelectorAll(".student-row").forEach(r=>{
+      r.onclick=(e)=>{
+        if(e.target.closest(".delete-student")) return;
+        showDetails(r.dataset.id);
+      };
+    });
+    document.querySelectorAll(".delete-student").forEach(btn=>btn.onclick=async e=>{
+      e.stopPropagation();
+      const id=btn.dataset.id, username=btn.dataset.username;
+      if(!confirm(`Delete student account record for ${username}?\n\nThis will remove the student's Firestore access record. This action cannot be undone.`)) return;
+      btn.disabled=true; btn.textContent="Deleting…";
+      try{
+        await deleteDoc(doc(db,"students",id));
+        data=data.filter(x=>x.id!==id);
+        render();
+        msg(`Student ${username} deleted successfully.`);
+      }catch(err){
+        console.error(err);
+        btn.disabled=false; btn.textContent="Delete";
+        msg("Could not delete this student account.",true);
+      }
+    });
   }
 
   function showDetails(id){
