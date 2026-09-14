@@ -1,1 +1,26 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin Login · BookFair Digital</title><link rel="stylesheet" href="styles.css"></head><body class="auth"><div class="auth-bg"></div><form class="box" id="adminLogin"><a class="auth-brand" href="index.html"><b>B</b><span>BookFair Digital</span></a><div class="eyebrow">RESTRICTED ACCESS</div><h1>Admin Login</h1><p>Sign in with the administrator account to manage student access and book assignments.</p><label>Email</label><input id="adminEmail" type="email" required autocomplete="username" placeholder="admin@example.com"><label>Password</label><input id="adminPassword" type="password" required autocomplete="current-password" placeholder="Enter admin password"><button class="btn" type="submit">Sign in to Admin <span>→</span></button><div id="adminMsg"></div><a class="back-link" href="index.html">← Back to BookFair Digital</a></form><script type="module" src="admin-login.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin Login · BookFair Digital</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="auth">
+  <div class="auth-bg"></div>
+  <form class="box" id="adminLogin">
+    <a class="auth-brand" href="index.html"><b>B</b><span>BookFair Digital</span></a>
+    <div class="eyebrow">RESTRICTED ACCESS</div>
+    <h1>Admin Login</h1>
+    <p>Sign in with your administrator username and password.</p>
+    <label for="adminUsername">Username</label>
+    <input id="adminUsername" type="text" required autocomplete="username" placeholder="Enter admin username">
+    <label for="adminPassword">Password</label>
+    <input id="adminPassword" type="password" required autocomplete="current-password" placeholder="Enter admin password">
+    <button class="btn" type="submit">Sign in to Admin <span>→</span></button>
+    <div id="adminMsg"></div>
+    <a class="back-link" href="index.html">← Back to BookFair Digital</a>
+  </form>
+  <script type="module" src="admin-login.js"></script>
+</body>
+</html>
