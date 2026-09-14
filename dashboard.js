@@ -1,0 +1,2 @@
+import {auth,db,doc,getDoc,onAuthStateChanged} from "./firebase.js";
+onAuthStateChanged(auth,async u=>{if(!u)return location.href="login.html";let s=await getDoc(doc(db,"students",u.uid));if(!s.exists()||s.data().active===false)return location.href="login.html";document.querySelectorAll("[data-student-name]").forEach(x=>x.textContent=s.data().fullName||s.data().username)});

@@ -1,0 +1,4 @@
+import {auth,db,signInWithEmailAndPassword,doc,getDoc} from "./firebase.js";
+const form=document.getElementById("login"),m=document.getElementById("m");
+const email=u=>u.toLowerCase()+"@bookfairdigital.local";
+form.onsubmit=async e=>{e.preventDefault();let u=document.getElementById("u").value.trim(),p=document.getElementById("p").value;m.textContent="Signing in…";try{let c=await signInWithEmailAndPassword(auth,email(u),p);localStorage.setItem("bf_login",u);let s=await getDoc(doc(db,"students",c.user.uid));location.href=s.exists()&&s.data().registered?"dashboard.html":"register.html"}catch(e){m.textContent="Incorrect username or password, or account is not configured.";m.className="error-msg"}};

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin · BookFair Digital</title><link rel="stylesheet" href="styles.css">
+</head>
+<body class="admin-page">
+<header class="site-header">
+<a class="brand" href="index.html"><b>B</b><span>BookFair Digital</span></a>
+<div class="admin-top"><span>ADMIN CONTROL CENTER</span><a href="index.html">View Site ↗</a></div>
+</header>
+<main class="admin-wrap">
+<section class="admin-heading">
+<div><div class="eyebrow">BOOKFAIR DIGITAL · ADMIN</div><h1>Account Management</h1><p>Create and prepare separate student credentials for each launch book.</p></div>
+<div class="admin-actions"><button class="admin-btn" id="downloadBtn">Export CSV</button><button class="admin-btn primary" id="newBtn">＋ New Account</button></div>
+</section>
+
+<section class="stat-grid">
+<div class="stat"><span>Total Accounts</span><strong id="total">0</strong></div>
+<div class="stat"><span>Book 01</span><strong id="b1">0</strong></div>
+<div class="stat"><span>Book 02</span><strong id="b2">0</strong></div>
+<div class="stat"><span>Book 03</span><strong id="b3">0</strong></div>
+</section>
+
+<section class="admin-card">
+<div class="card-head"><div><h2>Book Access</h2><p>Each account is assigned to one specific book.</p></div>
+<div class="filters"><select id="bookFilter"><option value="all">All Books</option><option value="01">Book 01 · A/L Accounting</option><option value="02">Book 02</option><option value="03">Book 03</option></select><input id="search" class="search" placeholder="Search username…"></div></div>
+<div class="table-wrap"><table><thead><tr><th>Username</th><th>Password</th><th>Assigned Book</th><th>Student</th><th>Status</th><th></th></tr></thead><tbody id="rows"></tbody></table><div id="empty" class="empty">No accounts created yet.</div></div>
+</section>
+
+<section class="admin-card import-guide">
+<div><div class="eyebrow">BULK IMPORT</div><h2>Import prepared credentials</h2><p>CSV format: username,password,book. Book values should be 01, 02 or 03.</p></div>
+<div class="csv-code">username,password,book<br>ACC26-00001,Abc12345,01<br>ACC26-00002,Qwe98765,02</div>
+<div class="admin-actions"><button class="admin-btn" id="templateBtn">CSV Template</button><button class="admin-btn primary" id="importBtn">Import CSV</button></div>
+</section>
+</main>
+
+<div class="modal" id="modal"><div class="modal-box"><button class="modal-x" id="close">×</button><div class="eyebrow">NEW STUDENT ACCOUNT</div><h2>Create Credentials</h2><p>Generate a unique username and password and assign the account to a book.</p>
+<label>Book</label><select id="newBook"><option value="01">Book 01 · A/L Accounting</option><option value="02">Book 02</option><option value="03">Book 03</option></select>
+<label>Username</label><input id="newUser" placeholder="ACC26-00001">
+<label>Password</label><div class="password-row"><input id="newPass" placeholder="Auto generate"><button type="button" class="admin-btn" id="gen">Generate</button></div>
+<div class="modal-actions"><button class="admin-btn" id="cancel">Cancel</button><button class="admin-btn primary" id="create">Create Account</button></div></div></div>
+<input type="file" id="fileInput" accept=".csv,text/csv" hidden><div class="toast" id="toast"></div>
+<script src="admin.js"></script>
+</body></html>

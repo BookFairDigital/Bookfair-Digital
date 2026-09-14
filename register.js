@@ -1,0 +1,3 @@
+import {auth,db,doc,getDoc,setDoc} from "./firebase.js";
+const u=localStorage.getItem("bf_login")||"";document.getElementById("ru").value=u;
+document.getElementById("reg").onsubmit=async e=>{e.preventDefault();let m=document.getElementById("rm"),user=auth.currentUser;if(!user)return location.href="login.html";try{let r=doc(db,"students",user.uid),old=await getDoc(r),d=old.exists()?old.data():{};await setDoc(r,{username:u,fullName:document.getElementById("name").value.trim(),district:document.getElementById("district").value,contact:document.getElementById("phone").value.trim(),registered:true,active:d.active!==false,book:d.book||"01"},{merge:true});location.href="dashboard.html"}catch(e){m.textContent="Could not save registration.";m.className="error-msg"}};

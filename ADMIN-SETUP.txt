@@ -1,0 +1,12 @@
+ADMIN PANEL PLAN
+
+This v6 is the UI/prototype for account preparation before Firestore is created.
+It supports separate accounts for Book 01, Book 02 and Book 03, CSV import/export,
+credential generation, search/filtering and registration status.
+
+For production:
+- Firebase Authentication must contain the actual student sign-in accounts.
+- Firestore should store the student profile and book assignment.
+- Bulk creation of Firebase Auth users/passwords must happen in a trusted backend
+  using Firebase Admin SDK / Cloud Functions, not in browser JavaScript.
+- Never put a service-account private key into GitHub Pages.
