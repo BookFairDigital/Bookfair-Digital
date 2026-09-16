@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="si">
+<html lang="en">
 
 <head>
 
@@ -11,7 +11,7 @@
   >
 
   <title>
-    BookFair Digital · Digital Book Collection
+    BookFair Digital
   </title>
 
   <meta
@@ -28,52 +28,76 @@
   <style>
 
     /* ==================================================
-       RESET
+       FULL PAGE RESET
+       Prevent old styles.css from creating narrow layout
     ================================================== */
 
-    * {
-      box-sizing: border-box;
+    html,
+    body {
+      width: 100% !important;
+      min-width: 100% !important;
+
+      margin: 0 !important;
+      padding: 0 !important;
+
+      overflow-x: hidden !important;
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
 
     body {
-      margin: 0;
-      min-height: 100vh;
-
-      font-family:
-        Inter,
-        system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        sans-serif;
-
-      color: #ffffff;
+      min-height: 100vh !important;
 
       background:
-        radial-gradient(
-          circle at 78% 20%,
-          rgba(249,182,39,.11),
-          transparent 28%
-        ),
-
-        radial-gradient(
-          circle at 8% 65%,
-          rgba(42,78,157,.24),
-          transparent 34%
-        ),
-
         linear-gradient(
           135deg,
-          #0d1d48 0%,
-          #122456 45%,
-          #0a183d 100%
-        );
+          #081632 0%,
+          #102454 48%,
+          #0a193f 100%
+        ) !important;
 
-      overflow-x: hidden;
+      color: #ffffff !important;
+    }
+
+
+    main {
+      width: 100% !important;
+      max-width: none !important;
+
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+
+    /* ==================================================
+       VARIABLES
+    ================================================== */
+
+    :root {
+
+      --navy:
+        #102454;
+
+      --deep-navy:
+        #081632;
+
+      --blue:
+        #193777;
+
+      --gold:
+        #f9b627;
+
+      --gold-light:
+        #ffd76a;
+
+      --cream:
+        #f2d18b;
+
+      --white:
+        #ffffff;
+
+      --muted:
+        rgba(255,255,255,.58);
+
     }
 
 
@@ -81,92 +105,64 @@
        BACKGROUND
     ================================================== */
 
-    .home-bg {
+    .bf-page-bg {
+
       position: fixed;
 
       inset: 0;
 
-      z-index: -5;
-
-      overflow: hidden;
+      z-index: -20;
 
       pointer-events: none;
+
+      background:
+
+        radial-gradient(
+          circle at 78% 22%,
+          rgba(249,182,39,.10),
+          transparent 28%
+        ),
+
+        radial-gradient(
+          circle at 10% 70%,
+          rgba(43,82,166,.22),
+          transparent 35%
+        ),
+
+        linear-gradient(
+          135deg,
+          #081632,
+          #102454 50%,
+          #0a193f
+        );
     }
 
 
-    .home-bg::before,
-    .home-bg::after {
+    .bf-page-bg::before {
 
       content: "";
 
       position: absolute;
 
+      width: 650px;
+      height: 650px;
+
+      right: -260px;
+      top: 70px;
+
       border-radius: 50%;
 
-      filter: blur(100px);
+      border:
+        1px solid
+        rgba(255,255,255,.035);
 
-      pointer-events: none;
-    }
+      box-shadow:
 
+        0 0 0 80px
+        rgba(255,255,255,.014),
 
-    .home-bg::before {
-
-      width: 520px;
-      height: 520px;
-
-      left: -220px;
-      top: 100px;
-
-      background:
-        rgba(38,76,162,.27);
-
-      animation:
-        floatOrb 14s
-        ease-in-out
-        infinite
-        alternate;
-    }
-
-
-    .home-bg::after {
-
-      width: 440px;
-      height: 440px;
-
-      right: -190px;
-      top: 430px;
-
-      background:
-        rgba(249,182,39,.10);
-
-      animation:
-        floatOrb 12s
-        ease-in-out
-        infinite
-        alternate-reverse;
-    }
-
-
-    @keyframes floatOrb {
-
-      from {
-        transform:
-          translate3d(
-            0,
-            0,
-            0
-          );
-      }
-
-      to {
-        transform:
-          translate3d(
-            0,
-            -40px,
-            0
-          );
-      }
-
+        0 0 0 160px
+        rgba(255,255,255,.008);
     }
 
 
@@ -174,27 +170,29 @@
        NAVIGATION
     ================================================== */
 
-    .home-nav {
+    .bf-nav {
 
       position: sticky;
 
       top: 0;
 
-      z-index: 100;
+      z-index: 1000;
+
+      width: 100% !important;
 
       border-bottom:
         1px solid
-        rgba(255,255,255,.09);
+        rgba(255,255,255,.08);
 
       background:
-        rgba(14,29,72,.90);
+        rgba(8,22,50,.90);
 
       backdrop-filter:
         blur(18px);
     }
 
 
-    .nav-inner {
+    .bf-nav-inner {
 
       width:
         min(
@@ -202,21 +200,19 @@
           calc(100% - 40px)
         );
 
-      min-height: 76px;
+      min-height: 72px;
 
-      margin: 0 auto;
+      margin: auto;
 
       display: flex;
 
       align-items: center;
 
       justify-content: space-between;
-
-      gap: 25px;
     }
 
 
-    .brand {
+    .bf-brand {
 
       display: flex;
 
@@ -224,15 +220,13 @@
 
       gap: 11px;
 
-      color: #ffffff;
+      color: #ffffff !important;
 
-      text-decoration: none;
-
-      font-weight: 800;
+      text-decoration: none !important;
     }
 
 
-    .brand-mark {
+    .bf-brand-mark {
 
       width: 40px;
       height: 40px;
@@ -241,36 +235,39 @@
 
       place-items: center;
 
-      border-radius: 12px;
+      border-radius: 11px;
+
+      color:
+        #102454;
 
       background:
         linear-gradient(
           145deg,
-          #ffd76a,
-          #d99a1b
+          #ffd86c,
+          #d99b1c
         );
 
-      color:
-        #122456;
+      font-size: 17px;
 
-      font-size: 18px;
+      font-weight: 950;
 
       box-shadow:
-        0 9px 28px
-        rgba(249,182,39,.22);
+        0 8px 25px
+        rgba(249,182,39,.18);
     }
 
 
-    .brand-text {
+    .bf-brand-name {
+
+      color: #ffffff;
 
       font-size: 14px;
 
-      letter-spacing:
-        -.02em;
+      font-weight: 850;
     }
 
 
-    .nav-links {
+    .bf-nav-links {
 
       display: flex;
 
@@ -280,41 +277,41 @@
     }
 
 
-    .nav-links a {
+    .bf-nav-links a {
 
       color:
-        rgba(255,255,255,.70);
+        rgba(255,255,255,.70) !important;
 
-      text-decoration: none;
-
-      font-size: 12px;
-
-      font-weight: 700;
+      text-decoration: none !important;
 
       padding:
-        10px 13px;
+        9px 13px;
 
       border-radius: 9px;
 
+      font-size: 11px;
+
+      font-weight: 750;
+
       transition:
-        color .2s ease,
-        background .2s ease;
+        .2s ease;
     }
 
 
-    .nav-links a:hover {
-
-      color: #ffffff;
-
-      background:
-        rgba(255,255,255,.07);
-    }
-
-
-    .nav-login {
+    .bf-nav-links a:hover {
 
       color:
-        #122456 !important;
+        #ffffff !important;
+
+      background:
+        rgba(255,255,255,.06);
+    }
+
+
+    .bf-nav-login {
+
+      color:
+        #102454 !important;
 
       background:
         linear-gradient(
@@ -323,26 +320,7 @@
           #e2a722
         );
 
-      font-weight:
-        900 !important;
-
-      box-shadow:
-        0 8px 24px
-        rgba(249,182,39,.14);
-    }
-
-
-    .nav-login:hover {
-
-      color:
-        #122456 !important;
-
-      background:
-        linear-gradient(
-          135deg,
-          #ffdb7c,
-          #edb735
-        ) !important;
+      font-weight: 900 !important;
     }
 
 
@@ -350,7 +328,7 @@
        HERO
     ================================================== */
 
-    .hero {
+    .bf-hero {
 
       position: relative;
 
@@ -358,73 +336,50 @@
         min(
           1180px,
           calc(100% - 40px)
-        );
+        ) !important;
 
-      margin: 0 auto;
+      max-width:
+        1180px !important;
 
       min-height:
-        calc(100vh - 76px);
+        calc(100vh - 72px);
 
-      display: grid;
+      margin:
+        0 auto !important;
+
+      padding:
+        45px 0 75px !important;
+
+      display: grid !important;
 
       grid-template-columns:
-        minmax(0,1.05fr)
-        minmax(340px,.95fr);
+        minmax(0, 1fr)
+        minmax(400px, .85fr);
 
       align-items: center;
 
-      gap: 60px;
+      gap: 55px;
 
-      padding:
-        65px 0 90px;
-    }
-
-
-    /* Decorative rings */
-
-    .hero::before {
-
-      content: "";
-
-      position: absolute;
-
-      width: 620px;
-      height: 620px;
-
-      right: -270px;
-      top: -150px;
-
-      border-radius: 50%;
-
-      border:
-        1px solid
-        rgba(255,255,255,.045);
-
-      box-shadow:
-
-        0 0 0 75px
-          rgba(255,255,255,.018),
-
-        0 0 0 150px
-          rgba(255,255,255,.012);
-
-      pointer-events: none;
+      background:
+        transparent !important;
     }
 
 
     /* ==================================================
-       HERO COPY
+       HERO TEXT
     ================================================== */
 
-    .hero-copy {
+    .bf-hero-copy {
 
       position: relative;
 
-      z-index: 2;
+      z-index: 5;
+
+      padding-left: 5px;
     }
 
 
-    .eyebrow {
+    .bf-eyebrow {
 
       display: inline-flex;
 
@@ -437,7 +392,7 @@
 
       border:
         1px solid
-        rgba(249,182,39,.25);
+        rgba(249,182,39,.28);
 
       border-radius: 999px;
 
@@ -445,18 +400,18 @@
         #f9b627;
 
       background:
-        rgba(249,182,39,.07);
+        rgba(249,182,39,.055);
 
-      font-size: 9px;
-
-      letter-spacing:
-        .15em;
+      font-size: 8px;
 
       font-weight: 900;
+
+      letter-spacing:
+        .16em;
     }
 
 
-    .eyebrow::before {
+    .bf-eyebrow::before {
 
       content: "";
 
@@ -474,81 +429,85 @@
     }
 
 
-    .hero h1 {
+    .bf-hero h1 {
 
       margin:
-        22px 0 18px;
+        20px 0 18px !important;
 
-      max-width: 700px;
+      max-width: 620px;
+
+      color:
+        #ffffff !important;
 
       font-size:
         clamp(
-          44px,
-          6vw,
-          76px
-        );
+          45px,
+          5.2vw,
+          72px
+        ) !important;
 
       line-height:
-        .98;
+        1.02 !important;
 
       letter-spacing:
-        -.055em;
+        -.055em !important;
     }
 
 
-    .hero h1 span {
-
-      display: block;
-
-      background:
-        linear-gradient(
-          100deg,
-          #ffffff 0%,
-          #ffffff 32%,
-          #f8c653 76%,
-          #f2d18b 100%
-        );
-
-      -webkit-background-clip:
-        text;
-
-      background-clip:
-        text;
+    .bf-hero h1 .gold {
 
       color:
-        transparent;
+        #f9b627 !important;
     }
 
 
-    .hero-description {
+    .bf-description {
 
-      max-width: 610px;
+      max-width: 550px;
 
       margin: 0;
 
       color:
-        rgba(255,255,255,.62);
+        rgba(255,255,255,.60);
 
-      font-size: 15px;
+      font-size: 14px;
 
-      line-height:
-        1.75;
+      line-height: 1.75;
     }
 
 
-    .hero-actions {
+    .bf-gold-line {
+
+      width: 62px;
+
+      height: 3px;
+
+      margin-top: 23px;
+
+      border-radius: 99px;
+
+      background:
+        linear-gradient(
+          90deg,
+          #ffd45f,
+          #e2a722
+        );
+    }
+
+
+    .bf-actions {
 
       display: flex;
 
       flex-wrap: wrap;
 
-      gap: 11px;
+      gap: 10px;
 
-      margin-top: 30px;
+      margin-top: 26px;
     }
 
 
-    .hero-btn {
+    .bf-btn {
 
       display: inline-flex;
 
@@ -556,18 +515,18 @@
 
       justify-content: center;
 
-      gap: 10px;
+      gap: 8px;
 
-      min-height: 48px;
+      min-height: 46px;
 
       padding:
-        0 20px;
+        0 18px;
 
-      border-radius: 11px;
+      border-radius: 10px;
 
-      text-decoration: none;
+      text-decoration: none !important;
 
-      font-size: 12px;
+      font-size: 10px;
 
       font-weight: 900;
 
@@ -577,17 +536,17 @@
     }
 
 
-    .hero-btn:hover {
+    .bf-btn:hover {
 
       transform:
         translateY(-2px);
     }
 
 
-    .hero-btn.primary {
+    .bf-btn-primary {
 
       color:
-        #122456;
+        #102454 !important;
 
       background:
         linear-gradient(
@@ -597,77 +556,96 @@
         );
 
       box-shadow:
-        0 14px 35px
-        rgba(249,182,39,.18);
+        0 12px 30px
+        rgba(249,182,39,.16);
     }
 
 
-    .hero-btn.secondary {
+    .bf-btn-secondary {
 
       color:
-        #ffffff;
+        #ffffff !important;
 
       border:
         1px solid
         rgba(255,255,255,.13);
 
       background:
-        rgba(255,255,255,.055);
-    }
-
-
-    .hero-btn.secondary:hover {
-
-      background:
-        rgba(255,255,255,.09);
+        rgba(255,255,255,.045);
     }
 
 
     /* ==================================================
-       HERO BOOK DISPLAY
+       AUTOMATIC BOOK CAROUSEL
     ================================================== */
 
-    .hero-books {
+    .bf-carousel {
 
       position: relative;
 
-      min-height: 560px;
+      width: 100%;
+
+      min-height: 570px;
 
       display: flex;
 
       align-items: center;
 
       justify-content: center;
+
+      overflow: visible;
     }
 
 
-    .hero-glow {
+    .bf-carousel-glow {
 
       position: absolute;
 
-      width: 430px;
-      height: 430px;
+      width: 440px;
+      height: 440px;
 
       border-radius: 50%;
 
       background:
         radial-gradient(
           circle,
-          rgba(249,182,39,.15),
-          rgba(34,66,142,.08) 45%,
+          rgba(249,182,39,.17),
+          rgba(38,76,157,.08) 48%,
           transparent 70%
         );
+
+      filter:
+        blur(3px);
     }
 
 
-    .hero-cover {
+    .bf-carousel-ring {
+
+      position: absolute;
+
+      width: 510px;
+      height: 510px;
+
+      border-radius: 50%;
+
+      border:
+        1px solid
+        rgba(255,255,255,.045);
+
+      box-shadow:
+        0 0 0 70px
+        rgba(255,255,255,.012);
+    }
+
+
+    .bf-slide {
 
       position: absolute;
 
       width:
         min(
-          250px,
-          48vw
+          285px,
+          46vw
         );
 
       aspect-ratio:
@@ -675,22 +653,35 @@
 
       overflow: hidden;
 
-      border-radius: 9px;
+      border-radius: 8px;
 
       border:
         1px solid
-        rgba(255,255,255,.18);
+        rgba(255,255,255,.20);
+
+      background:
+        #102454;
 
       box-shadow:
-        0 35px 80px
-        rgba(0,0,0,.44);
+        0 35px 75px
+        rgba(0,0,0,.48);
+
+      opacity: 0;
+
+      transform:
+        translateX(120px)
+        scale(.90)
+        rotate(5deg);
 
       transition:
-        transform .45s ease;
+        opacity .65s ease,
+        transform .85s cubic-bezier(.22,.61,.36,1);
+
+      pointer-events: none;
     }
 
 
-    .hero-cover img {
+    .bf-slide img {
 
       width: 100%;
       height: 100%;
@@ -701,95 +692,152 @@
     }
 
 
-    .hero-cover.back {
+    /* Active slide */
+
+    .bf-slide.active {
+
+      opacity: 1;
 
       transform:
-        translate(
-          -95px,
-          20px
-        )
-        rotate(-9deg)
-        scale(.87);
+        translateX(35px)
+        scale(1)
+        rotate(2deg);
 
-      opacity:
-        .88;
-
-      filter:
-        saturate(.92);
+      z-index: 5;
     }
 
 
-    .hero-cover.front {
+    /* Previous slide */
+
+    .bf-slide.previous {
+
+      opacity: .18;
 
       transform:
-        translate(
-          55px,
-          -5px
-        )
-        rotate(5deg);
+        translateX(-150px)
+        scale(.82)
+        rotate(-8deg);
 
       z-index: 2;
     }
 
 
-    .hero-books:hover
-    .hero-cover.front {
+    /* ==================================================
+       SLIDE LABEL
+    ================================================== */
 
-      transform:
-        translate(
-          65px,
-          -13px
-        )
-        rotate(3deg);
-    }
-
-
-    .hero-books:hover
-    .hero-cover.back {
-
-      transform:
-        translate(
-          -110px,
-          18px
-        )
-        rotate(-11deg)
-        scale(.87);
-    }
-
-
-    .hero-book-label {
+    .bf-slide-info {
 
       position: absolute;
 
-      right: 5px;
-      bottom: 18px;
+      right: 0;
+
+      bottom: 58px;
+
+      z-index: 20;
+
+      min-width: 155px;
 
       padding:
-        10px 13px;
+        11px 13px;
 
       border:
         1px solid
-        rgba(249,182,39,.20);
+        rgba(249,182,39,.22);
 
       border-radius: 10px;
 
       background:
-        rgba(12,27,67,.90);
+        rgba(9,25,61,.90);
 
       backdrop-filter:
-        blur(10px);
+        blur(12px);
+
+      box-shadow:
+        0 15px 35px
+        rgba(0,0,0,.25);
+    }
+
+
+    .bf-slide-number {
 
       color:
-        #f2d18b;
+        #f9b627;
 
-      font-size: 9px;
-
-      letter-spacing:
-        .08em;
+      font-size: 8px;
 
       font-weight: 900;
 
-      z-index: 5;
+      letter-spacing:
+        .12em;
+    }
+
+
+    .bf-slide-title {
+
+      margin-top: 4px;
+
+      color:
+        #ffffff;
+
+      font-size: 10px;
+
+      font-weight: 800;
+    }
+
+
+    /* ==================================================
+       CAROUSEL DOTS
+    ================================================== */
+
+    .bf-carousel-dots {
+
+      position: absolute;
+
+      bottom: 25px;
+
+      left: 50%;
+
+      transform:
+        translateX(-50%);
+
+      z-index: 30;
+
+      display: flex;
+
+      gap: 6px;
+    }
+
+
+    .bf-dot {
+
+      width: 7px;
+      height: 7px;
+
+      padding: 0;
+
+      border: 0;
+
+      border-radius: 50%;
+
+      background:
+        rgba(255,255,255,.22);
+
+      cursor: pointer;
+
+      transition:
+        .3s ease;
+    }
+
+
+    .bf-dot.active {
+
+      width: 23px;
+
+      border-radius: 99px;
+
+      background:
+        #f9b627;
     }
 
 
@@ -797,22 +845,29 @@
        COLLECTION
     ================================================== */
 
-    .collection {
+    .bf-collection {
 
       width:
         min(
           1180px,
           calc(100% - 40px)
-        );
+        ) !important;
 
-      margin: 0 auto;
+      max-width:
+        1180px !important;
+
+      margin:
+        0 auto !important;
 
       padding:
-        80px 0 110px;
+        85px 0 105px !important;
+
+      background:
+        transparent !important;
     }
 
 
-    .section-top {
+    .bf-section-head {
 
       display: flex;
 
@@ -822,65 +877,69 @@
 
       gap: 30px;
 
-      margin-bottom: 35px;
+      margin-bottom: 30px;
     }
 
 
-    .section-label {
+    .bf-section-label {
+
+      margin-bottom: 8px;
 
       color:
         #f9b627;
 
-      font-size: 9px;
-
-      letter-spacing:
-        .16em;
+      font-size: 8px;
 
       font-weight: 900;
 
-      margin-bottom: 9px;
+      letter-spacing:
+        .17em;
     }
 
 
-    .section-top h2 {
+    .bf-section-head h2 {
 
       margin: 0;
+
+      color:
+        #ffffff !important;
 
       font-size:
         clamp(
           30px,
           4vw,
-          46px
-        );
+          45px
+        ) !important;
+
+      line-height: 1;
 
       letter-spacing:
         -.045em;
     }
 
 
-    .section-top p {
+    .bf-section-head p {
 
-      max-width: 400px;
+      max-width: 390px;
 
       margin: 0;
 
       color:
-        rgba(255,255,255,.48);
+        rgba(255,255,255,.46);
 
-      font-size: 12px;
+      font-size: 11px;
 
-      line-height:
-        1.7;
+      line-height: 1.7;
 
       text-align: right;
     }
 
 
     /* ==================================================
-       BOOK GRID
+       BOOK CARDS
     ================================================== */
 
-    .book-grid {
+    .bf-book-grid {
 
       display: grid;
 
@@ -890,11 +949,11 @@
           minmax(0,1fr)
         );
 
-      gap: 20px;
+      gap: 18px;
     }
 
 
-    .book-card {
+    .bf-book-card {
 
       position: relative;
 
@@ -902,19 +961,19 @@
 
       border:
         1px solid
-        rgba(255,255,255,.11);
+        rgba(255,255,255,.10);
 
-      border-radius: 20px;
+      border-radius: 18px;
 
       background:
         linear-gradient(
           145deg,
-          rgba(29,55,119,.80),
-          rgba(11,29,69,.90)
+          rgba(29,57,124,.82),
+          rgba(9,27,66,.94)
         );
 
       box-shadow:
-        0 25px 65px
+        0 25px 60px
         rgba(0,0,0,.22);
 
       transition:
@@ -924,30 +983,62 @@
     }
 
 
-    .book-card:hover {
+    .bf-book-card:hover {
 
       transform:
         translateY(-7px);
 
       border-color:
-        rgba(249,182,39,.35);
+        rgba(249,182,39,.30);
 
       box-shadow:
-        0 35px 80px
+        0 32px 70px
         rgba(0,0,0,.30);
     }
 
 
-    .book-cover {
+    .bf-card-number {
 
-      position: relative;
+      position: absolute;
 
-      padding:
-        17px 17px 0;
+      top: 27px;
+      right: 27px;
+
+      z-index: 5;
+
+      width: 34px;
+      height: 34px;
+
+      display: grid;
+
+      place-items: center;
+
+      border-radius: 9px;
+
+      background:
+        rgba(8,22,51,.84);
+
+      border:
+        1px solid
+        rgba(249,182,39,.24);
+
+      color:
+        #ffffff;
+
+      font-size: 8px;
+
+      font-weight: 900;
     }
 
 
-    .book-cover img {
+    .bf-card-image {
+
+      padding:
+        15px 15px 0;
+    }
+
+
+    .bf-card-image img {
 
       width: 100%;
 
@@ -958,119 +1049,65 @@
 
       object-fit: cover;
 
-      border-radius: 10px;
+      border-radius: 9px;
 
       box-shadow:
-        0 20px 45px
+        0 18px 38px
         rgba(0,0,0,.30);
-
-      transition:
-        transform .35s ease;
     }
 
 
-    .book-card:hover
-    .book-cover img {
-
-      transform:
-        scale(1.012);
-    }
-
-
-    .book-info {
+    .bf-card-body {
 
       padding:
-        21px 21px 25px;
+        20px 19px 23px;
     }
 
 
-    .book-status {
+    .bf-available {
 
       display: block;
 
+      margin-bottom: 10px;
+
       color:
-        #58d899;
+        #61dca0;
 
-      font-size: 9px;
-
-      letter-spacing:
-        .10em;
+      font-size: 8px;
 
       font-weight: 900;
 
-      margin-bottom: 11px;
+      letter-spacing:
+        .10em;
     }
 
 
-    .book-info h3 {
+    .bf-card-body h3 {
 
       margin: 0;
 
       color:
-        #ffffff;
+        #ffffff !important;
 
-      font-size: 18px;
+      font-size: 17px !important;
 
       line-height:
-        1.45;
+        1.45 !important;
 
       letter-spacing:
-        -.025em;
+        -.02em;
     }
 
 
-    .book-info p {
+    .bf-card-body p {
 
       margin:
         7px 0 0;
 
       color:
-        rgba(255,255,255,.43);
+        rgba(255,255,255,.40);
 
-      font-size: 11px;
-
-      line-height:
-        1.6;
-    }
-
-
-    .book-number {
-
-      position: absolute;
-
-      top: 29px;
-      right: 29px;
-
-      z-index: 5;
-
-      width: 35px;
-      height: 35px;
-
-      display: grid;
-
-      place-items: center;
-
-      border-radius: 10px;
-
-      color:
-        #ffffff;
-
-      background:
-        rgba(10,27,67,.82);
-
-      border:
-        1px solid
-        rgba(249,182,39,.28);
-
-      backdrop-filter:
-        blur(8px);
-
-      font-size: 9px;
-
-      font-weight: 900;
-
-      letter-spacing:
-        .08em;
+      font-size: 10px;
     }
 
 
@@ -1078,137 +1115,107 @@
        LOGIN CTA
     ================================================== */
 
-    .login-section {
+    .bf-login {
 
       width:
         min(
           1180px,
           calc(100% - 40px)
-        );
+        ) !important;
 
-      margin: 0 auto;
+      max-width:
+        1180px !important;
+
+      margin:
+        0 auto !important;
 
       padding:
-        0 0 100px;
+        0 0 100px !important;
     }
 
 
-    .login-box {
+    .bf-login-box {
 
       position: relative;
 
       overflow: hidden;
 
       padding:
-        48px;
+        43px;
 
       border:
         1px solid
-        rgba(249,182,39,.18);
+        rgba(249,182,39,.17);
 
-      border-radius: 24px;
+      border-radius: 20px;
 
       background:
         linear-gradient(
           135deg,
-          rgba(29,55,119,.75),
-          rgba(15,34,78,.82)
+          rgba(30,59,129,.76),
+          rgba(11,29,68,.90)
         );
 
       box-shadow:
         0 25px 70px
-        rgba(0,0,0,.20);
+        rgba(0,0,0,.22);
     }
 
 
-    .login-box::after {
-
-      content: "";
-
-      position: absolute;
-
-      width: 320px;
-      height: 320px;
-
-      right: -140px;
-      top: -170px;
-
-      border-radius: 50%;
-
-      background:
-        rgba(249,182,39,.08);
-
-      filter:
-        blur(25px);
-
-      pointer-events: none;
-    }
-
-
-    .login-box h2 {
-
-      position: relative;
-
-      z-index: 1;
+    .bf-login-box h2 {
 
       margin:
-        0 0 10px;
+        0 0 8px;
+
+      color:
+        #ffffff !important;
 
       font-size:
         clamp(
           25px,
           3vw,
-          36px
-        );
+          35px
+        ) !important;
 
       letter-spacing:
-        -.035em;
+        -.04em;
     }
 
 
-    .login-box p {
+    .bf-login-box p {
 
-      position: relative;
-
-      z-index: 1;
+      max-width: 570px;
 
       margin: 0;
 
-      max-width: 580px;
-
       color:
-        rgba(255,255,255,.50);
+        rgba(255,255,255,.47);
 
-      font-size: 12px;
+      font-size: 11px;
 
-      line-height:
-        1.7;
+      line-height: 1.7;
     }
 
 
-    .login-box a {
-
-      position: relative;
-
-      z-index: 1;
+    .bf-login-box a {
 
       display: inline-flex;
 
-      margin-top: 23px;
-
       align-items: center;
 
-      gap: 9px;
+      gap: 8px;
 
-      min-height: 45px;
+      margin-top: 20px;
+
+      min-height: 43px;
 
       padding:
-        0 18px;
+        0 17px;
 
-      border-radius: 10px;
+      border-radius: 9px;
 
       color:
-        #122456;
+        #102454 !important;
 
       background:
         linear-gradient(
@@ -1217,15 +1224,11 @@
           #e2a722
         );
 
-      text-decoration: none;
+      text-decoration: none !important;
 
-      font-size: 11px;
+      font-size: 10px;
 
       font-weight: 900;
-
-      box-shadow:
-        0 10px 28px
-        rgba(249,182,39,.14);
     }
 
 
@@ -1233,26 +1236,23 @@
        FOOTER
     ================================================== */
 
-    footer {
+    .bf-footer {
+
+      width: 100% !important;
 
       border-top:
         1px solid
-        rgba(255,255,255,.08);
-
-      padding:
-        30px 0 35px;
-
-      color:
-        rgba(255,255,255,.32);
-
-      font-size: 10px;
+        rgba(255,255,255,.07);
 
       background:
-        rgba(7,18,46,.48);
+        rgba(5,16,39,.48);
+
+      padding:
+        28px 0 32px;
     }
 
 
-    .footer-inner {
+    .bf-footer-inner {
 
       width:
         min(
@@ -1260,65 +1260,82 @@
           calc(100% - 40px)
         );
 
-      margin: 0 auto;
+      margin: auto;
 
       display: flex;
 
-      justify-content:
-        space-between;
+      align-items: center;
+
+      justify-content: space-between;
 
       gap: 20px;
 
-      align-items: center;
+      color:
+        rgba(255,255,255,.30);
+
+      font-size: 9px;
     }
 
 
     /* ==================================================
-       RESPONSIVE — TABLET
+       TABLET
     ================================================== */
 
     @media (max-width: 950px) {
 
-      .hero {
+      .bf-hero {
 
-        grid-template-columns: 1fr;
+        grid-template-columns:
+          1fr;
 
-        min-height: auto;
+        min-height:
+          auto;
 
         padding:
-          65px 0 70px;
+          65px 0 55px !important;
       }
 
 
-      .hero-copy {
+      .bf-hero-copy {
 
-        text-align:
-          center;
+        text-align: center;
+
+        padding-left: 0;
       }
 
 
-      .hero-description {
+      .bf-description {
 
         margin:
           0 auto;
       }
 
 
-      .hero-actions {
+      .bf-gold-line {
+
+        margin-left:
+          auto;
+
+        margin-right:
+          auto;
+      }
+
+
+      .bf-actions {
 
         justify-content:
           center;
       }
 
 
-      .hero-books {
+      .bf-carousel {
 
         min-height:
-          500px;
+          510px;
       }
 
 
-      .section-top {
+      .bf-section-head {
 
         align-items:
           flex-start;
@@ -1328,14 +1345,14 @@
       }
 
 
-      .section-top p {
+      .bf-section-head p {
 
         text-align:
           left;
       }
 
 
-      .book-grid {
+      .bf-book-grid {
 
         grid-template-columns:
           repeat(
@@ -1348,167 +1365,164 @@
 
 
     /* ==================================================
-       RESPONSIVE — MOBILE
+       MOBILE
     ================================================== */
 
     @media (max-width: 650px) {
 
-      .nav-inner {
+      .bf-nav-inner {
 
         width:
           calc(100% - 24px);
 
         min-height:
-          68px;
+          66px;
       }
 
 
-      .brand-text {
+      .bf-brand-name {
 
         font-size:
           12px;
       }
 
 
-      .nav-links a {
+      .bf-nav-links a {
 
         padding:
           8px 9px;
 
         font-size:
-          10px;
+          9px;
       }
 
 
-      .nav-links a:first-child {
+      .bf-nav-links a:first-child {
 
         display:
           none;
       }
 
 
-      .hero {
+      .bf-hero {
 
         width:
-          calc(100% - 24px);
+          calc(100% - 24px) !important;
 
         padding:
-          55px 0 65px;
+          52px 0 35px !important;
       }
 
 
-      .hero h1 {
+      .bf-hero h1 {
 
         font-size:
           clamp(
-            40px,
-            12vw,
-            58px
-          );
+            38px,
+            11vw,
+            53px
+          ) !important;
       }
 
 
-      .hero-description {
+      .bf-description {
 
         font-size:
-          13px;
+          12px;
       }
 
 
-      .hero-books {
+      .bf-carousel {
 
         min-height:
-          430px;
+          445px;
       }
 
 
-      .hero-cover {
+      .bf-carousel-ring {
+
+        width:
+          360px;
+
+        height:
+          360px;
+      }
+
+
+      .bf-slide {
 
         width:
           min(
-            190px,
-            45vw
+            220px,
+            55vw
           );
       }
 
 
-      .hero-cover.back {
+      .bf-slide.active {
 
         transform:
-          translate(
-            -65px,
-            15px
-          )
-          rotate(-9deg)
-          scale(.88);
+          translateX(25px)
+          scale(1)
+          rotate(2deg);
       }
 
 
-      .hero-cover.front {
+      .bf-slide.previous {
 
         transform:
-          translate(
-            42px,
-            -5px
-          )
-          rotate(6deg);
+          translateX(-105px)
+          scale(.80)
+          rotate(-8deg);
       }
 
 
-      .hero-book-label {
+      .bf-slide-info {
 
         right:
-          5px;
+          0;
 
         bottom:
-          15px;
+          55px;
+
+        min-width:
+          130px;
+
+        padding:
+          9px 11px;
       }
 
 
-      .collection,
-      .login-section {
+      .bf-slide-title {
+
+        font-size:
+          9px;
+      }
+
+
+      .bf-collection,
+      .bf-login {
 
         width:
-          calc(100% - 24px);
+          calc(100% - 24px) !important;
       }
 
 
-      .book-grid {
+      .bf-book-grid {
 
         grid-template-columns:
           1fr;
       }
 
 
-      .book-cover {
-
-        padding:
-          15px 15px 0;
-      }
-
-
-      .book-info {
-
-        padding:
-          20px 19px 23px;
-      }
-
-
-      .book-info h3 {
-
-        font-size:
-          17px;
-      }
-
-
-      .login-box {
+      .bf-login-box {
 
         padding:
           30px 22px;
       }
 
 
-      .footer-inner {
+      .bf-footer-inner {
 
         width:
           calc(100% - 24px);
@@ -1522,7 +1536,6 @@
 
     }
 
-
   </style>
 
 </head>
@@ -1532,38 +1545,38 @@
 
 
   <!-- ==================================================
-       BACKGROUND
+       PAGE BACKGROUND
   ================================================== -->
 
-  <div class="home-bg"></div>
+  <div class="bf-page-bg"></div>
 
 
   <!-- ==================================================
        NAVIGATION
   ================================================== -->
 
-  <nav class="home-nav">
+  <nav class="bf-nav">
 
-    <div class="nav-inner">
+    <div class="bf-nav-inner">
 
 
       <a
         href="index.html"
-        class="brand"
+        class="bf-brand"
       >
 
-        <span class="brand-mark">
+        <span class="bf-brand-mark">
           B
         </span>
 
-        <span class="brand-text">
+        <span class="bf-brand-name">
           BookFair Digital
         </span>
 
       </a>
 
 
-      <div class="nav-links">
+      <div class="bf-nav-links">
 
         <a href="#collection">
           Collection
@@ -1572,7 +1585,7 @@
 
         <a
           href="login.html"
-          class="nav-login"
+          class="bf-nav-login"
         >
           Login →
         </a>
@@ -1596,13 +1609,17 @@
          HERO
     ================================================== -->
 
-    <section class="hero">
+    <section class="bf-hero">
 
 
-      <div class="hero-copy">
+      <!-- ==================================================
+           HERO TEXT
+      ================================================== -->
+
+      <div class="bf-hero-copy">
 
 
-        <div class="eyebrow">
+        <div class="bf-eyebrow">
           DIGITAL BOOK COLLECTION
         </div>
 
@@ -1611,14 +1628,18 @@
 
           Your books.
 
-          <span>
-            Your digital access.
+          <br>
+
+          Your
+
+          <span class="gold">
+            digital access.
           </span>
 
         </h1>
 
 
-        <p class="hero-description">
+        <p class="bf-description">
 
           Access the digital resources connected
           to your physical books through
@@ -1627,12 +1648,15 @@
         </p>
 
 
-        <div class="hero-actions">
+        <div class="bf-gold-line"></div>
+
+
+        <div class="bf-actions">
 
 
           <a
             href="#collection"
-            class="hero-btn primary"
+            class="bf-btn bf-btn-primary"
           >
 
             Explore Collection
@@ -1646,7 +1670,7 @@
 
           <a
             href="login.html"
-            class="hero-btn secondary"
+            class="bf-btn bf-btn-secondary"
           >
 
             Login
@@ -1665,44 +1689,107 @@
 
 
       <!-- ==================================================
-           HERO BOOKS
+           AUTOMATIC BOOK CAROUSEL
       ================================================== -->
 
-      <div class="hero-books">
+      <div class="bf-carousel">
 
 
-        <div class="hero-glow"></div>
+        <div class="bf-carousel-glow"></div>
+
+        <div class="bf-carousel-ring"></div>
 
 
-        <!-- Back cover -->
+        <!-- BOOK 01 -->
 
-        <div class="hero-cover back">
-
-          <img
-            src="assets/book-02.jpg"
-            alt="උසස් පෙළ ගිණුම්කරණ ප්‍රශ්නෝත්තර සංග්‍රහය Part I"
-          >
-
-        </div>
-
-
-        <!-- Front cover -->
-
-        <div class="hero-cover front">
+        <div
+          class="bf-slide active"
+          data-index="0"
+        >
 
           <img
             src="assets/accounting.jpg"
-            alt="අනුමාන බහුවරණ හා කෙටි ප්‍රශ්න විවරණය"
+            alt="Book 01"
           >
 
         </div>
 
 
-        <div class="hero-book-label">
+        <!-- BOOK 02 -->
 
-          03 BOOKS
-          ·
-          DIGITAL ACCESS
+        <div
+          class="bf-slide"
+          data-index="1"
+        >
+
+          <img
+            src="assets/book-02.jpg"
+            alt="Book 02"
+          >
+
+        </div>
+
+
+        <!-- BOOK 03 -->
+
+        <div
+          class="bf-slide"
+          data-index="2"
+        >
+
+          <img
+            src="assets/book-03.jpg"
+            alt="Book 03"
+          >
+
+        </div>
+
+
+        <!-- CURRENT BOOK INFO -->
+
+        <div class="bf-slide-info">
+
+          <div
+            class="bf-slide-number"
+            id="slideNumber"
+          >
+            BOOK 01
+          </div>
+
+
+          <div
+            class="bf-slide-title"
+            id="slideTitle"
+          >
+            A/L Accounting
+          </div>
+
+        </div>
+
+
+        <!-- DOTS -->
+
+        <div class="bf-carousel-dots">
+
+          <button
+            class="bf-dot active"
+            data-slide="0"
+            aria-label="Book 01"
+          ></button>
+
+
+          <button
+            class="bf-dot"
+            data-slide="1"
+            aria-label="Book 02"
+          ></button>
+
+
+          <button
+            class="bf-dot"
+            data-slide="2"
+            aria-label="Book 03"
+          ></button>
 
         </div>
 
@@ -1719,16 +1806,16 @@
 
     <section
       id="collection"
-      class="collection"
+      class="bf-collection"
     >
 
 
-      <div class="section-top">
+      <div class="bf-section-head">
 
 
         <div>
 
-          <div class="section-label">
+          <div class="bf-section-label">
             OUR COLLECTION
           </div>
 
@@ -1752,45 +1839,42 @@
       </div>
 
 
-      <div class="book-grid">
+      <div class="bf-book-grid">
 
 
         <!-- ==================================================
              BOOK 01
         ================================================== -->
 
-        <article class="book-card">
+        <article class="bf-book-card">
 
 
-          <span class="book-number">
+          <span class="bf-card-number">
             01
           </span>
 
 
-          <div class="book-cover">
+          <div class="bf-card-image">
 
             <img
               src="assets/accounting.jpg"
-              alt="අනුමාන බහුවරණ හා කෙටි ප්‍රශ්න විවරණය"
+              alt="A/L Accounting"
               loading="lazy"
             >
 
           </div>
 
 
-          <div class="book-info">
+          <div class="bf-card-body">
 
 
-            <span class="book-status">
+            <span class="bf-available">
               ● AVAILABLE
             </span>
 
 
             <h3>
-
-              අනුමාන බහුවරණ හා
-              කෙටි ප්‍රශ්න විවරණය
-
+              A/L Accounting
             </h3>
 
 
@@ -1809,40 +1893,39 @@
              BOOK 02
         ================================================== -->
 
-        <article class="book-card">
+        <article class="bf-book-card">
 
 
-          <span class="book-number">
+          <span class="bf-card-number">
             02
           </span>
 
 
-          <div class="book-cover">
+          <div class="bf-card-image">
 
             <img
               src="assets/book-02.jpg"
-              alt="උසස් පෙළ ගිණුම්කරණ ප්‍රශ්නෝත්තර සංග්‍රහය Part I"
+              alt="LKAS & SLFRS Part I"
               loading="lazy"
             >
 
           </div>
 
 
-          <div class="book-info">
+          <div class="bf-card-body">
 
 
-            <span class="book-status">
+            <span class="bf-available">
               ● AVAILABLE
             </span>
 
 
             <h3>
 
-              උසස් පෙළ ගිණුම්කරණ
-              ප්‍රශ්නෝත්තර සංග්‍රහය
-
+              LKAS &amp; SLFRS
               <br>
-
+              ප්‍රශ්නෝත්තර සංග්‍රහය
+              <br>
               (Part-I)
 
             </h3>
@@ -1863,40 +1946,39 @@
              BOOK 03
         ================================================== -->
 
-        <article class="book-card">
+        <article class="bf-book-card">
 
 
-          <span class="book-number">
+          <span class="bf-card-number">
             03
           </span>
 
 
-          <div class="book-cover">
+          <div class="bf-card-image">
 
             <img
               src="assets/book-03.jpg"
-              alt="උසස් පෙළ ගිණුම්කරණ ප්‍රශ්නෝත්තර සංග්‍රහය Part II"
+              alt="LKAS & SLFRS Part II"
               loading="lazy"
             >
 
           </div>
 
 
-          <div class="book-info">
+          <div class="bf-card-body">
 
 
-            <span class="book-status">
+            <span class="bf-available">
               ● AVAILABLE
             </span>
 
 
             <h3>
 
-              උසස් පෙළ ගිණුම්කරණ
-              ප්‍රශ්නෝත්තර සංග්‍රහය
-
+              LKAS &amp; SLFRS
               <br>
-
+              ප්‍රශ්නෝත්තර සංග්‍රහය
+              <br>
               (Part-II)
 
             </h3>
@@ -1923,10 +2005,10 @@
          LOGIN CTA
     ================================================== -->
 
-    <section class="login-section">
+    <section class="bf-login">
 
 
-      <div class="login-box">
+      <div class="bf-login-box">
 
 
         <h2>
@@ -1967,11 +2049,10 @@
        FOOTER
   ================================================== -->
 
-  <footer>
+  <footer class="bf-footer">
 
 
-    <div class="footer-inner">
-
+    <div class="bf-footer-inner">
 
       <span>
         © 2026 BookFair Digital
@@ -1982,11 +2063,174 @@
         Digital educational resources
       </span>
 
-
     </div>
 
 
   </footer>
+
+
+  <!-- ==================================================
+       AUTOMATIC CAROUSEL SCRIPT
+  ================================================== -->
+
+  <script>
+
+    const slides =
+      document.querySelectorAll(
+        ".bf-slide"
+      );
+
+
+    const dots =
+      document.querySelectorAll(
+        ".bf-dot"
+      );
+
+
+    const slideNumber =
+      document.getElementById(
+        "slideNumber"
+      );
+
+
+    const slideTitle =
+      document.getElementById(
+        "slideTitle"
+      );
+
+
+    const titles = [
+
+      "A/L Accounting",
+
+      "LKAS & SLFRS · Part-I",
+
+      "LKAS & SLFRS · Part-II"
+
+    ];
+
+
+    let currentSlide = 0;
+
+
+    function showSlide(index) {
+
+      currentSlide =
+        (index + slides.length)
+        % slides.length;
+
+
+      slides.forEach(
+        (slide, i) => {
+
+          slide.classList.remove(
+            "active",
+            "previous"
+          );
+
+
+          if (i === currentSlide) {
+
+            slide.classList.add(
+              "active"
+            );
+
+          }
+          else if (
+            i ===
+            (
+              currentSlide - 1 +
+              slides.length
+            ) %
+            slides.length
+          ) {
+
+            slide.classList.add(
+              "previous"
+            );
+
+          }
+
+        }
+      );
+
+
+      dots.forEach(
+        (dot, i) => {
+
+          dot.classList.toggle(
+            "active",
+            i === currentSlide
+          );
+
+        }
+      );
+
+
+      slideNumber.textContent =
+        `BOOK ${
+          String(
+            currentSlide + 1
+          ).padStart(2,"0")
+        }`;
+
+
+      slideTitle.textContent =
+        titles[currentSlide];
+
+    }
+
+
+    function nextSlide() {
+
+      showSlide(
+        currentSlide + 1
+      );
+
+    }
+
+
+    dots.forEach(
+      (dot) => {
+
+        dot.addEventListener(
+          "click",
+          () => {
+
+            showSlide(
+              Number(
+                dot.dataset.slide
+              )
+            );
+
+          }
+        );
+
+      }
+    );
+
+
+    /*
+      BOOK 01
+        ↓
+      BOOK 02
+        ↓
+      BOOK 03
+        ↓
+      BOOK 01
+        ↓
+      CONTINUE FOREVER
+    */
+
+    setInterval(
+      nextSlide,
+      3500
+    );
+
+
+    showSlide(0);
+
+  </script>
 
 
 </body>
