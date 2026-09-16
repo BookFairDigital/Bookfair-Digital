@@ -15,12 +15,16 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 
+/* =========================
+   ADMIN
+========================= */
+
 const ADMIN_UID =
   "SU2kLL2ovwPXGyJ436s8PJpLJQZ2";
 
 
 /* =========================
-   ADMIN AUTH
+   AUTH CHECK
 ========================= */
 
 onAuthStateChanged(auth, async (user) => {
@@ -38,16 +42,19 @@ onAuthStateChanged(auth, async (user) => {
       "This account is not authorized as an administrator."
     );
 
-    location.href = "admin-login.html";
+    location.href =
+      "admin-login.html";
+
     return;
   }
 
   initAdmin();
+
 });
 
 
 /* =========================
-   ADMIN
+   ADMIN INIT
 ========================= */
 
 async function initAdmin() {
@@ -55,45 +62,77 @@ async function initAdmin() {
   const $ = (id) =>
     document.getElementById(id);
 
-  const rows = $("rows");
-  const empty = $("empty");
-  const modal = $("modal");
-  const toast = $("toast");
+
+  /* =========================
+     ELEMENTS
+  ========================= */
+
+  const rows =
+    $("rows");
+
+  const empty =
+    $("empty");
+
+  const modal =
+    $("modal");
+
+  const toast =
+    $("toast");
+
   const detailModal =
     $("detailModal");
+
+
+  /* =========================
+     DATA
+  ========================= */
 
   let students = [];
 
 
   /* =========================
-     HELPERS
+     ESCAPE HTML
   ========================= */
 
   const esc = (value) =>
     String(value ?? "")
-      .replace(/[&<>"']/g, (char) => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;"
-      }[char]));
+      .replace(
+        /[&<>"']/g,
+        (char) => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;"
+        }[char])
+      );
 
+
+  /* =========================
+     BOOK NAME
+  ========================= */
 
   function bookName(book) {
 
-    if (book === "01")
+    if (book === "01") {
       return "Book 01 · A/L Accounting";
+    }
 
-    if (book === "02")
+    if (book === "02") {
       return "Book 02";
+    }
 
-    if (book === "03")
+    if (book === "03") {
       return "Book 03";
+    }
 
     return "Not assigned";
   }
 
+
+  /* =========================
+     NORMALIZE BOOK
+  ========================= */
 
   function normalizeBook(value) {
 
@@ -101,6 +140,7 @@ async function initAdmin() {
       String(value ?? "")
         .trim()
         .toLowerCase();
+
 
     if (
       text === "01" ||
@@ -110,6 +150,7 @@ async function initAdmin() {
       return "01";
     }
 
+
     if (
       text === "02" ||
       text === "book 02" ||
@@ -117,6 +158,7 @@ async function initAdmin() {
     ) {
       return "02";
     }
+
 
     if (
       text === "03" ||
@@ -126,9 +168,14 @@ async function initAdmin() {
       return "03";
     }
 
+
     return "";
   }
 
+
+  /* =========================
+     VALID USERNAME
+  ========================= */
 
   function validUsername(username) {
 
@@ -139,10 +186,15 @@ async function initAdmin() {
   }
 
 
+  /* =========================
+     RANDOM PASSWORD
+  ========================= */
+
   function randomPassword() {
 
     const chars =
       "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789";
+
 
     return Array.from(
       { length: 10 },
@@ -157,19 +209,37 @@ async function initAdmin() {
   }
 
 
+  /* =========================
+     TOAST
+  ========================= */
+
   function showToast(
     text,
     error = false
   ) {
 
-    toast.textContent = text;
+    if (!toast) {
+      return;
+    }
+
+    toast.textContent =
+      text;
 
     toast.className =
       "toast show" +
-      (error ? " error" : "");
+      (
+        error
+          ? " error"
+          : ""
+      );
+
 
     setTimeout(() => {
-      toast.classList.remove("show");
+
+      toast.classList.remove(
+        "show"
+      );
+
     }, 2800);
 
   }
@@ -183,6 +253,7 @@ async function initAdmin() {
 
     const status =
       $("dbStatus");
+
 
     try {
 
@@ -212,10 +283,12 @@ async function initAdmin() {
         status.classList.remove(
           "error"
         );
+
       }
 
 
       render();
+
 
     } catch (error) {
 
@@ -248,6 +321,72 @@ async function initAdmin() {
 
 
   /* =========================
+     UPDATE BOOK MANAGEMENT
+  ========================= */
+
+  function updateBookManagement() {
+
+    const book01 =
+      students.filter(
+        (student) =>
+          normalizeBook(
+            student.assignedBook ||
+            student.book
+          ) === "01"
+      ).length;
+
+
+    const book02 =
+      students.filter(
+        (student) =>
+          normalizeBook(
+            student.assignedBook ||
+            student.book
+          ) === "02"
+      ).length;
+
+
+    const book03 =
+      students.filter(
+        (student) =>
+          normalizeBook(
+            student.assignedBook ||
+            student.book
+          ) === "03"
+      ).length;
+
+
+    const book1Count =
+      $("book1Count");
+
+    const book2Count =
+      $("book2Count");
+
+    const book3Count =
+      $("book3Count");
+
+
+    if (book1Count) {
+      book1Count.textContent =
+        book01;
+    }
+
+
+    if (book2Count) {
+      book2Count.textContent =
+        book02;
+    }
+
+
+    if (book3Count) {
+      book3Count.textContent =
+        book03;
+    }
+
+  }
+
+
+  /* =========================
      RENDER
   ========================= */
 
@@ -255,7 +394,8 @@ async function initAdmin() {
 
     const search =
       (
-        $("search")?.value || ""
+        $("search")?.value ||
+        ""
       )
         .toLowerCase()
         .trim();
@@ -291,16 +431,20 @@ async function initAdmin() {
             );
 
 
+          const studentBook =
+            normalizeBook(
+              student.assignedBook ||
+              student.book
+            );
+
+
           const matchesBook =
             bookFilter === "all" ||
-            student.assignedBook ===
-              `Book ${bookFilter}` ||
-            student.book === bookFilter;
+            studentBook === bookFilter;
 
 
           const matchesRegistration =
-            registrationFilter ===
-              "all" ||
+            registrationFilter === "all" ||
 
             (
               registrationFilter ===
@@ -330,12 +474,10 @@ async function initAdmin() {
         .map(
           (student) => {
 
-            const book =
-              student.assignedBook ||
-              (
+            const studentBook =
+              normalizeBook(
+                student.assignedBook ||
                 student.book
-                  ? `Book ${student.book}`
-                  : ""
               );
 
 
@@ -368,8 +510,7 @@ async function initAdmin() {
                 <td>
                   ${esc(
                     bookName(
-                      student.book ||
-                      normalizeBook(book)
+                      studentBook
                     )
                   )}
                 </td>
@@ -465,14 +606,18 @@ async function initAdmin() {
         .join("");
 
 
-    empty.style.display =
-      filtered.length
-        ? "none"
-        : "block";
+    if (empty) {
+
+      empty.style.display =
+        filtered.length
+          ? "none"
+          : "block";
+
+    }
 
 
     /* =========================
-       STATISTICS
+       MAIN STATS
     ========================= */
 
     $("total").textContent =
@@ -482,24 +627,30 @@ async function initAdmin() {
     $("b1").textContent =
       students.filter(
         (student) =>
-          student.book === "01" ||
-          student.assignedBook === "Book 01"
+          normalizeBook(
+            student.assignedBook ||
+            student.book
+          ) === "01"
       ).length;
 
 
     $("b2").textContent =
       students.filter(
         (student) =>
-          student.book === "02" ||
-          student.assignedBook === "Book 02"
+          normalizeBook(
+            student.assignedBook ||
+            student.book
+          ) === "02"
       ).length;
 
 
     $("b3").textContent =
       students.filter(
         (student) =>
-          student.book === "03" ||
-          student.assignedBook === "Book 03"
+          normalizeBook(
+            student.assignedBook ||
+            student.book
+          ) === "03"
       ).length;
 
 
@@ -532,126 +683,148 @@ async function initAdmin() {
 
 
     /* =========================
-       ROW EVENTS
+       BOOK MANAGEMENT COUNTS
+    ========================= */
+
+    updateBookManagement();
+
+
+    /* =========================
+       ROW CLICK
     ========================= */
 
     document
       .querySelectorAll(
         ".student-row"
       )
-      .forEach((row) => {
+      .forEach(
+        (row) => {
 
-        row.onclick = (event) => {
+          row.onclick =
+            (event) => {
 
-          if (
-            event.target.closest(
-              ".delete-student"
-            )
-          ) {
-            return;
-          }
+              if (
+                event.target.closest(
+                  ".delete-student"
+                )
+              ) {
+                return;
+              }
 
-          showDetails(
-            row.dataset.id
-          );
 
-        };
+              showDetails(
+                row.dataset.id
+              );
 
-      });
+            };
 
+        }
+      );
+
+
+    /* =========================
+       SINGLE DELETE
+    ========================= */
 
     document
       .querySelectorAll(
         ".delete-student"
       )
-      .forEach((button) => {
+      .forEach(
+        (button) => {
 
-        button.onclick =
-          async (event) => {
+          button.onclick =
+            async (event) => {
 
-            event.stopPropagation();
-
-            const id =
-              button.dataset.id;
-
-            const username =
-              button.dataset.username;
+              event.stopPropagation();
 
 
-            const confirmed =
-              confirm(
-                `Delete student account "${username}"?\n\nThis will permanently delete the Firestore student record.\n\nThis action cannot be undone.`
-              );
+              const id =
+                button.dataset.id;
 
 
-            if (!confirmed) {
-              return;
-            }
+              const username =
+                button.dataset.username;
 
 
-            button.disabled = true;
-
-            button.textContent =
-              "Deleting…";
-
-
-            try {
-
-              await deleteDoc(
-                doc(
-                  db,
-                  "students",
-                  id
-                )
-              );
-
-
-              students =
-                students.filter(
-                  (student) =>
-                    student.id !== id
+              const confirmed =
+                confirm(
+                  `Delete student account "${username}"?\n\nThis will permanently delete the Firestore student record.\n\nThis action cannot be undone.`
                 );
 
 
-              render();
-
-
-              showToast(
-                `Student ${username} deleted successfully.`
-              );
-
-
-            } catch (error) {
-
-              console.error(
-                "DELETE ERROR:",
-                error
-              );
+              if (!confirmed) {
+                return;
+              }
 
 
               button.disabled =
-                false;
+                true;
+
 
               button.textContent =
-                "Delete";
+                "Deleting…";
 
 
-              showToast(
-                "Could not delete this student.",
-                true
-              );
+              try {
 
-            }
+                await deleteDoc(
+                  doc(
+                    db,
+                    "students",
+                    id
+                  )
+                );
 
-          };
 
-      });
+                students =
+                  students.filter(
+                    (student) =>
+                      student.id !== id
+                  );
+
+
+                render();
+
+
+                showToast(
+                  `Student ${username} deleted successfully.`
+                );
+
+
+              } catch (error) {
+
+                console.error(
+                  "DELETE ERROR:",
+                  error
+                );
+
+
+                button.disabled =
+                  false;
+
+
+                button.textContent =
+                  "Delete";
+
+
+                showToast(
+                  "Could not delete this student.",
+                  true
+                );
+
+              }
+
+            };
+
+        }
+      );
 
   }
 
 
   /* =========================
-     DETAILS
+     SHOW STUDENT DETAILS
   ========================= */
 
   function showDetails(id) {
@@ -668,12 +841,20 @@ async function initAdmin() {
     }
 
 
+    const studentBook =
+      normalizeBook(
+        student.assignedBook ||
+        student.book
+      );
+
+
     $("detailContent").innerHTML = `
 
       <div class="detail-grid">
 
         <div>
           <small>USERNAME</small>
+
           <strong>
             ${esc(
               student.username ||
@@ -685,6 +866,7 @@ async function initAdmin() {
 
         <div>
           <small>PASSWORD</small>
+
           <strong>
             ${esc(
               student.password ||
@@ -696,13 +878,11 @@ async function initAdmin() {
 
         <div>
           <small>ASSIGNED BOOK</small>
+
           <strong>
             ${esc(
               bookName(
-                student.book ||
-                normalizeBook(
-                  student.assignedBook
-                )
+                studentBook
               )
             )}
           </strong>
@@ -711,6 +891,7 @@ async function initAdmin() {
 
         <div>
           <small>FULL NAME</small>
+
           <strong>
             ${esc(
               student.fullName ||
@@ -722,6 +903,7 @@ async function initAdmin() {
 
         <div>
           <small>DISTRICT</small>
+
           <strong>
             ${esc(
               student.district ||
@@ -733,6 +915,7 @@ async function initAdmin() {
 
         <div>
           <small>CONTACT NUMBER</small>
+
           <strong>
             ${esc(
               student.contact ||
@@ -744,6 +927,7 @@ async function initAdmin() {
 
         <div>
           <small>REGISTRATION</small>
+
           <strong>
             ${
               student.registered
@@ -756,6 +940,7 @@ async function initAdmin() {
 
         <div>
           <small>ACCOUNT</small>
+
           <strong>
             ${
               student.active === false
@@ -790,12 +975,15 @@ async function initAdmin() {
     username =
       username.trim();
 
+
     password =
       password.trim();
 
 
     if (
-      !validUsername(username)
+      !validUsername(
+        username
+      )
     ) {
 
       throw new Error(
@@ -817,7 +1005,7 @@ async function initAdmin() {
 
 
     if (
-      !["01","02","03"]
+      !["01", "02", "03"]
         .includes(book)
     ) {
 
@@ -852,20 +1040,27 @@ async function initAdmin() {
     await setDoc(
       ref,
       {
+
         username,
+
         password,
+
         assignedBook:
           `Book ${book}`,
 
         fullName: "",
+
         district: "",
+
         contact: "",
 
         registered: false,
+
         active: true,
 
         createdAt:
           new Date().toISOString()
+
       }
     );
 
@@ -880,7 +1075,7 @@ async function initAdmin() {
 
 
   /* =========================
-     NEW STUDENT MODAL
+     NEW STUDENT BUTTON
   ========================= */
 
   $("newBtn").onclick =
@@ -890,16 +1085,23 @@ async function initAdmin() {
         "show"
       );
 
+
       $("newUser").value =
         "";
 
+
       $("newPass").value =
         randomPassword();
+
 
       $("newUser").focus();
 
     };
 
+
+  /* =========================
+     CLOSE MODAL
+  ========================= */
 
   function closeModal() {
 
@@ -928,6 +1130,10 @@ async function initAdmin() {
     };
 
 
+  /* =========================
+     GENERATE PASSWORD
+  ========================= */
+
   $("gen").onclick =
     () => {
 
@@ -936,6 +1142,10 @@ async function initAdmin() {
 
     };
 
+
+  /* =========================
+     CREATE BUTTON
+  ========================= */
 
   $("create").onclick =
     async () => {
@@ -961,7 +1171,10 @@ async function initAdmin() {
           .value;
 
 
-      if (!username || !password) {
+      if (
+        !username ||
+        !password
+      ) {
 
         showToast(
           "Username and password are required.",
@@ -975,6 +1188,7 @@ async function initAdmin() {
 
       button.disabled =
         true;
+
 
       button.textContent =
         "Creating…";
@@ -1019,10 +1233,12 @@ async function initAdmin() {
           true
         );
 
+
       } finally {
 
         button.disabled =
           false;
+
 
         button.textContent =
           "Create Student";
@@ -1033,7 +1249,7 @@ async function initAdmin() {
 
 
   /* =========================
-     EXCEL EXPORT
+     EXCEL DOWNLOAD
   ========================= */
 
   function downloadExcel(
@@ -1086,12 +1302,19 @@ async function initAdmin() {
 
 
     worksheet["!cols"] = [
+
       { wch: 20 },
+
       { wch: 20 },
+
       { wch: 28 },
+
       { wch: 25 },
+
       { wch: 18 },
+
       { wch: 18 }
+
     ];
 
 
@@ -1134,6 +1357,7 @@ async function initAdmin() {
     const exampleRows = [
 
       {
+
         "Username":
           "BF26-00001",
 
@@ -1151,9 +1375,11 @@ async function initAdmin() {
 
         "Contact Number":
           ""
+
       },
 
       {
+
         "Username":
           "BF26-00002",
 
@@ -1171,6 +1397,7 @@ async function initAdmin() {
 
         "Contact Number":
           ""
+
       }
 
     ];
@@ -1183,12 +1410,19 @@ async function initAdmin() {
 
 
     worksheet["!cols"] = [
+
       { wch: 20 },
+
       { wch: 20 },
+
       { wch: 25 },
+
       { wch: 25 },
+
       { wch: 18 },
+
       { wch: 18 }
+
     ];
 
 
@@ -1281,7 +1515,7 @@ async function initAdmin() {
 
 
   /* =========================
-     EXCEL IMPORT
+     IMPORT BUTTON
   ========================= */
 
   $("importBtn").onclick =
@@ -1292,11 +1526,16 @@ async function initAdmin() {
     };
 
 
+  /* =========================
+     EXCEL IMPORT
+  ========================= */
+
   $("fileInput").onchange =
     async () => {
 
       const file =
-        $("fileInput").files[0];
+        $("fileInput")
+          .files[0];
 
 
       if (!file) {
@@ -1310,6 +1549,7 @@ async function initAdmin() {
 
       button.disabled =
         true;
+
 
       button.textContent =
         "Importing…";
@@ -1373,17 +1613,22 @@ async function initAdmin() {
         const usernameColumn =
           columns["username"];
 
+
         const passwordColumn =
           columns["password"];
+
 
         const bookColumn =
           columns["assigned book"];
 
+
         const fullNameColumn =
           columns["full name"];
 
+
         const districtColumn =
           columns["district"];
+
 
         const contactColumn =
           columns["contact number"];
@@ -1406,7 +1651,9 @@ async function initAdmin() {
         let failed = 0;
         let skipped = 0;
 
+
         const failedRows = [];
+
 
         const total =
           excelRows.length;
@@ -1441,13 +1688,15 @@ async function initAdmin() {
 
           const username =
             String(
-              row[usernameColumn] ?? ""
+              row[usernameColumn] ??
+              ""
             ).trim();
 
 
           const password =
             String(
-              row[passwordColumn] ?? ""
+              row[passwordColumn] ??
+              ""
             ).trim();
 
 
@@ -1459,19 +1708,22 @@ async function initAdmin() {
 
           const fullName =
             String(
-              row[fullNameColumn] ?? ""
+              row[fullNameColumn] ??
+              ""
             ).trim();
 
 
           const district =
             String(
-              row[districtColumn] ?? ""
+              row[districtColumn] ??
+              ""
             ).trim();
 
 
           const contact =
             String(
-              row[contactColumn] ?? ""
+              row[contactColumn] ??
+              ""
             ).trim();
 
 
@@ -1546,6 +1798,7 @@ async function initAdmin() {
               await setDoc(
                 ref,
                 {
+
                   username,
 
                   password,
@@ -1570,11 +1823,13 @@ async function initAdmin() {
 
                   createdAt:
                     new Date().toISOString()
+
                 }
               );
 
 
               success++;
+
 
             } catch (error) {
 
@@ -1608,7 +1863,9 @@ async function initAdmin() {
 
           $("importProgress").style.width =
             `${Math.round(
-              processed / total * 100
+              processed /
+              total *
+              100
             )}%`;
 
 
@@ -1648,11 +1905,14 @@ async function initAdmin() {
         const failedWrap =
           $("failedWrap");
 
+
         const failedList =
           $("failedList");
 
 
-        if (failedRows.length) {
+        if (
+          failedRows.length
+        ) {
 
           failedWrap.style.display =
             "block";
@@ -1662,6 +1922,7 @@ async function initAdmin() {
             failedRows
               .map(
                 (item) => `
+
                   <div class="failed-item">
 
                     <strong>
@@ -1677,14 +1938,17 @@ async function initAdmin() {
                     </span>
 
                   </div>
+
                 `
               )
               .join("");
+
 
         } else {
 
           failedWrap.style.display =
             "none";
+
 
           failedList.innerHTML =
             "";
@@ -1716,13 +1980,16 @@ async function initAdmin() {
           true
         );
 
+
       } finally {
 
         $("fileInput").value =
           "";
 
+
         button.disabled =
           false;
+
 
         button.textContent =
           "Import Excel";
@@ -1733,7 +2000,7 @@ async function initAdmin() {
 
 
   /* =========================
-     FILTERS
+     SEARCH / FILTERS
   ========================= */
 
   $("search").oninput =
@@ -1749,7 +2016,7 @@ async function initAdmin() {
 
 
   /* =========================
-     MODAL CLOSE
+     IMPORT RESULT CLOSE
   ========================= */
 
   $("importResultClose").onclick =
@@ -1770,6 +2037,266 @@ async function initAdmin() {
         .remove("show");
 
     };
+
+
+  /* =====================================================
+     BOOK DELETE SYSTEM
+  ===================================================== */
+
+
+  async function deleteBookStudents(
+    bookNumber
+  ) {
+
+    const bookTitle =
+      bookName(bookNumber);
+
+
+    /* =========================
+       FIND STUDENTS
+    ========================= */
+
+    const matchingStudents =
+      students.filter(
+        (student) =>
+          normalizeBook(
+            student.assignedBook ||
+            student.book
+          ) === bookNumber
+      );
+
+
+    const count =
+      matchingStudents.length;
+
+
+    /* =========================
+       NO STUDENTS
+    ========================= */
+
+    if (count === 0) {
+
+      alert(
+        `${bookTitle}\n\nThere are no student accounts assigned to this book.`
+      );
+
+      return;
+
+    }
+
+
+    /* =========================
+       CONFIRMATION
+    ========================= */
+
+    const confirmed =
+      confirm(
+        `DELETE ${bookTitle}?\n\n` +
+        `${count} student account(s) are currently assigned to this book.\n\n` +
+        `All ${count} student Firestore records will be permanently deleted.\n\n` +
+        `This action cannot be undone.\n\n` +
+        `Do you want to continue?`
+      );
+
+
+    if (!confirmed) {
+      return;
+    }
+
+
+    /* =========================
+       FIND BUTTON
+    ========================= */
+
+    const buttonId =
+      `deleteBook${bookNumber}`;
+
+
+    const button =
+      $(buttonId);
+
+
+    if (button) {
+
+      button.disabled =
+        true;
+
+      button.textContent =
+        "Deleting…";
+
+    }
+
+
+    try {
+
+      let deleted =
+        0;
+
+
+      /* =========================
+         DELETE ONE BY ONE
+      ========================= */
+
+      for (
+        const student
+        of matchingStudents
+      ) {
+
+        await deleteDoc(
+          doc(
+            db,
+            "students",
+            student.id
+          )
+        );
+
+
+        deleted++;
+
+      }
+
+
+      /* =========================
+         UPDATE LOCAL DATA
+      ========================= */
+
+      const deletedIds =
+        new Set(
+          matchingStudents.map(
+            (student) =>
+              student.id
+          )
+        );
+
+
+      students =
+        students.filter(
+          (student) =>
+            !deletedIds.has(
+              student.id
+            )
+        );
+
+
+      /* =========================
+         REFRESH UI
+      ========================= */
+
+      render();
+
+
+      showToast(
+        `${bookTitle}: ${deleted} student account(s) deleted successfully.`
+      );
+
+
+      alert(
+        `${bookTitle}\n\n${deleted} student account(s) deleted successfully.`
+      );
+
+
+    } catch (error) {
+
+      console.error(
+        "BOOK DELETE ERROR:",
+        error
+      );
+
+
+      showToast(
+        `Could not completely delete ${bookTitle}. Please check the dashboard.`,
+        true
+      );
+
+
+      /* =========================
+         RELOAD FROM FIRESTORE
+      ========================= */
+
+      await loadStudents();
+
+
+    } finally {
+
+      if (button) {
+
+        button.disabled =
+          false;
+
+        button.textContent =
+          `Delete ${bookTitle.split(" · ")[0]} Students`;
+
+      }
+
+    }
+
+  }
+
+
+  /* =========================
+     BOOK 01 DELETE
+  ========================= */
+
+  const deleteBook01 =
+    $("deleteBook01");
+
+
+  if (deleteBook01) {
+
+    deleteBook01.onclick =
+      () => {
+
+        deleteBookStudents(
+          "01"
+        );
+
+      };
+
+  }
+
+
+  /* =========================
+     BOOK 02 DELETE
+  ========================= */
+
+  const deleteBook02 =
+    $("deleteBook02");
+
+
+  if (deleteBook02) {
+
+    deleteBook02.onclick =
+      () => {
+
+        deleteBookStudents(
+          "02"
+        );
+
+      };
+
+  }
+
+
+  /* =========================
+     BOOK 03 DELETE
+  ========================= */
+
+  const deleteBook03 =
+    $("deleteBook03");
+
+
+  if (deleteBook03) {
+
+    deleteBook03.onclick =
+      () => {
+
+        deleteBookStudents(
+          "03"
+        );
+
+      };
+
+  }
 
 
   /* =========================
