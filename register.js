@@ -1,38 +1,62 @@
 import {
+  auth,
   db,
   doc,
   getDoc,
   setDoc
 } from "./firebase.js";
 
-const form = document.getElementById("reg");
-const message = document.getElementById("rm");
+const form =
+  document.getElementById("reg");
 
-const usernameInput = document.getElementById("ru");
-const nameInput = document.getElementById("name");
-const districtInput = document.getElementById("district");
-const phoneInput = document.getElementById("phone");
+const message =
+  document.getElementById("rm");
 
-function showMessage(text, error = true) {
-  message.textContent = text;
+const usernameInput =
+  document.getElementById("ru");
+
+const nameInput =
+  document.getElementById("name");
+
+const districtInput =
+  document.getElementById("district");
+
+const phoneInput =
+  document.getElementById("phone");
+
+
+function showMessage(
+  text,
+  error = true
+) {
+
+  message.textContent =
+    text;
+
   message.className =
-    error ? "error-msg" : "success-msg";
+    error
+      ? "error-msg"
+      : "success-msg";
 }
 
 
-// =========================
-// LOAD STUDENT
-// =========================
+/* =========================
+   LOAD STUDENT
+========================= */
 
 async function loadStudent() {
 
-  const username =
-    localStorage.getItem("bf_login");
+  const user =
+    auth.currentUser;
 
-  if (!username) {
-    location.href = "login.html";
+  if (!user) {
+
+    location.href =
+      "login.html";
+
     return;
   }
+
 
   try {
 
@@ -40,23 +64,27 @@ async function loadStudent() {
       doc(
         db,
         "students",
-        username
+        user.uid
       );
+
 
     const snap =
       await getDoc(ref);
 
+
     if (!snap.exists()) {
 
       showMessage(
-        "Student account was not found."
+        "Student account was not found. Please contact the administrator."
       );
 
       return;
     }
 
+
     const data =
       snap.data();
+
 
     if (data.active === false) {
 
@@ -67,14 +95,14 @@ async function loadStudent() {
       return;
     }
 
-    // Locked username
+
     usernameInput.value =
-      data.username || username;
+      data.username || "";
 
     usernameInput.dataset.username =
-      data.username || username;
+      data.username || "";
 
-    // Existing details
+
     nameInput.value =
       data.fullName || "";
 
@@ -84,29 +112,46 @@ async function loadStudent() {
     phoneInput.value =
       data.contact || "";
 
-  } catch (err) {
+
+  } catch (error) {
 
     console.error(
-      "LOAD ERROR:",
-      err
+      "LOAD REGISTRATION ERROR:",
+      error
     );
 
     showMessage(
       "Could not load your account. Please refresh and try again."
     );
+
   }
+
 }
 
 
-// =========================
-// REGISTRATION
-// =========================
+/* =========================
+   REGISTRATION
+========================= */
 
 form.addEventListener(
   "submit",
   async (e) => {
 
     e.preventDefault();
+
+
+    const user =
+      auth.currentUser;
+
+
+    if (!user) {
+
+      location.href =
+        "login.html";
+
+      return;
+    }
+
 
     const username =
       usernameInput.dataset.username ||
@@ -120,6 +165,7 @@ form.addEventListener(
 
     const contact =
       phoneInput.value.trim();
+
 
     if (
       !username ||
@@ -135,63 +181,85 @@ form.addEventListener(
       return;
     }
 
+
     const button =
       form.querySelector(
         'button[type="submit"]'
       );
 
-    button.disabled = true;
-    button.innerHTML = "Saving…";
+
+    button.disabled =
+      true;
+
+    button.innerHTML =
+      "Saving…";
+
 
     showMessage(
       "Saving your registration…",
       false
     );
 
+
     try {
 
+      /*
+       * IMPORTANT:
+       * Use Firebase Auth UID,
+       * NOT username, for the document.
+       */
       const ref =
         doc(
           db,
           "students",
-          username
+          user.uid
         );
+
 
       const snap =
         await getDoc(ref);
 
+
       if (!snap.exists()) {
 
-        showMessage(
-          "Student account was not found."
+        throw new Error(
+          "Student profile not found."
         );
-
-        return;
       }
+
 
       const old =
         snap.data();
 
-      if (old.active === false) {
 
-        showMessage(
-          "This student account is inactive."
+      if (
+        old.authUid &&
+        old.authUid !== user.uid
+      ) {
+
+        throw new Error(
+          "This account is not authorized for this student profile."
         );
-
-        return;
       }
 
+
+      if (old.active === false) {
+
+        throw new Error(
+          "This student account is inactive."
+        );
+      }
+
+
+      /*
+       * Only update registration fields.
+       */
       await setDoc(
         ref,
         {
           username:
-            old.username || username,
-
-          password:
-            old.password || "",
-
-          assignedBook:
-            old.assignedBook || "Book 01",
+            old.username ||
+            username,
 
           fullName:
             fullName,
@@ -203,63 +271,101 @@ form.addEventListener(
             contact,
 
           registered:
-            true,
+            true
 
-          active:
-            old.active !== false
         },
         {
           merge: true
         }
       );
 
-      // Update local login data
+
+      /*
+       * Update local session.
+       */
+      const updatedStudent = {
+        ...old,
+
+        uid:
+          user.uid,
+
+        username:
+          old.username ||
+          username,
+
+        fullName,
+
+        district,
+
+        contact,
+
+        registered:
+          true
+      };
+
+
       localStorage.setItem(
         "bf_login",
-        old.username || username
+        updatedStudent.username
       );
+
 
       localStorage.setItem(
         "bf_student",
-        JSON.stringify({
-          ...old,
-          username:
-            old.username || username,
-          fullName,
-          district,
-          contact,
-          registered: true
-        })
+        JSON.stringify(
+          updatedStudent
+        )
       );
 
-      // Go to dashboard
-      location.href =
-        "dashboard.html";
-
-    } catch (err) {
-
-      console.error(
-        "REGISTRATION ERROR:",
-        err
-      );
 
       showMessage(
+        "Registration saved successfully.",
+        false
+      );
+
+
+      /*
+       * Give Firestore a moment to finish
+       * before changing page.
+       */
+      setTimeout(() => {
+
+        location.href =
+          "dashboard.html";
+
+      }, 300);
+
+
+    } catch (error) {
+
+      console.error(
+        "REGISTRATION SAVE ERROR:",
+        error
+      );
+
+
+      showMessage(
+        error.message ||
         "Could not save registration. Please try again."
       );
 
+
     } finally {
 
-      button.disabled = false;
+      button.disabled =
+        false;
 
       button.innerHTML =
         'Complete Registration <span>→</span>';
+
     }
+
   }
 );
 
 
-// =========================
-// START
-// =========================
+/* =========================
+   START
+========================= */
 
 loadStudent();
