@@ -1,17 +1,14 @@
 import {
-  auth,
   db,
+  collection,
+  getDocs,
   doc,
   getDoc,
-  signInWithEmailAndPassword,
-  signOut
+  setDoc
 } from "./firebase.js";
 
 const KEY = "bf_login";
 const STUDENT = "bf_student";
-
-const emailForUsername = (username) =>
-  username.trim().toLowerCase() + "@bookfairdigital.local";
 
 function saveStudent(data) {
   localStorage.setItem(
@@ -36,218 +33,222 @@ function showMessage(message, error = true) {
    STUDENT LOGIN
 ========================= */
 
-const login = document.getElementById("login");
+const login =
+  document.getElementById("login");
 
 if (login) {
 
-  login.addEventListener("submit", async (e) => {
+  login.addEventListener(
+    "submit",
+    async (e) => {
 
-    e.preventDefault();
+      e.preventDefault();
 
-    const username =
-      document.getElementById("u").value.trim();
+      const username =
+        document
+          .getElementById("u")
+          .value
+          .trim();
 
-    const password =
-      document.getElementById("p").value;
+      const password =
+        document.getElementById("p").value;
 
-    const button =
-      login.querySelector(
-        'button[type="submit"]'
-      );
+      const button =
+        login.querySelector(
+          'button[type="submit"]'
+        );
 
-    if (!username || !password) {
+      if (!username || !password) {
+
+        showMessage(
+          "Please enter your username and password."
+        );
+
+        return;
+      }
+
+      button.disabled = true;
+      button.innerHTML = "Checking…";
 
       showMessage(
-        "Please enter your username and password."
+        "Checking your account…",
+        false
       );
 
-      return;
-    }
-
-    button.disabled = true;
-    button.innerHTML = "Checking…";
-
-    showMessage(
-      "Checking your account…",
-      false
-    );
-
-    try {
-
-      /*
-       * Clear any previous session.
-       */
       try {
-        await signOut(auth);
-      } catch (_) {}
 
+        /*
+         * Read existing student records.
+         *
+         * This supports both:
+         *
+         * students/{username}
+         *
+         * and
+         *
+         * students/{firebaseUid}
+         *
+         * where the document contains:
+         * username
+         * password
+         */
 
-      /*
-       * Firebase Authentication login.
-       */
-      const credential =
-        await signInWithEmailAndPassword(
-          auth,
-          emailForUsername(username),
-          password
+        const snapshot =
+          await getDocs(
+            collection(
+              db,
+              "students"
+            )
+          );
+
+        let foundStudent = null;
+        let foundId = null;
+
+        snapshot.forEach(
+          (item) => {
+
+            if (foundStudent) {
+              return;
+            }
+
+            const data =
+              item.data();
+
+            const storedUsername =
+              String(
+                data.username ||
+                item.id ||
+                ""
+              ).trim();
+
+            const storedPassword =
+              String(
+                data.password ||
+                ""
+              );
+
+            if (
+              storedUsername === username &&
+              storedPassword === password
+            ) {
+
+              foundStudent = data;
+              foundId = item.id;
+
+            }
+
+          }
         );
 
 
-      /*
-       * Student profile is stored using
-       * Firebase Auth UID.
-       */
-      const studentRef =
-        doc(
-          db,
-          "students",
-          credential.user.uid
+        /*
+         * No matching student.
+         */
+
+        if (!foundStudent) {
+
+          showMessage(
+            "Incorrect username or password."
+          );
+
+          return;
+        }
+
+
+        /*
+         * Check active status.
+         */
+
+        if (
+          foundStudent.active === false
+        ) {
+
+          showMessage(
+            "This student account is inactive. Please contact the administrator."
+          );
+
+          return;
+        }
+
+
+        /*
+         * Save login session.
+         */
+
+        const student = {
+
+          ...foundStudent,
+
+          uid:
+            foundStudent.authUid ||
+            foundStudent.uid ||
+            "",
+
+          docId:
+            foundId,
+
+          username:
+            foundStudent.username ||
+            username
+
+        };
+
+
+        localStorage.setItem(
+          KEY,
+          student.username
+        );
+
+        saveStudent(
+          student
         );
 
 
-      const snapshot =
-        await getDoc(studentRef);
+        /*
+         * First login.
+         */
+
+        if (
+          foundStudent.registered !== true
+        ) {
+
+          location.href =
+            "register.html";
+
+          return;
+        }
 
 
-      if (!snapshot.exists()) {
-
-        await signOut(auth);
-
-        showMessage(
-          "Login succeeded, but your student profile is not configured. Please contact the administrator."
-        );
-
-        return;
-      }
-
-
-      const data =
-        snapshot.data();
-
-
-      /*
-       * Account disabled.
-       */
-      if (data.active === false) {
-
-        await signOut(auth);
-
-        showMessage(
-          "This student account is inactive. Please contact the administrator."
-        );
-
-        return;
-      }
-
-
-      /*
-       * Save session data.
-       */
-      localStorage.setItem(
-        KEY,
-        data.username || username
-      );
-
-      saveStudent({
-        ...data,
-        uid: credential.user.uid
-      });
-
-
-      /*
-       * First login → registration.
-       */
-      if (data.registered !== true) {
+        /*
+         * Already registered.
+         */
 
         location.href =
-          "register.html";
-
-        return;
-      }
+          "dashboard.html";
 
 
-      /*
-       * Already registered.
-       */
-      location.href =
-        "dashboard.html";
+      } catch (error) {
 
+        console.error(
+          "STUDENT LOGIN ERROR:",
+          error
+        );
 
-    } catch (error) {
+        showMessage(
+          "Could not connect to the student database. Please try again."
+        );
 
-      console.error(
-        "STUDENT LOGIN ERROR:",
-        error
-      );
+      } finally {
 
-      const code =
-        error?.code || "";
+        button.disabled = false;
 
-      let message =
-        "Incorrect username or password.";
-
-      if (
-        code ===
-        "auth/user-not-found"
-      ) {
-
-        message =
-          "This username is not registered.";
-
-      } else if (
-        code ===
-        "auth/invalid-credential"
-      ) {
-
-        message =
-          "Incorrect username or password.";
-
-      } else if (
-        code ===
-        "auth/wrong-password"
-      ) {
-
-        message =
-          "Incorrect username or password.";
-
-      } else if (
-        code ===
-        "auth/too-many-requests"
-      ) {
-
-        message =
-          "Too many login attempts. Please wait a few minutes and try again.";
-
-      } else if (
-        code ===
-        "auth/network-request-failed"
-      ) {
-
-        message =
-          "Network error. Please check your internet connection and try again.";
-
-      } else if (
-        code ===
-        "permission-denied"
-      ) {
-
-        message =
-          "Your account exists, but the student profile cannot be accessed. Please contact the administrator.";
+        button.innerHTML =
+          'Login <span>→</span>';
 
       }
-
-      showMessage(message);
-
-    } finally {
-
-      button.disabled = false;
-
-      button.innerHTML =
-        'Login <span>→</span>';
 
     }
-
-  });
+  );
 
 }
 
@@ -257,16 +258,21 @@ if (login) {
 ========================= */
 
 if (
-  document.getElementById("dashboard")
+  document.getElementById(
+    "dashboard"
+  )
 ) {
 
   const student =
-    localStorage.getItem(STUDENT);
+    localStorage.getItem(
+      STUDENT
+    );
 
   if (!student) {
 
     location.href =
       "login.html";
+
   }
 
 }
@@ -277,32 +283,32 @@ if (
 ========================= */
 
 document
-  .querySelectorAll("[data-logout]")
-  .forEach((button) => {
+  .querySelectorAll(
+    "[data-logout]"
+  )
+  .forEach(
+    (button) => {
 
-    button.addEventListener(
-      "click",
-      async () => {
+      button.addEventListener(
+        "click",
+        () => {
 
-        try {
-          await signOut(auth);
-        } catch (error) {
-          console.error(
-            "LOGOUT ERROR:",
-            error
+          localStorage.removeItem(
+            KEY
           );
+
+          localStorage.removeItem(
+            STUDENT
+          );
+
+          location.href =
+            "login.html";
+
         }
+      );
 
-        localStorage.removeItem(KEY);
-        localStorage.removeItem(STUDENT);
-
-        location.href =
-          "login.html";
-
-      }
-    );
-
-  });
+    }
+  );
 
 
 /* =========================
@@ -320,6 +326,7 @@ document.addEventListener(
     ) {
 
       e.preventDefault();
+
     }
 
   }
@@ -347,6 +354,7 @@ document.addEventListener(
     ) {
 
       e.preventDefault();
+
     }
 
     if (
@@ -354,6 +362,7 @@ document.addEventListener(
     ) {
 
       e.preventDefault();
+
     }
 
   }
