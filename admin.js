@@ -11,6 +11,16 @@ import {
 } from "./firebase.js";
 
 import {
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signOut as signOutStudent
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+import {
   onAuthStateChanged,
   signOut
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
@@ -25,33 +35,70 @@ const ADMIN_UID =
 
 
 /* =========================
+   STUDENT AUTH
+========================= */
+
+const studentApp =
+  initializeApp(
+    firebaseConfig,
+    "studentProvisioning"
+  );
+
+const studentAuth =
+  getAuth(studentApp);
+
+
+function studentEmail(username) {
+
+  return (
+    username
+      .trim()
+      .toLowerCase()
+      +
+      "@bookfairdigital.local"
+  );
+
+}
+
+
+/* =========================
    AUTH CHECK
 ========================= */
 
-onAuthStateChanged(auth, async (user) => {
+onAuthStateChanged(
+  auth,
+  async (user) => {
 
-  if (!user) {
-    location.href = "admin-login.html";
-    return;
+    if (!user) {
+
+      location.href =
+        "admin-login.html";
+
+      return;
+    }
+
+
+    if (
+      user.uid !== ADMIN_UID
+    ) {
+
+      await signOut(auth);
+
+      alert(
+        "This account is not authorized as an administrator."
+      );
+
+      location.href =
+        "admin-login.html";
+
+      return;
+    }
+
+
+    initAdmin();
+
   }
-
-  if (user.uid !== ADMIN_UID) {
-
-    await signOut(auth);
-
-    alert(
-      "This account is not authorized as an administrator."
-    );
-
-    location.href =
-      "admin-login.html";
-
-    return;
-  }
-
-  initAdmin();
-
-});
+);
 
 
 /* =========================
@@ -202,7 +249,8 @@ async function initAdmin() {
       () =>
         chars[
           Math.floor(
-            Math.random() * chars.length
+            Math.random() *
+            chars.length
           )
         ]
     ).join("");
@@ -223,8 +271,10 @@ async function initAdmin() {
       return;
     }
 
+
     toast.textContent =
       text;
+
 
     toast.className =
       "toast show" +
@@ -368,20 +418,26 @@ async function initAdmin() {
 
 
     if (book1Count) {
+
       book1Count.textContent =
         book01;
+
     }
 
 
     if (book2Count) {
+
       book2Count.textContent =
         book02;
+
     }
 
 
     if (book3Count) {
+
       book3Count.textContent =
         book03;
+
     }
 
   }
@@ -497,7 +553,6 @@ async function initAdmin() {
                   </strong>
                 </td>
 
-
                 <td>
                   <span class="muted">
                     ${esc(
@@ -507,7 +562,6 @@ async function initAdmin() {
                   </span>
                 </td>
 
-
                 <td>
                   ${esc(
                     bookName(
@@ -516,14 +570,12 @@ async function initAdmin() {
                   )}
                 </td>
 
-
                 <td>
                   ${esc(
                     student.fullName ||
                     "Not registered"
                   )}
                 </td>
-
 
                 <td>
                   ${esc(
@@ -532,7 +584,6 @@ async function initAdmin() {
                   )}
                 </td>
 
-
                 <td>
                   ${esc(
                     student.contact ||
@@ -540,9 +591,7 @@ async function initAdmin() {
                   )}
                 </td>
 
-
                 <td>
-
                   <span
                     class="pill ${
                       student.registered
@@ -550,20 +599,15 @@ async function initAdmin() {
                         : "gold"
                     }"
                   >
-
                     ${
                       student.registered
                         ? "REGISTERED"
                         : "PENDING"
                     }
-
                   </span>
-
                 </td>
 
-
                 <td>
-
                   <span
                     class="pill ${
                       student.active === false
@@ -571,20 +615,15 @@ async function initAdmin() {
                         : "green"
                     }"
                   >
-
                     ${
                       student.active === false
                         ? "INACTIVE"
                         : "ACTIVE"
                     }
-
                   </span>
-
                 </td>
 
-
                 <td>
-
                   <button
                     class="delete-student admin-btn danger"
                     data-id="${esc(student.id)}"
@@ -596,7 +635,6 @@ async function initAdmin() {
                   >
                     Delete
                   </button>
-
                 </td>
 
               </tr>
@@ -682,10 +720,6 @@ async function initAdmin() {
           student.active === false
       ).length;
 
-
-    /* =========================
-       BOOK MANAGEMENT COUNTS
-    ========================= */
 
     updateBookManagement();
 
@@ -855,7 +889,6 @@ async function initAdmin() {
 
         <div>
           <small>USERNAME</small>
-
           <strong>
             ${esc(
               student.username ||
@@ -864,10 +897,8 @@ async function initAdmin() {
           </strong>
         </div>
 
-
         <div>
           <small>PASSWORD</small>
-
           <strong>
             ${esc(
               student.password ||
@@ -876,10 +907,8 @@ async function initAdmin() {
           </strong>
         </div>
 
-
         <div>
           <small>ASSIGNED BOOK</small>
-
           <strong>
             ${esc(
               bookName(
@@ -889,10 +918,8 @@ async function initAdmin() {
           </strong>
         </div>
 
-
         <div>
           <small>FULL NAME</small>
-
           <strong>
             ${esc(
               student.fullName ||
@@ -901,10 +928,8 @@ async function initAdmin() {
           </strong>
         </div>
 
-
         <div>
           <small>DISTRICT</small>
-
           <strong>
             ${esc(
               student.district ||
@@ -913,10 +938,8 @@ async function initAdmin() {
           </strong>
         </div>
 
-
         <div>
           <small>CONTACT NUMBER</small>
-
           <strong>
             ${esc(
               student.contact ||
@@ -925,10 +948,8 @@ async function initAdmin() {
           </strong>
         </div>
 
-
         <div>
           <small>REGISTRATION</small>
-
           <strong>
             ${
               student.registered
@@ -938,10 +959,8 @@ async function initAdmin() {
           </strong>
         </div>
 
-
         <div>
           <small>ACCOUNT</small>
-
           <strong>
             ${
               student.active === false
@@ -965,7 +984,7 @@ async function initAdmin() {
 
   /* =========================
      CREATE STUDENT
-  ========================= */
+========================= */
 
   async function createStudent(
     username,
@@ -976,15 +995,12 @@ async function initAdmin() {
     username =
       username.trim();
 
-
     password =
       password.trim();
 
 
     if (
-      !validUsername(
-        username
-      )
+      !validUsername(username)
     ) {
 
       throw new Error(
@@ -1017,19 +1033,26 @@ async function initAdmin() {
     }
 
 
-    const ref =
+    /*
+     * Username lookup.
+     */
+    const usernameRef =
       doc(
         db,
-        "students",
+        "studentsByUsername",
         username
       );
 
 
-    const existing =
-      await getDoc(ref);
+    const existingUsername =
+      await getDoc(
+        usernameRef
+      );
 
 
-    if (existing.exists()) {
+    if (
+      existingUsername.exists()
+    ) {
 
       throw new Error(
         "That username already exists."
@@ -1038,38 +1061,161 @@ async function initAdmin() {
     }
 
 
-    await setDoc(
-      ref,
-      {
+    /*
+     * Firebase Auth email.
+     */
+    const email =
+      studentEmail(username);
 
-        username,
 
-        password,
+    let credential;
 
-        assignedBook:
-          `Book ${book}`,
 
-        fullName: "",
+    try {
 
-        district: "",
+      credential =
+        await createUserWithEmailAndPassword(
+          studentAuth,
+          email,
+          password
+        );
 
-        contact: "",
 
-        registered: false,
+    } catch (error) {
 
-        active: true,
+      console.error(
+        "STUDENT AUTH CREATE ERROR:",
+        error
+      );
 
-        createdAt:
-          new Date().toISOString()
+
+      if (
+        error?.code ===
+        "auth/email-already-in-use"
+      ) {
+
+        throw new Error(
+          "A Firebase account already exists for this username."
+        );
 
       }
-    );
+
+
+      if (
+        error?.code ===
+        "auth/weak-password"
+      ) {
+
+        throw new Error(
+          "Password is too weak. Please use at least 6 characters."
+        );
+
+      }
+
+
+      throw error;
+
+    }
+
+
+    const uid =
+      credential.user.uid;
+
+
+    /*
+     * Student profile.
+     */
+    const studentRef =
+      doc(
+        db,
+        "students",
+        uid
+      );
+
+
+    try {
+
+      await setDoc(
+        studentRef,
+        {
+
+          username,
+
+          password,
+
+          assignedBook:
+            `Book ${book}`,
+
+          fullName:
+            "",
+
+          district:
+            "",
+
+          contact:
+            "",
+
+          registered:
+            false,
+
+          active:
+            true,
+
+          authUid:
+            uid,
+
+          createdAt:
+            new Date().toISOString()
+
+        }
+      );
+
+
+      /*
+       * Username lookup.
+       */
+      await setDoc(
+        usernameRef,
+        {
+          username,
+          uid
+        }
+      );
+
+
+    } catch (error) {
+
+      console.error(
+        "STUDENT PROFILE CREATE ERROR:",
+        error
+      );
+
+
+      throw new Error(
+        "Firebase account was created, but the student profile could not be saved."
+      );
+
+    }
+
+
+    /*
+     * Sign out only the secondary Auth.
+     * Admin session stays active.
+     */
+    try {
+
+      await signOutStudent(
+        studentAuth
+      );
+
+    } catch (_) {}
 
 
     return {
       username,
       password,
-      book
+      book,
+      uid
     };
 
   }
@@ -1303,19 +1449,12 @@ async function initAdmin() {
 
 
     worksheet["!cols"] = [
-
       { wch: 20 },
-
       { wch: 20 },
-
       { wch: 28 },
-
       { wch: 25 },
-
       { wch: 18 },
-
       { wch: 18 }
-
     ];
 
 
@@ -1358,7 +1497,6 @@ async function initAdmin() {
     const exampleRows = [
 
       {
-
         "Username":
           "BF26-00001",
 
@@ -1376,11 +1514,9 @@ async function initAdmin() {
 
         "Contact Number":
           ""
-
       },
 
       {
-
         "Username":
           "BF26-00002",
 
@@ -1398,7 +1534,6 @@ async function initAdmin() {
 
         "Contact Number":
           ""
-
       }
 
     ];
@@ -1411,19 +1546,12 @@ async function initAdmin() {
 
 
     worksheet["!cols"] = [
-
       { wch: 20 },
-
       { wch: 20 },
-
       { wch: 25 },
-
       { wch: 25 },
-
       { wch: 18 },
-
       { wch: 18 }
-
     ];
 
 
@@ -1614,22 +1742,17 @@ async function initAdmin() {
         const usernameColumn =
           columns["username"];
 
-
         const passwordColumn =
           columns["password"];
-
 
         const bookColumn =
           columns["assigned book"];
 
-
         const fullNameColumn =
           columns["full name"];
 
-
         const districtColumn =
           columns["district"];
-
 
         const contactColumn =
           columns["contact number"];
@@ -1741,9 +1864,7 @@ async function initAdmin() {
             try {
 
               if (
-                !validUsername(
-                  username
-                )
+                !validUsername(username)
               ) {
 
                 throw new Error(
@@ -1773,16 +1894,21 @@ async function initAdmin() {
               }
 
 
-              const ref =
+              /*
+               * Check username lookup.
+               */
+              const usernameRef =
                 doc(
                   db,
-                  "students",
+                  "studentsByUsername",
                   username
                 );
 
 
               const existing =
-                await getDoc(ref);
+                await getDoc(
+                  usernameRef
+                );
 
 
               if (
@@ -1796,8 +1922,30 @@ async function initAdmin() {
               }
 
 
+              /*
+               * Create Firebase Auth user.
+               */
+              const credential =
+                await createUserWithEmailAndPassword(
+                  studentAuth,
+                  studentEmail(username),
+                  password
+                );
+
+
+              const uid =
+                credential.user.uid;
+
+
+              /*
+               * Create student profile.
+               */
               await setDoc(
-                ref,
+                doc(
+                  db,
+                  "students",
+                  uid
+                ),
                 {
 
                   username,
@@ -1820,7 +1968,11 @@ async function initAdmin() {
                       contact
                     ),
 
-                  active: true,
+                  active:
+                    true,
+
+                  authUid:
+                    uid,
 
                   createdAt:
                     new Date().toISOString()
@@ -1829,10 +1981,49 @@ async function initAdmin() {
               );
 
 
+              /*
+               * Create username lookup.
+               */
+              await setDoc(
+                usernameRef,
+                {
+                  username,
+                  uid
+                }
+              );
+
+
+              /*
+               * End secondary session.
+               */
+              try {
+
+                await signOutStudent(
+                  studentAuth
+                );
+
+              } catch (_) {}
+
+
               success++;
 
 
             } catch (error) {
+
+              console.error(
+                "IMPORT STUDENT ERROR:",
+                error
+              );
+
+
+              try {
+
+                await signOutStudent(
+                  studentAuth
+                );
+
+              } catch (_) {}
+
 
               failed++;
 
@@ -2044,7 +2235,6 @@ async function initAdmin() {
      BOOK DELETE SYSTEM
   ===================================================== */
 
-
   async function deleteBookStudents(
     bookNumber
   ) {
@@ -2052,10 +2242,6 @@ async function initAdmin() {
     const bookTitle =
       bookName(bookNumber);
 
-
-    /* =========================
-       FIND STUDENTS
-    ========================= */
 
     const matchingStudents =
       students.filter(
@@ -2071,10 +2257,6 @@ async function initAdmin() {
       matchingStudents.length;
 
 
-    /* =========================
-       NO STUDENTS
-    ========================= */
-
     if (count === 0) {
 
       alert(
@@ -2085,10 +2267,6 @@ async function initAdmin() {
 
     }
 
-
-    /* =========================
-       CONFIRMATION
-    ========================= */
 
     const confirmed =
       confirm(
@@ -2104,10 +2282,6 @@ async function initAdmin() {
       return;
     }
 
-
-    /* =========================
-       FIND BUTTON
-    ========================= */
 
     const buttonId =
       `deleteBook${bookNumber}`;
@@ -2134,10 +2308,6 @@ async function initAdmin() {
         0;
 
 
-      /* =========================
-         DELETE ONE BY ONE
-      ========================= */
-
       for (
         const student
         of matchingStudents
@@ -2157,10 +2327,6 @@ async function initAdmin() {
       }
 
 
-      /* =========================
-         UPDATE LOCAL DATA
-      ========================= */
-
       const deletedIds =
         new Set(
           matchingStudents.map(
@@ -2178,10 +2344,6 @@ async function initAdmin() {
             )
         );
 
-
-      /* =========================
-         REFRESH UI
-      ========================= */
 
       render();
 
@@ -2209,10 +2371,6 @@ async function initAdmin() {
         true
       );
 
-
-      /* =========================
-         RELOAD FROM FIRESTORE
-      ========================= */
 
       await loadStudents();
 
