@@ -6,7 +6,8 @@ import {
   getDocs,
   getDoc,
   collection,
-  deleteDoc
+  deleteDoc,
+  firebaseConfig
 } from "./firebase.js";
 
 import {
