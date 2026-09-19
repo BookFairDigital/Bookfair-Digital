@@ -1,12 +1,17 @@
 import {
+  auth,
   db,
   doc,
   getDoc,
+  signInWithEmailAndPassword,
   signOut
 } from "./firebase.js";
 
 const KEY = "bf_login";
 const STUDENT = "bf_student";
+
+const emailForUsername = (username) =>
+  username.trim().toLowerCase() + "@bookfairdigital.local";
 
 function saveStudent(data) {
   localStorage.setItem(
@@ -15,20 +20,21 @@ function saveStudent(data) {
   );
 }
 
-function getStudent() {
-  try {
-    return JSON.parse(
-      localStorage.getItem(STUDENT) || "null"
-    );
-  } catch {
-    return null;
-  }
+function showMessage(message, error = true) {
+  const element = document.getElementById("m");
+
+  if (!element) return;
+
+  element.textContent = message;
+  element.className = error
+    ? "error-msg"
+    : "success-msg";
 }
 
 
-// =========================
-// SIMPLE STUDENT LOGIN
-// =========================
+/* =========================
+   STUDENT LOGIN
+========================= */
 
 const login = document.getElementById("login");
 
@@ -44,93 +50,114 @@ if (login) {
     const password =
       document.getElementById("p").value;
 
-    const message =
-      document.getElementById("m");
-
     const button =
       login.querySelector(
         'button[type="submit"]'
       );
 
     if (!username || !password) {
-      message.textContent =
-        "Please enter your username and password.";
 
-      message.className =
-        "error-msg";
+      showMessage(
+        "Please enter your username and password."
+      );
 
       return;
     }
 
     button.disabled = true;
     button.innerHTML = "Checking…";
-    message.textContent = "";
+
+    showMessage(
+      "Checking your account…",
+      false
+    );
 
     try {
 
-      // Find student document using username
-      const ref =
+      /*
+       * Clear any previous session.
+       */
+      try {
+        await signOut(auth);
+      } catch (_) {}
+
+
+      /*
+       * Firebase Authentication login.
+       */
+      const credential =
+        await signInWithEmailAndPassword(
+          auth,
+          emailForUsername(username),
+          password
+        );
+
+
+      /*
+       * Student profile is stored using
+       * Firebase Auth UID.
+       */
+      const studentRef =
         doc(
           db,
           "students",
-          username
+          credential.user.uid
         );
 
-      const snap =
-        await getDoc(ref);
 
-      if (!snap.exists()) {
+      const snapshot =
+        await getDoc(studentRef);
 
-        message.textContent =
-          "Invalid username or password.";
 
-        message.className =
-          "error-msg";
+      if (!snapshot.exists()) {
+
+        await signOut(auth);
+
+        showMessage(
+          "Login succeeded, but your student profile is not configured. Please contact the administrator."
+        );
 
         return;
       }
+
 
       const data =
-        snap.data();
+        snapshot.data();
 
-      // Check active status
+
+      /*
+       * Account disabled.
+       */
       if (data.active === false) {
 
-        message.textContent =
-          "This account is inactive. Please contact the administrator.";
+        await signOut(auth);
 
-        message.className =
-          "error-msg";
-
-        return;
-      }
-
-      // Check password
-      if (
-        data.password !== password
-      ) {
-
-        message.textContent =
-          "Invalid username or password.";
-
-        message.className =
-          "error-msg";
+        showMessage(
+          "This student account is inactive. Please contact the administrator."
+        );
 
         return;
       }
 
-      // Save login
+
+      /*
+       * Save session data.
+       */
       localStorage.setItem(
         KEY,
         data.username || username
       );
 
-      saveStudent(data);
+      saveStudent({
+        ...data,
+        uid: credential.user.uid
+      });
 
-      // First login
-      if (
-        data.registered !== true
-      ) {
+
+      /*
+       * First login → registration.
+       */
+      if (data.registered !== true) {
 
         location.href =
           "register.html";
@@ -138,22 +165,78 @@ if (login) {
         return;
       }
 
-      // Already registered
+
+      /*
+       * Already registered.
+       */
       location.href =
         "dashboard.html";
 
-    } catch (err) {
+
+    } catch (error) {
 
       console.error(
-        "LOGIN ERROR:",
-        err
+        "STUDENT LOGIN ERROR:",
+        error
       );
 
-      message.textContent =
-        "Could not connect to the database. Please try again.";
+      const code =
+        error?.code || "";
 
-      message.className =
-        "error-msg";
+      let message =
+        "Incorrect username or password.";
+
+      if (
+        code ===
+        "auth/user-not-found"
+      ) {
+
+        message =
+          "This username is not registered.";
+
+      } else if (
+        code ===
+        "auth/invalid-credential"
+      ) {
+
+        message =
+          "Incorrect username or password.";
+
+      } else if (
+        code ===
+        "auth/wrong-password"
+      ) {
+
+        message =
+          "Incorrect username or password.";
+
+      } else if (
+        code ===
+        "auth/too-many-requests"
+      ) {
+
+        message =
+          "Too many login attempts. Please wait a few minutes and try again.";
+
+      } else if (
+        code ===
+        "auth/network-request-failed"
+      ) {
+
+        message =
+          "Network error. Please check your internet connection and try again.";
+
+      } else if (
+        code ===
+        "permission-denied"
+      ) {
+
+        message =
+          "Your account exists, but the student profile cannot be accessed. Please contact the administrator.";
+
+      }
+
+      showMessage(message);
 
     } finally {
 
@@ -161,28 +244,37 @@ if (login) {
 
       button.innerHTML =
         'Login <span>→</span>';
+
     }
+
   });
+
 }
 
 
-// =========================
-// DASHBOARD PROTECTION
-// =========================
+/* =========================
+   DASHBOARD PROTECTION
+========================= */
 
 if (
-  document.getElementById("dashboard") &&
-  !getStudent()
+  document.getElementById("dashboard")
 ) {
 
-  location.href =
-    "login.html";
+  const student =
+    localStorage.getItem(STUDENT);
+
+  if (!student) {
+
+    location.href =
+      "login.html";
+  }
+
 }
 
 
-// =========================
-// LOGOUT
-// =========================
+/* =========================
+   LOGOUT
+========================= */
 
 document
   .querySelectorAll("[data-logout]")
@@ -192,19 +284,30 @@ document
       "click",
       async () => {
 
+        try {
+          await signOut(auth);
+        } catch (error) {
+          console.error(
+            "LOGOUT ERROR:",
+            error
+          );
+        }
+
         localStorage.removeItem(KEY);
         localStorage.removeItem(STUDENT);
 
         location.href =
           "login.html";
+
       }
     );
+
   });
 
 
-// =========================
-// VIEWER PROTECTION
-// =========================
+/* =========================
+   VIEWER PROTECTION
+========================= */
 
 document.addEventListener(
   "contextmenu",
@@ -215,8 +318,10 @@ document.addEventListener(
         "viewer"
       )
     ) {
+
       e.preventDefault();
     }
+
   }
 );
 
@@ -250,5 +355,6 @@ document.addEventListener(
 
       e.preventDefault();
     }
+
   }
 );
