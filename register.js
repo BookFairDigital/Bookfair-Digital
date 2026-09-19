@@ -1,10 +1,10 @@
 import {
-  auth,
   db,
   doc,
   getDoc,
   setDoc
 } from "./firebase.js";
+
 
 const form =
   document.getElementById("reg");
@@ -37,6 +37,7 @@ function showMessage(
     error
       ? "error-msg"
       : "success-msg";
+
 }
 
 
@@ -46,13 +47,32 @@ function showMessage(
 
 async function loadStudent() {
 
-  const user =
-    auth.currentUser;
+  const saved =
+    localStorage.getItem(
+      "bf_student"
+    );
 
-  if (!user) {
+  if (!saved) {
 
     location.href =
       "login.html";
+
+    return;
+  }
+
+
+  const student =
+    JSON.parse(saved);
+
+  const docId =
+    student.docId;
+
+
+  if (!docId) {
+
+    showMessage(
+      "Your login session is invalid. Please login again."
+    );
 
     return;
   }
@@ -64,9 +84,8 @@ async function loadStudent() {
       doc(
         db,
         "students",
-        user.uid
+        docId
       );
-
 
     const snap =
       await getDoc(ref);
@@ -86,7 +105,9 @@ async function loadStudent() {
       snap.data();
 
 
-    if (data.active === false) {
+    if (
+      data.active === false
+    ) {
 
       showMessage(
         "This student account is inactive."
@@ -97,20 +118,26 @@ async function loadStudent() {
 
 
     usernameInput.value =
-      data.username || "";
+      data.username ||
+      student.username ||
+      "";
 
     usernameInput.dataset.username =
-      data.username || "";
-
+      data.username ||
+      student.username ||
+      "";
 
     nameInput.value =
-      data.fullName || "";
+      data.fullName ||
+      "";
 
     districtInput.value =
-      data.district || "";
+      data.district ||
+      "";
 
     phoneInput.value =
-      data.contact || "";
+      data.contact ||
+      "";
 
 
   } catch (error) {
@@ -130,7 +157,7 @@ async function loadStudent() {
 
 
 /* =========================
-   REGISTRATION
+   SAVE REGISTRATION
 ========================= */
 
 form.addEventListener(
@@ -140,11 +167,12 @@ form.addEventListener(
     e.preventDefault();
 
 
-    const user =
-      auth.currentUser;
+    const saved =
+      localStorage.getItem(
+        "bf_student"
+      );
 
-
-    if (!user) {
+    if (!saved) {
 
       location.href =
         "login.html";
@@ -153,9 +181,22 @@ form.addEventListener(
     }
 
 
-    const username =
-      usernameInput.dataset.username ||
-      usernameInput.value.trim();
+    const student =
+      JSON.parse(saved);
+
+    const docId =
+      student.docId;
+
+
+    if (!docId) {
+
+      showMessage(
+        "Your login session is invalid. Please login again."
+      );
+
+      return;
+    }
+
 
     const fullName =
       nameInput.value.trim();
@@ -168,7 +209,6 @@ form.addEventListener(
 
 
     if (
-      !username ||
       !fullName ||
       !district ||
       !contact
@@ -203,16 +243,11 @@ form.addEventListener(
 
     try {
 
-      /*
-       * IMPORTANT:
-       * Use Firebase Auth UID,
-       * NOT username, for the document.
-       */
       const ref =
         doc(
           db,
           "students",
-          user.uid
+          docId
         );
 
 
@@ -225,6 +260,7 @@ form.addEventListener(
         throw new Error(
           "Student profile not found."
         );
+
       }
 
 
@@ -233,34 +269,19 @@ form.addEventListener(
 
 
       if (
-        old.authUid &&
-        old.authUid !== user.uid
+        old.active === false
       ) {
-
-        throw new Error(
-          "This account is not authorized for this student profile."
-        );
-      }
-
-
-      if (old.active === false) {
 
         throw new Error(
           "This student account is inactive."
         );
+
       }
 
 
-      /*
-       * Only update registration fields.
-       */
       await setDoc(
         ref,
         {
-          username:
-            old.username ||
-            username,
-
           fullName:
             fullName,
 
@@ -272,7 +293,6 @@ form.addEventListener(
 
           registered:
             true
-
         },
         {
           merge: true
@@ -280,18 +300,17 @@ form.addEventListener(
       );
 
 
-      /*
-       * Update local session.
-       */
       const updatedStudent = {
+
         ...old,
 
-        uid:
-          user.uid,
+        ...student,
+
+        docId,
 
         username:
           old.username ||
-          username,
+          student.username,
 
         fullName,
 
@@ -301,6 +320,7 @@ form.addEventListener(
 
         registered:
           true
+
       };
 
 
@@ -308,7 +328,6 @@ form.addEventListener(
         "bf_login",
         updatedStudent.username
       );
-
 
       localStorage.setItem(
         "bf_student",
@@ -324,16 +343,15 @@ form.addEventListener(
       );
 
 
-      /*
-       * Give Firestore a moment to finish
-       * before changing page.
-       */
-      setTimeout(() => {
+      setTimeout(
+        () => {
 
-        location.href =
-          "dashboard.html";
+          location.href =
+            "dashboard.html";
 
-      }, 300);
+        },
+        300
+      );
 
 
     } catch (error) {
@@ -343,12 +361,10 @@ form.addEventListener(
         error
       );
 
-
       showMessage(
         error.message ||
         "Could not save registration. Please try again."
       );
-
 
     } finally {
 
