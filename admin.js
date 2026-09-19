@@ -35,7 +35,7 @@ const ADMIN_UID =
 
 
 /* =========================
-   STUDENT AUTH
+   SECONDARY STUDENT AUTH
 ========================= */
 
 const studentApp =
@@ -62,7 +62,7 @@ function studentEmail(username) {
 
 
 /* =========================
-   AUTH CHECK
+   ADMIN AUTH CHECK
 ========================= */
 
 onAuthStateChanged(
@@ -102,7 +102,7 @@ onAuthStateChanged(
 
 
 /* =========================
-   ADMIN INIT
+   ADMIN
 ========================= */
 
 async function initAdmin() {
@@ -110,10 +110,6 @@ async function initAdmin() {
   const $ = (id) =>
     document.getElementById(id);
 
-
-  /* =========================
-     ELEMENTS
-  ========================= */
 
   const rows =
     $("rows");
@@ -130,10 +126,6 @@ async function initAdmin() {
   const detailModal =
     $("detailModal");
 
-
-  /* =========================
-     DATA
-  ========================= */
 
   let students = [];
 
@@ -372,7 +364,7 @@ async function initAdmin() {
 
 
   /* =========================
-     UPDATE BOOK MANAGEMENT
+     BOOK COUNTS
   ========================= */
 
   function updateBookManagement() {
@@ -407,37 +399,21 @@ async function initAdmin() {
       ).length;
 
 
-    const book1Count =
-      $("book1Count");
-
-    const book2Count =
-      $("book2Count");
-
-    const book3Count =
-      $("book3Count");
-
-
-    if (book1Count) {
-
-      book1Count.textContent =
+    if ($("book1Count")) {
+      $("book1Count").textContent =
         book01;
-
     }
 
 
-    if (book2Count) {
-
-      book2Count.textContent =
+    if ($("book2Count")) {
+      $("book2Count").textContent =
         book02;
-
     }
 
 
-    if (book3Count) {
-
-      book3Count.textContent =
+    if ($("book3Count")) {
+      $("book3Count").textContent =
         book03;
-
     }
 
   }
@@ -655,70 +631,82 @@ async function initAdmin() {
     }
 
 
-    /* =========================
-       MAIN STATS
-    ========================= */
-
-    $("total").textContent =
-      students.length;
+    if ($("total")) {
+      $("total").textContent =
+        students.length;
+    }
 
 
-    $("b1").textContent =
-      students.filter(
-        (student) =>
-          normalizeBook(
-            student.assignedBook ||
-            student.book
-          ) === "01"
-      ).length;
+    if ($("b1")) {
+      $("b1").textContent =
+        students.filter(
+          (student) =>
+            normalizeBook(
+              student.assignedBook ||
+              student.book
+            ) === "01"
+        ).length;
+    }
 
 
-    $("b2").textContent =
-      students.filter(
-        (student) =>
-          normalizeBook(
-            student.assignedBook ||
-            student.book
-          ) === "02"
-      ).length;
+    if ($("b2")) {
+      $("b2").textContent =
+        students.filter(
+          (student) =>
+            normalizeBook(
+              student.assignedBook ||
+              student.book
+            ) === "02"
+        ).length;
+    }
 
 
-    $("b3").textContent =
-      students.filter(
-        (student) =>
-          normalizeBook(
-            student.assignedBook ||
-            student.book
-          ) === "03"
-      ).length;
+    if ($("b3")) {
+      $("b3").textContent =
+        students.filter(
+          (student) =>
+            normalizeBook(
+              student.assignedBook ||
+              student.book
+            ) === "03"
+        ).length;
+    }
 
 
-    $("registered").textContent =
-      students.filter(
-        (student) =>
-          student.registered === true
-      ).length;
+    if ($("registered")) {
+      $("registered").textContent =
+        students.filter(
+          (student) =>
+            student.registered === true
+        ).length;
+    }
 
 
-    $("pending").textContent =
-      students.filter(
-        (student) =>
-          student.registered !== true
-      ).length;
+    if ($("pending")) {
+      $("pending").textContent =
+        students.filter(
+          (student) =>
+            student.registered !== true
+        ).length;
+    }
 
 
-    $("active").textContent =
-      students.filter(
-        (student) =>
-          student.active !== false
-      ).length;
+    if ($("active")) {
+      $("active").textContent =
+        students.filter(
+          (student) =>
+            student.active !== false
+        ).length;
+    }
 
 
-    $("inactive").textContent =
-      students.filter(
-        (student) =>
-          student.active === false
-      ).length;
+    if ($("inactive")) {
+      $("inactive").textContent =
+        students.filter(
+          (student) =>
+            student.active === false
+        ).length;
+    }
 
 
     updateBookManagement();
@@ -758,7 +746,7 @@ async function initAdmin() {
 
 
     /* =========================
-       SINGLE DELETE
+       DELETE
     ========================= */
 
     document
@@ -859,7 +847,7 @@ async function initAdmin() {
 
 
   /* =========================
-     SHOW STUDENT DETAILS
+     DETAILS
   ========================= */
 
   function showDetails(id) {
@@ -971,7 +959,6 @@ async function initAdmin() {
         </div>
 
       </div>
-
     `;
 
 
@@ -982,9 +969,9 @@ async function initAdmin() {
   }
 
 
-  /* =========================
-     CREATE STUDENT
-========================= */
+  /* =====================================================
+     CREATE OR MIGRATE STUDENT
+  ===================================================== */
 
   async function createStudent(
     username,
@@ -1034,9 +1021,9 @@ async function initAdmin() {
 
 
     /*
-     * Username lookup.
+     * First check the new username lookup.
      */
-    const usernameRef =
+    const usernameLookup =
       doc(
         db,
         "studentsByUsername",
@@ -1044,30 +1031,87 @@ async function initAdmin() {
       );
 
 
-    const existingUsername =
+    const lookupSnapshot =
       await getDoc(
-        usernameRef
+        usernameLookup
       );
 
 
     if (
-      existingUsername.exists()
+      lookupSnapshot.exists()
     ) {
 
       throw new Error(
-        "That username already exists."
+        "That username is already connected to a Firebase account."
       );
 
     }
 
 
     /*
-     * Firebase Auth email.
+     * IMPORTANT:
+     *
+     * Check the OLD Firestore structure too:
+     *
+     * students/BF26-000001
+     *
+     * This allows existing students to be
+     * migrated without changing their username.
      */
-    const email =
-      studentEmail(username);
+    const oldRef =
+      doc(
+        db,
+        "students",
+        username
+      );
 
 
+    const oldSnapshot =
+      await getDoc(
+        oldRef
+      );
+
+
+    let oldData = null;
+
+
+    if (
+      oldSnapshot.exists()
+    ) {
+
+      oldData =
+        oldSnapshot.data();
+
+    }
+
+
+    /*
+     * If an old account exists,
+     * preserve its data.
+     */
+    if (
+      oldData &&
+      oldData.username
+    ) {
+
+      /*
+       * If admin typed a new password,
+       * use that password for the Firebase Auth
+       * account.
+       *
+       * Existing username remains unchanged.
+       */
+      password =
+        password ||
+        oldData.password ||
+        "";
+
+    }
+
+
+    /*
+     * Firebase Authentication account.
+     */
     let credential;
 
 
@@ -1076,7 +1120,7 @@ async function initAdmin() {
       credential =
         await createUserWithEmailAndPassword(
           studentAuth,
-          email,
+          studentEmail(username),
           password
         );
 
@@ -1095,7 +1139,7 @@ async function initAdmin() {
       ) {
 
         throw new Error(
-          "A Firebase account already exists for this username."
+          "A Firebase Auth account already exists for this username."
         );
 
       }
@@ -1123,51 +1167,60 @@ async function initAdmin() {
 
 
     /*
-     * Student profile.
+     * Preserve old student information.
      */
-    const studentRef =
-      doc(
-        db,
-        "students",
-        uid
-      );
+    const studentData = {
+
+      username:
+        oldData?.username ||
+        username,
+
+      password,
+
+      assignedBook:
+        oldData?.assignedBook ||
+        `Book ${book}`,
+
+      fullName:
+        oldData?.fullName ||
+        "",
+
+      district:
+        oldData?.district ||
+        "",
+
+      contact:
+        oldData?.contact ||
+        "",
+
+      registered:
+        oldData?.registered === true,
+
+      active:
+        oldData?.active !== false,
+
+      authUid:
+        uid,
+
+      createdAt:
+        oldData?.createdAt ||
+        new Date().toISOString()
+
+    };
 
 
     try {
 
+      /*
+       * New UID-based student profile.
+       */
       await setDoc(
-        studentRef,
-        {
-
-          username,
-
-          password,
-
-          assignedBook:
-            `Book ${book}`,
-
-          fullName:
-            "",
-
-          district:
-            "",
-
-          contact:
-            "",
-
-          registered:
-            false,
-
-          active:
-            true,
-
-          authUid:
-            uid,
-
-          createdAt:
-            new Date().toISOString()
-
-        }
+        doc(
+          db,
+          "students",
+          uid
+        ),
+        studentData
       );
 
 
@@ -1175,18 +1228,36 @@ async function initAdmin() {
        * Username lookup.
        */
       await setDoc(
-        usernameRef,
+        usernameLookup,
         {
-          username,
+          username:
+            studentData.username,
+
           uid
+
         }
       );
+
+
+      /*
+       * Old document is no longer needed
+       * after successful migration.
+       */
+      if (
+        oldSnapshot.exists()
+      ) {
+
+        await deleteDoc(
+          oldRef
+        );
+
+      }
 
 
     } catch (error) {
 
       console.error(
-        "STUDENT PROFILE CREATE ERROR:",
+        "STUDENT PROFILE ERROR:",
         error
       );
 
@@ -1199,8 +1270,8 @@ async function initAdmin() {
 
 
     /*
-     * Sign out only the secondary Auth.
-     * Admin session stays active.
+     * Close only the secondary student Auth.
+     * Admin remains logged in.
      */
     try {
 
@@ -1212,10 +1283,19 @@ async function initAdmin() {
 
 
     return {
-      username,
+
+      username:
+        studentData.username,
+
       password,
+
       book,
-      uid
+
+      uid,
+
+      migrated:
+        Boolean(oldData)
+
     };
 
   }
@@ -1247,7 +1327,7 @@ async function initAdmin() {
 
 
   /* =========================
-     CLOSE MODAL
+     CLOSE MODALS
   ========================= */
 
   function closeModal() {
@@ -1343,33 +1423,51 @@ async function initAdmin() {
 
       try {
 
-        await createStudent(
-          username,
-          password,
-          book
-        );
+        const result =
+          await createStudent(
+            username,
+            password,
+            book
+          );
 
 
         closeModal();
 
 
-        showToast(
-          `Student ${username} created successfully.`
-        );
-
-
         await loadStudents();
 
 
-        alert(
-          `STUDENT ACCOUNT CREATED\n\nUsername: ${username}\nPassword: ${password}\nAssigned: ${bookName(book)}\n\nSave these credentials securely.`
-        );
+        if (
+          result.migrated
+        ) {
+
+          showToast(
+            `Student ${username} migrated successfully.`
+          );
+
+
+          alert(
+            `STUDENT ACCOUNT MIGRATED\n\nUsername: ${username}\nPassword: ${password}\nAssigned: ${bookName(book)}\n\nThe username has not changed. The student can now use the normal login page.`
+          );
+
+        } else {
+
+          showToast(
+            `Student ${username} created successfully.`
+          );
+
+
+          alert(
+            `STUDENT ACCOUNT CREATED\n\nUsername: ${username}\nPassword: ${password}\nAssigned: ${bookName(book)}\n\nThe student can now use the normal login page.`
+          );
+
+        }
 
 
       } catch (error) {
 
         console.error(
-          "CREATE ERROR:",
+          "CREATE/MIGRATE ERROR:",
           error
         );
 
@@ -1415,9 +1513,7 @@ async function initAdmin() {
             student.password || "",
 
           "Assigned Book":
-            student.book
-              ? `Book ${student.book}`
-              : student.assignedBook || "",
+            student.assignedBook || "",
 
           "Full Name":
             student.fullName || "",
@@ -1498,7 +1594,7 @@ async function initAdmin() {
 
       {
         "Username":
-          "BF26-00001",
+          "BF26-000001",
 
         "Password":
           "BookFair@123",
@@ -1518,13 +1614,33 @@ async function initAdmin() {
 
       {
         "Username":
-          "BF26-00002",
+          "BF26-10001",
 
         "Password":
           "BookFair@456",
 
         "Assigned Book":
           "Book 02",
+
+        "Full Name":
+          "",
+
+        "District":
+          "",
+
+        "Contact Number":
+          ""
+      },
+
+      {
+        "Username":
+          "BF26-11001",
+
+        "Password":
+          "BookFair@789",
+
+        "Assigned Book":
+          "Book 03",
 
         "Full Name":
           "",
@@ -1864,7 +1980,9 @@ async function initAdmin() {
             try {
 
               if (
-                !validUsername(username)
+                !validUsername(
+                  username
+                )
               ) {
 
                 throw new Error(
@@ -1895,7 +2013,8 @@ async function initAdmin() {
 
 
               /*
-               * Check username lookup.
+               * Check whether this username
+               * already has a lookup.
                */
               const usernameRef =
                 doc(
@@ -1905,25 +2024,48 @@ async function initAdmin() {
                 );
 
 
-              const existing =
+              const existingLookup =
                 await getDoc(
                   usernameRef
                 );
 
 
               if (
-                existing.exists()
+                existingLookup.exists()
               ) {
 
                 throw new Error(
-                  "Username already exists."
+                  "Username is already connected to a Firebase account."
                 );
 
               }
 
 
               /*
-               * Create Firebase Auth user.
+               * Check old Firestore account.
+               */
+              const oldRef =
+                doc(
+                  db,
+                  "students",
+                  username
+                );
+
+
+              const oldSnapshot =
+                await getDoc(
+                  oldRef
+                );
+
+
+              const oldData =
+                oldSnapshot.exists()
+                  ? oldSnapshot.data()
+                  : null;
+
+
+              /*
+               * Create Firebase Auth.
                */
               const credential =
                 await createUserWithEmailAndPassword(
@@ -1938,7 +2080,7 @@ async function initAdmin() {
 
 
               /*
-               * Create student profile.
+               * Create UID profile.
                */
               await setDoc(
                 doc(
@@ -1948,33 +2090,47 @@ async function initAdmin() {
                 ),
                 {
 
-                  username,
+                  username:
+                    oldData?.username ||
+                    username,
 
                   password,
 
                   assignedBook:
+                    oldData?.assignedBook ||
                     `Book ${book}`,
 
-                  fullName,
+                  fullName:
+                    fullName ||
+                    oldData?.fullName ||
+                    "",
 
-                  district,
+                  district:
+                    district ||
+                    oldData?.district ||
+                    "",
 
-                  contact,
+                  contact:
+                    contact ||
+                    oldData?.contact ||
+                    "",
 
                   registered:
                     Boolean(
-                      fullName &&
-                      district &&
-                      contact
+                      fullName ||
+                      district ||
+                      contact ||
+                      oldData?.registered
                     ),
 
                   active:
-                    true,
+                    oldData?.active !== false,
 
                   authUid:
                     uid,
 
                   createdAt:
+                    oldData?.createdAt ||
                     new Date().toISOString()
 
                 }
@@ -1982,7 +2138,7 @@ async function initAdmin() {
 
 
               /*
-               * Create username lookup.
+               * Username lookup.
                */
               await setDoc(
                 usernameRef,
@@ -1994,8 +2150,20 @@ async function initAdmin() {
 
 
               /*
-               * End secondary session.
+               * Delete old username document
+               * after successful migration.
                */
+              if (
+                oldSnapshot.exists()
+              ) {
+
+                await deleteDoc(
+                  oldRef
+                );
+
+              }
+
+
               try {
 
                 await signOutStudent(
@@ -2192,7 +2360,7 @@ async function initAdmin() {
 
 
   /* =========================
-     SEARCH / FILTERS
+     SEARCH
   ========================= */
 
   $("search").oninput =
@@ -2231,9 +2399,9 @@ async function initAdmin() {
     };
 
 
-  /* =====================================================
-     BOOK DELETE SYSTEM
-  ===================================================== */
+  /* =========================
+     DELETE BOOK STUDENTS
+  ========================= */
 
   async function deleteBookStudents(
     bookNumber
@@ -2283,12 +2451,10 @@ async function initAdmin() {
     }
 
 
-    const buttonId =
-      `deleteBook${bookNumber}`;
-
-
     const button =
-      $(buttonId);
+      $(
+        `deleteBook${bookNumber}`
+      );
 
 
     if (button) {
@@ -2367,7 +2533,7 @@ async function initAdmin() {
 
 
       showToast(
-        `Could not completely delete ${bookTitle}. Please check the dashboard.`,
+        `Could not completely delete ${bookTitle}.`,
         true
       );
 
@@ -2393,7 +2559,7 @@ async function initAdmin() {
 
 
   /* =========================
-     BOOK 01 DELETE
+     BOOK DELETE BUTTONS
   ========================= */
 
   const deleteBook01 =
@@ -2414,10 +2580,6 @@ async function initAdmin() {
   }
 
 
-  /* =========================
-     BOOK 02 DELETE
-  ========================= */
-
   const deleteBook02 =
     $("deleteBook02");
 
@@ -2435,10 +2597,6 @@ async function initAdmin() {
 
   }
 
-
-  /* =========================
-     BOOK 03 DELETE
-  ========================= */
 
   const deleteBook03 =
     $("deleteBook03");
