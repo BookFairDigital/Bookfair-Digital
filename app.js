@@ -11,6 +11,7 @@ import {
 
 const LOGIN_KEY = "bf_login";
 const STUDENT_KEY = "bf_student";
+const STUDENT_DOC_KEY = "bf_student_doc";
 
 
 /* =========================
@@ -154,11 +155,6 @@ if (login) {
               item.data();
 
 
-            /*
-             * Username
-             *
-             * Exact match.
-             */
             const storedUsername =
               String(
                 data.username ||
@@ -168,11 +164,6 @@ if (login) {
               ).trim();
 
 
-            /*
-             * Password
-             *
-             * No modification.
-             */
             const storedPassword =
               String(
                 data.password ||
@@ -180,6 +171,11 @@ if (login) {
                 ""
               );
 
+
+            /*
+             * EXACT username +
+             * EXACT password
+             */
 
             if (
               storedUsername === username &&
@@ -231,7 +227,7 @@ if (login) {
 
 
         /* =====================
-           STUDENT DATA
+           ASSIGNED BOOK
         ===================== */
 
         const assignedBook =
@@ -239,6 +235,10 @@ if (login) {
           foundStudent["Assigned Book"] ||
           "";
 
+
+        /* =====================
+           COMPLETE STUDENT OBJECT
+        ===================== */
 
         const student = {
 
@@ -248,6 +248,11 @@ if (login) {
             foundStudent.authUid ||
             foundStudent.uid ||
             "",
+
+          /*
+           * VERY IMPORTANT
+           * Actual Firestore document ID
+           */
 
           docId:
             foundId,
@@ -275,8 +280,43 @@ if (login) {
         );
 
 
+        /*
+         * Save the EXACT Firestore
+         * document ID separately.
+         */
+
+        localStorage.setItem(
+          STUDENT_DOC_KEY,
+          String(foundId)
+        );
+
+
+        /*
+         * Save complete student.
+         */
+
         saveStudent(
           student
+        );
+
+
+        console.log(
+          "LOGIN SUCCESS"
+        );
+
+        console.log(
+          "Username:",
+          student.username
+        );
+
+        console.log(
+          "Firestore Document ID:",
+          foundId
+        );
+
+        console.log(
+          "Assigned Book:",
+          student.assignedBook
         );
 
 
@@ -297,8 +337,9 @@ if (login) {
           setTimeout(
             () => {
 
-              location.href =
-                "register.html";
+              location.replace(
+                "register.html"
+              );
 
             },
             300
@@ -311,7 +352,8 @@ if (login) {
 
 
         /* =====================
-           DASHBOARD
+           REGISTERED STUDENT
+           → DASHBOARD
         ===================== */
 
         showMessage(
@@ -323,15 +365,18 @@ if (login) {
         setTimeout(
           () => {
 
-            location.href =
-              "dashboard.html";
+            location.replace(
+              "dashboard.html"
+            );
 
           },
           300
         );
 
 
-      } catch (error) {
+      }
+
+      catch (error) {
 
         console.error(
           "STUDENT LOGIN ERROR:",
@@ -343,8 +388,9 @@ if (login) {
           "Could not connect to the student database. Please try again."
         );
 
+      }
 
-      } finally {
+      finally {
 
         button.disabled =
           false;
@@ -390,8 +436,9 @@ if (
 
   if (!student) {
 
-    location.href =
-      "login.html";
+    location.replace(
+      "login.html"
+    );
 
   }
 
@@ -422,9 +469,14 @@ if (logout) {
         STUDENT_KEY
       );
 
+      localStorage.removeItem(
+        STUDENT_DOC_KEY
+      );
 
-      location.href =
-        "login.html";
+
+      location.replace(
+        "login.html"
+      );
 
     }
   );
