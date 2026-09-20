@@ -15,9 +15,11 @@ const STUDENT_KEY = "bf_student";
 
 /* =========================
    BOOK CONFIG
+   ONLY BOOK 01, 02, 03
 ========================= */
 
 const BOOKS = [
+
   {
     number: "01",
     name: "Book 01",
@@ -46,7 +48,9 @@ const BOOKS = [
       "Digital answer resource for Book 03.",
     image: "",
     answerPage: "#"
-  },
+  }
+
+];
 
 
 /* =========================
@@ -70,21 +74,28 @@ function normalizeBook(value) {
 function getAssignedBook(student) {
 
   /*
-   * Main field used by the dashboard.
+   * Normal Firestore field
    */
   if (student.assignedBook) {
-    return String(student.assignedBook).trim();
+
+    return String(
+      student.assignedBook
+    ).trim();
+
   }
 
+
   /*
-   * Fallback for data imported using
-   * Excel column naming.
+   * Excel-style field name
    */
   if (student["Assigned Book"]) {
+
     return String(
       student["Assigned Book"]
     ).trim();
+
   }
+
 
   return "";
 
@@ -98,17 +109,26 @@ function getAssignedBook(student) {
 function renderBooks(student) {
 
   const grid =
-    document.getElementById("bookGrid");
+    document.getElementById(
+      "bookGrid"
+    );
 
-  if (!grid) return;
+
+  if (!grid) {
+    return;
+  }
 
 
   const assignedBook =
-    getAssignedBook(student);
+    getAssignedBook(
+      student
+    );
 
 
   const assignedNormalized =
-    normalizeBook(assignedBook);
+    normalizeBook(
+      assignedBook
+    );
 
 
   console.log(
@@ -116,89 +136,192 @@ function renderBooks(student) {
     student.username
   );
 
+
   console.log(
     "Assigned Book:",
     assignedBook
   );
 
 
+  /*
+   * Clear existing cards.
+   */
   grid.innerHTML = "";
 
 
-  BOOKS.forEach((book) => {
+  /*
+   * Create ONLY Book 01, 02, 03.
+   */
+  BOOKS.forEach(
+    (book) => {
 
-    const allowed =
-      assignedNormalized ===
-      normalizeBook(book.name);
-
-
-    const card =
-      document.createElement("article");
-
-
-    card.className =
-      allowed
-        ? "book-card book-unlocked"
-        : "book-card locked-card";
+      const allowed =
+        assignedNormalized ===
+        normalizeBook(
+          book.name
+        );
 
 
-    card.dataset.book =
-      book.name;
+      const card =
+        document.createElement(
+          "article"
+        );
 
 
-    /* =====================
-       UNLOCKED BOOK
-    ===================== */
+      /*
+       * Assigned book = unlocked
+       * Other books = locked
+       */
+      if (allowed) {
 
-    if (allowed) {
+        card.className =
+          "book-card book-unlocked";
 
-      card.innerHTML = `
+      } else {
 
-        <div class="book-cover">
+        card.className =
+          "book-card locked-card";
 
-          ${
-            book.image
-              ? `
-                <img
-                  src="${book.image}"
-                  alt="${book.title}"
-                >
-              `
-              : `
-                <div
-                  style="
-                    width:100%;
-                    height:100%;
-                    display:grid;
-                    place-items:center;
-                    color:rgba(255,255,255,.25);
-                    font-size:50px;
-                  "
-                >
-                  📖
-                </div>
-              `
-          }
+      }
 
-          <div class="status">
-            ● ASSIGNED TO YOU
+
+      card.dataset.book =
+        book.name;
+
+
+      /* =====================
+         UNLOCKED BOOK
+      ===================== */
+
+      if (allowed) {
+
+        card.innerHTML = `
+
+          <div class="book-cover">
+
+            ${
+              book.image
+                ? `
+                  <img
+                    src="${book.image}"
+                    alt="${book.title}"
+                  >
+                `
+                : `
+                  <div
+                    style="
+                      width:100%;
+                      height:100%;
+                      display:grid;
+                      place-items:center;
+                      font-size:50px;
+                    "
+                  >
+                    📖
+                  </div>
+                `
+            }
+
+            <div class="status">
+              ● ASSIGNED TO YOU
+            </div>
+
           </div>
 
-        </div>
+
+          <div class="book-content">
+
+            <div class="book-meta">
+
+              <span>
+                BOOK ${book.number}
+              </span>
+
+              <span>
+                •
+              </span>
+
+              <span>
+                DIGITAL RESOURCE
+              </span>
+
+            </div>
 
 
-        <div class="book-content">
+            <h3>
+              ${book.title}
+            </h3>
 
-          <div class="book-meta">
-            <span>
-              BOOK ${book.number}
-            </span>
 
-            <span>•</span>
+            <p>
+              ${book.description}
+            </p>
 
-            <span>
-              DIGITAL RESOURCE
-            </span>
+
+            ${
+              book.answerPage !== "#"
+                ? `
+                  <a
+                    class="open-btn"
+                    href="${book.answerPage}"
+                  >
+
+                    <span>
+                      Open Answers
+                    </span>
+
+                    <span>
+                      →
+                    </span>
+
+                  </a>
+                `
+                : `
+                  <button
+                    class="open-btn"
+                    type="button"
+                    disabled
+                    style="
+                      opacity:.45;
+                      cursor:not-allowed;
+                      border:0;
+                    "
+                  >
+
+                    <span>
+                      Coming Soon
+                    </span>
+
+                    <span>
+                      →
+                    </span>
+
+                  </button>
+                `
+            }
+
+          </div>
+
+        `;
+
+      }
+
+
+      /* =====================
+         LOCKED BOOK
+      ===================== */
+
+      else {
+
+        card.innerHTML = `
+
+          <div class="lock-icon">
+            🔒
+          </div>
+
+
+          <div class="locked-label">
+            LOCKED
           </div>
 
 
@@ -208,113 +331,43 @@ function renderBooks(student) {
 
 
           <p>
-            ${book.description}
+            This digital resource has not
+            been assigned to your account.
           </p>
 
 
-          ${
-            book.answerPage !== "#"
-              ? `
-                <a
-                  class="open-btn"
-                  href="${book.answerPage}"
-                >
-                  <span>
-                    Open Answers
-                  </span>
+          <button
+            type="button"
+            class="buy-btn"
+            data-buy-book="${book.name}"
+          >
 
-                  <span>
-                    →
-                  </span>
-                </a>
-              `
-              : `
-                <button
-                  class="open-btn"
-                  type="button"
-                  disabled
-                  style="
-                    opacity:.45;
-                    cursor:not-allowed;
-                    border:0;
-                  "
-                >
-                  <span>
-                    Coming Soon
-                  </span>
+            <span>
+              Buy Book
+            </span>
 
-                  <span>
-                    →
-                  </span>
-                </button>
-              `
-          }
+            <span>
+              →
+            </span>
 
-        </div>
+          </button>
 
-      `;
+
+          <div class="locked-access">
+            ACCESS NOT ASSIGNED
+          </div>
+
+        `;
+
+      }
+
+
+      grid.appendChild(
+        card
+      );
 
     }
-
-
-    /* =====================
-       LOCKED BOOK
-    ===================== */
-
-    else {
-
-      card.innerHTML = `
-
-        <div class="lock-icon">
-          🔒
-        </div>
-
-
-        <div class="locked-label">
-          LOCKED
-        </div>
-
-
-        <h3>
-          ${book.title}
-        </h3>
-
-
-        <p>
-          This digital resource has not
-          been assigned to your account.
-        </p>
-
-
-        <button
-          type="button"
-          class="buy-btn"
-          data-buy-book="${book.name}"
-        >
-
-          <span>
-            Buy Book
-          </span>
-
-          <span>
-            →
-          </span>
-
-        </button>
-
-
-        <div class="locked-access">
-          ACCESS NOT ASSIGNED
-        </div>
-
-      `;
-
-    }
-
-
-    grid.appendChild(card);
-
-  });
+  );
 
 
   /* =========================
@@ -325,23 +378,26 @@ function renderBooks(student) {
     .querySelectorAll(
       "[data-buy-book]"
     )
-    .forEach((button) => {
+    .forEach(
+      (button) => {
 
-      button.addEventListener(
-        "click",
-        () => {
+        button.addEventListener(
+          "click",
+          () => {
 
-          const bookName =
-            button.dataset.buyBook;
+            const bookName =
+              button.dataset.buyBook;
 
-          alert(
-            `${bookName} purchase option will be available soon.`
-          );
 
-        }
-      );
+            alert(
+              `${bookName} purchase option will be available soon.`
+            );
 
-    });
+          }
+        );
+
+      }
+    );
 
 }
 
@@ -358,6 +414,9 @@ async function loadStudent() {
     );
 
 
+  /*
+   * No login session.
+   */
   if (!username) {
 
     location.href =
@@ -370,6 +429,9 @@ async function loadStudent() {
 
   try {
 
+    /*
+     * Student document.
+     */
     const studentRef =
       doc(
         db,
@@ -384,6 +446,9 @@ async function loadStudent() {
       );
 
 
+    /*
+     * Student not found.
+     */
     if (!snapshot.exists()) {
 
       localStorage.removeItem(
@@ -406,10 +471,9 @@ async function loadStudent() {
       snapshot.data();
 
 
-    /* =========================
-       ACTIVE CHECK
-    ========================= */
-
+    /*
+     * Active check.
+     */
     if (
       student.active === false
     ) {
@@ -430,13 +494,14 @@ async function loadStudent() {
     }
 
 
-    /* =========================
-       SAVE STUDENT
-    ========================= */
-
+    /*
+     * Save current student.
+     */
     localStorage.setItem(
       STUDENT_KEY,
-      JSON.stringify(student)
+      JSON.stringify(
+        student
+      )
     );
 
 
@@ -466,22 +531,31 @@ async function loadStudent() {
 
 
       studentInfo.innerHTML = `
+
         Signed in as
-        <strong>${name}</strong>
+        <strong>
+          ${name}
+        </strong>
+
         · Assigned book:
-        <strong>${assigned || "Not assigned"}</strong>
+
+        <strong>
+          ${assigned || "Not assigned"}
+        </strong>
+
       `;
 
     }
 
 
     /* =========================
-       RENDER
+       RENDER BOOKS
     ========================= */
 
     renderBooks(
       student
     );
+
 
   } catch (error) {
 
@@ -522,6 +596,7 @@ window.logout =
     localStorage.removeItem(
       STUDENT_KEY
     );
+
 
     location.href =
       "login.html";
