@@ -1,37 +1,53 @@
 <!doctype html>
 <html lang="en">
-
 <head>
-
   <meta charset="utf-8">
-
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width,initial-scale=1"
   >
 
-  <title>
-    Admin Dashboard · BookFair Digital
-  </title>
+  <title>Admin Dashboard · BookFair Digital</title>
 
-  <link
-    rel="stylesheet"
-    href="styles.css"
-  >
-
+  <link rel="stylesheet" href="styles.css">
 
   <style>
+    /* =========================================
+       ADMIN DASHBOARD
+    ========================================= */
+
+    :root {
+      --admin-bg: #07111f;
+      --admin-panel: #0d1a2b;
+      --admin-panel-2: #101f33;
+      --admin-border: rgba(255,255,255,.09);
+      --admin-text: #f5f7fb;
+      --admin-muted: #8fa1b8;
+      --admin-accent: #6ea8fe;
+      --admin-success: #37d67a;
+      --admin-danger: #ff5f6d;
+      --admin-warning: #f4bd50;
+    }
 
     * {
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
 
     body.admin-page {
       margin: 0;
-
       min-height: 100vh;
-
+      background:
+        radial-gradient(
+          circle at top right,
+          rgba(67, 111, 170, .18),
+          transparent 35%
+        ),
+        var(--admin-bg);
+      color: var(--admin-text);
       font-family:
         Inter,
         ui-sans-serif,
@@ -40,2315 +56,877 @@
         BlinkMacSystemFont,
         "Segoe UI",
         sans-serif;
-
-      background:
-        #07111f;
-
-      color: #fff;
     }
 
-
-    /* =====================================
-       APP
-    ===================================== */
-
-    .admin-app {
-      min-height: 100vh;
-
-      display: flex;
+    button,
+    input,
+    select {
+      font: inherit;
     }
 
+    button {
+      cursor: pointer;
+    }
 
-    /* =====================================
+    /* =========================================
        SIDEBAR
-    ===================================== */
+    ========================================= */
 
     .admin-sidebar {
-      width: 250px;
-
       position: fixed;
-
-      inset:
-        0 auto 0 0;
-
-      z-index: 50;
-
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 250px;
+      z-index: 1000;
+      padding: 22px 16px;
       display: flex;
       flex-direction: column;
-
-      padding: 24px 17px;
-
-      background:
-        linear-gradient(
-          180deg,
-          #0b192b,
-          #081423
-        );
-
-      border-right:
-        1px solid
-        rgba(255,255,255,.07);
+      background: rgba(7,17,31,.96);
+      border-right: 1px solid var(--admin-border);
+      backdrop-filter: blur(18px);
     }
 
-
-    .sidebar-brand {
+    .admin-brand {
       display: flex;
-
       align-items: center;
-
-      gap: 11px;
-
-      padding:
-        7px 10px
-        20px;
-
-      color: #fff;
-
+      gap: 12px;
+      padding: 8px 10px 24px;
+      color: white;
       text-decoration: none;
-
-      border-bottom:
-        1px solid
-        rgba(255,255,255,.07);
     }
 
-
-    .sidebar-logo {
-      width: 39px;
-      height: 39px;
-
-      display: grid;
-      place-items: center;
-
-      border-radius: 11px;
-
-      background:
-        linear-gradient(
-          135deg,
-          #d9b66f,
-          #a9823d
-        );
-
-      color: #07111d;
-
-      font-weight: 950;
-    }
-
-
-    .sidebar-brand-text strong {
-      display: block;
-
-      font-size: 12px;
-    }
-
-
-    .sidebar-brand-text span {
-      display: block;
-
-      margin-top: 3px;
-
-      color:
-        rgba(255,255,255,.35);
-
-      font-size: 9px;
-
-      letter-spacing: .08em;
-    }
-
-
-    .sidebar-label {
-      margin:
-        25px 10px
-        9px;
-
-      color:
-        rgba(255,255,255,.28);
-
-      font-size: 8px;
-
-      font-weight: 900;
-
-      letter-spacing: .15em;
-    }
-
-
-    .sidebar-nav {
-      display: grid;
-
-      gap: 5px;
-    }
-
-
-    .sidebar-link {
-      width: 100%;
-
-      display: flex;
-
-      align-items: center;
-
-      gap: 11px;
-
-      padding:
-        11px 12px;
-
-      border:
-        1px solid
-        transparent;
-
-      border-radius: 10px;
-
-      background:
-        transparent;
-
-      color:
-        rgba(255,255,255,.48);
-
-      text-decoration: none;
-
-      font-size: 11px;
-
-      font-weight: 700;
-
-      cursor: pointer;
-
-      transition:
-        .2s ease;
-    }
-
-
-    .sidebar-link:hover,
-    .sidebar-link.active {
-      background:
-        rgba(255,255,255,.055);
-
-      border-color:
-        rgba(255,255,255,.07);
-
-      color: #fff;
-    }
-
-
-    .sidebar-icon {
-      width: 25px;
-      height: 25px;
-
-      display: grid;
-      place-items: center;
-
-      border-radius: 7px;
-
-      background:
-        rgba(255,255,255,.045);
-
-      font-size: 11px;
-    }
-
-
-    .sidebar-bottom {
-      margin-top: auto;
-
-      padding-top: 18px;
-
-      border-top:
-        1px solid
-        rgba(255,255,255,.07);
-    }
-
-
-    .admin-user-card {
-      padding: 12px;
-
-      border:
-        1px solid
-        rgba(255,255,255,.07);
-
+    .admin-brand-mark {
+      width: 42px;
+      height: 42px;
       border-radius: 12px;
-
-      background:
-        rgba(255,255,255,.035);
-    }
-
-
-    .admin-user-top {
-      display: flex;
-
-      align-items: center;
-
-      gap: 9px;
-    }
-
-
-    .admin-avatar {
-      width: 30px;
-      height: 30px;
-
       display: grid;
       place-items: center;
-
-      border-radius: 9px;
-
-      background:
-        rgba(216,181,106,.12);
-
-      color:
-        #d8b56a;
-
-      font-size: 10px;
-
       font-weight: 900;
+      font-size: 20px;
+      background: linear-gradient(135deg,#6ea8fe,#8d6bff);
+      box-shadow: 0 10px 30px rgba(80,120,255,.22);
     }
 
-
-    .admin-user-name {
-      font-size: 10px;
-
-      font-weight: 800;
-    }
-
-
-    .admin-user-status {
-      margin-top: 2px;
-
-      color:
-        rgba(255,255,255,.35);
-
-      font-size: 8px;
-    }
-
-
-    .online-dot {
-      display: inline-block;
-
-      width: 5px;
-      height: 5px;
-
-      margin-right: 4px;
-
-      border-radius: 50%;
-
-      background:
-        #58d99a;
-    }
-
-
-    .sidebar-logout {
-      width: 100%;
-
-      margin-top: 9px;
-
-      padding: 9px 10px;
-
-      border:
-        1px solid
-        rgba(255,255,255,.07);
-
-      border-radius: 9px;
-
-      background:
-        transparent;
-
-      color:
-        rgba(255,255,255,.43);
-
-      font: inherit;
-
-      font-size: 9px;
-
-      cursor: pointer;
-    }
-
-
-    .sidebar-logout:hover {
-      background:
-        rgba(255,80,80,.06);
-
-      color: #ff9494;
-    }
-
-
-    /* =====================================
-       MAIN
-    ===================================== */
-
-    .admin-main {
-      width: calc(
-        100% - 250px
-      );
-
-      margin-left: 250px;
-
-      min-height: 100vh;
-
-      background:
-        radial-gradient(
-          circle at 90% 0%,
-          rgba(46,116,218,.10),
-          transparent 30%
-        ),
-        #f4f7fb;
-
-      color: #10213b;
-    }
-
-
-    .admin-topbar {
-      height: 74px;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: space-between;
-
-      padding:
-        0 34px;
-
-      background:
-        rgba(255,255,255,.90);
-
-      border-bottom:
-        1px solid
-        #e3eaf2;
-
-      position: sticky;
-
-      top: 0;
-
-      z-index: 30;
-
-      backdrop-filter:
-        blur(15px);
-    }
-
-
-    .topbar-left {
-      display: flex;
-
-      align-items: center;
-
-      gap: 10px;
-    }
-
-
-    .mobile-menu {
-      display: none;
-
-      width: 38px;
-      height: 38px;
-
-      border:
-        1px solid
-        #dce5ef;
-
-      border-radius: 9px;
-
-      background: #fff;
-
-      cursor: pointer;
-    }
-
-
-    .breadcrumb {
-      color:
-        #8a99aa;
-
-      font-size: 10px;
-
-      font-weight: 700;
-    }
-
-
-    .breadcrumb strong {
-      color:
-        #17304f;
-    }
-
-
-    .topbar-right {
-      display: flex;
-
-      align-items: center;
-
-      gap: 10px;
-    }
-
-
-    .connection-status {
-      display: inline-flex;
-
-      align-items: center;
-
-      gap: 7px;
-
-      padding:
-        7px 10px;
-
-      border:
-        1px solid
-        #dce7e2;
-
-      border-radius: 8px;
-
-      background:
-        #f4fbf7;
-
-      color:
-        #16845a;
-
-      font-size: 9px;
-
-      font-weight: 850;
-    }
-
-
-    .connection-status .dot {
-      width: 6px;
-      height: 6px;
-
-      border-radius: 50%;
-
-      background:
-        #22bd79;
-    }
-
-
-    .site-button {
-      padding:
-        8px 12px;
-
-      border:
-        1px solid
-        #dce5ef;
-
-      border-radius: 8px;
-
-      background: #fff;
-
-      color:
-        #36516f;
-
-      text-decoration: none;
-
-      font-size: 9px;
-
-      font-weight: 800;
-    }
-
-
-    .site-button:hover {
-      background:
-        #f6f9fc;
-    }
-
-
-    /* =====================================
-       CONTENT
-    ===================================== */
-
-    .admin-content {
-      max-width: 1500px;
-
-      margin: 0 auto;
-
-      padding:
-        34px;
-    }
-
-
-    .page-heading {
-      display: flex;
-
-      justify-content: space-between;
-
-      align-items: end;
-
-      gap: 25px;
-
-      margin-bottom: 25px;
-    }
-
-
-    .page-eyebrow {
-      color:
-        #a07b36;
-
-      font-size: 9px;
-
-      font-weight: 950;
-
-      letter-spacing: .16em;
-    }
-
-
-    .page-heading h1 {
-      margin:
-        6px 0 5px;
-
-      color:
-        #0c1e35;
-
-      font-size:
-        clamp(
-          30px,
-          4vw,
-          43px
-        );
-
-      line-height: 1;
-
-      letter-spacing:
-        -.045em;
-    }
-
-
-    .page-heading p {
-      margin: 0;
-
-      color:
-        #718096;
-
-      font-size: 11px;
-
-      line-height: 1.6;
-    }
-
-
-    .heading-actions {
-      display: flex;
-
-      gap: 8px;
-    }
-
-
-    .admin-btn {
-      min-height: 40px;
-
-      padding:
-        0 14px;
-
-      border:
-        1px solid
-        #d7e1eb;
-
-      border-radius: 9px;
-
-      background: #fff;
-
-      color:
-        #203954;
-
-      font: inherit;
-
-      font-size: 10px;
-
-      font-weight: 800;
-
-      cursor: pointer;
-
-      transition:
-        .2s ease;
-    }
-
-
-    .admin-btn:hover {
-      transform:
-        translateY(-1px);
-
-      box-shadow:
-        0 5px 15px
-        rgba(20,48,83,.07);
-    }
-
-
-    .admin-btn.primary {
-      background:
-        linear-gradient(
-          135deg,
-          #237bff,
-          #3e91ff
-        );
-
-      border-color:
-        #237bff;
-
-      color: #fff;
-
-      box-shadow:
-        0 8px 20px
-        rgba(35,123,255,.18);
-    }
-
-
-    .admin-btn.danger {
-      border-color:
-        #f1d4d1;
-
-      background:
-        #fff7f6;
-
-      color:
-        #b42318;
-    }
-
-
-    /* =====================================
-       STATS
-    ===================================== */
-
-    .stats-grid {
-      display: grid;
-
-      grid-template-columns:
-        repeat(
-          4,
-          minmax(0,1fr)
-        );
-
-      gap: 13px;
-    }
-
-
-    .stat-card {
-      position: relative;
-
-      overflow: hidden;
-
-      padding: 19px;
-
-      background: #fff;
-
-      border:
-        1px solid
-        #e1e8f0;
-
-      border-radius: 14px;
-
-      box-shadow:
-        0 7px 25px
-        rgba(18,48,82,.045);
-    }
-
-
-    .stat-card::after {
-      content: "";
-
-      position: absolute;
-
-      width: 90px;
-      height: 90px;
-
-      right: -38px;
-      top: -38px;
-
-      border-radius: 50%;
-
-      background:
-        rgba(35,123,255,.045);
-    }
-
-
-    .stat-top {
-      display: flex;
-
-      align-items: center;
-
-      justify-content: space-between;
-    }
-
-
-    .stat-label {
-      color:
-        #8493a5;
-
-      font-size: 8px;
-
-      font-weight: 900;
-
-      letter-spacing: .10em;
-    }
-
-
-    .stat-icon {
-      width: 28px;
-      height: 28px;
-
-      display: grid;
-      place-items: center;
-
-      border-radius: 8px;
-
-      background:
-        #f1f6fb;
-
-      color:
-        #3973ac;
-
-      font-size: 10px;
-
-      font-weight: 900;
-    }
-
-
-    .stat-card strong {
+    .admin-brand-text strong {
       display: block;
-
-      margin-top: 10px;
-
-      color:
-        #10213b;
-
-      font-size: 28px;
-
-      letter-spacing: -.04em;
-    }
-
-
-    .stat-note {
-      margin-top: 5px;
-
-      color:
-        #98a5b4;
-
-      font-size: 8px;
-    }
-
-
-    /* =====================================
-       FIRESTORE STATUS
-    ===================================== */
-
-    #dbStatus {
-      display: inline-flex;
-
-      align-items: center;
-
-      margin-top: 12px;
-
-      padding:
-        7px 10px;
-
-      border:
-        1px solid
-        #dce5ef;
-
-      border-radius: 8px;
-
-      background:
-        #f7fafc;
-
-      color:
-        #16845a;
-
-      font-size: 9px;
-
-      font-weight: 800;
-    }
-
-
-    #dbStatus.error {
-      color:
-        #b42318;
-
-      background:
-        #fff6f6;
-
-      border-color:
-        #f0cccc;
-    }
-
-
-    /* =====================================
-       BOOK MANAGEMENT
-    ===================================== */
-
-    .section {
-      margin-top: 25px;
-    }
-
-
-    .section-title {
-      display: flex;
-
-      justify-content: space-between;
-
-      align-items: end;
-
-      gap: 15px;
-
-      margin-bottom: 12px;
-    }
-
-
-    .section-title h2 {
-      margin: 0;
-
-      color:
-        #132a45;
-
-      font-size: 17px;
-
-      letter-spacing: -.02em;
-    }
-
-
-    .section-title p {
-      margin:
-        4px 0 0;
-
-      color:
-        #8795a6;
-
-      font-size: 9px;
-    }
-
-
-    .book-grid {
-      display: grid;
-
-      grid-template-columns:
-        repeat(
-          3,
-          minmax(0,1fr)
-        );
-
-      gap: 13px;
-    }
-
-
-    .book-card {
-      position: relative;
-
-      overflow: hidden;
-
-      padding: 19px;
-
-      background:
-        linear-gradient(
-          145deg,
-          #fff,
-          #f9fbfd
-        );
-
-      border:
-        1px solid
-        #e0e7ef;
-
-      border-radius: 15px;
-
-      box-shadow:
-        0 8px 25px
-        rgba(20,48,83,.045);
-    }
-
-
-    .book-card::after {
-      content: "";
-
-      position: absolute;
-
-      width: 120px;
-      height: 120px;
-
-      right: -50px;
-      top: -50px;
-
-      border-radius: 50%;
-
-      background:
-        rgba(216,181,106,.07);
-    }
-
-
-    .book-card-top {
-      display: flex;
-
-      justify-content: space-between;
-
-      align-items: start;
-    }
-
-
-    .book-number {
-      width: 39px;
-      height: 39px;
-
-      display: grid;
-      place-items: center;
-
-      border-radius: 10px;
-
-      background:
-        #fff5df;
-
-      border:
-        1px solid
-        #f0ddb3;
-
-      color:
-        #a17a32;
-
-      font-size: 10px;
-
-      font-weight: 950;
-
-      letter-spacing: .08em;
-    }
-
-
-    .book-count {
-      text-align: right;
-    }
-
-
-    .book-count strong {
-      display: block;
-
-      color:
-        #142c48;
-
-      font-size: 25px;
-    }
-
-
-    .book-count span {
-      color:
-        #8a99a9;
-
-      font-size: 8px;
-    }
-
-
-    .book-card h3 {
-      margin:
-        17px 0 4px;
-
-      color:
-        #152b45;
-
       font-size: 15px;
     }
 
+    .admin-brand-text span {
+      display: block;
+      margin-top: 2px;
+      color: var(--admin-muted);
+      font-size: 11px;
+    }
+
+    .admin-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .admin-nav a {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      min-height: 44px;
+      padding: 0 13px;
+      border-radius: 11px;
+      color: #aebdd0;
+      text-decoration: none;
+      font-size: 13px;
+      transition: .2s ease;
+    }
+
+    .admin-nav a:hover,
+    .admin-nav a.active {
+      color: white;
+      background: rgba(110,168,254,.12);
+    }
+
+    .admin-nav-icon {
+      width: 24px;
+      text-align: center;
+      opacity: .9;
+    }
+
+    .admin-user {
+      margin-top: auto;
+      padding: 14px;
+      border: 1px solid var(--admin-border);
+      border-radius: 14px;
+      background: rgba(255,255,255,.035);
+    }
+
+    .admin-user-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .admin-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      background: rgba(110,168,254,.14);
+      color: #a9caff;
+    }
+
+    .admin-user-info strong {
+      display: block;
+      font-size: 13px;
+    }
+
+    .admin-user-info span {
+      display: block;
+      color: var(--admin-muted);
+      font-size: 11px;
+      margin-top: 2px;
+    }
+
+    .logout-btn {
+      width: 100%;
+      margin-top: 12px;
+      border: 1px solid var(--admin-border);
+      background: transparent;
+      color: #b8c6d8;
+      border-radius: 9px;
+      min-height: 36px;
+    }
+
+    .logout-btn:hover {
+      color: white;
+      border-color: rgba(255,95,109,.35);
+      background: rgba(255,95,109,.08);
+    }
+
+    /* =========================================
+       MAIN
+    ========================================= */
+
+    .admin-main {
+      margin-left: 250px;
+      min-height: 100vh;
+    }
+
+    .admin-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 500;
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 0 30px;
+      border-bottom: 1px solid var(--admin-border);
+      background: rgba(7,17,31,.82);
+      backdrop-filter: blur(18px);
+    }
+
+    .admin-topbar h1 {
+      margin: 0;
+      font-size: 20px;
+      letter-spacing: -.02em;
+    }
+
+    .admin-topbar p {
+      margin: 4px 0 0;
+      color: var(--admin-muted);
+      font-size: 12px;
+    }
+
+    .connection-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(55,214,122,.18);
+      background: rgba(55,214,122,.07);
+      color: #7ee8a8;
+      font-size: 11px;
+    }
+
+    .connection-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--admin-success);
+      box-shadow: 0 0 12px rgba(55,214,122,.8);
+    }
+
+    .mobile-menu {
+      display: none;
+    }
+
+    .admin-content {
+      padding: 30px;
+      max-width: 1700px;
+      margin: 0 auto;
+    }
+
+    /* =========================================
+       STATS
+    ========================================= */
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns:
+        repeat(4,minmax(0,1fr));
+      gap: 15px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      position: relative;
+      overflow: hidden;
+      padding: 20px;
+      min-height: 125px;
+      border: 1px solid var(--admin-border);
+      border-radius: 16px;
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,.055),
+          rgba(255,255,255,.018)
+        );
+    }
+
+    .stat-card::after {
+      content: "";
+      position: absolute;
+      right: -30px;
+      bottom: -45px;
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: rgba(110,168,254,.07);
+    }
+
+    .stat-label {
+      color: var(--admin-muted);
+      font-size: 12px;
+    }
+
+    .stat-value {
+      margin-top: 12px;
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: -.04em;
+    }
+
+    .stat-sub {
+      margin-top: 5px;
+      color: #73869e;
+      font-size: 11px;
+    }
+
+    /* =========================================
+       SECTION / CARDS
+    ========================================= */
+
+    .admin-section {
+      margin-bottom: 24px;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 13px;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .section-heading p {
+      margin: 4px 0 0;
+      color: var(--admin-muted);
+      font-size: 11px;
+    }
+
+    .panel {
+      border: 1px solid var(--admin-border);
+      border-radius: 17px;
+      background: rgba(13,26,43,.76);
+      overflow: hidden;
+    }
+
+    /* =========================================
+       BOOK CARDS
+    ========================================= */
+
+    .book-grid {
+      display: grid;
+      grid-template-columns:
+        repeat(3,minmax(0,1fr));
+      gap: 15px;
+    }
+
+    .book-card {
+      padding: 20px;
+      border: 1px solid var(--admin-border);
+      border-radius: 16px;
+      background: rgba(255,255,255,.025);
+    }
+
+    .book-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .book-number {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      background: rgba(110,168,254,.11);
+      color: #a9caff;
+    }
+
+    .book-count {
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    .book-card h3 {
+      margin: 15px 0 3px;
+      font-size: 15px;
+    }
 
     .book-card p {
       margin: 0;
-
-      color:
-        #8593a4;
-
-      font-size: 9px;
+      color: var(--admin-muted);
+      font-size: 11px;
     }
-
 
     .book-delete {
+      margin-top: 16px;
       width: 100%;
-
-      margin-top: 15px;
-
-      min-height: 34px;
-
-      border:
-        1px solid
-        #efd5d2;
-
-      border-radius: 8px;
-
-      background:
-        #fff8f7;
-
-      color:
-        #b34a43;
-
-      font: inherit;
-
-      font-size: 8px;
-
-      font-weight: 800;
-
-      cursor: pointer;
+      min-height: 36px;
+      border: 1px solid rgba(255,95,109,.2);
+      border-radius: 9px;
+      background: rgba(255,95,109,.05);
+      color: #ff8993;
     }
-
 
     .book-delete:hover {
-      background:
-        #fff0ee;
+      background: rgba(255,95,109,.1);
     }
 
-
-    /* =====================================
-       STUDENT SECTION
-    ===================================== */
+    /* =========================================
+       STUDENT TABLE
+    ========================================= */
 
     .student-card {
-      background: #fff;
-
-      border:
-        1px solid
-        #e0e7ef;
-
-      border-radius: 15px;
-
-      overflow: hidden;
-
-      box-shadow:
-        0 8px 25px
-        rgba(20,48,83,.045);
+      padding: 0;
     }
 
+    .student-toolbar {
+      padding: 17px;
+      border-bottom: 1px solid var(--admin-border);
+    }
 
-    .student-card-header {
-      padding:
-        19px;
-
+    .toolbar-row {
       display: flex;
-
+      flex-wrap: wrap;
       align-items: center;
-
-      justify-content: space-between;
-
-      gap: 15px;
-
-      border-bottom:
-        1px solid
-        #e8edf3;
+      gap: 9px;
     }
-
-
-    .student-card-title h2 {
-      margin: 0 0 4px;
-
-      color:
-        #132a45;
-
-      font-size: 17px;
-    }
-
-
-    .student-card-title p {
-      margin: 0;
-
-      color:
-        #8795a6;
-
-      font-size: 9px;
-    }
-
-
-    .student-actions {
-      display: flex;
-
-      gap: 7px;
-
-      flex-wrap: wrap;
-    }
-
-
-    .filters {
-      padding:
-        13px 19px;
-
-      display: flex;
-
-      flex-wrap: wrap;
-
-      gap: 7px;
-
-      background:
-        #fbfcfe;
-
-      border-bottom:
-        1px solid
-        #edf1f5;
-    }
-
 
     .search-box {
-      flex: 1;
-
-      min-width: 230px;
-
-      height: 38px;
-
-      padding:
-        0 12px;
-
-      border:
-        1px solid
-        #dce5ef;
-
-      border-radius: 8px;
-
-      background: #fff;
-
-      color:
-        #172c45;
-
-      outline: none;
-
-      font: inherit;
-
-      font-size: 10px;
+      flex: 1 1 260px;
     }
 
-
-    .filters select {
-      height: 38px;
-
-      min-width: 130px;
-
-      padding:
-        0 10px;
-
-      border:
-        1px solid
-        #dce5ef;
-
-      border-radius: 8px;
-
-      background: #fff;
-
-      color:
-        #36516f;
-
+    .admin-input,
+    .admin-select {
+      width: 100%;
+      min-height: 40px;
+      border: 1px solid var(--admin-border);
+      border-radius: 9px;
       outline: none;
-
-      font: inherit;
-
-      font-size: 9px;
+      background: rgba(255,255,255,.035);
+      color: white;
+      padding: 0 12px;
     }
 
+    .admin-input:focus,
+    .admin-select:focus {
+      border-color: rgba(110,168,254,.5);
+      box-shadow: 0 0 0 3px rgba(110,168,254,.08);
+    }
+
+    .admin-select {
+      width: auto;
+      min-width: 145px;
+    }
+
+    .toolbar-btn {
+      min-height: 40px;
+      padding: 0 14px;
+      border: 1px solid var(--admin-border);
+      border-radius: 9px;
+      color: #dce6f3;
+      background: rgba(255,255,255,.04);
+    }
+
+    .toolbar-btn:hover {
+      background: rgba(255,255,255,.08);
+    }
+
+    .toolbar-btn.primary {
+      color: white;
+      border-color: rgba(110,168,254,.25);
+      background: rgba(110,168,254,.12);
+    }
 
     .table-wrap {
       overflow-x: auto;
     }
 
-
     table {
       width: 100%;
-
-      min-width: 1080px;
-
-      border-collapse:
-        collapse;
+      border-collapse: collapse;
+      min-width: 900px;
     }
-
 
     th {
-      padding:
-        12px 15px;
-
       text-align: left;
-
-      background:
-        #f8fafc;
-
-      color:
-        #8796a7;
-
-      font-size: 8px;
-
-      font-weight: 900;
-
-      letter-spacing: .09em;
-
-      white-space: nowrap;
+      padding: 13px 15px;
+      color: #71859e;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      border-bottom: 1px solid var(--admin-border);
     }
-
 
     td {
-      padding:
-        13px 15px;
-
-      border-top:
-        1px solid
-        #edf1f5;
-
-      color:
-        #42566e;
-
-      font-size: 10px;
-
-      white-space: nowrap;
+      padding: 14px 15px;
+      border-bottom: 1px solid rgba(255,255,255,.045);
+      color: #cbd6e4;
+      font-size: 12px;
     }
 
-
-    tbody tr.student-row {
-      cursor: pointer;
-
-      transition:
-        background .15s;
+    tbody tr {
+      transition: .15s ease;
     }
 
-
-    tbody tr.student-row:hover {
-      background:
-        #f8fbff;
+    tbody tr:hover {
+      background: rgba(255,255,255,.025);
     }
 
-
-    td strong {
-      color:
-        #17304f;
-
-      font-weight: 800;
-    }
-
-
-    .muted {
-      color:
-        #8997a7;
-    }
-
-
-    .pill {
-      display: inline-flex;
-
-      align-items: center;
-
-      padding:
-        5px 8px;
-
-      border-radius: 999px;
-
-      font-size: 7px;
-
-      font-weight: 900;
-
-      letter-spacing: .06em;
-    }
-
-
-    .pill.green {
-      background:
-        #eaf9f1;
-
-      color:
-        #159765;
-    }
-
-
-    .pill.gold {
-      background:
-        #fff5d9;
-
-      color:
-        #9b7415;
-    }
-
-
-    .empty {
-      display: none;
-
-      padding:
-        50px 20px;
-
+    .empty-state {
+      padding: 45px 20px;
       text-align: center;
-
-      color:
-        #8a98a9;
-
-      font-size: 10px;
+      color: var(--admin-muted);
     }
 
-
-    /* =====================================
-       IMPORT
-    ===================================== */
+    /* =========================================
+       TOOLS
+    ========================================= */
 
     .tools-grid {
       display: grid;
-
       grid-template-columns:
-        1.3fr
-        .7fr;
-
-      gap: 13px;
-    }
-
-
-    .tool-card {
-      padding: 20px;
-
-      background: #fff;
-
-      border:
-        1px solid
-        #e0e7ef;
-
-      border-radius: 15px;
-
-      box-shadow:
-        0 8px 25px
-        rgba(20,48,83,.045);
-    }
-
-
-    .tool-card h3 {
-      margin: 0 0 5px;
-
-      color:
-        #17304f;
-
-      font-size: 14px;
-    }
-
-
-    .tool-card p {
-      margin: 0;
-
-      color:
-        #8492a3;
-
-      font-size: 9px;
-
-      line-height: 1.6;
-    }
-
-
-    .tool-actions {
-      display: flex;
-
-      gap: 7px;
-
-      flex-wrap: wrap;
-
-      margin-top: 15px;
-    }
-
-
-    .bulk-note {
-      margin-top: 11px;
-
-      color:
-        #9aa7b6;
-
-      font-size: 8px;
-
-      line-height: 1.6;
-    }
-
-
-    #fileInput {
-      display: none;
-    }
-
-
-    /* =====================================
-       IMPORT STATUS
-    ===================================== */
-
-    #importStatus {
-      display: none;
-
-      margin-top: 13px;
-
-      padding: 17px;
-
-      border:
-        1px solid
-        #dce5ef;
-
-      border-radius: 12px;
-
-      background:
-        #f8fbff;
-    }
-
-
-    #importStatus.visible {
-      display: block;
-    }
-
-
-    .import-status-head {
-      display: flex;
-
-      justify-content: space-between;
-
+        repeat(3,minmax(0,1fr));
       gap: 15px;
     }
 
+    .tool-card {
+      padding: 19px;
+      border: 1px solid var(--admin-border);
+      border-radius: 15px;
+      background: rgba(255,255,255,.025);
+    }
 
-    #importTitle {
-      color:
-        #17304f;
+    .tool-card h3 {
+      margin: 0 0 7px;
+      font-size: 14px;
+    }
 
+    .tool-card p {
+      margin: 0 0 14px;
+      color: var(--admin-muted);
       font-size: 11px;
-
-      font-weight: 850;
-    }
-
-
-    #importCount {
-      color:
-        #5f748e;
-
-      font-size: 9px;
-
-      font-weight: 800;
-    }
-
-
-    .progress-track {
-      height: 6px;
-
-      margin-top: 12px;
-
-      overflow: hidden;
-
-      border-radius: 99px;
-
-      background:
-        #e8eef5;
-    }
-
-
-    #importProgress {
-      width: 0;
-
-      height: 100%;
-
-      border-radius: 99px;
-
-      background:
-        linear-gradient(
-          90deg,
-          #237bff,
-          #6aa5ff
-        );
-
-      transition:
-        width .2s;
-    }
-
-
-    .import-meta {
-      display: flex;
-
-      gap: 14px;
-
-      margin-top: 8px;
-
-      color:
-        #8391a1;
-
-      font-size: 8px;
-    }
-
-
-    /* =====================================
-       MODALS
-    ===================================== */
-
-    .admin-modal {
-      position: fixed;
-
-      inset: 0;
-
-      z-index: 1000;
-
-      display: none;
-
-      align-items: center;
-
-      justify-content: center;
-
-      padding: 20px;
-
-      background:
-        rgba(4,11,20,.70);
-
-      backdrop-filter:
-        blur(9px);
-    }
-
-
-    .admin-modal.show {
-      display: flex;
-    }
-
-
-    .modal-box {
-      position: relative;
-
-      width:
-        min(
-          520px,
-          100%
-        );
-
-      max-height:
-        90vh;
-
-      overflow-y: auto;
-
-      padding: 25px;
-
-      background:
-        #fff;
-
-      color:
-        #17304f;
-
-      border-radius: 17px;
-
-      box-shadow:
-        0 30px 90px
-        rgba(0,0,0,.30);
-    }
-
-
-    .modal-box h2 {
-      margin:
-        0 0 6px;
-
-      font-size: 20px;
-
-      letter-spacing:
-        -.025em;
-    }
-
-
-    .modal-subtitle {
-      margin: 0;
-
-      color:
-        #7c8a9b;
-
-      font-size: 10px;
-
       line-height: 1.6;
     }
 
+    /* =========================================
+       MODALS
+    ========================================= */
+
+    .admin-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(0,0,0,.7);
+      backdrop-filter: blur(8px);
+    }
+
+    .admin-modal.open {
+      display: flex;
+    }
+
+    .modal-box {
+      width: min(560px,100%);
+      max-height: 90vh;
+      overflow: auto;
+      border: 1px solid var(--admin-border);
+      border-radius: 18px;
+      background: #0c1929;
+      box-shadow: 0 30px 90px rgba(0,0,0,.5);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--admin-border);
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      font-size: 16px;
+    }
 
     .modal-close {
-      position: absolute;
-
-      right: 16px;
-      top: 15px;
-
-      width: 30px;
-      height: 30px;
-
-      border: 0;
-
-      border-radius: 50%;
-
-      background:
-        #f1f4f7;
-
-      color:
-        #617187;
-
-      font-size: 17px;
-
-      cursor: pointer;
-    }
-
-
-    .modal-field {
-      margin-top: 16px;
-    }
-
-
-    .modal-field label {
-      display: block;
-
-      margin-bottom: 6px;
-
-      color:
-        #53677e;
-
-      font-size: 9px;
-
-      font-weight: 850;
-
-      letter-spacing: .07em;
-
-      text-transform: uppercase;
-    }
-
-
-    .modal-field input,
-    .modal-field select {
-      width: 100%;
-
-      height: 43px;
-
-      padding:
-        0 11px;
-
-      border:
-        1px solid
-        #dce4ed;
-
+      width: 34px;
+      height: 34px;
+      border: 1px solid var(--admin-border);
       border-radius: 8px;
+      background: transparent;
+      color: #b6c4d5;
+      font-size: 18px;
+    }
 
-      background:
-        #fff;
+    .modal-body {
+      padding: 20px;
+    }
 
-      color:
-        #17304f;
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
 
-      outline: none;
+    .form-group {
+      margin-bottom: 14px;
+    }
 
-      font: inherit;
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
 
+    .form-group label {
+      display: block;
+      margin-bottom: 7px;
+      color: #aebdd0;
       font-size: 11px;
+      font-weight: 600;
     }
-
-
-    .password-row {
-      display: flex;
-
-      gap: 7px;
-    }
-
-
-    .password-row input {
-      flex: 1;
-    }
-
 
     .modal-actions {
       display: flex;
-
       justify-content: flex-end;
-
-      gap: 8px;
-
-      margin-top: 22px;
-    }
-
-
-    .detail-box {
-      width:
-        min(
-          760px,
-          100%
-        );
-    }
-
-
-    .detail-grid {
-      display: grid;
-
-      grid-template-columns:
-        repeat(
-          2,
-          minmax(0,1fr)
-        );
-
-      gap: 10px;
-
+      gap: 9px;
       margin-top: 18px;
     }
 
-
-    .detail-grid > div {
-      padding: 13px;
-
-      border:
-        1px solid
-        #e1e8ef;
-
-      border-radius: 10px;
-
-      background:
-        #f8fafc;
+    .modal-actions button {
+      min-height: 40px;
+      padding: 0 16px;
+      border-radius: 9px;
+      border: 1px solid var(--admin-border);
+      background: rgba(255,255,255,.04);
+      color: #d9e4f1;
     }
 
-
-    .detail-grid small {
-      display: block;
-
-      margin-bottom: 5px;
-
-      color:
-        #8a98a8;
-
-      font-size: 7px;
-
-      font-weight: 900;
-
-      letter-spacing: .10em;
+    .modal-actions .primary {
+      border-color: rgba(110,168,254,.3);
+      background: rgba(110,168,254,.13);
+      color: white;
     }
 
+    /* =========================================
+       IMPORT STATUS
+    ========================================= */
 
-    .detail-grid strong {
-      display: block;
-
-      color:
-        #172c45;
-
-      font-size: 11px;
-
-      word-break:
-        break-word;
+    .import-progress {
+      margin-top: 12px;
+      height: 7px;
+      border-radius: 99px;
+      overflow: hidden;
+      background: rgba(255,255,255,.07);
     }
 
-
-    /* =====================================
-       IMPORT RESULT
-    ===================================== */
-
-    .result-cards {
-      display: grid;
-
-      grid-template-columns:
-        repeat(
-          3,
-          1fr
-        );
-
-      gap: 9px;
-
-      margin:
-        18px 0;
+    .import-progress > div {
+      width: 0;
+      height: 100%;
+      background: #6ea8fe;
+      transition: width .2s ease;
     }
-
-
-    .result-cards > div {
-      padding: 14px;
-
-      text-align: center;
-
-      border:
-        1px solid
-        #e1e8ef;
-
-      border-radius: 10px;
-
-      background:
-        #f8fafc;
-    }
-
-
-    .result-cards span {
-      display: block;
-
-      color:
-        #8190a1;
-
-      font-size: 7px;
-
-      font-weight: 850;
-
-      text-transform: uppercase;
-    }
-
-
-    .result-cards strong {
-      display: block;
-
-      margin-top: 5px;
-
-      color:
-        #17304f;
-
-      font-size: 25px;
-    }
-
-
-    .failed-list-wrap {
-      padding-top: 13px;
-
-      border-top:
-        1px solid
-        #e7edf3;
-    }
-
-
-    .failed-list-wrap h3 {
-      margin:
-        0 0 8px;
-
-      font-size: 10px;
-    }
-
 
     .failed-list {
-      display: grid;
-
-      gap: 6px;
-
-      max-height: 200px;
-
-      overflow-y: auto;
+      max-height: 180px;
+      overflow: auto;
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 9px;
+      background: rgba(255,255,255,.025);
+      color: #ff9aa3;
+      font-size: 11px;
     }
 
-
-    .failed-item {
-      padding: 9px 10px;
-
-      border:
-        1px solid
-        #f0dede;
-
-      border-radius: 8px;
-
-      background:
-        #fff6f6;
-    }
-
-
-    .failed-item strong {
-      display: block;
-
-      color:
-        #7c3030;
-
-      font-size: 9px;
-    }
-
-
-    .failed-item span {
-      display: block;
-
-      margin-top: 3px;
-
-      color:
-        #8492a2;
-
-      font-size: 8px;
-    }
-
-
-    /* =====================================
+    /* =========================================
        TOAST
-    ===================================== */
+    ========================================= */
 
-    .toast {
+    #toast {
       position: fixed;
-
-      right: 24px;
-      bottom: 24px;
-
-      z-index: 2000;
-
+      right: 22px;
+      bottom: 22px;
+      z-index: 3000;
+      display: none;
       max-width: 360px;
-
-      padding:
-        12px 15px;
-
-      border-radius: 10px;
-
-      background:
-        #102239;
-
-      color: #fff;
-
-      font-size: 10px;
-
-      box-shadow:
-        0 15px 45px
-        rgba(0,0,0,.22);
-
-      opacity: 0;
-
-      transform:
-        translateY(10px);
-
-      pointer-events:
-        none;
-
-      transition:
-        .2s ease;
+      padding: 13px 16px;
+      border: 1px solid var(--admin-border);
+      border-radius: 11px;
+      background: #102035;
+      color: white;
+      font-size: 12px;
+      box-shadow: 0 20px 50px rgba(0,0,0,.35);
     }
 
+    /* =========================================
+       MOBILE
+    ========================================= */
 
-    .toast.show {
-      opacity: 1;
-
-      transform:
-        translateY(0);
-    }
-
-
-    .toast.error {
-      background:
-        #3a1518;
-    }
-
-
-    /* =====================================
-       RESPONSIVE
-    ===================================== */
-
-    @media (max-width: 1150px) {
+    @media (max-width: 1100px) {
 
       .stats-grid {
         grid-template-columns:
-          repeat(
-            2,
-            1fr
-          );
+          repeat(2,minmax(0,1fr));
       }
 
+      .book-grid,
       .tools-grid {
         grid-template-columns: 1fr;
       }
 
     }
 
-
-    @media (max-width: 900px) {
+    @media (max-width: 800px) {
 
       .admin-sidebar {
-        transform:
-          translateX(-100%);
-
-        transition:
-          transform .25s ease;
+        transform: translateX(-100%);
+        transition: transform .25s ease;
       }
 
-
-      .admin-sidebar.open {
-        transform:
-          translateX(0);
+      .admin-sidebar.mobile-open {
+        transform: translateX(0);
       }
-
 
       .admin-main {
-        width: 100%;
-
         margin-left: 0;
       }
 
-
       .mobile-menu {
         display: grid;
-
         place-items: center;
+        width: 38px;
+        height: 38px;
+        margin-right: 10px;
+        border: 1px solid var(--admin-border);
+        border-radius: 9px;
+        background: rgba(255,255,255,.04);
+        color: white;
       }
-
-
-      .book-grid {
-        grid-template-columns: 1fr;
-      }
-
-
-      .admin-content {
-        padding:
-          25px 20px;
-      }
-
-
-      .page-heading {
-        align-items: start;
-
-        flex-direction: column;
-      }
-
-    }
-
-
-    @media (max-width: 600px) {
-
-      .stats-grid {
-        grid-template-columns:
-          1fr 1fr;
-      }
-
-
-      .topbar-right
-      .site-button {
-        display: none;
-      }
-
-
-      .connection-status {
-        display: none;
-      }
-
-
-      .student-card-header {
-        align-items: start;
-
-        flex-direction: column;
-      }
-
-
-      .student-actions {
-        width: 100%;
-      }
-
-
-      .student-actions .admin-btn {
-        flex: 1;
-      }
-
-
-      .detail-grid {
-        grid-template-columns: 1fr;
-      }
-
-
-      .result-cards {
-        grid-template-columns: 1fr;
-      }
-
-    }
-
-
-    @media (max-width: 420px) {
-
-      .stats-grid {
-        grid-template-columns:
-          1fr;
-      }
-
-
-      .admin-content {
-        padding:
-          20px 14px;
-      }
-
 
       .admin-topbar {
-        padding:
-          0 14px;
+        padding: 0 16px;
       }
 
+      .admin-content {
+        padding: 20px 15px;
+      }
 
-      .page-heading h1 {
-        font-size: 32px;
+      .admin-topbar h1 {
+        font-size: 17px;
+      }
+
+      .connection-badge {
+        display: none;
       }
 
     }
 
+    @media (max-width: 560px) {
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-group.full {
+        grid-column: auto;
+      }
+
+    }
   </style>
-
 </head>
-
 
 <body class="admin-page">
 
-
-<div class="admin-app">
-
-
-  <!-- ===================================
+  <!-- =========================================
        SIDEBAR
-  ==================================== -->
+  ========================================== -->
 
   <aside
     class="admin-sidebar"
     id="adminSidebar"
   >
 
-
     <a
       href="admin.html"
-      class="sidebar-brand"
+      class="admin-brand"
     >
-
-      <b class="sidebar-logo">
+      <div class="admin-brand-mark">
         B
-      </b>
-
-      <div class="sidebar-brand-text">
-
-        <strong>
-          BookFair Digital
-        </strong>
-
-        <span>
-          ADMIN CONSOLE
-        </span>
-
       </div>
 
+      <div class="admin-brand-text">
+        <strong>BookFair Digital</strong>
+        <span>Administration</span>
+      </div>
     </a>
 
 
-    <div class="sidebar-label">
-      MANAGEMENT
-    </div>
-
-
-    <nav class="sidebar-nav">
+    <nav class="admin-nav">
 
       <a
         href="#dashboard"
-        class="sidebar-link active"
+        class="active"
       >
-
-        <span class="sidebar-icon">
-          ◈
-        </span>
-
-        Dashboard
-
+        <span class="admin-nav-icon">⌂</span>
+        <span>Dashboard</span>
       </a>
 
-
-      <a
-        href="#students"
-        class="sidebar-link"
-      >
-
-        <span class="sidebar-icon">
-          ◉
-        </span>
-
-        Students
-
+      <a href="#students">
+        <span class="admin-nav-icon">♙</span>
+        <span>Students</span>
       </a>
 
-
-      <a
-        href="#books"
-        class="sidebar-link"
-      >
-
-        <span class="sidebar-icon">
-          ▣
-        </span>
-
-        Book Management
-
+      <a href="#books">
+        <span class="admin-nav-icon">▣</span>
+        <span>Book Management</span>
       </a>
 
-
-      <a
-        href="#tools"
-        class="sidebar-link"
-      >
-
-        <span class="sidebar-icon">
-          ⇩
-        </span>
-
-        Import & Export
-
+      <a href="#tools">
+        <span class="admin-nav-icon">⇅</span>
+        <span>Import & Export</span>
       </a>
-
-    </nav>
-
-
-    <div class="sidebar-label">
-      SYSTEM
-    </div>
-
-
-    <nav class="sidebar-nav">
 
       <a
         href="index.html"
         target="_blank"
-        class="sidebar-link"
       >
-
-        <span class="sidebar-icon">
-          ↗
-        </span>
-
-        View Website
-
+        <span class="admin-nav-icon">↗</span>
+        <span>View Website</span>
       </a>
 
     </nav>
 
 
-    <div class="sidebar-bottom">
+    <div class="admin-user">
 
-      <div class="admin-user-card">
+      <div class="admin-user-row">
 
-        <div class="admin-user-top">
-
-          <div class="admin-avatar">
-            A
-          </div>
-
-          <div>
-
-            <div class="admin-user-name">
-              Administrator
-            </div>
-
-            <div class="admin-user-status">
-
-              <span class="online-dot"></span>
-
-              Secure session active
-
-            </div>
-
-          </div>
-
+        <div class="admin-avatar">
+          A
         </div>
 
-
-        <button
-          id="adminLogout"
-          class="sidebar-logout"
-          type="button"
-        >
-          Sign out
-        </button>
+        <div class="admin-user-info">
+          <strong>Administrator</strong>
+          <span>admin</span>
+        </div>
 
       </div>
 
-    </div>
+      <button
+        id="adminLogout"
+        class="logout-btn"
+        type="button"
+      >
+        Sign out
+      </button>
 
+    </div>
 
   </aside>
 
 
-  <!-- ===================================
+  <!-- =========================================
        MAIN
-  ==================================== -->
+  ========================================== -->
 
   <main class="admin-main">
 
-
-    <!-- TOP BAR -->
+    <!-- TOPBAR -->
 
     <header class="admin-topbar">
 
-      <div class="topbar-left">
+      <div style="display:flex;align-items:center;">
 
         <button
-          class="mobile-menu"
           id="mobileMenu"
+          class="mobile-menu"
           type="button"
+          aria-label="Open menu"
         >
           ☰
         </button>
 
-        <div class="breadcrumb">
-
-          BookFair Digital
-          <span> / </span>
-          <strong>Administration</strong>
-
+        <div>
+          <h1>Admin Dashboard</h1>
+          <p>
+            Manage students, books and registrations
+          </p>
         </div>
 
       </div>
 
 
-      <div class="topbar-right">
+      <div
+        id="connectionBadge"
+        class="connection-badge"
+      >
 
-        <div
-          class="connection-status"
-          id="connectionBadge"
-        >
+        <span class="connection-dot"></span>
 
-          <span class="dot"></span>
-
-          <span id="connectionText">
-            Live database
-          </span>
-
-        </div>
-
-
-        <a
-          href="index.html"
-          target="_blank"
-          class="site-button"
-        >
-          View Site ↗
-        </a>
+        <span id="connectionText">
+          Connected
+        </span>
 
       </div>
 
@@ -2359,283 +937,196 @@
 
     <div class="admin-content">
 
-
-      <!-- PAGE HEADING -->
+      <!-- =====================================
+           DASHBOARD
+      ====================================== -->
 
       <section
-        class="page-heading"
         id="dashboard"
+        class="admin-section"
       >
 
-        <div>
-
-          <div class="page-eyebrow">
-            ADMINISTRATION
-          </div>
-
-          <h1>
-            Dashboard
-          </h1>
-
-          <p>
-            Monitor student access, registrations,
-            book assignments and digital accounts.
-          </p>
-
-          <div id="dbStatus">
-            ● Connecting to Firestore…
-          </div>
-
-        </div>
-
-
-        <div class="heading-actions">
-
-          <button
-            id="newBtn"
-            class="admin-btn primary"
-            type="button"
-          >
-            + New Student
-          </button>
-
-        </div>
-
-      </section>
-
-
-      <!-- =================================
-           STATS
-      ================================== -->
-
-      <section class="stats-grid">
-
-
-        <article class="stat-card">
-
-          <div class="stat-top">
-
-            <span class="stat-label">
-              TOTAL STUDENTS
-            </span>
-
-            <span class="stat-icon">
-              ◉
-            </span>
-
-          </div>
-
-          <strong id="total">
-            0
-          </strong>
-
-          <div class="stat-note">
-            All student accounts
-          </div>
-
-        </article>
-
-
-        <article class="stat-card">
-
-          <div class="stat-top">
-
-            <span class="stat-label">
-              ACTIVE
-            </span>
-
-            <span class="stat-icon">
-              ✓
-            </span>
-
-          </div>
-
-          <strong id="active">
-            0
-          </strong>
-
-          <div class="stat-note">
-            Currently enabled
-          </div>
-
-        </article>
-
-
-        <article class="stat-card">
-
-          <div class="stat-top">
-
-            <span class="stat-label">
-              REGISTERED
-            </span>
-
-            <span class="stat-icon">
-              ✓
-            </span>
-
-          </div>
-
-          <strong id="registered">
-            0
-          </strong>
-
-          <div class="stat-note">
-            Completed first login
-          </div>
-
-        </article>
-
-
-        <article class="stat-card">
-
-          <div class="stat-top">
-
-            <span class="stat-label">
-              PENDING
-            </span>
-
-            <span class="stat-icon">
-              !
-            </span>
-
-          </div>
-
-          <strong id="pending">
-            0
-          </strong>
-
-          <div class="stat-note">
-            Waiting for registration
-          </div>
-
-        </article>
-
-
-        <article class="stat-card">
-
-          <div class="stat-top">
-
-            <span class="stat-label">
-              BOOK 01
-            </span>
-
-            <span class="stat-icon">
-              01
-            </span>
-
-          </div>
-
-          <strong id="b1">
-            0
-          </strong>
-
-          <div class="stat-note">
-            Assigned students
-          </div>
-
-        </article>
-
-
-        <article class="stat-card">
-
-          <div class="stat-top">
-
-            <span class="stat-label">
-              BOOK 02
-            </span>
-
-            <span class="stat-icon">
-              02
-            </span>
-
-          </div>
-
-          <strong id="b2">
-            0
-          </strong>
-
-          <div class="stat-note">
-            Assigned students
-          </div>
-
-        </article>
-
-
-        <article class="stat-card">
-
-          <div class="stat-top">
-
-            <span class="stat-label">
-              BOOK 03
-            </span>
-
-            <span class="stat-icon">
-              03
-            </span>
-
-          </div>
-
-          <strong id="b3">
-            0
-          </strong>
-
-          <div class="stat-note">
-            Assigned students
-          </div>
-
-        </article>
-
-
-        <article class="stat-card">
-
-          <div class="stat-top">
-
-            <span class="stat-label">
-              INACTIVE
-            </span>
-
-            <span class="stat-icon">
-              —
-            </span>
-
-          </div>
-
-          <strong id="inactive">
-            0
-          </strong>
-
-          <div class="stat-note">
-            Disabled accounts
-          </div>
-
-        </article>
-
-
-      </section>
-
-
-      <!-- =================================
-           BOOK MANAGEMENT
-      ================================== -->
-
-      <section
-        class="section"
-        id="books"
-      >
-
-        <div class="section-title">
+        <div class="section-heading">
 
           <div>
+            <h2>Overview</h2>
+            <p>
+              Current BookFair Digital statistics
+            </p>
+          </div>
 
-            <h2>
-              Book Management
-            </h2>
+        </div>
+
+
+        <!-- STATS -->
+
+        <div class="stats-grid">
+
+          <div class="stat-card">
+            <div class="stat-label">
+              Total Students
+            </div>
+
+            <div
+              class="stat-value"
+              id="total"
+            >
+              0
+            </div>
+
+            <div class="stat-sub">
+              All student accounts
+            </div>
+          </div>
+
+
+          <div class="stat-card">
+            <div class="stat-label">
+              Active
+            </div>
+
+            <div
+              class="stat-value"
+              id="active"
+            >
+              0
+            </div>
+
+            <div class="stat-sub">
+              Currently active
+            </div>
+          </div>
+
+
+          <div class="stat-card">
+            <div class="stat-label">
+              Registered
+            </div>
+
+            <div
+              class="stat-value"
+              id="registered"
+            >
+              0
+            </div>
+
+            <div class="stat-sub">
+              Completed registration
+            </div>
+          </div>
+
+
+          <div class="stat-card">
+            <div class="stat-label">
+              Pending
+            </div>
+
+            <div
+              class="stat-value"
+              id="pending"
+            >
+              0
+            </div>
+
+            <div class="stat-sub">
+              Waiting for registration
+            </div>
+          </div>
+
+
+          <div class="stat-card">
+            <div class="stat-label">
+              Book 01
+            </div>
+
+            <div
+              class="stat-value"
+              id="b1"
+            >
+              0
+            </div>
+
+            <div class="stat-sub">
+              Assigned students
+            </div>
+          </div>
+
+
+          <div class="stat-card">
+            <div class="stat-label">
+              Book 02
+            </div>
+
+            <div
+              class="stat-value"
+              id="b2"
+            >
+              0
+            </div>
+
+            <div class="stat-sub">
+              Assigned students
+            </div>
+          </div>
+
+
+          <div class="stat-card">
+            <div class="stat-label">
+              Book 03
+            </div>
+
+            <div
+              class="stat-value"
+              id="b3"
+            >
+              0
+            </div>
+
+            <div class="stat-sub">
+              Assigned students
+            </div>
+          </div>
+
+
+          <div class="stat-card">
+            <div class="stat-label">
+              Inactive
+            </div>
+
+            <div
+              class="stat-value"
+              id="inactive"
+            >
+              0
+            </div>
+
+            <div class="stat-sub">
+              Inactive accounts
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =====================================
+           BOOK MANAGEMENT
+      ====================================== -->
+
+      <section
+        id="books"
+        class="admin-section"
+      >
+
+        <div class="section-heading">
+
+          <div>
+            <h2>Book Management</h2>
 
             <p>
-              Monitor and manage student accounts
-              assigned to each digital book.
+              Student allocation by book
             </p>
-
           </div>
 
         </div>
@@ -2643,10 +1134,9 @@
 
         <div class="book-grid">
 
-
           <!-- BOOK 01 -->
 
-          <article class="book-card">
+          <div class="book-card">
 
             <div class="book-card-top">
 
@@ -2654,29 +1144,20 @@
                 01
               </div>
 
-              <div class="book-count">
-
-                <strong id="book1Count">
-                  0
-                </strong>
-
-                <span>
-                  students
-                </span>
-
+              <div
+                class="book-count"
+                id="book1Count"
+              >
+                0
               </div>
 
             </div>
 
-
-            <h3>
-              Book 01
-            </h3>
+            <h3>Book 01</h3>
 
             <p>
-              A/L Accounting
+              Students assigned to Book 01
             </p>
-
 
             <button
               id="deleteBook01"
@@ -2686,12 +1167,12 @@
               Delete Book 01 Students
             </button>
 
-          </article>
+          </div>
 
 
           <!-- BOOK 02 -->
 
-          <article class="book-card">
+          <div class="book-card">
 
             <div class="book-card-top">
 
@@ -2699,29 +1180,20 @@
                 02
               </div>
 
-              <div class="book-count">
-
-                <strong id="book2Count">
-                  0
-                </strong>
-
-                <span>
-                  students
-                </span>
-
+              <div
+                class="book-count"
+                id="book2Count"
+              >
+                0
               </div>
 
             </div>
 
-
-            <h3>
-              Book 02
-            </h3>
+            <h3>Book 02</h3>
 
             <p>
-              Digital student collection
+              Students assigned to Book 02
             </p>
-
 
             <button
               id="deleteBook02"
@@ -2731,12 +1203,12 @@
               Delete Book 02 Students
             </button>
 
-          </article>
+          </div>
 
 
           <!-- BOOK 03 -->
 
-          <article class="book-card">
+          <div class="book-card">
 
             <div class="book-card-top">
 
@@ -2744,29 +1216,20 @@
                 03
               </div>
 
-              <div class="book-count">
-
-                <strong id="book3Count">
-                  0
-                </strong>
-
-                <span>
-                  students
-                </span>
-
+              <div
+                class="book-count"
+                id="book3Count"
+              >
+                0
               </div>
 
             </div>
 
-
-            <h3>
-              Book 03
-            </h3>
+            <h3>Book 03</h3>
 
             <p>
-              Digital student collection
+              Students assigned to Book 03
             </p>
-
 
             <button
               id="deleteBook03"
@@ -2776,165 +1239,133 @@
               Delete Book 03 Students
             </button>
 
-          </article>
-
+          </div>
 
         </div>
 
       </section>
 
 
-      <!-- =================================
+      <!-- =====================================
            STUDENTS
-      ================================== -->
+      ====================================== -->
 
       <section
-        class="section"
         id="students"
+        class="admin-section"
       >
 
+        <div class="section-heading">
 
-        <div class="student-card">
+          <div>
+            <h2>Students</h2>
 
+            <p>
+              Search and manage student accounts
+            </p>
+          </div>
 
-          <div class="student-card-header">
-
-            <div class="student-card-title">
-
-              <h2>
-                Student Accounts
-              </h2>
-
-              <p>
-                Search, inspect and manage
-                individual student access.
-              </p>
-
-            </div>
+        </div>
 
 
-            <div class="student-actions">
+        <div class="panel student-card">
+
+          <!-- TOOLBAR -->
+
+          <div class="student-toolbar">
+
+            <div class="toolbar-row">
+
+              <div class="search-box">
+
+                <input
+                  id="search"
+                  class="admin-input"
+                  type="search"
+                  placeholder="Search username, name, district..."
+                >
+
+              </div>
+
+
+              <select
+                id="bookFilter"
+                class="admin-select"
+              >
+
+                <option value="">
+                  All Books
+                </option>
+
+                <option value="01">
+                  Book 01
+                </option>
+
+                <option value="02">
+                  Book 02
+                </option>
+
+                <option value="03">
+                  Book 03
+                </option>
+
+              </select>
+
+
+              <select
+                id="registrationFilter"
+                class="admin-select"
+              >
+
+                <option value="">
+                  All Status
+                </option>
+
+                <option value="registered">
+                  Registered
+                </option>
+
+                <option value="pending">
+                  Pending
+                </option>
+
+              </select>
+
 
               <button
-                id="downloadBtn"
-                class="admin-btn"
+                id="newBtn"
+                class="toolbar-btn primary"
                 type="button"
               >
-                Export Excel
+                + New Student
               </button>
+
 
               <button
                 id="templateBtn"
-                class="admin-btn"
+                class="toolbar-btn"
                 type="button"
               >
                 Template
               </button>
 
+
               <button
-                id="importBtn"
-                class="admin-btn primary"
+                id="downloadBtn"
+                class="toolbar-btn"
                 type="button"
               >
-                Import Excel
+                Export
               </button>
 
-            </div>
 
-          </div>
-
-
-          <!-- FILTERS -->
-
-          <div class="filters">
-
-            <input
-              id="search"
-              class="search-box"
-              type="search"
-              placeholder="Search username, name, district or contact…"
-            >
-
-
-            <select id="bookFilter">
-
-              <option value="all">
-                All Books
-              </option>
-
-              <option value="01">
-                Book 01
-              </option>
-
-              <option value="02">
-                Book 02
-              </option>
-
-              <option value="03">
-                Book 03
-              </option>
-
-            </select>
-
-
-            <select id="registrationFilter">
-
-              <option value="all">
-                All Registration
-              </option>
-
-              <option value="registered">
-                Registered
-              </option>
-
-              <option value="pending">
-                Pending
-              </option>
-
-            </select>
-
-          </div>
-
-
-          <!-- IMPORT STATUS -->
-
-          <div id="importStatus">
-
-            <div class="import-status-head">
-
-              <strong id="importTitle">
-                Importing students…
-              </strong>
-
-              <span id="importCount">
-                0 / 0
-              </span>
-
-            </div>
-
-
-            <div class="progress-track">
-
-              <div
-                id="importProgress"
-              ></div>
-
-            </div>
-
-
-            <div class="import-meta">
-
-              <span id="importSuccess">
-                0 successful
-              </span>
-
-              <span id="importFailed">
-                0 failed
-              </span>
-
-              <span id="importSkipped">
-                0 skipped
-              </span>
+              <button
+                id="importBtn"
+                class="toolbar-btn"
+                type="button"
+              >
+                Import
+              </button>
 
             </div>
 
@@ -2950,804 +1381,720 @@
               <thead>
 
                 <tr>
-
-                  <th>
-                    USERNAME
-                  </th>
-
-                  <th>
-                    PASSWORD
-                  </th>
-
-                  <th>
-                    BOOK
-                  </th>
-
-                  <th>
-                    FULL NAME
-                  </th>
-
-                  <th>
-                    DISTRICT
-                  </th>
-
-                  <th>
-                    CONTACT
-                  </th>
-
-                  <th>
-                    REGISTRATION
-                  </th>
-
-                  <th>
-                    ACCOUNT
-                  </th>
-
-                  <th>
-                    ACTION
-                  </th>
-
+                  <th>Username</th>
+                  <th>Password</th>
+                  <th>Book</th>
+                  <th>Student</th>
+                  <th>District</th>
+                  <th>Contact</th>
+                  <th>Registration</th>
+                  <th>Status</th>
                 </tr>
 
               </thead>
 
 
-              <tbody id="rows"></tbody>
+              <tbody id="rows">
+              </tbody>
 
             </table>
 
 
-            <div id="empty" class="empty">
-
-              No student accounts match
-              the current filters.
-
+            <div
+              id="empty"
+              class="empty-state"
+            >
+              No students found.
             </div>
 
           </div>
-
 
         </div>
 
       </section>
 
 
-      <!-- =================================
-           TOOLS
-      ================================== -->
+      <!-- =====================================
+           IMPORT / EXPORT TOOLS
+      ====================================== -->
 
       <section
-        class="section"
         id="tools"
+        class="admin-section"
       >
 
-        <div class="tools-grid">
+        <div class="section-heading">
 
-
-          <div class="tool-card">
-
-            <h3>
-              Excel Import & Export
-            </h3>
+          <div>
+            <h2>Import & Export</h2>
 
             <p>
-              Use the Excel template to create
-              student accounts in bulk. Existing
-              student management remains available
-              from the table above.
+              Manage student data using Excel files
             </p>
-
-
-            <div class="tool-actions">
-
-              <button
-                id="templateBtn"
-                class="admin-btn"
-                type="button"
-              >
-                Download Template
-              </button>
-
-              <button
-                id="downloadBtn"
-                class="admin-btn"
-                type="button"
-              >
-                Download Student Data
-              </button>
-
-              <button
-                id="importBtn"
-                class="admin-btn primary"
-                type="button"
-              >
-                Import Excel
-              </button>
-
-            </div>
-
-
-            <div class="bulk-note">
-
-              Keep exported files secure because
-              student account data may contain
-              passwords.
-
-            </div>
-
           </div>
-
-
-          <div class="tool-card">
-
-            <h3>
-              Account Overview
-            </h3>
-
-            <p>
-              Click any student row to view
-              complete account information.
-              Use the Delete action only when
-              an account should be permanently removed.
-            </p>
-
-          </div>
-
 
         </div>
 
+
+        <div class="tools-grid">
+
+          <div class="tool-card">
+
+            <h3>Excel Template</h3>
+
+            <p>
+              Download the recommended Excel
+              structure before importing students.
+            </p>
+
+            <button
+              id="templateBtnTools"
+              class="toolbar-btn"
+              type="button"
+              onclick="document.getElementById('templateBtn').click()"
+            >
+              Download Template
+            </button>
+
+          </div>
+
+
+          <div class="tool-card">
+
+            <h3>Export Students</h3>
+
+            <p>
+              Export the currently available
+              student records to an Excel file.
+            </p>
+
+            <button
+              id="downloadBtnTools"
+              class="toolbar-btn"
+              type="button"
+              onclick="document.getElementById('downloadBtn').click()"
+            >
+              Export Excel
+            </button>
+
+          </div>
+
+
+          <div class="tool-card">
+
+            <h3>Import Students</h3>
+
+            <p>
+              Import student records from an
+              Excel workbook.
+            </p>
+
+            <button
+              id="importBtnTools"
+              class="toolbar-btn primary"
+              type="button"
+              onclick="document.getElementById('importBtn').click()"
+            >
+              Import Excel
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- IMPORT FILE -->
 
         <input
           id="fileInput"
           type="file"
           accept=".xlsx,.xls,.csv"
+          hidden
         >
+
+
+        <!-- IMPORT STATUS -->
+
+        <div
+          id="importStatus"
+          class="panel"
+          style="display:none;margin-top:15px;padding:18px;"
+        >
+
+          <strong id="importTitle">
+            Importing...
+          </strong>
+
+          <p
+            id="importCount"
+            style="color:#8fa1b8;font-size:12px;"
+          >
+            0 records
+          </p>
+
+          <div class="import-progress">
+            <div id="importProgress"></div>
+          </div>
+
+        </div>
+
+
+        <div
+          id="failedWrap"
+          style="display:none;"
+        >
+
+          <div
+            id="failedList"
+            class="failed-list"
+          ></div>
+
+        </div>
 
       </section>
 
 
-    </div>
+      <!-- =====================================
+           DATABASE STATUS
+      ====================================== -->
 
+      <section class="admin-section">
+
+        <div
+          id="dbStatus"
+          class="panel"
+          style="
+            padding:16px 18px;
+            color:#8fa1b8;
+            font-size:12px;
+          "
+        >
+          Database status: checking...
+        </div>
+
+      </section>
+
+    </div>
 
   </main>
 
 
-</div>
+  <!-- =========================================
+       CREATE STUDENT MODAL
+  ========================================== -->
 
+  <div
+    id="modal"
+    class="admin-modal"
+  >
 
-<!-- =====================================
-     CREATE STUDENT MODAL
-====================================== -->
+    <div class="modal-box">
 
-<div
-  id="modal"
-  class="admin-modal"
->
+      <div class="modal-header">
 
-
-  <div class="modal-box">
-
-
-    <button
-      id="close"
-      class="modal-close"
-      type="button"
-    >
-      ×
-    </button>
-
-
-    <div class="page-eyebrow">
-      STUDENT ACCOUNT
-    </div>
-
-
-    <h2>
-      Create Student
-    </h2>
-
-
-    <p class="modal-subtitle">
-      Create a new digital student account
-      and assign the relevant book.
-    </p>
-
-
-    <div class="modal-field">
-
-      <label for="newUser">
-        Username
-      </label>
-
-      <input
-        id="newUser"
-        type="text"
-        placeholder="BF26-000001"
-        autocomplete="off"
-      >
-
-    </div>
-
-
-    <div class="modal-field">
-
-      <label for="newPass">
-        Password
-      </label>
-
-
-      <div class="password-row">
-
-        <input
-          id="newPass"
-          type="text"
-          autocomplete="off"
-        >
+        <h2>
+          Create New Student
+        </h2>
 
         <button
-          id="gen"
-          class="admin-btn"
+          id="close"
+          class="modal-close"
           type="button"
         >
-          Generate
+          ×
         </button>
 
       </div>
 
+
+      <div class="modal-body">
+
+        <div class="form-grid">
+
+          <div class="form-group">
+
+            <label for="newUser">
+              Username
+            </label>
+
+            <input
+              id="newUser"
+              class="admin-input"
+              type="text"
+              placeholder="BF26-000001"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="newPass">
+              Password
+            </label>
+
+            <input
+              id="newPass"
+              class="admin-input"
+              type="text"
+              placeholder="Student password"
+            >
+
+          </div>
+
+
+          <div class="form-group full">
+
+            <label for="newBook">
+              Assigned Book
+            </label>
+
+            <select
+              id="newBook"
+              class="admin-select"
+              style="width:100%;"
+            >
+
+              <option value="01">
+                Book 01
+              </option>
+
+              <option value="02">
+                Book 02
+              </option>
+
+              <option value="03">
+                Book 03
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+
+        <div
+          id="gen"
+          style="
+            display:inline-flex;
+            align-items:center;
+            margin-top:3px;
+            color:#7eaaf0;
+            font-size:11px;
+            cursor:pointer;
+          "
+        >
+          Generate password
+        </div>
+
+
+        <div class="modal-actions">
+
+          <button
+            id="cancel"
+            type="button"
+          >
+            Cancel
+          </button>
+
+          <button
+            id="create"
+            class="primary"
+            type="button"
+          >
+            Create Student
+          </button>
+
+        </div>
+
+      </div>
+
     </div>
-
-
-    <div class="modal-field">
-
-      <label for="newBook">
-        Assigned Book
-      </label>
-
-
-      <select id="newBook">
-
-        <option value="01">
-          Book 01 · A/L Accounting
-        </option>
-
-        <option value="02">
-          Book 02
-        </option>
-
-        <option value="03">
-          Book 03
-        </option>
-
-      </select>
-
-    </div>
-
-
-    <div class="modal-actions">
-
-      <button
-        id="cancel"
-        class="admin-btn"
-        type="button"
-      >
-        Cancel
-      </button>
-
-
-      <button
-        id="create"
-        class="admin-btn primary"
-        type="button"
-      >
-        Create Student
-      </button>
-
-    </div>
-
 
   </div>
 
-</div>
 
+  <!-- =========================================
+       STUDENT DETAIL MODAL
+  ========================================== -->
 
-<!-- =====================================
-     STUDENT DETAILS MODAL
-====================================== -->
+  <div
+    id="detailModal"
+    class="admin-modal"
+  >
 
-<div
-  id="detailModal"
-  class="admin-modal"
->
+    <div class="modal-box">
 
+      <div class="modal-header">
 
-  <div class="modal-box detail-box">
+        <h2>
+          Student Details
+        </h2>
 
-
-    <button
-      id="detailClose"
-      class="modal-close"
-      type="button"
-    >
-      ×
-    </button>
-
-
-    <div class="page-eyebrow">
-      STUDENT DETAILS
-    </div>
-
-
-    <h2>
-      Account Information
-    </h2>
-
-
-    <p class="modal-subtitle">
-      Complete information for the selected
-      student account.
-    </p>
-
-
-    <div id="detailContent"></div>
-
-
-  </div>
-
-</div>
-
-
-<!-- =====================================
-     IMPORT RESULT MODAL
-====================================== -->
-
-<div
-  id="importResultModal"
-  class="admin-modal"
->
-
-
-  <div class="modal-box">
-
-
-    <button
-      id="importResultClose"
-      class="modal-close"
-      type="button"
-    >
-      ×
-    </button>
-
-
-    <div class="page-eyebrow">
-      IMPORT COMPLETE
-    </div>
-
-
-    <h2>
-      Import Results
-    </h2>
-
-
-    <p class="modal-subtitle">
-      The Excel import process has finished.
-    </p>
-
-
-    <div class="result-cards">
-
-
-      <div>
-
-        <span>
-          Successful
-        </span>
-
-        <strong id="resultSuccess">
-          0
-        </strong>
+        <button
+          id="detailClose"
+          class="modal-close"
+          type="button"
+        >
+          ×
+        </button>
 
       </div>
-
-
-      <div>
-
-        <span>
-          Failed
-        </span>
-
-        <strong id="resultFailed">
-          0
-        </strong>
-
-      </div>
-
-
-      <div>
-
-        <span>
-          Skipped
-        </span>
-
-        <strong id="resultSkipped">
-          0
-        </strong>
-
-      </div>
-
-
-    </div>
-
-
-    <div
-      id="failedWrap"
-      class="failed-list-wrap"
-      style="display:none"
-    >
-
-      <h3>
-        Failed Rows
-      </h3>
 
 
       <div
-        id="failedList"
-        class="failed-list"
-      ></div>
-
-    </div>
-
-
-    <div class="modal-actions">
-
-      <button
-        id="importResultCloseBtn"
-        class="admin-btn primary"
-        type="button"
+        id="detailContent"
+        class="modal-body"
       >
-        Done
-      </button>
+      </div>
 
     </div>
-
 
   </div>
 
-</div>
+
+  <!-- =========================================
+       IMPORT RESULT MODAL
+  ========================================== -->
+
+  <div
+    id="importResultModal"
+    class="admin-modal"
+  >
+
+    <div class="modal-box">
+
+      <div class="modal-header">
+
+        <h2>
+          Import Results
+        </h2>
+
+        <button
+          id="importResultClose"
+          class="modal-close"
+          type="button"
+        >
+          ×
+        </button>
+
+      </div>
 
 
-<!-- =====================================
-     TOAST
-====================================== -->
+      <div class="modal-body">
 
-<div
-  id="toast"
-  class="toast"
-></div>
+        <div
+          style="
+            display:grid;
+            grid-template-columns:
+              repeat(3,1fr);
+            gap:10px;
+          "
+        >
 
+          <div class="stat-card">
+            <div class="stat-label">
+              Success
+            </div>
 
-<!-- XLSX -->
-
-<script
-  src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"
-></script>
-
-
-<!-- ADMIN JS -->
-
-<script
-  type="module"
-  src="admin.js?v=30"
-></script>
-
-
-<!-- ADMIN SESSION / UI -->
-
-<script type="module">
-
-  import {
-    auth,
-    signOut
-  } from "./firebase.js";
+            <div
+              id="importSuccess"
+              class="stat-value"
+              style="font-size:24px;"
+            >
+              0
+            </div>
+          </div>
 
 
-  /*
-   * Logout
-   */
+          <div class="stat-card">
+            <div class="stat-label">
+              Skipped
+            </div>
 
-  const logout =
-    document.getElementById(
-      "adminLogout"
-    );
-
-
-  if (logout) {
-
-    logout.addEventListener(
-      "click",
-      async () => {
-
-        logout.disabled = true;
-
-        logout.textContent =
-          "Signing out…";
+            <div
+              id="importSkipped"
+              class="stat-value"
+              style="font-size:24px;"
+            >
+              0
+            </div>
+          </div>
 
 
-        try {
+          <div class="stat-card">
+            <div class="stat-label">
+              Failed
+            </div>
 
-          await signOut(auth);
+            <div
+              id="importFailed"
+              class="stat-value"
+              style="font-size:24px;"
+            >
+              0
+            </div>
+          </div>
 
-        } catch (error) {
+        </div>
 
-          console.error(
-            "ADMIN LOGOUT ERROR:",
-            error
+
+        <div
+          style="
+            display:none;
+            margin-top:15px;
+          "
+          id="resultFailed"
+        >
+        </div>
+
+
+        <div
+          style="
+            display:none;
+            margin-top:15px;
+          "
+          id="resultSkipped"
+        >
+        </div>
+
+
+        <div class="modal-actions">
+
+          <button
+            id="importResultCloseBtn"
+            type="button"
+          >
+            Close
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================================
+       TOAST
+  ========================================== -->
+
+  <div id="toast"></div>
+
+
+  <!-- =========================================
+       XLSX LIBRARY
+  ========================================== -->
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"
+  ></script>
+
+
+  <!-- =========================================
+       EXISTING ADMIN LOGIC
+  ========================================== -->
+
+  <script
+    type="module"
+    src="admin.js?v=30"
+  ></script>
+
+
+  <!-- =========================================
+       ADMIN UI / LOGOUT / AUTO REFRESH
+  ========================================== -->
+
+  <script type="module">
+
+    import {
+      auth,
+      signOut
+    } from "./firebase.js";
+
+
+    /* -----------------------------------------
+       LOGOUT
+    ----------------------------------------- */
+
+    const logoutButton =
+      document.getElementById(
+        "adminLogout"
+      );
+
+
+    if (logoutButton) {
+
+      logoutButton.addEventListener(
+        "click",
+        async () => {
+
+          logoutButton.disabled = true;
+
+          logoutButton.textContent =
+            "Signing out...";
+
+          try {
+
+            await signOut(auth);
+
+          } catch (error) {
+
+            console.error(
+              "ADMIN LOGOUT ERROR:",
+              error
+            );
+
+          }
+
+          window.location.replace(
+            "admin-login.html"
           );
 
         }
+      );
+
+    }
 
 
-        window.location.replace(
-          "admin-login.html"
-        );
+    /* -----------------------------------------
+       MOBILE SIDEBAR
+    ----------------------------------------- */
 
-      }
-    );
+    const mobileMenu =
+      document.getElementById(
+        "mobileMenu"
+      );
 
-  }
-
-
-  /*
-   * Mobile sidebar
-   */
-
-  const menu =
-    document.getElementById(
-      "mobileMenu"
-    );
-
-  const sidebar =
-    document.getElementById(
-      "adminSidebar"
-    );
+    const sidebar =
+      document.getElementById(
+        "adminSidebar"
+      );
 
 
-  if (
-    menu &&
-    sidebar
-  ) {
+    if (mobileMenu && sidebar) {
 
-    menu.addEventListener(
-      "click",
-      () => {
+      mobileMenu.addEventListener(
+        "click",
+        () => {
 
-        sidebar.classList.toggle(
-          "open"
-        );
+          sidebar.classList.toggle(
+            "mobile-open"
+          );
 
-      }
-    );
+        }
+      );
 
 
-    sidebar
-      .querySelectorAll(
-        ".sidebar-link"
-      )
-      .forEach(
-        (link) => {
+      sidebar
+        .querySelectorAll("a")
+        .forEach((link) => {
 
           link.addEventListener(
             "click",
             () => {
 
               sidebar.classList.remove(
-                "open"
+                "mobile-open"
               );
 
             }
           );
 
-        }
-      );
-
-  }
-
-
-  /*
-   * Live connection badge
-   */
-
-  const dbStatus =
-    document.getElementById(
-      "dbStatus"
-    );
-
-  const connectionText =
-    document.getElementById(
-      "connectionText"
-    );
-
-  const connectionBadge =
-    document.getElementById(
-      "connectionBadge"
-    );
-
-
-  const observer =
-    new MutationObserver(
-      () => {
-
-        if (
-          !dbStatus ||
-          !connectionText ||
-          !connectionBadge
-        ) {
-          return;
-        }
-
-
-        const isError =
-          dbStatus.classList.contains(
-            "error"
-          );
-
-
-        if (isError) {
-
-          connectionText.textContent =
-            "Database error";
-
-          connectionBadge.style.color =
-            "#b42318";
-
-          connectionBadge.style.background =
-            "#fff6f6";
-
-        } else {
-
-          connectionText.textContent =
-            "Live database";
-
-          connectionBadge.style.color =
-            "#16845a";
-
-          connectionBadge.style.background =
-            "#f4fbf7";
-
-        }
-
-      }
-    );
-
-
-  if (dbStatus) {
-
-    observer.observe(
-      dbStatus,
-      {
-        childList: true,
-        attributes: true,
-        subtree: true
-      }
-    );
-
-  }
-
-
-  /*
-   * Smooth sidebar navigation
-   */
-
-  document
-    .querySelectorAll(
-      '.sidebar-link[href^="#"]'
-    )
-    .forEach(
-      (link) => {
-
-        link.addEventListener(
-          "click",
-          (event) => {
-
-            const id =
-              link
-                .getAttribute("href")
-                .substring(1);
-
-            const target =
-              document.getElementById(id);
-
-            if (!target) {
-              return;
-            }
-
-            event.preventDefault();
-
-            target.scrollIntoView({
-              behavior: "smooth",
-              block: "start"
-            });
-
-          }
-        );
-
-      }
-    );
-
-
-  /*
-   * Active sidebar item
-   */
-
-  const sections = [
-    "dashboard",
-    "students",
-    "books",
-    "tools"
-  ];
-
-
-  window.addEventListener(
-    "scroll",
-    () => {
-
-      let current =
-        "dashboard";
-
-
-      for (
-        const id of sections
-      ) {
-
-        const element =
-          document.getElementById(id);
-
-        if (!element) {
-          continue;
-        }
-
-
-        const top =
-          element.getBoundingClientRect().top;
-
-
-        if (
-          top <= 160
-        ) {
-
-          current = id;
-
-        }
-
-      }
-
-
-      document
-        .querySelectorAll(
-          ".sidebar-link"
-        )
-        .forEach(
-          (link) => {
-
-            const href =
-              link.getAttribute(
-                "href"
-              );
-
-            link.classList.toggle(
-              "active",
-              href ===
-                `#${current}`
-            );
-
-          }
-        );
+        });
 
     }
-  );
 
-</script>
 
+    /* -----------------------------------------
+       CONNECTION STATUS
+    ----------------------------------------- */
+
+    const connectionText =
+      document.getElementById(
+        "connectionText"
+      );
+
+
+    const dbStatus =
+      document.getElementById(
+        "dbStatus"
+      );
+
+
+    window.addEventListener(
+      "online",
+      () => {
+
+        if (connectionText) {
+
+          connectionText.textContent =
+            "Connected";
+
+        }
+
+        if (dbStatus) {
+
+          dbStatus.textContent =
+            "Database status: Online";
+
+        }
+
+      }
+    );
+
+
+    window.addEventListener(
+      "offline",
+      () => {
+
+        if (connectionText) {
+
+          connectionText.textContent =
+            "Offline";
+
+        }
+
+        if (dbStatus) {
+
+          dbStatus.textContent =
+            "Database status: Offline";
+
+        }
+
+      }
+    );
+
+
+    /* -----------------------------------------
+       ADMIN DASHBOARD AUTO REFRESH
+       
+       FULL PAGE RELOAD EVERY 30 SECONDS
+    ----------------------------------------- */
+
+    const ADMIN_REFRESH_INTERVAL =
+      30000;
+
+
+    setInterval(() => {
+
+      /*
+        Reload the entire dashboard.
+
+        Firebase Auth keeps the admin session,
+        therefore an authenticated admin remains
+        inside admin.html after reload.
+      */
+
+      window.location.reload();
+
+    }, ADMIN_REFRESH_INTERVAL);
+
+
+  </script>
 
 </body>
-
 </html>
