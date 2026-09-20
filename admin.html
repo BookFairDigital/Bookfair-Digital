@@ -1,2373 +1,391 @@
-<!DOCTYPE html>
-
+<!doctype html>
 <html lang="en">
-
 <head>
-
-  <meta charset="UTF-8">
-
-  <meta
-
-    name="viewport"
-
-    content="width=device-width, initial-scale=1.0"
-
-  >
-
- 
-
-  <title>Admin Panel · BookFair Digital</title>
-
- 
-
-  <style>
-
-    * {
-
-      box-sizing: border-box;
-
-      margin: 0;
-
-      padding: 0;
-
-    }
-
- 
-
-    :root {
-
-      --navy: #071525;
-
-      --navy-2: #0b1f33;
-
-      --navy-3: #102b45;
-
-      --green: #22c55e;
-
-      --green-light: #4ade80;
-
-      --white: #f8fafc;
-
-      --muted: #94a3b8;
-
-      --border: rgba(255,255,255,.08);
-
-      --card: rgba(13, 41, 68, .82);
-
-      --danger: #ef4444;
-
-      --warning: #f59e0b;
-
-      --blue: #38bdf8;
-
-    }
-
- 
-
-    body {
-
-      font-family:
-
-        Inter,
-
-        system-ui,
-
-        -apple-system,
-
-        BlinkMacSystemFont,
-
-        "Segoe UI",
-
-        sans-serif;
-
- 
-
-      background:
-
-        radial-gradient(
-
-          circle at 20% 0%,
-
-          rgba(34,197,94,.09),
-
-          transparent 30%
-
-        ),
-
-        radial-gradient(
-
-          circle at 100% 20%,
-
-          rgba(56,189,248,.07),
-
-          transparent 30%
-
-        ),
-
-        var(--navy);
-
- 
-
-      color: var(--white);
-
-      min-height: 100vh;
-
-    }
-
- 
-
-    button,
-
-    input,
-
-    select {
-
-      font: inherit;
-
-    }
-
- 
-
-    button,
-
-    a {
-
-      -webkit-tap-highlight-color: transparent;
-
-    }
-
- 
-
-    a {
-
-      color: inherit;
-
-      text-decoration: none;
-
-    }
-
- 
-
-    /* =========================
-
-       LAYOUT
-
-    ========================= */
-
- 
-
-    .admin-layout {
-
-      min-height: 100vh;
-
-      display: flex;
-
-    }
-
- 
-
-    /* =========================
-
-       SIDEBAR
-
-    ========================= */
-
- 
-
-    .sidebar {
-
-      width: 255px;
-
-      min-height: 100vh;
-
-      background: rgba(7,21,37,.96);
-
-      border-right: 1px solid var(--border);
-
-      position: fixed;
-
-      left: 0;
-
-      top: 0;
-
-      bottom: 0;
-
-      z-index: 100;
-
-      display: flex;
-
-      flex-direction: column;
-
-    }
-
- 
-
-    .brand {
-
-      padding: 24px 22px;
-
-      border-bottom: 1px solid var(--border);
-
-    }
-
- 
-
-    .brand-logo {
-
-      display: flex;
-
-      align-items: center;
-
-      gap: 12px;
-
-    }
-
- 
-
-    .brand-mark {
-
-      width: 42px;
-
-      height: 42px;
-
-      border-radius: 12px;
-
-      background: linear-gradient(
-
-        135deg,
-
-        var(--green),
-
-        #16a34a
-
-      );
-
-      display: grid;
-
-      place-items: center;
-
-      color: #052e16;
-
-      font-weight: 900;
-
-      font-size: 20px;
-
-    }
-
- 
-
-    .brand-text strong {
-
-      display: block;
-
-      font-size: 16px;
-
-      letter-spacing: -.2px;
-
-    }
-
- 
-
-    .brand-text span {
-
-      display: block;
-
-      margin-top: 2px;
-
-      font-size: 11px;
-
-      color: var(--green-light);
-
-      letter-spacing: .7px;
-
-      text-transform: uppercase;
-
-    }
-
- 
-
-    .nav {
-
-      padding: 20px 14px;
-
-      flex: 1;
-
-    }
-
- 
-
-    .nav-title {
-
-      color: #64748b;
-
-      font-size: 10px;
-
-      font-weight: 800;
-
-      letter-spacing: 1.2px;
-
-      padding: 0 11px 10px;
-
-      text-transform: uppercase;
-
-    }
-
- 
-
-    .nav-link {
-
-      width: 100%;
-
-      border: 0;
-
-      background: transparent;
-
-      color: #9fb0c2;
-
-      display: flex;
-
-      align-items: center;
-
-      gap: 12px;
-
-      padding: 12px 13px;
-
-      border-radius: 10px;
-
-      margin-bottom: 4px;
-
-      cursor: pointer;
-
-      text-align: left;
-
-      transition: .2s ease;
-
-    }
-
- 
-
-    .nav-link:hover {
-
-      color: white;
-
-      background: rgba(255,255,255,.05);
-
-    }
-
- 
-
-    .nav-link.active {
-
-      color: white;
-
-      background: rgba(34,197,94,.12);
-
-      box-shadow:
-
-        inset 3px 0 0 var(--green);
-
-    }
-
- 
-
-    .nav-icon {
-
-      width: 22px;
-
-      text-align: center;
-
-      font-size: 16px;
-
-    }
-
- 
-
-    .sidebar-bottom {
-
-      padding: 16px;
-
-      border-top: 1px solid var(--border);
-
-    }
-
- 
-
-    .admin-profile {
-
-      padding: 12px;
-
-      border-radius: 12px;
-
-      background: rgba(255,255,255,.035);
-
-      margin-bottom: 10px;
-
-    }
-
- 
-
-    .admin-profile small {
-
-      color: var(--muted);
-
-      display: block;
-
-      font-size: 10px;
-
-      text-transform: uppercase;
-
-      letter-spacing: .8px;
-
-    }
-
- 
-
-    .admin-profile strong {
-
-      display: block;
-
-      margin-top: 4px;
-
-      font-size: 14px;
-
-    }
-
- 
-
-    .logout-btn {
-
-      width: 100%;
-
-      border: 1px solid rgba(239,68,68,.2);
-
-      background: rgba(239,68,68,.07);
-
-      color: #fca5a5;
-
-      border-radius: 10px;
-
-      padding: 11px;
-
-      cursor: pointer;
-
-      font-weight: 700;
-
-    }
-
- 
-
-    .logout-btn:hover {
-
-      background: rgba(239,68,68,.14);
-
-    }
-
- 
-
-    /* =========================
-
-       MAIN
-
-    ========================= */
-
- 
-
-    .main {
-
-      margin-left: 255px;
-
-      width: calc(100% - 255px);
-
-      min-width: 0;
-
-    }
-
- 
-
-    .topbar {
-
-      height: 74px;
-
-      border-bottom: 1px solid var(--border);
-
-      background: rgba(7,21,37,.72);
-
-      backdrop-filter: blur(14px);
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: space-between;
-
-      padding: 0 32px;
-
-      position: sticky;
-
-      top: 0;
-
-      z-index: 50;
-
-    }
-
- 
-
-    .page-heading h1 {
-
-      font-size: 20px;
-
-      letter-spacing: -.4px;
-
-    }
-
- 
-
-    .page-heading p {
-
-      color: var(--muted);
-
-      font-size: 12px;
-
-      margin-top: 3px;
-
-    }
-
- 
-
-    .topbar-actions {
-
-      display: flex;
-
-      align-items: center;
-
-      gap: 10px;
-
-    }
-
- 
-
-    .refresh-btn {
-
-      border: 1px solid var(--border);
-
-      background: rgba(255,255,255,.04);
-
-      color: #dbeafe;
-
-      padding: 9px 13px;
-
-      border-radius: 9px;
-
-      cursor: pointer;
-
-      font-weight: 700;
-
-      font-size: 12px;
-
-    }
-
- 
-
-    .refresh-btn:hover {
-
-      border-color: rgba(34,197,94,.4);
-
-      color: white;
-
-    }
-
- 
-
-    .content {
-
-      padding: 30px 32px 50px;
-
-      max-width: 1600px;
-
-      margin: auto;
-
-    }
-
- 
-
-    /* =========================
-
-       SECTIONS
-
-    ========================= */
-
- 
-
-    .admin-section {
-
-      display: none;
-
-    }
-
- 
-
-    .admin-section.active {
-
-      display: block;
-
-    }
-
- 
-
-    .section-header {
-
-      margin-bottom: 22px;
-
-    }
-
- 
-
-    .section-header h2 {
-
-      font-size: 22px;
-
-      letter-spacing: -.5px;
-
-    }
-
- 
-
-    .section-header p {
-
-      color: var(--muted);
-
-      font-size: 13px;
-
-      margin-top: 5px;
-
-    }
-
- 
-
-    /* =========================
-
-       STATS
-
-    ========================= */
-
- 
-
-    .stats-grid {
-
-      display: grid;
-
-      grid-template-columns:
-
-        repeat(4, minmax(0, 1fr));
-
-      gap: 16px;
-
-      margin-bottom: 24px;
-
-    }
-
- 
-
-    .stat-card {
-
-      background: var(--card);
-
-      border: 1px solid var(--border);
-
-      border-radius: 15px;
-
-      padding: 20px;
-
-      min-height: 135px;
-
-      position: relative;
-
-      overflow: hidden;
-
-    }
-
- 
-
-    .stat-card::after {
-
-      content: "";
-
-      position: absolute;
-
-      width: 100px;
-
-      height: 100px;
-
-      right: -35px;
-
-      top: -35px;
-
-      border-radius: 50%;
-
-      background: rgba(34,197,94,.06);
-
-    }
-
- 
-
-    .stat-top {
-
-      display: flex;
-
-      justify-content: space-between;
-
-      align-items: center;
-
-    }
-
- 
-
-    .stat-label {
-
-      color: var(--muted);
-
-      font-size: 11px;
-
-      text-transform: uppercase;
-
-      letter-spacing: .7px;
-
-      font-weight: 800;
-
-    }
-
- 
-
-    .stat-icon {
-
-      width: 34px;
-
-      height: 34px;
-
-      display: grid;
-
-      place-items: center;
-
-      border-radius: 9px;
-
-      background: rgba(34,197,94,.1);
-
-    }
-
- 
-
-    .stat-number {
-
-      font-size: 29px;
-
-      font-weight: 850;
-
-      margin-top: 16px;
-
-      letter-spacing: -1px;
-
-    }
-
- 
-
-    .stat-note {
-
-      color: #64748b;
-
-      font-size: 11px;
-
-      margin-top: 4px;
-
-    }
-
- 
-
-    /* =========================
-
-       PANELS
-
-    ========================= */
-
- 
-
-    .panel-grid {
-
-      display: grid;
-
-      grid-template-columns:
-
-        minmax(0, 1.5fr)
-
-        minmax(300px, 1fr);
-
-      gap: 18px;
-
-    }
-
- 
-
-    .panel {
-
-      background: var(--card);
-
-      border: 1px solid var(--border);
-
-      border-radius: 15px;
-
-      overflow: hidden;
-
-    }
-
- 
-
-    .panel-header {
-
-      padding: 17px 19px;
-
-      border-bottom: 1px solid var(--border);
-
-      display: flex;
-
-      justify-content: space-between;
-
-      align-items: center;
-
-    }
-
- 
-
-    .panel-header h3 {
-
-      font-size: 14px;
-
-    }
-
- 
-
-    .panel-header span {
-
-      color: var(--muted);
-
-      font-size: 11px;
-
-    }
-
- 
-
-    .panel-body {
-
-      padding: 18px;
-
-    }
-
- 
-
-    /* =========================
-
-       TABLES
-
-    ========================= */
-
- 
-
-    .table-wrap {
-
-      width: 100%;
-
-      overflow-x: auto;
-
-    }
-
- 
-
-    table {
-
-      width: 100%;
-
-      border-collapse: collapse;
-
-      min-width: 700px;
-
-    }
-
- 
-
-    th {
-
-      text-align: left;
-
-      padding: 12px 14px;
-
-      color: #718096;
-
-      font-size: 10px;
-
-      text-transform: uppercase;
-
-      letter-spacing: .7px;
-
-      border-bottom: 1px solid var(--border);
-
-    }
-
- 
-
-    td {
-
-      padding: 14px;
-
-      border-bottom: 1px solid rgba(255,255,255,.045);
-
-      font-size: 12px;
-
-      color: #d7e1eb;
-
-    }
-
- 
-
-    tbody tr:hover {
-
-      background: rgba(255,255,255,.025);
-
-    }
-
- 
-
-    .empty-state {
-
-      padding: 45px 20px;
-
-      text-align: center;
-
-      color: var(--muted);
-
-    }
-
- 
-
-    .empty-state strong {
-
-      display: block;
-
-      color: #cbd5e1;
-
-      margin-bottom: 5px;
-
-    }
-
- 
-
-    /* =========================
-
-       BADGES
-
-    ========================= */
-
- 
-
-    .badge {
-
-      display: inline-flex;
-
-      align-items: center;
-
-      gap: 5px;
-
-      border-radius: 999px;
-
-      padding: 5px 9px;
-
-      font-size: 10px;
-
-      font-weight: 800;
-
-      white-space: nowrap;
-
-    }
-
- 
-
-    .badge-green {
-
-      color: #86efac;
-
-      background: rgba(34,197,94,.1);
-
-    }
-
- 
-
-    .badge-red {
-
-      color: #fca5a5;
-
-      background: rgba(239,68,68,.1);
-
-    }
-
- 
-
-    .badge-yellow {
-
-      color: #fcd34d;
-
-      background: rgba(245,158,11,.1);
-
-    }
-
- 
-
-    .badge-blue {
-
-      color: #7dd3fc;
-
-      background: rgba(56,189,248,.1);
-
-    }
-
- 
-
-    /* =========================
-
-       SEARCH / FILTER
-
-    ========================= */
-
- 
-
-    .toolbar {
-
-      display: flex;
-
-      gap: 10px;
-
-      flex-wrap: wrap;
-
-      margin-bottom: 18px;
-
-    }
-
- 
-
-    .input,
-
-    .select {
-
-      border: 1px solid var(--border);
-
-      background: rgba(255,255,255,.035);
-
-      color: white;
-
-      border-radius: 9px;
-
-      padding: 11px 12px;
-
-      outline: none;
-
-      min-width: 170px;
-
-    }
-
- 
-
-    .input {
-
-      flex: 1;
-
-      min-width: 240px;
-
-    }
-
- 
-
-    .input::placeholder {
-
-      color: #64748b;
-
-    }
-
- 
-
-    .input:focus,
-
-    .select:focus {
-
-      border-color: rgba(34,197,94,.5);
-
-    }
-
- 
-
-    .select option {
-
-      background: var(--navy-2);
-
-    }
-
- 
-
-    /* =========================
-
-       BOOK CARDS
-
-    ========================= */
-
- 
-
-    .books-grid {
-
-      display: grid;
-
-      grid-template-columns:
-
-        repeat(3, minmax(0, 1fr));
-
-      gap: 18px;
-
-    }
-
- 
-
-    .book-card {
-
-      background: var(--card);
-
-      border: 1px solid var(--border);
-
-      border-radius: 15px;
-
-      overflow: hidden;
-
-    }
-
- 
-
-    .book-image {
-
-      height: 190px;
-
-      background: var(--navy-2);
-
-      display: grid;
-
-      place-items: center;
-
-      overflow: hidden;
-
-    }
-
- 
-
-    .book-image img {
-
-      width: 100%;
-
-      height: 100%;
-
-      object-fit: cover;
-
-    }
-
- 
-
-    .book-placeholder {
-
-      font-size: 42px;
-
-    }
-
- 
-
-    .book-info {
-
-      padding: 17px;
-
-    }
-
- 
-
-    .book-info small {
-
-      color: var(--green-light);
-
-      font-size: 10px;
-
-      font-weight: 800;
-
-      letter-spacing: .7px;
-
-    }
-
- 
-
-    .book-info h3 {
-
-      margin-top: 6px;
-
-      font-size: 17px;
-
-    }
-
- 
-
-    .book-price {
-
-      color: #bbf7d0;
-
-      font-size: 17px;
-
-      font-weight: 800;
-
-      margin-top: 10px;
-
-    }
-
- 
-
-    .book-meta {
-
-      display: flex;
-
-      justify-content: space-between;
-
-      margin-top: 13px;
-
-      padding-top: 13px;
-
-      border-top: 1px solid var(--border);
-
-      color: var(--muted);
-
-      font-size: 11px;
-
-    }
-
- 
-
-    /* =========================
-
-       ACTIVITY
-
-    ========================= */
-
- 
-
-    .activity-item {
-
-      display: flex;
-
-      gap: 12px;
-
-      padding: 13px 0;
-
-      border-bottom: 1px solid rgba(255,255,255,.05);
-
-    }
-
- 
-
-    .activity-item:last-child {
-
-      border-bottom: 0;
-
-    }
-
- 
-
-    .activity-dot {
-
-      width: 9px;
-
-      height: 9px;
-
-      background: var(--green);
-
-      border-radius: 50%;
-
-      margin-top: 5px;
-
-      flex-shrink: 0;
-
-      box-shadow: 0 0 12px rgba(34,197,94,.5);
-
-    }
-
- 
-
-    .activity-text strong {
-
-      display: block;
-
-      font-size: 12px;
-
-    }
-
- 
-
-    .activity-text span {
-
-      color: var(--muted);
-
-      display: block;
-
-      font-size: 11px;
-
-      margin-top: 3px;
-
-    }
-
- 
-
-    /* =========================
-
-       MOBILE
-
-    ========================= */
-
- 
-
-    .mobile-menu {
-
-      display: none;
-
-      border: 1px solid var(--border);
-
-      background: rgba(255,255,255,.04);
-
-      color: white;
-
-      width: 38px;
-
-      height: 38px;
-
-      border-radius: 9px;
-
-      cursor: pointer;
-
-      font-size: 18px;
-
-    }
-
- 
-
-    @media (max-width: 1100px) {
-
-      .stats-grid {
-
-        grid-template-columns:
-
-          repeat(2, minmax(0, 1fr));
-
-      }
-
- 
-
-      .panel-grid {
-
-        grid-template-columns: 1fr;
-
-      }
-
- 
-
-      .books-grid {
-
-        grid-template-columns:
-
-          repeat(2, minmax(0, 1fr));
-
-      }
-
-    }
-
- 
-
-    @media (max-width: 800px) {
-
-      .sidebar {
-
-        transform: translateX(-100%);
-
-        transition: transform .25s ease;
-
-      }
-
- 
-
-      .sidebar.open {
-
-        transform: translateX(0);
-
-      }
-
- 
-
-      .main {
-
-        margin-left: 0;
-
-        width: 100%;
-
-      }
-
- 
-
-      .mobile-menu {
-
-        display: block;
-
-      }
-
- 
-
-      .topbar {
-
-        padding: 0 16px;
-
-        gap: 12px;
-
-      }
-
- 
-
-      .content {
-
-        padding: 22px 16px 40px;
-
-      }
-
- 
-
-      .page-heading h1 {
-
-        font-size: 16px;
-
-      }
-
- 
-
-      .page-heading p {
-
-        display: none;
-
-      }
-
- 
-
-      .topbar-actions .refresh-btn {
-
-        display: none;
-
-      }
-
-    }
-
- 
-
-    @media (max-width: 600px) {
-
-      .stats-grid {
-
-        grid-template-columns: 1fr;
-
-      }
-
- 
-
-      .books-grid {
-
-        grid-template-columns: 1fr;
-
-      }
-
- 
-
-      .toolbar {
-
-        flex-direction: column;
-
-      }
-
- 
-
-      .input,
-
-      .select {
-
-        width: 100%;
-
-        min-width: 0;
-
-      }
-
- 
-
-      .stat-card {
-
-        min-height: 120px;
-
-      }
-
-    }
-
-  </style>
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BookFair Digital — Admin Panel</title>
+
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+
+<style>
+:root{
+  --navy:#071525;
+  --navy2:#0a1d31;
+  --blue:#0d2944;
+  --blue2:#163a5f;
+  --green:#22c55e;
+  --green2:#4ade80;
+  --red:#ef4444;
+  --gold:#f59e0b;
+  --white:#f8fafc;
+  --muted:#94a3b8;
+  --border:rgba(255,255,255,.09);
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;background:var(--navy);color:var(--white)}
+body{overflow-x:hidden}
+button,input,select{font:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+
+.header{
+  position:sticky;top:0;z-index:100;
+  height:70px;padding:0 28px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(7,21,37,.94);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border)
+}
+.brand{display:flex;align-items:center;gap:11px;font-weight:850}
+.logo{width:38px;height:38px;display:grid;place-items:center;border-radius:11px;background:linear-gradient(135deg,var(--green),#16a34a);font-weight:950}
+.admin-badge{font-size:9px;letter-spacing:.12em;color:var(--green2);border:1px solid rgba(74,222,128,.25);padding:6px 9px;border-radius:999px}
+.logout{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:#fff;border-radius:9px;padding:9px 14px;font-weight:800;font-size:11px}
+
+.layout{display:flex;min-height:calc(100vh - 70px)}
+.sidebar{
+  width:230px;flex:0 0 230px;padding:24px 15px;
+  border-right:1px solid var(--border);
+  background:rgba(5,17,29,.72)
+}
+.side-title{font-size:9px;color:#60758a;letter-spacing:.14em;font-weight:850;margin:6px 11px 12px}
+.nav-item{display:flex;align-items:center;gap:10px;width:100%;padding:11px 12px;border-radius:10px;color:#9fb0c0;font-size:12px;font-weight:750;margin-bottom:5px}
+.nav-item.active,.nav-item:hover{background:rgba(34,197,94,.10);color:#fff}
+.nav-dot{width:7px;height:7px;border-radius:50%;background:#506274}
+.nav-item.active .nav-dot{background:var(--green2);box-shadow:0 0 10px rgba(74,222,128,.5)}
+
+.main{flex:1;min-width:0;padding:30px;max-width:1500px}
+.topline{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:25px}
+.eyebrow{font-size:9px;letter-spacing:.15em;color:#70859a;font-weight:850;margin-bottom:8px}
+h1{margin:0;font-size:30px;letter-spacing:-.04em}
+.subtitle{margin:8px 0 0;color:#71869a;font-size:12px}
+
+.actions{display:flex;gap:9px;flex-wrap:wrap}
+.admin-btn{
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(255,255,255,.045);
+  color:#eaf1f7;
+  border-radius:10px;
+  padding:10px 13px;
+  font-size:11px;font-weight:800
+}
+.admin-btn:hover{border-color:rgba(74,222,128,.35);background:rgba(34,197,94,.08)}
+.admin-btn.primary{background:var(--green);color:#071525;border-color:var(--green)}
+.admin-btn.danger{color:#fecaca;border-color:rgba(239,68,68,.25);background:rgba(239,68,68,.07)}
+.admin-btn:disabled{opacity:.55;cursor:not-allowed}
+
+.status{font-size:10px;color:#7890a4;margin:0 0 18px}
+.status.ok{color:var(--green2)}
+
+.stats{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;margin-bottom:22px}
+.stat{padding:17px;border:1px solid var(--border);border-radius:15px;background:linear-gradient(145deg,rgba(13,41,68,.76),rgba(7,21,37,.9))}
+.stat-label{font-size:8px;color:#72869a;letter-spacing:.12em;font-weight:850}
+.stat-value{font-size:25px;font-weight:900;margin-top:7px}
+
+.panel{border:1px solid var(--border);border-radius:18px;background:linear-gradient(145deg,rgba(13,41,68,.58),rgba(7,21,37,.82));box-shadow:0 20px 60px rgba(0,0,0,.18);overflow:hidden}
+.panel-head{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
+.panel-title{font-size:14px;font-weight:850}
+.panel-sub{font-size:10px;color:#71869a;margin-top:4px}
+.filters{display:flex;gap:8px;flex-wrap:wrap}
+input,select{height:38px;border-radius:9px;border:1px solid rgba(255,255,255,.10);background:#091a2b;color:#fff;padding:0 11px;outline:none;font-size:11px}
+input{min-width:230px}
+input:focus,select:focus{border-color:rgba(74,222,128,.45)}
+
+.table-wrap{width:100%;overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:1050px}
+th,td{padding:12px 14px;text-align:left;border-bottom:1px solid rgba(255,255,255,.06);font-size:10px;white-space:nowrap}
+th{font-size:8px;color:#71869a;letter-spacing:.10em;background:rgba(0,0,0,.12)}
+td{color:#c9d5df}
+tr:hover td{background:rgba(34,197,94,.025)}
+td strong{color:#fff}
+.muted{color:#71869a}
+.pill{display:inline-flex;padding:5px 8px;border-radius:999px;font-size:7px;font-weight:900;letter-spacing:.07em}
+.pill.green{color:#86efac;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.18)}
+.pill.gold{color:#fcd34d;background:rgba(245,158,11,.09);border:1px solid rgba(245,158,11,.18)}
+.empty{padding:40px;text-align:center;color:#70859a;font-size:12px}
+
+.book-panel{margin-top:20px}
+.book-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:18px}
+.book-box{padding:16px;border:1px solid var(--border);border-radius:13px;background:rgba(255,255,255,.025)}
+.book-box h3{margin:0 0 5px;font-size:13px}
+.book-box p{margin:0 0 13px;color:#71869a;font-size:10px}
+
+.modal{
+  position:fixed;inset:0;z-index:500;
+  display:none;align-items:center;justify-content:center;
+  padding:20px;background:rgba(0,0,0,.68);backdrop-filter:blur(8px)
+}
+.modal.show{display:flex}
+.modal-card{width:min(620px,100%);max-height:90vh;overflow:auto;border:1px solid rgba(74,222,128,.18);border-radius:18px;background:#0b2035;box-shadow:0 30px 100px rgba(0,0,0,.5)}
+.modal-head{display:flex;justify-content:space-between;align-items:center;padding:18px 20px;border-bottom:1px solid var(--border)}
+.modal-head h2{margin:0;font-size:17px}
+.close{width:34px;height:34px;border:0;border-radius:9px;background:rgba(255,255,255,.05);color:#fff;font-size:20px}
+.modal-body{padding:20px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.field label{display:block;margin-bottom:6px;color:#7890a4;font-size:8px;letter-spacing:.10em;font-weight:850}
+.field input,.field select{width:100%}
+.form-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:20px}
+
+.detail-grid{color:#d9e3eb}
+.detail-grid small{color:#71869a;font-size:8px;letter-spacing:.1em}
+.detail-grid strong{color:#fff}
+
+#importStatus{display:none;margin-top:16px;padding:14px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid var(--border)}
+.progress{height:7px;background:#071525;border-radius:99px;overflow:hidden;margin-top:10px}
+# importProgress{width:0}
+# importProgress{height:100%;background:var(--green);width:0;transition:width .2s}
+.failed-item{font-size:10px;color:#aebdcb;border-bottom:1px solid rgba(255,255,255,.05);padding:7px 0}
+
+.toast{position:fixed;right:20px;bottom:20px;z-index:900;display:none;max-width:380px;padding:13px 16px;border-radius:11px;background:#102b45;border:1px solid rgba(74,222,128,.25);color:#fff;font-size:11px;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.toast.show{display:block}
+.toast.error{border-color:rgba(239,68,68,.35)}
+
+@media(max-width:1100px){
+  .stats{grid-template-columns:repeat(3,1fr)}
+  .sidebar{width:190px;flex-basis:190px}
+}
+@media(max-width:760px){
+  .sidebar{display:none}
+  .main{padding:20px 14px}
+  .topline{align-items:flex-start;flex-direction:column}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .book-actions{grid-template-columns:1fr}
+  .form-grid{grid-template-columns:1fr}
+  input{min-width:180px}
+}
+</style>
 </head>
-
- 
 
 <body>
 
- 
+<header class="header">
+  <div class="brand">
+    <div class="logo">B</div>
+    <div>BookFair Digital</div>
+    <span class="admin-badge">ADMIN</span>
+  </div>
+  <button class="logout" id="adminLogout" type="button">Logout</button>
+</header>
 
-<div class="admin-layout">
+<div class="layout">
 
- 
+<aside class="sidebar">
+  <div class="side-title">ADMIN CONSOLE</div>
+  <a class="nav-item active" href="#students"><span class="nav-dot"></span>Student Management</a>
+  <a class="nav-item" href="#books"><span class="nav-dot"></span>Books</a>
+  <a class="nav-item" href="#import"><span class="nav-dot"></span>Excel Import</a>
+  <a class="nav-item" href="#students"><span class="nav-dot"></span>Activity</a>
+</aside>
 
-  <!-- =========================
+<main class="main">
 
-       SIDEBAR
+  <div class="topline">
+    <div>
+      <div class="eyebrow">BOOKFAIR DIGITAL · ADMIN</div>
+      <h1>Admin Dashboard</h1>
+      <p class="subtitle">Manage student accounts, book assignments and Excel imports.</p>
+    </div>
+    <div class="actions">
+      <button class="admin-btn" id="refreshBtn" type="button">↻ Refresh</button>
+      <button class="admin-btn" id="templateBtn" type="button">↓ Excel Template</button>
+      <button class="admin-btn" id="downloadBtn" type="button">↓ Export Students</button>
+      <button class="admin-btn primary" id="importBtn" type="button">↑ Import Excel</button>
+      <button class="admin-btn primary" id="newBtn" type="button">+ New Student</button>
+      <input id="fileInput" type="file" accept=".xlsx,.xls,.csv" hidden>
+    </div>
+  </div>
 
-  ========================== -->
+  <div id="dbStatus" class="status">Connecting to student database…</div>
 
- 
+  <section class="stats">
+    <div class="stat"><div class="stat-label">TOTAL STUDENTS</div><div class="stat-value" id="total">0</div></div>
+    <div class="stat"><div class="stat-label">BOOK 01</div><div class="stat-value" id="b1">0</div></div>
+    <div class="stat"><div class="stat-label">BOOK 02</div><div class="stat-value" id="b2">0</div></div>
+    <div class="stat"><div class="stat-label">BOOK 03</div><div class="stat-value" id="b3">0</div></div>
+    <div class="stat"><div class="stat-label">REGISTERED</div><div class="stat-value" id="registered">0</div></div>
+    <div class="stat"><div class="stat-label">PENDING</div><div class="stat-value" id="pending">0</div></div>
+  </section>
 
-  <aside class="sidebar" id="sidebar">
-
- 
-
-    <div class="brand">
-
-      <div class="brand-logo">
-
- 
-
-        <div class="brand-mark">
-
-          B
-
-        </div>
-
- 
-
-        <div class="brand-text">
-
-          <strong>BookFair Digital</strong>
-
-          <span>Admin Panel</span>
-
-        </div>
-
- 
-
+  <section class="panel" id="students">
+    <div class="panel-head">
+      <div>
+        <div class="panel-title">Student Management</div>
+        <div class="panel-sub">Search, filter, inspect and delete student records.</div>
       </div>
-
+      <div class="filters">
+        <input id="search" type="search" placeholder="Search username, name, district…">
+        <select id="bookFilter">
+          <option value="all">All Books</option>
+          <option value="01">Book 01</option>
+          <option value="02">Book 02</option>
+          <option value="03">Book 03</option>
+        </select>
+        <select id="registrationFilter">
+          <option value="all">All Registration</option>
+          <option value="registered">Registered</option>
+          <option value="pending">Pending</option>
+        </select>
+      </div>
     </div>
 
- 
-
-    <nav class="nav">
-
- 
-
-      <div class="nav-title">
-
-        Management
-
-      </div>
-
- 
-
-      <button
-
-        class="nav-link active"
-
-        data-section="dashboard"
-
-      >
-
-        <span class="nav-icon">▦</span>
-
-        <span>Dashboard</span>
-
-      </button>
-
- 
-
-      <button
-
-        class="nav-link"
-
-        data-section="students"
-
-      >
-
-        <span class="nav-icon">♙</span>
-
-        <span>Students</span>
-
-      </button>
-
- 
-
-      <button
-
-        class="nav-link"
-
-        data-section="orders"
-
-      >
-
-        <span class="nav-icon">▤</span>
-
-        <span>Online Orders</span>
-
-      </button>
-
- 
-
-      <button
-
-        class="nav-link"
-
-        data-section="books"
-
-      >
-
-        <span class="nav-icon">▣</span>
-
-        <span>Books</span>
-
-      </button>
-
- 
-
-      <div
-
-        class="nav-title"
-
-        style="margin-top:22px;"
-
-      >
-
-        System
-
-      </div>
-
- 
-
-      <button
-
-        class="nav-link"
-
-        data-section="activity"
-
-      >
-
-        <span class="nav-icon">◷</span>
-
-        <span>Activity</span>
-
-      </button>
-
- 
-
-      <button
-
-        class="nav-link"
-
-        data-section="settings"
-
-      >
-
-        <span class="nav-icon">⚙</span>
-
-        <span>Settings</span>
-
-      </button>
-
- 
-
-    </nav>
-
- 
-
-    <div class="sidebar-bottom">
-
- 
-
-      <div class="admin-profile">
-
-        <small>Signed in as</small>
-
-        <strong>Administrator</strong>
-
-      </div>
-
- 
-
-      <button
-
-        class="logout-btn"
-
-        id="logout"
-
-      >
-
-        Logout
-
-      </button>
-
- 
-
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>USERNAME</th>
+            <th>PASSWORD</th>
+            <th>ASSIGNED BOOK</th>
+            <th>FULL NAME</th>
+            <th>DISTRICT</th>
+            <th>CONTACT</th>
+            <th>REGISTRATION</th>
+            <th>STATUS</th>
+            <th>ACTION</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <div id="empty" class="empty" style="display:none">No students found.</div>
     </div>
+  </section>
 
- 
-
-  </aside>
-
- 
-
- 
-
-  <!-- =========================
-
-       MAIN
-
-  ========================== -->
-
- 
-
-  <main class="main">
-
- 
-
-    <header class="topbar">
-
- 
-
-      <div
-
-        style="
-
-          display:flex;
-
-          align-items:center;
-
-          gap:12px;
-
-        "
-
-      >
-
- 
-
-        <button
-
-          class="mobile-menu"
-
-          id="mobileMenu"
-
-          type="button"
-
-        >
-
-          ☰
-
-        </button>
-
- 
-
-        <div class="page-heading">
-
-          <h1 id="pageTitle">
-
-            Dashboard
-
-          </h1>
-
- 
-
-          <p id="pageSubtitle">
-
-            BookFair Digital administration
-
-          </p>
-
-        </div>
-
- 
-
+  <section class="panel book-panel" id="books">
+    <div class="panel-head">
+      <div>
+        <div class="panel-title">Book Management</div>
+        <div class="panel-sub">Danger zone — deleting a book removes all students assigned to that book.</div>
       </div>
-
- 
-
-      <div class="topbar-actions">
-
- 
-
-        <button
-
-          class="refresh-btn"
-
-          id="refreshBtn"
-
-          type="button"
-
-        >
-
-          ↻ Refresh
-
-        </button>
-
- 
-
+    </div>
+    <div class="book-actions">
+      <div class="book-box">
+        <h3>Book 01 · A/L Accounting</h3>
+        <p><span id="book1Count">0</span> students assigned</p>
+        <button class="admin-btn danger" id="deleteBook01" type="button">Delete 01 Students</button>
       </div>
+      <div class="book-box">
+        <h3>Book 02</h3>
+        <p><span id="book2Count">0</span> students assigned</p>
+        <button class="admin-btn danger" id="deleteBook02" type="button">Delete 02 Students</button>
+      </div>
+      <div class="book-box">
+        <h3>Book 03</h3>
+        <p><span id="book3Count">0</span> students assigned</p>
+        <button class="admin-btn danger" id="deleteBook03" type="button">Delete 03 Students</button>
+      </div>
+    </div>
+  </section>
 
- 
+  <section class="panel book-panel" id="import">
+    <div class="panel-head">
+      <div>
+        <div class="panel-title">Excel Import</div>
+        <div class="panel-sub">Required columns: Username, Password, Assigned Book. Full Name, District and Contact Number are optional.</div>
+      </div>
+      <button class="admin-btn" id="templateBtn2" type="button" onclick="document.getElementById('templateBtn').click()">Download Template</button>
+    </div>
+    <div style="padding:18px;color:#71869a;font-size:11px">
+      Use the Import Excel button above. The import result will show successful, failed and skipped rows.
+    </div>
+  </section>
 
-    </header>
+</main>
+</div>
 
- 
-
- 
-
-    <div class="content">
-
- 
-
-      <!-- =========================
-
-           DASHBOARD
-
-      ========================== -->
-
- 
-
-      <section
-
-        class="admin-section active"
-
-        id="section-dashboard"
-
-      >
-
- 
-
-        <div class="section-header">
-
-          <h2>Overview</h2>
-
-          <p>
-
-            Monitor your BookFair Digital platform.
-
-          </p>
-
+<!-- New Student -->
+<div class="modal" id="modal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h2>Create Student Account</h2>
+      <button class="close" id="close" type="button">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="field">
+          <label>USERNAME</label>
+          <input id="newUser" type="text" autocomplete="off" placeholder="BF26-0000001">
         </div>
-
- 
-
- 
-
-        <div class="stats-grid">
-
- 
-
-          <div class="stat-card">
-
- 
-
-            <div class="stat-top">
-
-              <span class="stat-label">
-
-                Students
-
-              </span>
-
- 
-
-              <span class="stat-icon">
-
-                👨‍🎓
-
-              </span>
-
-            </div>
-
- 
-
-            <div
-
-              class="stat-number"
-
-              id="totalStudents"
-
-            >
-
-              —
-
-            </div>
-
- 
-
-            <div class="stat-note">
-
-              Registered student accounts
-
-            </div>
-
- 
-
-          </div>
-
- 
-
- 
-
-          <div class="stat-card">
-
- 
-
-            <div class="stat-top">
-
-              <span class="stat-label">
-
-                Orders
-
-              </span>
-
- 
-
-              <span class="stat-icon">
-
-                🛒
-
-              </span>
-
-            </div>
-
- 
-
-            <div
-
-              class="stat-number"
-
-              id="totalOrders"
-
-            >
-
-              —
-
-            </div>
-
- 
-
-            <div class="stat-note">
-
-              Online store orders
-
-            </div>
-
- 
-
-          </div>
-
- 
-
- 
-
-          <div class="stat-card">
-
- 
-
-            <div class="stat-top">
-
-              <span class="stat-label">
-
-                Books
-
-              </span>
-
- 
-
-              <span class="stat-icon">
-
-                📚
-
-              </span>
-
-            </div>
-
- 
-
-            <div
-
-              class="stat-number"
-
-              id="totalBooks"
-
-            >
-
-              3
-
-            </div>
-
- 
-
-            <div class="stat-note">
-
-              Digital book products
-
-            </div>
-
- 
-
-          </div>
-
- 
-
- 
-
-          <div class="stat-card">
-
- 
-
-            <div class="stat-top">
-
-              <span class="stat-label">
-
-                Revenue
-
-              </span>
-
- 
-
-              <span class="stat-icon">
-
-                💰
-
-              </span>
-
-            </div>
-
- 
-
-            <div
-
-              class="stat-number"
-
-              id="totalRevenue"
-
-            >
-
-              Rs. 0
-
-            </div>
-
- 
-
-            <div class="stat-note">
-
-              Recorded order value
-
-            </div>
-
- 
-
-          </div>
-
- 
-
+        <div class="field">
+          <label>PASSWORD</label>
+          <input id="newPass" type="text" autocomplete="off">
         </div>
-
- 
-
- 
-
-        <div class="panel-grid">
-
- 
-
-          <div class="panel">
-
- 
-
-            <div class="panel-header">
-
-              <h3>Recent Orders</h3>
-
-              <span>Latest activity</span>
-
-            </div>
-
- 
-
-            <div
-
-              class="panel-body"
-
-              id="recentOrders"
-
-            >
-
-              <div class="empty-state">
-
-                <strong>No orders loaded</strong>
-
-                Order data will appear here.
-
-              </div>
-
-            </div>
-
- 
-
-          </div>
-
- 
-
- 
-
-          <div class="panel">
-
- 
-
-            <div class="panel-header">
-
-              <h3>System Status</h3>
-
-              <span>Live</span>
-
-            </div>
-
- 
-
-            <div class="panel-body">
-
- 
-
-              <div class="activity-item">
-
-                <div class="activity-dot"></div>
-
- 
-
-                <div class="activity-text">
-
-                  <strong>Admin Panel</strong>
-
-                  <span>
-
-                    Interface loaded successfully
-
-                  </span>
-
-                </div>
-
-              </div>
-
- 
-
-              <div class="activity-item">
-
-                <div class="activity-dot"></div>
-
- 
-
-                <div class="activity-text">
-
-                  <strong>Student Management</strong>
-
-                  <span>
-
-                    Firebase connection ready
-
-                  </span>
-
-                </div>
-
-              </div>
-
- 
-
-              <div class="activity-item">
-
-                <div class="activity-dot"></div>
-
- 
-
-                <div class="activity-text">
-
-                  <strong>Online Orders</strong>
-
-                  <span>
-
-                    Database integration ready
-
-                  </span>
-
-                </div>
-
-              </div>
-
- 
-
-            </div>
-
- 
-
-          </div>
-
- 
-
-        </div>
-
- 
-
-      </section>
-
- 
-
- 
-
-      <!-- =========================
-
-           STUDENTS
-
-      ========================== -->
-
- 
-
-      <section
-
-        class="admin-section"
-
-        id="section-students"
-
-      >
-
- 
-
-        <div class="section-header">
-
-          <h2>Student Management</h2>
-
-          <p>
-
-            Search, review and manage student accounts.
-
-          </p>
-
-        </div>
-
- 
-
-        <div class="toolbar">
-
- 
-
-          <input
-
-            class="input"
-
-            id="studentSearch"
-
-            type="search"
-
-            placeholder="Search username, name or district..."
-
-          >
-
- 
-
-          <select
-
-            class="select"
-
-            id="studentBookFilter"
-
-          >
-
-            <option value="">All Books</option>
-
-            <option value="Book 01">Book 01</option>
-
-            <option value="Book 02">Book 02</option>
-
-            <option value="Book 03">Book 03</option>
-
+        <div class="field">
+          <label>ASSIGNED BOOK</label>
+          <select id="newBook">
+            <option value="01">Book 01 · A/L Accounting</option>
+            <option value="02">Book 02</option>
+            <option value="03">Book 03</option>
           </select>
-
- 
-
-          <select
-
-            class="select"
-
-            id="studentStatusFilter"
-
-          >
-
-            <option value="">All Status</option>
-
-            <option value="active">Active</option>
-
-            <option value="inactive">Inactive</option>
-
-          </select>
-
- 
-
-          <button
-
-            class="refresh-btn"
-
-            id="studentRefresh"
-
-            type="button"
-
-          >
-
-            ↻ Refresh
-
-          </button>
-
- 
-
         </div>
+      </div>
+      <div class="form-actions">
+        <button class="admin-btn" id="gen" type="button">Generate Password</button>
+        <button class="admin-btn" id="cancel" type="button">Cancel</button>
+        <button class="admin-btn primary" id="create" type="button">Create Student</button>
+      </div>
+    </div>
+  </div>
+</div>
 
- 
+<!-- Student Detail -->
+<div class="modal" id="detailModal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h2>Student Details</h2>
+      <button class="close" id="detailClose" type="button">×</button>
+    </div>
+    <div class="modal-body">
+      <div id="detailContent"></div>
+    </div>
+  </div>
+</div>
 
- 
+<!-- Import Progress / Status -->
+<div class="modal" id="importStatusModal">
+  <div class="modal-card">
+    <div class="modal-head"><h2 id="importTitle">Importing students…</h2></div>
+    <div class="modal-body">
+      <div id="importCount">0 / 0</div>
+      <div class="progress"><div id="importProgress"></div></div>
+    </div>
+  </div>
+</div>
 
-        <div class="panel">
+<!-- Import Result -->
+<div class="modal" id="importResultModal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h2>Import Result</h2>
+      <button class="close" id="importResultClose" type="button">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="stats" style="grid-template-columns:repeat(3,1fr);margin:0">
+        <div class="stat"><div class="stat-label">SUCCESS</div><div class="stat-value" id="importSuccess">0</div></div>
+        <div class="stat"><div class="stat-label">FAILED</div><div class="stat-value" id="importFailed">0</div></div>
+        <div class="stat"><div class="stat-label">SKIPPED</div><div class="stat-value" id="importSkipped">0</div></div>
+      </div>
+      <div id="failedWrap" style="display:none;margin-top:18px">
+        <div class="eyebrow">FAILED ROWS</div>
+        <div id="failedList"></div>
+      </div>
+      <div class="form-actions">
+        <button class="admin-btn primary" id="importResultCloseBtn" type="button">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
 
- 
+<div class="toast" id="toast"></div>
 
-          <div class="table-wrap">
+<script>
+document.getElementById("adminLogout")?.addEventListener("click", async () => {
+  try {
+    const mod = await import("./firebase.js");
+    await mod.signOut(mod.auth);
+  } catch (_) {}
+  window.location.href = "admin-login.html";
+});
+</script>
 
- 
+<script type="module" src="admin.js?v=13"></script>
 
-            <table>
-
- 
-
-              <thead>
-
-                <tr>
-
-                  <th>Username</th>
-
-                  <th>Student</th>
-
-                  <th>District</th>
-
-                  <th>Assigned Book</th>
-
-                  <th>Registration</th>
-
-<
+</body>
+</html>
