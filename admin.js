@@ -6,19 +6,8 @@ import {
   getDocs,
   getDoc,
   collection,
-  deleteDoc,
-  firebaseConfig
+  deleteDoc
 } from "./firebase.js";
-
-import {
-  initializeApp
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signOut as signOutStudent
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 import {
   onAuthStateChanged,
@@ -32,28 +21,6 @@ import {
 
 const ADMIN_UID =
   "SU2kLL2ovwPXGyJ436s8PJpLJQZ2";
-
-
-/* =====================================================
-   SECONDARY STUDENT AUTH
-===================================================== */
-
-const studentApp = initializeApp(
-  firebaseConfig,
-  "studentProvisioning"
-);
-
-const studentAuth = getAuth(studentApp);
-
-
-function studentEmail(username) {
-
-  return (
-    username.trim().toLowerCase() +
-    "@bookfairdigital.local"
-  );
-
-}
 
 
 /* =====================================================
@@ -1131,7 +1098,15 @@ async function initAdmin() {
 
 
   /* ===================================================
-     CREATE / MIGRATE STUDENT
+     CREATE / UPDATE STUDENT
+
+     IMPORTANT:
+     Student accounts are stored directly in Firestore.
+     No Firebase Authentication account is created here.
+
+     The document ID is the exact student username from
+     the Excel file. This matches the current student
+     login flow in app.js.
   =================================================== */
 
   async function createStudent(
@@ -1140,292 +1115,83 @@ async function initAdmin() {
     book
   ) {
 
-    username =
-      username.trim();
+    username = username.trim();
+    password = password.trim();
 
-
-    password =
-      password.trim();
-
-
-    if (
-      !validUsername(username)
-    ) {
-
+    if (!validUsername(username)) {
       throw new Error(
-        "Username must contain 3–40 letters, numbers, dot, underscore or hyphen."
+        "Invalid username. Use the exact username from Excel."
       );
-
     }
 
-
-    if (
-      password.length < 6
-    ) {
-
+    if (password.length < 6) {
       throw new Error(
         "Password must be at least 6 characters."
       );
-
     }
 
-
-    if (
-      !["01", "02", "03"]
-        .includes(book)
-    ) {
-
+    if (!["01", "02", "03"].includes(book)) {
       throw new Error(
         "Invalid book assignment."
       );
-
     }
 
+    const studentRef = doc(
+      db,
+      "students",
+      username
+    );
 
-    /* -----------------------------------------------
-       USERNAME LOOKUP
-    ------------------------------------------------ */
+    const existingSnapshot = await getDoc(
+      studentRef
+    );
 
-    const usernameLookup =
-      doc(
-        db,
-        "studentsByUsername",
-        username
-      );
-
-
-    const lookupSnapshot =
-      await getDoc(
-        usernameLookup
-      );
-
-
-    if (
-      lookupSnapshot.exists()
-    ) {
-
-      throw new Error(
-        "That username is already connected to a Firebase account."
-      );
-
-    }
-
-
-    /* -----------------------------------------------
-       OLD STUDENT DOCUMENT
-    ------------------------------------------------ */
-
-    const oldRef =
-      doc(
-        db,
-        "students",
-        username
-      );
-
-
-    const oldSnapshot =
-      await getDoc(
-        oldRef
-      );
-
-
-    let oldData = null;
-
-
-    if (
-      oldSnapshot.exists()
-    ) {
-
-      oldData =
-        oldSnapshot.data();
-
-    }
-
-
-    /* -----------------------------------------------
-       CREATE FIREBASE AUTH ACCOUNT
-    ------------------------------------------------ */
-
-    let credential;
-
-
-    try {
-
-      credential =
-        await createUserWithEmailAndPassword(
-          studentAuth,
-          studentEmail(username),
-          password
-        );
-
-
-    } catch (error) {
-
-      console.error(
-        "STUDENT AUTH CREATE ERROR:",
-        error
-      );
-
-
-      if (
-        error?.code ===
-        "auth/email-already-in-use"
-      ) {
-
-        throw new Error(
-          "A Firebase Auth account already exists for this username."
-        );
-
-      }
-
-
-      if (
-        error?.code ===
-        "auth/weak-password"
-      ) {
-
-        throw new Error(
-          "Password is too weak. Please use at least 6 characters."
-        );
-
-      }
-
-
-      throw error;
-
-    }
-
-
-    const uid =
-      credential.user.uid;
-
-
-    /* -----------------------------------------------
-       STUDENT DATA
-    ------------------------------------------------ */
+    const existingData =
+      existingSnapshot.exists()
+        ? existingSnapshot.data()
+        : {};
 
     const studentData = {
+      ...existingData,
 
-      username:
-        oldData?.username ||
-        username,
-
-      password,
-
-      assignedBook:
-        oldData?.assignedBook ||
-        `Book ${book}`,
+      username: username,
+      password: password,
+      assignedBook: `Book ${book}`,
 
       fullName:
-        oldData?.fullName ||
-        "",
+        existingData.fullName || "",
 
       district:
-        oldData?.district ||
-        "",
+        existingData.district || "",
 
       contact:
-        oldData?.contact ||
-        "",
+        existingData.contact || "",
 
       registered:
-        oldData?.registered === true,
+        existingData.registered === true,
 
       active:
-        oldData?.active !== false,
+        existingData.active !== false,
 
-      authUid:
-        uid,
+      updatedAt:
+        new Date().toISOString(),
 
       createdAt:
-        oldData?.createdAt ||
+        existingData.createdAt ||
         new Date().toISOString()
-
     };
 
-
-    /* -----------------------------------------------
-       SAVE FIRESTORE PROFILE
-    ------------------------------------------------ */
-
-    try {
-
-      await setDoc(
-        doc(
-          db,
-          "students",
-          uid
-        ),
-        studentData
-      );
-
-
-      await setDoc(
-        usernameLookup,
-        {
-          username:
-            studentData.username,
-
-          uid
-        }
-      );
-
-
-      if (
-        oldSnapshot.exists()
-      ) {
-
-        await deleteDoc(
-          oldRef
-        );
-
-      }
-
-
-    } catch (error) {
-
-      console.error(
-        "STUDENT PROFILE ERROR:",
-        error
-      );
-
-
-      throw new Error(
-        "Firebase account was created, but the student profile could not be saved."
-      );
-
-    }
-
-
-    /* -----------------------------------------------
-       SIGN OUT SECONDARY AUTH
-    ------------------------------------------------ */
-
-    try {
-
-      await signOutStudent(
-        studentAuth
-      );
-
-    } catch (_) {}
-
+    await setDoc(
+      studentRef,
+      studentData
+    );
 
     return {
-
-      username:
-        studentData.username,
-
+      username,
       password,
-
       book,
-
-      uid,
-
-      migrated:
-        Boolean(oldData)
-
+      migrated: existingSnapshot.exists()
     };
-
   }
 
 
@@ -2235,166 +2001,71 @@ async function initAdmin() {
 
 
               /* ---------------------------------------
-                 USERNAME LOOKUP
+                 SAVE DIRECTLY TO FIRESTORE
+
+                 IMPORTANT:
+                 - No Firebase Auth account is created.
+                 - Username is the exact Excel username.
+                 - Existing username = update existing record.
+                 - New username = create new record.
               --------------------------------------- */
 
-              const usernameRef =
-                doc(
-                  db,
-                  "studentsByUsername",
-                  username
-                );
-
-
-              const existingLookup =
-                await getDoc(
-                  usernameRef
-                );
-
-
-              if (
-                existingLookup.exists()
-              ) {
-
-                throw new Error(
-                  "Username is already connected to a Firebase account."
-                );
-
-              }
-
-
-              /* ---------------------------------------
-                 OLD STUDENT DOCUMENT
-              --------------------------------------- */
-
-              const oldRef =
+              const studentRef =
                 doc(
                   db,
                   "students",
                   username
                 );
 
-
-              const oldSnapshot =
+              const existingSnapshot =
                 await getDoc(
-                  oldRef
+                  studentRef
                 );
 
-
-              const oldData =
-                oldSnapshot.exists()
-                  ? oldSnapshot.data()
-                  : null;
-
-
-              /* ---------------------------------------
-                 FIREBASE AUTH
-              --------------------------------------- */
-
-              const credential =
-                await createUserWithEmailAndPassword(
-                  studentAuth,
-                  studentEmail(username),
-                  password
-                );
-
-
-              const uid =
-                credential.user.uid;
-
-
-              /* ---------------------------------------
-                 FIRESTORE PROFILE
-              --------------------------------------- */
+              const existingData =
+                existingSnapshot.exists()
+                  ? existingSnapshot.data()
+                  : {};
 
               await setDoc(
-                doc(
-                  db,
-                  "students",
-                  uid
-                ),
+                studentRef,
                 {
+                  ...existingData,
 
-                  username:
-                    oldData?.username ||
-                    username,
-
+                  username,
                   password,
-
                   assignedBook:
-                    oldData?.assignedBook ||
                     `Book ${book}`,
 
                   fullName:
                     fullName ||
-                    oldData?.fullName ||
+                    existingData.fullName ||
                     "",
 
                   district:
                     district ||
-                    oldData?.district ||
+                    existingData.district ||
                     "",
 
                   contact:
                     contact ||
-                    oldData?.contact ||
+                    existingData.contact ||
                     "",
 
                   registered:
-                    Boolean(
-                      oldData?.registered
-                    ),
+                    existingData.registered === true,
 
                   active:
-                    oldData?.active !== false,
-
-                  authUid:
-                    uid,
+                    existingData.active !== false,
 
                   createdAt:
-                    oldData?.createdAt ||
+                    existingData.createdAt ||
+                    new Date().toISOString(),
+
+                  updatedAt:
                     new Date().toISOString()
-
                 }
               );
-
-
-              /* ---------------------------------------
-                 USERNAME LOOKUP
-              --------------------------------------- */
-
-              await setDoc(
-                usernameRef,
-                {
-                  username,
-                  uid
-                }
-              );
-
-
-              /* ---------------------------------------
-                 DELETE OLD DOCUMENT
-              --------------------------------------- */
-
-              if (
-                oldSnapshot.exists()
-              ) {
-
-                await deleteDoc(
-                  oldRef
-                );
-
-              }
-
-
-              try {
-
-                await signOutStudent(
-                  studentAuth
-                );
-
-              } catch (_) {}
-
 
               success++;
 
@@ -2405,15 +2076,6 @@ async function initAdmin() {
                 "IMPORT STUDENT ERROR:",
                 error
               );
-
-
-              try {
-
-                await signOutStudent(
-                  studentAuth
-                );
-
-              } catch (_) {}
 
 
               failed++;
