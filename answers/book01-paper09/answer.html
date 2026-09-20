@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BookFair Digital — Book 01 · Paper 09 Answer</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;background:#071525;color:#f5f7fa;font-family:Arial,sans-serif}
+body{user-select:none;-webkit-user-select:none}
+header{position:sticky;top:0;z-index:10;background:#0d2944;border-bottom:1px solid rgba(74,222,128,.25);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+h1{font-size:16px;margin:0}
+button,a{border:0;border-radius:10px;padding:10px 14px;background:#22c55e;color:#071525;font-weight:700;cursor:pointer;text-decoration:none}
+#viewer{max-width:1050px;margin:20px auto;padding:0 12px 40px}
+.page{display:block;width:100%;height:auto;margin:0 auto 18px;background:#fff;box-shadow:0 8px 30px rgba(0,0,0,.3);pointer-events:none}
+#denied{max-width:650px;margin:90px auto;padding:30px;text-align:center}
+#denied a{display:inline-block;margin-top:15px}
+@media(max-width:600px){header{padding:12px}.page{margin-bottom:10px}h1{font-size:14px}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Book 01 · A/L Accounting · Paper 09 Answer</h1>
+  <button id="backBtn">← Back</button>
+</header>
+<div id="denied" hidden>
+  <h2>Access denied</h2>
+  <p>This answer is available only to students assigned to Book 01.</p>
+  <a href="../../login.html">Go to Login</a>
+</div>
+<main id="viewer"></main>
+<script>
+(function(){
+  let student=null;
+  try{student=JSON.parse(localStorage.getItem("bf_student")||"null")}catch(e){}
+  const assigned=String(student?.assignedBook||student?.["Assigned Book"]||"")
+    .trim().toLowerCase().replace(/[-_]/g," ").replace(/\s+/g," ");
+  if(!(assigned==="book 01"||assigned==="01")){
+    document.getElementById("viewer").remove();
+    document.getElementById("denied").hidden=false;
+    return;
+  }
+
+  document.getElementById("backBtn").addEventListener("click",()=>history.back());
+
+  const viewer=document.getElementById("viewer");
+  for(let i=1;i<=23;i++){
+    const img=document.createElement("img");
+    img.className="page";
+    img.alt="Paper 09 answer page "+i;
+    img.draggable=false;
+    img.src="pages/page-"+String(i).padStart(2,"0")+".webp";
+    viewer.appendChild(img);
+  }
+
+  document.addEventListener("contextmenu",e=>e.preventDefault());
+  document.addEventListener("dragstart",e=>e.preventDefault());
+  document.addEventListener("selectstart",e=>e.preventDefault());
+  document.addEventListener("copy",e=>e.preventDefault());
+  document.addEventListener("cut",e=>e.preventDefault());
+  document.addEventListener("paste",e=>e.preventDefault());
+  document.addEventListener("keydown",e=>{
+    const k=e.key.toLowerCase();
+    if((e.ctrlKey||e.metaKey)&&["s","p","u","c","x","a"].includes(k)) e.preventDefault();
+  });
+})();
+</script>
+</body>
+</html>
