@@ -1,1288 +1,1513 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="en">
 
 <head>
 
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
 
   <meta
+
     name="viewport"
-    content="width=device-width, initial-scale=1"
+
+    content="width=device-width, initial-scale=1.0"
+
   >
 
-  <title>BookFair Digital — Admin Panel</title>
+ 
 
-  <meta
-    name="description"
-    content="BookFair Digital administrator dashboard."
-  >
+  <title>Admin Panel · BookFair Digital</title>
 
-  <link
-    rel="stylesheet"
-    href="styles.css"
-  >
-
-  <!-- =====================================================
-       XLSX LIBRARY
-  ====================================================== -->
-
-  <script
-    src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"
-  ></script>
-
+ 
 
   <style>
 
     * {
+
       box-sizing: border-box;
-    }
 
-
-    html,
-    body {
       margin: 0;
+
       padding: 0;
-      width: 100%;
-      min-height: 100%;
+
     }
 
+ 
+
+    :root {
+
+      --navy: #071525;
+
+      --navy-2: #0b1f33;
+
+      --navy-3: #102b45;
+
+      --green: #22c55e;
+
+      --green-light: #4ade80;
+
+      --white: #f8fafc;
+
+      --muted: #94a3b8;
+
+      --border: rgba(255,255,255,.08);
+
+      --card: rgba(13, 41, 68, .82);
+
+      --danger: #ef4444;
+
+      --warning: #f59e0b;
+
+      --blue: #38bdf8;
+
+    }
+
+ 
 
     body {
-      min-height: 100vh;
-      background:
-        radial-gradient(
-          circle at 50% -10%,
-          rgba(55,90,145,.20),
-          transparent 40%
-        ),
-        linear-gradient(
-          135deg,
-          #07111f 0%,
-          #0b1728 50%,
-          #08121f 100%
-        );
-      color: #ffffff;
+
       font-family:
+
         Inter,
-        Arial,
-        Helvetica,
+
+        system-ui,
+
+        -apple-system,
+
+        BlinkMacSystemFont,
+
+        "Segoe UI",
+
         sans-serif;
-      overflow-x: hidden;
+
+ 
+
+      background:
+
+        radial-gradient(
+
+          circle at 20% 0%,
+
+          rgba(34,197,94,.09),
+
+          transparent 30%
+
+        ),
+
+        radial-gradient(
+
+          circle at 100% 20%,
+
+          rgba(56,189,248,.07),
+
+          transparent 30%
+
+        ),
+
+        var(--navy);
+
+ 
+
+      color: var(--white);
+
+      min-height: 100vh;
+
     }
 
+ 
 
     button,
+
     input,
+
     select {
+
       font: inherit;
+
     }
 
+ 
 
-    button {
-      cursor: pointer;
+    button,
+
+    a {
+
+      -webkit-tap-highlight-color: transparent;
+
     }
 
+ 
 
-    /* =====================================================
-       HEADER
-    ====================================================== */
+    a {
 
-    .admin-header {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
+      color: inherit;
 
-      width: 100%;
-      min-height: 72px;
-
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      padding:
-        0 4.5%;
-
-      border-bottom:
-        1px solid
-        rgba(255,255,255,.08);
-
-      background:
-        rgba(6,16,29,.94);
-
-      backdrop-filter:
-        blur(18px);
-    }
-
-
-    .admin-brand {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-
-      color: #ffffff;
       text-decoration: none;
+
     }
 
+ 
 
-    .admin-brand-mark {
-      width: 36px;
-      height: 36px;
+    /* =========================
 
-      display: grid;
-      place-items: center;
+       LAYOUT
 
-      border-radius: 10px;
+    ========================= */
 
-      background: #ffffff;
-      color: #07111f;
+ 
 
-      font-size: 15px;
-      font-weight: 900;
-    }
+    .admin-layout {
 
+      min-height: 100vh;
 
-    .admin-brand-text {
-      font-size: 14px;
-      font-weight: 850;
-    }
-
-
-    .admin-brand-sub {
-      margin-left: 5px;
-
-      color:
-        rgba(255,255,255,.35);
-
-      font-size: 9px;
-      font-weight: 750;
-      letter-spacing: .12em;
-    }
-
-
-    .header-actions {
       display: flex;
-      align-items: center;
-      gap: 8px;
+
     }
 
+ 
 
-    /* =====================================================
-       MAIN
-    ====================================================== */
+    /* =========================
 
-    .admin-main {
-      width: 92%;
-      max-width: 1450px;
+       SIDEBAR
 
-      margin: 0 auto;
+    ========================= */
 
-      padding:
-        45px 0 80px;
-    }
+ 
 
+    .sidebar {
 
-    .page-heading {
-      margin-bottom: 30px;
-    }
+      width: 255px;
 
+      min-height: 100vh;
 
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
+      background: rgba(7,21,37,.96);
 
-      margin-bottom: 12px;
+      border-right: 1px solid var(--border);
 
-      color:
-        rgba(255,255,255,.40);
+      position: fixed;
 
-      font-size: 9px;
-      font-weight: 850;
-      letter-spacing: .15em;
-    }
+      left: 0;
 
+      top: 0;
 
-    .eyebrow::before {
-      content: "";
+      bottom: 0;
 
-      width: 6px;
-      height: 6px;
+      z-index: 100;
 
-      border-radius: 50%;
-
-      background: #65dca0;
-
-      box-shadow:
-        0 0 10px
-        rgba(101,220,160,.55);
-    }
-
-
-    .page-heading h1 {
-      margin: 0 0 8px;
-
-      color: #ffffff;
-
-      font-size:
-        clamp(
-          30px,
-          5vw,
-          46px
-        );
-
-      line-height: 1.05;
-      letter-spacing: -.045em;
-      font-weight: 850;
-    }
-
-
-    .page-heading p {
-      margin: 0;
-
-      color:
-        rgba(255,255,255,.45);
-
-      font-size: 12px;
-      line-height: 1.7;
-    }
-
-
-    /* =====================================================
-       BUTTONS
-    ====================================================== */
-
-    .admin-btn {
-      min-height: 38px;
-
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-
-      gap: 7px;
-
-      padding:
-        0 14px;
-
-      border:
-        1px solid
-        rgba(255,255,255,.13);
-
-      border-radius: 9px;
-
-      background:
-        rgba(255,255,255,.055);
-
-      color: #ffffff;
-
-      font-size: 10px;
-      font-weight: 800;
-
-      transition:
-        .2s ease;
-    }
-
-
-    .admin-btn:hover {
-      background:
-        rgba(255,255,255,.10);
-
-      border-color:
-        rgba(255,255,255,.25);
-
-      transform:
-        translateY(-1px);
-    }
-
-
-    .admin-btn:disabled {
-      opacity: .55;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-
-    .admin-btn.primary {
-      background: #ffffff;
-      color: #07111f;
-      border-color: #ffffff;
-    }
-
-
-    .admin-btn.primary:hover {
-      background: #edf1f5;
-    }
-
-
-    .admin-btn.danger {
-      color: #ffb0b0;
-
-      border-color:
-        rgba(255,90,90,.20);
-
-      background:
-        rgba(255,70,70,.05);
-    }
-
-
-    .admin-btn.danger:hover {
-      background:
-        rgba(255,70,70,.11);
-
-      border-color:
-        rgba(255,90,90,.35);
-    }
-
-
-    /* =====================================================
-       DATABASE STATUS
-    ====================================================== */
-
-    .status-bar {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
 
-      gap: 15px;
+      flex-direction: column;
 
-      margin-bottom: 22px;
-
-      padding:
-        13px 16px;
-
-      border:
-        1px solid
-        rgba(255,255,255,.08);
-
-      border-radius: 12px;
-
-      background:
-        rgba(255,255,255,.035);
     }
 
+ 
 
-    #dbStatus {
-      color:
-        rgba(255,255,255,.50);
+    .brand {
 
-      font-size: 10px;
-      font-weight: 750;
+      padding: 24px 22px;
+
+      border-bottom: 1px solid var(--border);
+
     }
 
+ 
 
-    #dbStatus.error {
-      color: #ff9f9f;
-    }
+    .brand-logo {
 
-
-    .status-actions {
       display: flex;
+
       align-items: center;
-      gap: 8px;
-    }
-
-
-    /* =====================================================
-       STATS
-    ====================================================== */
-
-    .stats-grid {
-      display: grid;
-
-      grid-template-columns:
-        repeat(
-          7,
-          minmax(0,1fr)
-        );
 
       gap: 12px;
 
-      margin-bottom: 25px;
     }
 
+ 
 
-    .stat-card {
-      min-width: 0;
+    .brand-mark {
 
-      padding:
-        17px 15px;
+      width: 42px;
 
-      border:
-        1px solid
-        rgba(255,255,255,.08);
+      height: 42px;
 
-      border-radius: 14px;
+      border-radius: 12px;
 
-      background:
-        rgba(255,255,255,.035);
-    }
+      background: linear-gradient(
 
+        135deg,
 
-    .stat-label {
-      margin-bottom: 8px;
+        var(--green),
 
-      color:
-        rgba(255,255,255,.34);
+        #16a34a
 
-      font-size: 8px;
-      font-weight: 850;
-      letter-spacing: .10em;
-    }
+      );
 
-
-    .stat-value {
-      color: #ffffff;
-
-      font-size: 25px;
-      line-height: 1;
-
-      font-weight: 850;
-      letter-spacing: -.03em;
-    }
-
-
-    /* =====================================================
-       BOOK MANAGEMENT
-    ====================================================== */
-
-    .book-management {
       display: grid;
 
-      grid-template-columns:
-        repeat(
-          3,
-          minmax(0,1fr)
-        );
+      place-items: center;
 
-      gap: 15px;
+      color: #052e16;
 
-      margin-bottom: 25px;
+      font-weight: 900;
+
+      font-size: 20px;
+
     }
 
+ 
 
-    .book-management-card {
-      padding: 18px;
+    .brand-text strong {
 
-      border:
-        1px solid
-        rgba(255,255,255,.08);
+      display: block;
 
-      border-radius: 15px;
+      font-size: 16px;
 
-      background:
-        linear-gradient(
-          145deg,
-          rgba(27,45,69,.60),
-          rgba(9,20,34,.90)
-        );
+      letter-spacing: -.2px;
+
     }
 
+ 
 
-    .book-management-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    .brand-text span {
 
-      gap: 10px;
+      display: block;
 
-      margin-bottom: 13px;
+      margin-top: 2px;
+
+      font-size: 11px;
+
+      color: var(--green-light);
+
+      letter-spacing: .7px;
+
+      text-transform: uppercase;
+
     }
 
+ 
 
-    .book-management-title {
-      color: #ffffff;
+    .nav {
 
-      font-size: 12px;
-      font-weight: 850;
+      padding: 20px 14px;
+
+      flex: 1;
+
     }
 
+ 
 
-    .book-management-count {
-      color:
-        rgba(255,255,255,.38);
+    .nav-title {
+
+      color: #64748b;
 
       font-size: 10px;
+
+      font-weight: 800;
+
+      letter-spacing: 1.2px;
+
+      padding: 0 11px 10px;
+
+      text-transform: uppercase;
+
     }
 
+ 
 
-    .book-management-card .admin-btn {
+    .nav-link {
+
       width: 100%;
+
+      border: 0;
+
+      background: transparent;
+
+      color: #9fb0c2;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 12px;
+
+      padding: 12px 13px;
+
+      border-radius: 10px;
+
+      margin-bottom: 4px;
+
+      cursor: pointer;
+
+      text-align: left;
+
+      transition: .2s ease;
+
     }
 
+ 
 
-    /* =====================================================
-       TOOLBAR
-    ====================================================== */
+    .nav-link:hover {
 
-    .toolbar {
+      color: white;
+
+      background: rgba(255,255,255,.05);
+
+    }
+
+ 
+
+    .nav-link.active {
+
+      color: white;
+
+      background: rgba(34,197,94,.12);
+
+      box-shadow:
+
+        inset 3px 0 0 var(--green);
+
+    }
+
+ 
+
+    .nav-icon {
+
+      width: 22px;
+
+      text-align: center;
+
+      font-size: 16px;
+
+    }
+
+ 
+
+    .sidebar-bottom {
+
+      padding: 16px;
+
+      border-top: 1px solid var(--border);
+
+    }
+
+ 
+
+    .admin-profile {
+
+      padding: 12px;
+
+      border-radius: 12px;
+
+      background: rgba(255,255,255,.035);
+
+      margin-bottom: 10px;
+
+    }
+
+ 
+
+    .admin-profile small {
+
+      color: var(--muted);
+
+      display: block;
+
+      font-size: 10px;
+
+      text-transform: uppercase;
+
+      letter-spacing: .8px;
+
+    }
+
+ 
+
+    .admin-profile strong {
+
+      display: block;
+
+      margin-top: 4px;
+
+      font-size: 14px;
+
+    }
+
+ 
+
+    .logout-btn {
+
+      width: 100%;
+
+      border: 1px solid rgba(239,68,68,.2);
+
+      background: rgba(239,68,68,.07);
+
+      color: #fca5a5;
+
+      border-radius: 10px;
+
+      padding: 11px;
+
+      cursor: pointer;
+
+      font-weight: 700;
+
+    }
+
+ 
+
+    .logout-btn:hover {
+
+      background: rgba(239,68,68,.14);
+
+    }
+
+ 
+
+    /* =========================
+
+       MAIN
+
+    ========================= */
+
+ 
+
+    .main {
+
+      margin-left: 255px;
+
+      width: calc(100% - 255px);
+
+      min-width: 0;
+
+    }
+
+ 
+
+    .topbar {
+
+      height: 74px;
+
+      border-bottom: 1px solid var(--border);
+
+      background: rgba(7,21,37,.72);
+
+      backdrop-filter: blur(14px);
+
       display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      padding: 0 32px;
+
+      position: sticky;
+
+      top: 0;
+
+      z-index: 50;
+
+    }
+
+ 
+
+    .page-heading h1 {
+
+      font-size: 20px;
+
+      letter-spacing: -.4px;
+
+    }
+
+ 
+
+    .page-heading p {
+
+      color: var(--muted);
+
+      font-size: 12px;
+
+      margin-top: 3px;
+
+    }
+
+ 
+
+    .topbar-actions {
+
+      display: flex;
+
       align-items: center;
 
       gap: 10px;
 
-      margin-bottom: 18px;
-
-      padding: 14px;
-
-      border:
-        1px solid
-        rgba(255,255,255,.08);
-
-      border-radius: 14px;
-
-      background:
-        rgba(255,255,255,.035);
     }
 
+ 
 
-    .search-wrap {
-      flex: 1;
-      min-width: 200px;
-    }
+    .refresh-btn {
 
+      border: 1px solid var(--border);
 
-    .input,
-    .select {
-      width: 100%;
-      height: 40px;
+      background: rgba(255,255,255,.04);
 
-      padding:
-        0 12px;
+      color: #dbeafe;
 
-      border:
-        1px solid
-        rgba(255,255,255,.10);
+      padding: 9px 13px;
 
       border-radius: 9px;
 
-      outline: none;
+      cursor: pointer;
 
-      background:
-        rgba(0,0,0,.18);
+      font-weight: 700;
 
-      color: #ffffff;
+      font-size: 12px;
+
+    }
+
+ 
+
+    .refresh-btn:hover {
+
+      border-color: rgba(34,197,94,.4);
+
+      color: white;
+
+    }
+
+ 
+
+    .content {
+
+      padding: 30px 32px 50px;
+
+      max-width: 1600px;
+
+      margin: auto;
+
+    }
+
+ 
+
+    /* =========================
+
+       SECTIONS
+
+    ========================= */
+
+ 
+
+    .admin-section {
+
+      display: none;
+
+    }
+
+ 
+
+    .admin-section.active {
+
+      display: block;
+
+    }
+
+ 
+
+    .section-header {
+
+      margin-bottom: 22px;
+
+    }
+
+ 
+
+    .section-header h2 {
+
+      font-size: 22px;
+
+      letter-spacing: -.5px;
+
+    }
+
+ 
+
+    .section-header p {
+
+      color: var(--muted);
+
+      font-size: 13px;
+
+      margin-top: 5px;
+
+    }
+
+ 
+
+    /* =========================
+
+       STATS
+
+    ========================= */
+
+ 
+
+    .stats-grid {
+
+      display: grid;
+
+      grid-template-columns:
+
+        repeat(4, minmax(0, 1fr));
+
+      gap: 16px;
+
+      margin-bottom: 24px;
+
+    }
+
+ 
+
+    .stat-card {
+
+      background: var(--card);
+
+      border: 1px solid var(--border);
+
+      border-radius: 15px;
+
+      padding: 20px;
+
+      min-height: 135px;
+
+      position: relative;
+
+      overflow: hidden;
+
+    }
+
+ 
+
+    .stat-card::after {
+
+      content: "";
+
+      position: absolute;
+
+      width: 100px;
+
+      height: 100px;
+
+      right: -35px;
+
+      top: -35px;
+
+      border-radius: 50%;
+
+      background: rgba(34,197,94,.06);
+
+    }
+
+ 
+
+    .stat-top {
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+
+    }
+
+ 
+
+    .stat-label {
+
+      color: var(--muted);
 
       font-size: 11px;
+
+      text-transform: uppercase;
+
+      letter-spacing: .7px;
+
+      font-weight: 800;
+
     }
 
+ 
 
-    .input::placeholder {
-      color:
-        rgba(255,255,255,.28);
+    .stat-icon {
+
+      width: 34px;
+
+      height: 34px;
+
+      display: grid;
+
+      place-items: center;
+
+      border-radius: 9px;
+
+      background: rgba(34,197,94,.1);
+
     }
 
+ 
 
-    .input:focus,
-    .select:focus {
-      border-color:
-        rgba(255,255,255,.30);
+    .stat-number {
+
+      font-size: 29px;
+
+      font-weight: 850;
+
+      margin-top: 16px;
+
+      letter-spacing: -1px;
+
     }
 
+ 
 
-    .select {
-      width: 170px;
+    .stat-note {
+
+      color: #64748b;
+
+      font-size: 11px;
+
+      margin-top: 4px;
+
     }
 
+ 
 
-    .select option {
-      background: #0b1728;
-      color: #ffffff;
+    /* =========================
+
+       PANELS
+
+    ========================= */
+
+ 
+
+    .panel-grid {
+
+      display: grid;
+
+      grid-template-columns:
+
+        minmax(0, 1.5fr)
+
+        minmax(300px, 1fr);
+
+      gap: 18px;
+
     }
 
+ 
 
-    /* =====================================================
-       TABLE
-    ====================================================== */
+    .panel {
+
+      background: var(--card);
+
+      border: 1px solid var(--border);
+
+      border-radius: 15px;
+
+      overflow: hidden;
+
+    }
+
+ 
+
+    .panel-header {
+
+      padding: 17px 19px;
+
+      border-bottom: 1px solid var(--border);
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+
+    }
+
+ 
+
+    .panel-header h3 {
+
+      font-size: 14px;
+
+    }
+
+ 
+
+    .panel-header span {
+
+      color: var(--muted);
+
+      font-size: 11px;
+
+    }
+
+ 
+
+    .panel-body {
+
+      padding: 18px;
+
+    }
+
+ 
+
+    /* =========================
+
+       TABLES
+
+    ========================= */
+
+ 
 
     .table-wrap {
+
       width: 100%;
 
       overflow-x: auto;
 
-      border:
-        1px solid
-        rgba(255,255,255,.08);
-
-      border-radius: 16px;
-
-      background:
-        rgba(255,255,255,.025);
     }
 
+ 
 
     table {
+
       width: 100%;
 
-      min-width: 1050px;
-
       border-collapse: collapse;
+
+      min-width: 700px;
+
     }
 
-
-    thead {
-      background:
-        rgba(255,255,255,.035);
-    }
-
+ 
 
     th {
-      padding:
-        14px 12px;
 
       text-align: left;
 
-      color:
-        rgba(255,255,255,.34);
+      padding: 12px 14px;
 
-      border-bottom:
-        1px solid
-        rgba(255,255,255,.08);
-
-      font-size: 8px;
-      font-weight: 850;
-      letter-spacing: .10em;
-
-      white-space: nowrap;
-    }
-
-
-    td {
-      padding:
-        14px 12px;
-
-      color:
-        rgba(255,255,255,.70);
-
-      border-bottom:
-        1px solid
-        rgba(255,255,255,.055);
+      color: #718096;
 
       font-size: 10px;
 
-      vertical-align: middle;
+      text-transform: uppercase;
+
+      letter-spacing: .7px;
+
+      border-bottom: 1px solid var(--border);
+
     }
 
+ 
 
-    tbody tr {
-      transition:
-        background .15s ease;
-    }
+    td {
 
+      padding: 14px;
 
-    tbody tr:hover {
-      background:
-        rgba(255,255,255,.035);
-    }
-
-
-    tbody tr:last-child td {
-      border-bottom: 0;
-    }
-
-
-    .muted {
-      color:
-        rgba(255,255,255,.38);
-    }
-
-
-    .pill {
-      display: inline-flex;
-
-      align-items: center;
-      justify-content: center;
-
-      min-width: 76px;
-
-      padding:
-        6px 8px;
-
-      border-radius: 999px;
-
-      font-size: 7px;
-      font-weight: 850;
-      letter-spacing: .07em;
-    }
-
-
-    .pill.green {
-      color: #8ff0ba;
-
-      background:
-        rgba(70,210,130,.10);
-
-      border:
-        1px solid
-        rgba(70,210,130,.18);
-    }
-
-
-    .pill.gold {
-      color: #f1d28a;
-
-      background:
-        rgba(230,180,60,.09);
-
-      border:
-        1px solid
-        rgba(230,180,60,.16);
-    }
-
-
-    /* =====================================================
-       EMPTY
-    ====================================================== */
-
-    #empty {
-      display: none;
-
-      padding:
-        55px 20px;
-
-      text-align: center;
-
-      color:
-        rgba(255,255,255,.35);
+      border-bottom: 1px solid rgba(255,255,255,.045);
 
       font-size: 12px;
+
+      color: #d7e1eb;
+
     }
 
+ 
 
-    /* =====================================================
-       MODAL
-    ====================================================== */
+    tbody tr:hover {
 
-    .modal {
-      position: fixed;
+      background: rgba(255,255,255,.025);
 
-      inset: 0;
-
-      z-index: 3000;
-
-      display: none;
-
-      align-items: center;
-      justify-content: center;
-
-      padding: 20px;
-
-      background:
-        rgba(0,0,0,.72);
-
-      backdrop-filter:
-        blur(8px);
     }
 
+ 
 
-    .modal.show {
-      display: flex;
-    }
+    .empty-state {
 
-
-    .modal-box {
-      width: 100%;
-      max-width: 520px;
-
-      max-height:
-        calc(100vh - 40px);
-
-      overflow-y: auto;
-
-      padding: 24px;
-
-      border:
-        1px solid
-        rgba(255,255,255,.10);
-
-      border-radius: 18px;
-
-      background:
-        linear-gradient(
-          145deg,
-          #102037,
-          #081321
-        );
-
-      box-shadow:
-        0 30px 100px
-        rgba(0,0,0,.55);
-    }
-
-
-    .modal-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      gap: 15px;
-
-      margin-bottom: 22px;
-    }
-
-
-    .modal-header h2 {
-      margin: 0;
-
-      color: #ffffff;
-
-      font-size: 20px;
-      font-weight: 850;
-    }
-
-
-    .modal-close {
-      width: 34px;
-      height: 34px;
-
-      display: grid;
-      place-items: center;
-
-      border:
-        1px solid
-        rgba(255,255,255,.10);
-
-      border-radius: 8px;
-
-      background:
-        rgba(255,255,255,.04);
-
-      color: #ffffff;
-
-      font-size: 16px;
-    }
-
-
-    .form-group {
-      margin-bottom: 15px;
-    }
-
-
-    .form-group label {
-      display: block;
-
-      margin-bottom: 7px;
-
-      color:
-        rgba(255,255,255,.42);
-
-      font-size: 8px;
-      font-weight: 850;
-      letter-spacing: .10em;
-    }
-
-
-    .password-row {
-      display: flex;
-      gap: 8px;
-    }
-
-
-    .password-row .input {
-      flex: 1;
-    }
-
-
-    .modal-actions {
-      display: flex;
-      justify-content: flex-end;
-
-      gap: 8px;
-
-      margin-top: 22px;
-    }
-
-
-    /* =====================================================
-       DETAIL MODAL
-    ====================================================== */
-
-    #detailContent {
-      color:
-        rgba(255,255,255,.70);
-    }
-
-
-    #detailContent small {
-      color:
-        rgba(255,255,255,.32);
-
-      font-size: 7px;
-      font-weight: 850;
-      letter-spacing: .10em;
-    }
-
-
-    #detailContent strong {
-      color: #ffffff;
-
-      font-size: 11px;
-      font-weight: 750;
-    }
-
-
-    /* =====================================================
-       IMPORT STATUS
-    ====================================================== */
-
-    .import-status {
-      display: none;
-
-      margin-top: 18px;
-
-      padding: 16px;
-
-      border:
-        1px solid
-        rgba(255,255,255,.08);
-
-      border-radius: 12px;
-
-      background:
-        rgba(255,255,255,.035);
-    }
-
-
-    .import-title {
-      margin-bottom: 10px;
-
-      color: #ffffff;
-
-      font-size: 11px;
-      font-weight: 850;
-    }
-
-
-    .progress {
-      width: 100%;
-      height: 7px;
-
-      overflow: hidden;
-
-      border-radius: 999px;
-
-      background:
-        rgba(255,255,255,.08);
-    }
-
-
-    #importProgress {
-      width: 0%;
-      height: 100%;
-
-      border-radius: inherit;
-
-      background: #ffffff;
-
-      transition:
-        width .15s ease;
-    }
-
-
-    .import-count {
-      margin-top: 8px;
-
-      color:
-        rgba(255,255,255,.38);
-
-      font-size: 9px;
-    }
-
-
-    /* =====================================================
-       IMPORT RESULT
-    ====================================================== */
-
-    .result-grid {
-      display: grid;
-
-      grid-template-columns:
-        repeat(3,1fr);
-
-      gap: 10px;
-
-      margin-bottom: 20px;
-    }
-
-
-    .result-card {
-      padding: 15px;
+      padding: 45px 20px;
 
       text-align: center;
 
-      border:
-        1px solid
-        rgba(255,255,255,.08);
+      color: var(--muted);
 
-      border-radius: 10px;
-
-      background:
-        rgba(255,255,255,.035);
     }
 
+ 
 
-    .result-card strong {
+    .empty-state strong {
+
       display: block;
+
+      color: #cbd5e1;
 
       margin-bottom: 5px;
 
-      color: #ffffff;
-
-      font-size: 22px;
     }
 
+ 
 
-    .result-card span {
-      color:
-        rgba(255,255,255,.35);
+    /* =========================
 
-      font-size: 8px;
-      font-weight: 800;
-    }
+       BADGES
 
+    ========================= */
 
-    .failed-wrap {
-      display: none;
+ 
 
-      margin-top: 15px;
+    .badge {
 
-      padding: 13px;
+      display: inline-flex;
 
-      border:
-        1px solid
-        rgba(255,100,100,.14);
+      align-items: center;
 
-      border-radius: 10px;
+      gap: 5px;
 
-      background:
-        rgba(255,70,70,.04);
-    }
+      border-radius: 999px;
 
-
-    .failed-title {
-      margin-bottom: 8px;
-
-      color: #ffaaaa;
-
-      font-size: 9px;
-      font-weight: 850;
-    }
-
-
-    .failed-list {
-      max-height: 180px;
-      overflow-y: auto;
-    }
-
-
-    .failed-item {
-      color:
-        rgba(255,255,255,.55);
-
-      font-size: 9px;
-
-      border-bottom:
-        1px solid
-        rgba(255,255,255,.05);
-    }
-
-
-    .failed-item:last-child {
-      border-bottom: 0;
-    }
-
-
-    /* =====================================================
-       TOAST
-    ====================================================== */
-
-    .toast {
-      position: fixed;
-
-      right: 20px;
-      bottom: 20px;
-
-      z-index: 5000;
-
-      max-width: 360px;
-
-      padding:
-        12px 15px;
-
-      border:
-        1px solid
-        rgba(255,255,255,.12);
-
-      border-radius: 10px;
-
-      background:
-        rgba(12,27,45,.96);
-
-      color: #ffffff;
+      padding: 5px 9px;
 
       font-size: 10px;
-      font-weight: 700;
 
-      opacity: 0;
+      font-weight: 800;
 
-      transform:
-        translateY(10px);
+      white-space: nowrap;
 
-      pointer-events: none;
-
-      transition:
-        .25s ease;
     }
 
+ 
 
-    .toast.show {
-      opacity: 1;
+    .badge-green {
 
-      transform:
-        translateY(0);
+      color: #86efac;
+
+      background: rgba(34,197,94,.1);
+
     }
 
+ 
 
-    .toast.error {
-      border-color:
-        rgba(255,90,90,.25);
+    .badge-red {
 
-      color: #ffb0b0;
+      color: #fca5a5;
+
+      background: rgba(239,68,68,.1);
+
     }
 
+ 
 
-    /* =====================================================
+    .badge-yellow {
+
+      color: #fcd34d;
+
+      background: rgba(245,158,11,.1);
+
+    }
+
+ 
+
+    .badge-blue {
+
+      color: #7dd3fc;
+
+      background: rgba(56,189,248,.1);
+
+    }
+
+ 
+
+    /* =========================
+
+       SEARCH / FILTER
+
+    ========================= */
+
+ 
+
+    .toolbar {
+
+      display: flex;
+
+      gap: 10px;
+
+      flex-wrap: wrap;
+
+      margin-bottom: 18px;
+
+    }
+
+ 
+
+    .input,
+
+    .select {
+
+      border: 1px solid var(--border);
+
+      background: rgba(255,255,255,.035);
+
+      color: white;
+
+      border-radius: 9px;
+
+      padding: 11px 12px;
+
+      outline: none;
+
+      min-width: 170px;
+
+    }
+
+ 
+
+    .input {
+
+      flex: 1;
+
+      min-width: 240px;
+
+    }
+
+ 
+
+    .input::placeholder {
+
+      color: #64748b;
+
+    }
+
+ 
+
+    .input:focus,
+
+    .select:focus {
+
+      border-color: rgba(34,197,94,.5);
+
+    }
+
+ 
+
+    .select option {
+
+      background: var(--navy-2);
+
+    }
+
+ 
+
+    /* =========================
+
+       BOOK CARDS
+
+    ========================= */
+
+ 
+
+    .books-grid {
+
+      display: grid;
+
+      grid-template-columns:
+
+        repeat(3, minmax(0, 1fr));
+
+      gap: 18px;
+
+    }
+
+ 
+
+    .book-card {
+
+      background: var(--card);
+
+      border: 1px solid var(--border);
+
+      border-radius: 15px;
+
+      overflow: hidden;
+
+    }
+
+ 
+
+    .book-image {
+
+      height: 190px;
+
+      background: var(--navy-2);
+
+      display: grid;
+
+      place-items: center;
+
+      overflow: hidden;
+
+    }
+
+ 
+
+    .book-image img {
+
+      width: 100%;
+
+      height: 100%;
+
+      object-fit: cover;
+
+    }
+
+ 
+
+    .book-placeholder {
+
+      font-size: 42px;
+
+    }
+
+ 
+
+    .book-info {
+
+      padding: 17px;
+
+    }
+
+ 
+
+    .book-info small {
+
+      color: var(--green-light);
+
+      font-size: 10px;
+
+      font-weight: 800;
+
+      letter-spacing: .7px;
+
+    }
+
+ 
+
+    .book-info h3 {
+
+      margin-top: 6px;
+
+      font-size: 17px;
+
+    }
+
+ 
+
+    .book-price {
+
+      color: #bbf7d0;
+
+      font-size: 17px;
+
+      font-weight: 800;
+
+      margin-top: 10px;
+
+    }
+
+ 
+
+    .book-meta {
+
+      display: flex;
+
+      justify-content: space-between;
+
+      margin-top: 13px;
+
+      padding-top: 13px;
+
+      border-top: 1px solid var(--border);
+
+      color: var(--muted);
+
+      font-size: 11px;
+
+    }
+
+ 
+
+    /* =========================
+
+       ACTIVITY
+
+    ========================= */
+
+ 
+
+    .activity-item {
+
+      display: flex;
+
+      gap: 12px;
+
+      padding: 13px 0;
+
+      border-bottom: 1px solid rgba(255,255,255,.05);
+
+    }
+
+ 
+
+    .activity-item:last-child {
+
+      border-bottom: 0;
+
+    }
+
+ 
+
+    .activity-dot {
+
+      width: 9px;
+
+      height: 9px;
+
+      background: var(--green);
+
+      border-radius: 50%;
+
+      margin-top: 5px;
+
+      flex-shrink: 0;
+
+      box-shadow: 0 0 12px rgba(34,197,94,.5);
+
+    }
+
+ 
+
+    .activity-text strong {
+
+      display: block;
+
+      font-size: 12px;
+
+    }
+
+ 
+
+    .activity-text span {
+
+      color: var(--muted);
+
+      display: block;
+
+      font-size: 11px;
+
+      margin-top: 3px;
+
+    }
+
+ 
+
+    /* =========================
+
        MOBILE
-    ====================================================== */
+
+    ========================= */
+
+ 
+
+    .mobile-menu {
+
+      display: none;
+
+      border: 1px solid var(--border);
+
+      background: rgba(255,255,255,.04);
+
+      color: white;
+
+      width: 38px;
+
+      height: 38px;
+
+      border-radius: 9px;
+
+      cursor: pointer;
+
+      font-size: 18px;
+
+    }
+
+ 
 
     @media (max-width: 1100px) {
 
       .stats-grid {
+
         grid-template-columns:
-          repeat(
-            4,
-            minmax(0,1fr)
-          );
+
+          repeat(2, minmax(0, 1fr));
+
+      }
+
+ 
+
+      .panel-grid {
+
+        grid-template-columns: 1fr;
+
+      }
+
+ 
+
+      .books-grid {
+
+        grid-template-columns:
+
+          repeat(2, minmax(0, 1fr));
+
       }
 
     }
 
+ 
 
     @media (max-width: 800px) {
 
-      .admin-main {
-        width: 94%;
-        padding-top: 32px;
+      .sidebar {
+
+        transform: translateX(-100%);
+
+        transition: transform .25s ease;
+
       }
 
+ 
 
-      .stats-grid {
-        grid-template-columns:
-          repeat(
-            2,
-            minmax(0,1fr)
-          );
+      .sidebar.open {
+
+        transform: translateX(0);
+
       }
 
+ 
 
-      .book-management {
-        grid-template-columns: 1fr;
-      }
+      .main {
 
+        margin-left: 0;
 
-      .toolbar {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-
-      .search-wrap {
-        min-width: 0;
-      }
-
-
-      .select {
         width: 100%;
+
       }
 
+ 
 
-      .status-bar {
-        align-items: stretch;
-        flex-direction: column;
+      .mobile-menu {
+
+        display: block;
+
       }
 
+ 
 
-      .status-actions {
-        width: 100%;
+      .topbar {
+
+        padding: 0 16px;
+
+        gap: 12px;
+
       }
 
+ 
 
-      .status-actions .admin-btn {
-        flex: 1;
+      .content {
+
+        padding: 22px 16px 40px;
+
+      }
+
+ 
+
+      .page-heading h1 {
+
+        font-size: 16px;
+
+      }
+
+ 
+
+      .page-heading p {
+
+        display: none;
+
+      }
+
+ 
+
+      .topbar-actions .refresh-btn {
+
+        display: none;
+
       }
 
     }
 
+ 
 
-    @media (max-width: 500px) {
-
-      .admin-header {
-        min-height: 64px;
-        padding: 0 4%;
-      }
-
-
-      .admin-brand-text {
-        font-size: 12px;
-      }
-
-
-      .admin-brand-sub {
-        display: none;
-      }
-
-
-      .admin-main {
-        width: 92%;
-      }
-
+    @media (max-width: 600px) {
 
       .stats-grid {
-        grid-template-columns:
-          repeat(
-            2,
-            minmax(0,1fr)
-          );
 
-        gap: 8px;
+        grid-template-columns: 1fr;
+
       }
 
+ 
+
+      .books-grid {
+
+        grid-template-columns: 1fr;
+
+      }
+
+ 
+
+      .toolbar {
+
+        flex-direction: column;
+
+      }
+
+ 
+
+      .input,
+
+      .select {
+
+        width: 100%;
+
+        min-width: 0;
+
+      }
+
+ 
 
       .stat-card {
-        padding: 14px 12px;
-      }
 
+        min-height: 120px;
 
-      .stat-value {
-        font-size: 22px;
-      }
-
-
-      .result-grid {
-        grid-template-columns: 1fr;
-      }
-
-
-      .modal-box {
-        padding: 19px;
-      }
-
-
-      .modal-actions {
-        flex-direction: column-reverse;
-      }
-
-
-      .modal-actions .admin-btn {
-        width: 100%;
       }
 
     }
@@ -1291,927 +1516,858 @@
 
 </head>
 
+ 
 
 <body>
 
+ 
 
-  <!-- =====================================================
-       HEADER
-  ====================================================== -->
+<div class="admin-layout">
 
-  <header class="admin-header">
+ 
 
-    <a
-      href="index.html"
-      class="admin-brand"
-    >
+  <!-- =========================
 
-      <span class="admin-brand-mark">
-        B
-      </span>
+       SIDEBAR
 
-      <span class="admin-brand-text">
-        BookFair Digital
-      </span>
+  ========================== -->
 
-      <span class="admin-brand-sub">
-        ADMIN PANEL
-      </span>
+ 
 
-    </a>
+  <aside class="sidebar" id="sidebar">
 
+ 
 
-    <div class="header-actions">
+    <div class="brand">
+
+      <div class="brand-logo">
+
+ 
+
+        <div class="brand-mark">
+
+          B
+
+        </div>
+
+ 
+
+        <div class="brand-text">
+
+          <strong>BookFair Digital</strong>
+
+          <span>Admin Panel</span>
+
+        </div>
+
+ 
+
+      </div>
+
+    </div>
+
+ 
+
+    <nav class="nav">
+
+ 
+
+      <div class="nav-title">
+
+        Management
+
+      </div>
+
+ 
 
       <button
-        type="button"
-        class="admin-btn"
-        id="logoutBtn"
+
+        class="nav-link active"
+
+        data-section="dashboard"
+
       >
-        Logout
+
+        <span class="nav-icon">▦</span>
+
+        <span>Dashboard</span>
+
       </button>
 
+ 
+
+      <button
+
+        class="nav-link"
+
+        data-section="students"
+
+      >
+
+        <span class="nav-icon">♙</span>
+
+        <span>Students</span>
+
+      </button>
+
+ 
+
+      <button
+
+        class="nav-link"
+
+        data-section="orders"
+
+      >
+
+        <span class="nav-icon">▤</span>
+
+        <span>Online Orders</span>
+
+      </button>
+
+ 
+
+      <button
+
+        class="nav-link"
+
+        data-section="books"
+
+      >
+
+        <span class="nav-icon">▣</span>
+
+        <span>Books</span>
+
+      </button>
+
+ 
+
+      <div
+
+        class="nav-title"
+
+        style="margin-top:22px;"
+
+      >
+
+        System
+
+      </div>
+
+ 
+
+      <button
+
+        class="nav-link"
+
+        data-section="activity"
+
+      >
+
+        <span class="nav-icon">◷</span>
+
+        <span>Activity</span>
+
+      </button>
+
+ 
+
+      <button
+
+        class="nav-link"
+
+        data-section="settings"
+
+      >
+
+        <span class="nav-icon">⚙</span>
+
+        <span>Settings</span>
+
+      </button>
+
+ 
+
+    </nav>
+
+ 
+
+    <div class="sidebar-bottom">
+
+ 
+
+      <div class="admin-profile">
+
+        <small>Signed in as</small>
+
+        <strong>Administrator</strong>
+
+      </div>
+
+ 
+
+      <button
+
+        class="logout-btn"
+
+        id="logout"
+
+      >
+
+        Logout
+
+      </button>
+
+ 
+
     </div>
 
-  </header>
+ 
 
+  </aside>
 
+ 
 
-  <!-- =====================================================
+ 
+
+  <!-- =========================
+
        MAIN
-  ====================================================== -->
 
-  <main class="admin-main">
+  ========================== -->
 
+ 
 
-    <!-- ===================================================
-         HEADING
-    ==================================================== -->
+  <main class="main">
 
-    <section class="page-heading">
+ 
 
-      <div class="eyebrow">
-        ADMINISTRATION
-      </div>
+    <header class="topbar">
 
-      <h1>
-        Student Accounts
-      </h1>
+ 
 
-      <p>
-        Manage BookFair Digital student accounts,
-        registrations and book assignments.
-      </p>
+      <div
 
-    </section>
+        style="
 
+          display:flex;
 
+          align-items:center;
 
-    <!-- ===================================================
-         DATABASE STATUS + ACTIONS
-    ==================================================== -->
+          gap:12px;
 
-    <section class="status-bar">
+        "
 
-      <div id="dbStatus">
-        ● Loading students...
-      </div>
+      >
 
-
-      <div class="status-actions">
-
-        <!-- MANUAL REFRESH ONLY -->
+ 
 
         <button
+
+          class="mobile-menu"
+
+          id="mobileMenu"
+
           type="button"
-          class="admin-btn"
+
+        >
+
+          ☰
+
+        </button>
+
+ 
+
+        <div class="page-heading">
+
+          <h1 id="pageTitle">
+
+            Dashboard
+
+          </h1>
+
+ 
+
+          <p id="pageSubtitle">
+
+            BookFair Digital administration
+
+          </p>
+
+        </div>
+
+ 
+
+      </div>
+
+ 
+
+      <div class="topbar-actions">
+
+ 
+
+        <button
+
+          class="refresh-btn"
+
           id="refreshBtn"
+
+          type="button"
+
         >
+
           ↻ Refresh
+
         </button>
 
-
-        <button
-          type="button"
-          class="admin-btn primary"
-          id="newBtn"
-        >
-          + New Student
-        </button>
-
-
-        <button
-          type="button"
-          class="admin-btn"
-          id="importBtn"
-        >
-          Import
-        </button>
-
-
-        <button
-          type="button"
-          class="admin-btn"
-          id="downloadBtn"
-        >
-          Excel
-        </button>
-
-
-        <button
-          type="button"
-          class="admin-btn"
-          id="templateBtn"
-        >
-          Template
-        </button>
+ 
 
       </div>
 
-    </section>
+ 
 
+    </header>
 
+ 
 
-    <!-- ===================================================
-         STATS
-    ==================================================== -->
+ 
 
-    <section class="stats-grid">
+    <div class="content">
 
-      <div class="stat-card">
+ 
 
-        <div class="stat-label">
-          TOTAL STUDENTS
-        </div>
+      <!-- =========================
 
-        <div
-          class="stat-value"
-          id="total"
-        >
-          0
-        </div>
+           DASHBOARD
 
-      </div>
+      ========================== -->
 
+ 
 
-      <div class="stat-card">
+      <section
 
-        <div class="stat-label">
-          BOOK 01
-        </div>
+        class="admin-section active"
 
-        <div
-          class="stat-value"
-          id="b1"
-        >
-          0
-        </div>
+        id="section-dashboard"
 
-      </div>
-
-
-      <div class="stat-card">
-
-        <div class="stat-label">
-          BOOK 02
-        </div>
-
-        <div
-          class="stat-value"
-          id="b2"
-        >
-          0
-        </div>
-
-      </div>
-
-
-      <div class="stat-card">
-
-        <div class="stat-label">
-          BOOK 03
-        </div>
-
-        <div
-          class="stat-value"
-          id="b3"
-        >
-          0
-        </div>
-
-      </div>
-
-
-      <div class="stat-card">
-
-        <div class="stat-label">
-          REGISTERED
-        </div>
-
-        <div
-          class="stat-value"
-          id="registered"
-        >
-          0
-        </div>
-
-      </div>
-
-
-      <div class="stat-card">
-
-        <div class="stat-label">
-          PENDING
-        </div>
-
-        <div
-          class="stat-value"
-          id="pending"
-        >
-          0
-        </div>
-
-      </div>
-
-
-      <div class="stat-card">
-
-        <div class="stat-label">
-          ACTIVE
-        </div>
-
-        <div
-          class="stat-value"
-          id="active"
-        >
-          0
-        </div>
-
-      </div>
-
-    </section>
-
-
-
-    <!-- ===================================================
-         BOOK MANAGEMENT
-    ==================================================== -->
-
-    <section class="book-management">
-
-
-      <div class="book-management-card">
-
-        <div class="book-management-top">
-
-          <div class="book-management-title">
-            Book 01 · A/L Accounting
-          </div>
-
-          <div
-            class="book-management-count"
-            id="book1Count"
-          >
-            0 students
-          </div>
-
-        </div>
-
-
-        <button
-          type="button"
-          class="admin-btn danger"
-          id="deleteBook01"
-        >
-          Delete 01 Students
-        </button>
-
-      </div>
-
-
-
-      <div class="book-management-card">
-
-        <div class="book-management-top">
-
-          <div class="book-management-title">
-            Book 02
-          </div>
-
-          <div
-            class="book-management-count"
-            id="book2Count"
-          >
-            0 students
-          </div>
-
-        </div>
-
-
-        <button
-          type="button"
-          class="admin-btn danger"
-          id="deleteBook02"
-        >
-          Delete 02 Students
-        </button>
-
-      </div>
-
-
-
-      <div class="book-management-card">
-
-        <div class="book-management-top">
-
-          <div class="book-management-title">
-            Book 03
-          </div>
-
-          <div
-            class="book-management-count"
-            id="book3Count"
-          >
-            0 students
-          </div>
-
-        </div>
-
-
-        <button
-          type="button"
-          class="admin-btn danger"
-          id="deleteBook03"
-        >
-          Delete 03 Students
-        </button>
-
-      </div>
-
-    </section>
-
-
-
-    <!-- ===================================================
-         SEARCH / FILTER
-    ==================================================== -->
-
-    <section class="toolbar">
-
-
-      <div class="search-wrap">
-
-        <input
-          id="search"
-          class="input"
-          type="search"
-          placeholder="Search username, name, district or contact..."
-          autocomplete="off"
-        >
-
-      </div>
-
-
-      <select
-        id="bookFilter"
-        class="select"
       >
 
-        <option value="all">
-          All Books
-        </option>
+ 
 
-        <option value="01">
-          Book 01
-        </option>
+        <div class="section-header">
 
-        <option value="02">
-          Book 02
-        </option>
+          <h2>Overview</h2>
 
-        <option value="03">
-          Book 03
-        </option>
+          <p>
 
-      </select>
+            Monitor your BookFair Digital platform.
 
+          </p>
 
-      <select
-        id="registrationFilter"
-        class="select"
+        </div>
+
+ 
+
+ 
+
+        <div class="stats-grid">
+
+ 
+
+          <div class="stat-card">
+
+ 
+
+            <div class="stat-top">
+
+              <span class="stat-label">
+
+                Students
+
+              </span>
+
+ 
+
+              <span class="stat-icon">
+
+                👨‍🎓
+
+              </span>
+
+            </div>
+
+ 
+
+            <div
+
+              class="stat-number"
+
+              id="totalStudents"
+
+            >
+
+              —
+
+            </div>
+
+ 
+
+            <div class="stat-note">
+
+              Registered student accounts
+
+            </div>
+
+ 
+
+          </div>
+
+ 
+
+ 
+
+          <div class="stat-card">
+
+ 
+
+            <div class="stat-top">
+
+              <span class="stat-label">
+
+                Orders
+
+              </span>
+
+ 
+
+              <span class="stat-icon">
+
+                🛒
+
+              </span>
+
+            </div>
+
+ 
+
+            <div
+
+              class="stat-number"
+
+              id="totalOrders"
+
+            >
+
+              —
+
+            </div>
+
+ 
+
+            <div class="stat-note">
+
+              Online store orders
+
+            </div>
+
+ 
+
+          </div>
+
+ 
+
+ 
+
+          <div class="stat-card">
+
+ 
+
+            <div class="stat-top">
+
+              <span class="stat-label">
+
+                Books
+
+              </span>
+
+ 
+
+              <span class="stat-icon">
+
+                📚
+
+              </span>
+
+            </div>
+
+ 
+
+            <div
+
+              class="stat-number"
+
+              id="totalBooks"
+
+            >
+
+              3
+
+            </div>
+
+ 
+
+            <div class="stat-note">
+
+              Digital book products
+
+            </div>
+
+ 
+
+          </div>
+
+ 
+
+ 
+
+          <div class="stat-card">
+
+ 
+
+            <div class="stat-top">
+
+              <span class="stat-label">
+
+                Revenue
+
+              </span>
+
+ 
+
+              <span class="stat-icon">
+
+                💰
+
+              </span>
+
+            </div>
+
+ 
+
+            <div
+
+              class="stat-number"
+
+              id="totalRevenue"
+
+            >
+
+              Rs. 0
+
+            </div>
+
+ 
+
+            <div class="stat-note">
+
+              Recorded order value
+
+            </div>
+
+ 
+
+          </div>
+
+ 
+
+        </div>
+
+ 
+
+ 
+
+        <div class="panel-grid">
+
+ 
+
+          <div class="panel">
+
+ 
+
+            <div class="panel-header">
+
+              <h3>Recent Orders</h3>
+
+              <span>Latest activity</span>
+
+            </div>
+
+ 
+
+            <div
+
+              class="panel-body"
+
+              id="recentOrders"
+
+            >
+
+              <div class="empty-state">
+
+                <strong>No orders loaded</strong>
+
+                Order data will appear here.
+
+              </div>
+
+            </div>
+
+ 
+
+          </div>
+
+ 
+
+ 
+
+          <div class="panel">
+
+ 
+
+            <div class="panel-header">
+
+              <h3>System Status</h3>
+
+              <span>Live</span>
+
+            </div>
+
+ 
+
+            <div class="panel-body">
+
+ 
+
+              <div class="activity-item">
+
+                <div class="activity-dot"></div>
+
+ 
+
+                <div class="activity-text">
+
+                  <strong>Admin Panel</strong>
+
+                  <span>
+
+                    Interface loaded successfully
+
+                  </span>
+
+                </div>
+
+              </div>
+
+ 
+
+              <div class="activity-item">
+
+                <div class="activity-dot"></div>
+
+ 
+
+                <div class="activity-text">
+
+                  <strong>Student Management</strong>
+
+                  <span>
+
+                    Firebase connection ready
+
+                  </span>
+
+                </div>
+
+              </div>
+
+ 
+
+              <div class="activity-item">
+
+                <div class="activity-dot"></div>
+
+ 
+
+                <div class="activity-text">
+
+                  <strong>Online Orders</strong>
+
+                  <span>
+
+                    Database integration ready
+
+                  </span>
+
+                </div>
+
+              </div>
+
+ 
+
+            </div>
+
+ 
+
+          </div>
+
+ 
+
+        </div>
+
+ 
+
+      </section>
+
+ 
+
+ 
+
+      <!-- =========================
+
+           STUDENTS
+
+      ========================== -->
+
+ 
+
+      <section
+
+        class="admin-section"
+
+        id="section-students"
+
       >
 
-        <option value="all">
-          All Registration
-        </option>
+ 
 
-        <option value="registered">
-          Registered
-        </option>
+        <div class="section-header">
 
-        <option value="pending">
-          Pending
-        </option>
+          <h2>Student Management</h2>
 
-      </select>
+          <p>
 
-    </section>
+            Search, review and manage student accounts.
 
+          </p>
 
+        </div>
 
-    <!-- ===================================================
-         STUDENT TABLE
-    ==================================================== -->
+ 
 
-    <section class="table-wrap">
+        <div class="toolbar">
 
-      <table>
-
-        <thead>
-
-          <tr>
-
-            <th>
-              USERNAME
-            </th>
-
-            <th>
-              PASSWORD
-            </th>
-
-            <th>
-              ASSIGNED BOOK
-            </th>
-
-            <th>
-              FULL NAME
-            </th>
-
-            <th>
-              DISTRICT
-            </th>
-
-            <th>
-              CONTACT
-            </th>
-
-            <th>
-              REGISTRATION
-            </th>
-
-            <th>
-              ACCOUNT
-            </th>
-
-            <th>
-              ACTION
-            </th>
-
-          </tr>
-
-        </thead>
-
-
-        <tbody id="rows">
-
-        </tbody>
-
-      </table>
-
-
-      <div id="empty">
-        No student accounts found.
-      </div>
-
-    </section>
-
-
-
-    <!-- ===================================================
-         IMPORT STATUS
-    ==================================================== -->
-
-    <section
-      id="importStatus"
-      class="import-status"
-    >
-
-      <div
-        id="importTitle"
-        class="import-title"
-      >
-        Importing students…
-      </div>
-
-
-      <div class="progress">
-
-        <div
-          id="importProgress"
-        ></div>
-
-      </div>
-
-
-      <div
-        id="importCount"
-        class="import-count"
-      >
-        0 / 0
-      </div>
-
-    </section>
-
-  </main>
-
-
-
-  <!-- =====================================================
-       NEW STUDENT MODAL
-  ====================================================== -->
-
-  <div
-    id="modal"
-    class="modal"
-  >
-
-    <div class="modal-box">
-
-      <div class="modal-header">
-
-        <h2>
-          Create Student Account
-        </h2>
-
-
-        <button
-          type="button"
-          class="modal-close"
-          id="close"
-        >
-          ×
-        </button>
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          USERNAME
-        </label>
-
-        <input
-          id="newUser"
-          class="input"
-          type="text"
-          placeholder="BF26-0000001"
-          autocomplete="off"
-        >
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          PASSWORD
-        </label>
-
-        <div class="password-row">
+ 
 
           <input
-            id="newPass"
+
             class="input"
-            type="text"
-            autocomplete="off"
+
+            id="studentSearch"
+
+            type="search"
+
+            placeholder="Search username, name or district..."
+
           >
 
+ 
+
+          <select
+
+            class="select"
+
+            id="studentBookFilter"
+
+          >
+
+            <option value="">All Books</option>
+
+            <option value="Book 01">Book 01</option>
+
+            <option value="Book 02">Book 02</option>
+
+            <option value="Book 03">Book 03</option>
+
+          </select>
+
+ 
+
+          <select
+
+            class="select"
+
+            id="studentStatusFilter"
+
+          >
+
+            <option value="">All Status</option>
+
+            <option value="active">Active</option>
+
+            <option value="inactive">Inactive</option>
+
+          </select>
+
+ 
 
           <button
+
+            class="refresh-btn"
+
+            id="studentRefresh"
+
             type="button"
-            class="admin-btn"
-            id="gen"
+
           >
-            Generate
+
+            ↻ Refresh
+
           </button>
 
-        </div>
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          ASSIGNED BOOK
-        </label>
-
-        <select
-          id="newBook"
-          class="select"
-        >
-
-          <option value="01">
-            Book 01 · A/L Accounting
-          </option>
-
-          <option value="02">
-            Book 02
-          </option>
-
-          <option value="03">
-            Book 03
-          </option>
-
-        </select>
-
-      </div>
-
-
-      <div class="modal-actions">
-
-        <button
-          type="button"
-          class="admin-btn"
-          id="cancel"
-        >
-          Cancel
-        </button>
-
-
-        <button
-          type="button"
-          class="admin-btn primary"
-          id="create"
-        >
-          Create Student
-        </button>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-
-  <!-- =====================================================
-       STUDENT DETAIL MODAL
-  ====================================================== -->
-
-  <div
-    id="detailModal"
-    class="modal"
-  >
-
-    <div class="modal-box">
-
-      <div class="modal-header">
-
-        <h2>
-          Student Details
-        </h2>
-
-
-        <button
-          type="button"
-          class="modal-close"
-          id="detailClose"
-        >
-          ×
-        </button>
-
-      </div>
-
-
-      <div id="detailContent">
-      </div>
-
-    </div>
-
-  </div>
-
-
-
-  <!-- =====================================================
-       IMPORT RESULT MODAL
-  ====================================================== -->
-
-  <div
-    id="importResultModal"
-    class="modal"
-  >
-
-    <div class="modal-box">
-
-      <div class="modal-header">
-
-        <h2>
-          Import Result
-        </h2>
-
-
-        <button
-          type="button"
-          class="modal-close"
-          id="importResultClose"
-        >
-          ×
-        </button>
-
-      </div>
-
-
-      <div class="result-grid">
-
-
-        <div class="result-card">
-
-          <strong id="importSuccess">
-            0
-          </strong>
-
-          <span>
-            SUCCESS
-          </span>
+ 
 
         </div>
 
+ 
 
-        <div class="result-card">
+ 
 
-          <strong id="importFailed">
-            0
-          </strong>
+        <div class="panel">
 
-          <span>
-            FAILED
-          </span>
+ 
 
-        </div>
+          <div class="table-wrap">
 
+ 
 
-        <div class="result-card">
+            <table>
 
-          <strong id="importSkipped">
-            0
-          </strong>
+ 
 
-          <span>
-            SKIPPED
-          </span>
+              <thead>
 
-        </div>
+                <tr>
 
+                  <th>Username</th>
 
-      </div>
+                  <th>Student</th>
 
+                  <th>District</th>
 
-      <div
-        id="failedWrap"
-        class="failed-wrap"
-      >
+                  <th>Assigned Book</th>
 
-        <div class="failed-title">
-          FAILED ROWS
-        </div>
+                  <th>Registration</th>
 
-
-        <div
-          id="failedList"
-          class="failed-list"
-        >
-        </div>
-
-      </div>
-
-
-      <div class="modal-actions">
-
-        <button
-          type="button"
-          class="admin-btn primary"
-          id="importResultCloseBtn"
-        >
-          Close
-        </button>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-
-  <!-- =====================================================
-       FILE INPUT
-  ====================================================== -->
-
-  <input
-    id="fileInput"
-    type="file"
-    accept=".xlsx,.xls,.csv"
-    style="display:none;"
-  >
-
-
-
-  <!-- =====================================================
-       TOAST
-  ====================================================== -->
-
-  <div
-    id="toast"
-    class="toast"
-  ></div>
-
-
-
-  <!-- =====================================================
-       ADMIN JAVASCRIPT
-
-       IMPORTANT:
-       admin.js contains NO realtime listener
-       and NO automatic refresh timer.
-  ====================================================== -->
-
-  <script
-    type="module"
-    src="admin.js?v=7"
-  ></script>
-
-
-  <!-- =====================================================
-       LOGOUT HANDLER
-
-       Uses Firebase admin auth logout.
-  ====================================================== -->
-
-  <script type="module">
-
-    import {
-      auth,
-      signOut
-    } from "./firebase.js";
-
-
-    const logoutBtn =
-      document.getElementById(
-        "logoutBtn"
-      );
-
-
-    if (logoutBtn) {
-
-      logoutBtn.addEventListener(
-        "click",
-        async () => {
-
-          logoutBtn.disabled =
-            true;
-
-          logoutBtn.textContent =
-            "Logging out…";
-
-
-          try {
-
-            await signOut(
-              auth
-            );
-
-
-            window.location.replace(
-              "admin-login.html"
-            );
-
-
-          } catch (error) {
-
-            console.error(
-              "ADMIN LOGOUT ERROR:",
-              error
-            );
-
-
-            logoutBtn.disabled =
-              false;
-
-            logoutBtn.textContent =
-              "Logout";
-
-          }
-
-        }
-      );
-
-    }
-
-  </script>
-
-
-</body>
-
-</html>
+<
