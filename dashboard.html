@@ -2,370 +2,1171 @@
 <html lang="en">
 
 <head>
+
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>My Books · BookFair Digital</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
 
-  <link rel="stylesheet" href="styles.css">
+  <title>BookFair Digital — Dashboard</title>
+
+  <meta
+    name="description"
+    content="BookFair Digital student dashboard."
+  >
+
+  <link
+    rel="stylesheet"
+    href="styles.css"
+  >
+
 
   <style>
+
+    /* =====================================================
+       RESET
+    ===================================================== */
+
     * {
       box-sizing: border-box;
     }
 
-    body.dash {
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
       margin: 0;
-      min-height: 100vh;
-      background:
-        radial-gradient(circle at 15% 10%, rgba(50,100,190,.15), transparent 35%),
-        radial-gradient(circle at 85% 15%, rgba(190,150,60,.08), transparent 35%),
-        #07111f;
-      color: #fff;
-      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      padding: 0;
     }
+
+
+    body {
+
+      min-height: 100vh;
+
+      font-family:
+        Inter,
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      color: #ffffff;
+
+      background:
+
+        radial-gradient(
+          circle at 50% -10%,
+          rgba(45,79,130,.22),
+          transparent 38%
+        ),
+
+        linear-gradient(
+          135deg,
+          #07111f 0%,
+          #0b1728 48%,
+          #08121f 100%
+        );
+
+      overflow-x: hidden;
+    }
+
+
+    /* =====================================================
+       HEADER
+    ===================================================== */
 
     .dash-header {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      height: 70px;
-      padding: 0 6%;
+
+      width: 100%;
+
+      height: 72px;
+
       display: flex;
+
       align-items: center;
+
       justify-content: space-between;
-      background: rgba(7,17,31,.88);
-      backdrop-filter: blur(18px);
-      border-bottom: 1px solid rgba(255,255,255,.08);
+
+      padding:
+        0 5.5%;
+
+      position: sticky;
+
+      top: 0;
+
+      z-index: 1000;
+
+      border-bottom:
+        1px solid
+        rgba(255,255,255,.08);
+
+      background:
+        rgba(6,16,29,.92);
+
+      backdrop-filter:
+        blur(18px);
     }
+
+
+    /* =====================================================
+       BRAND
+    ===================================================== */
 
     .brand {
+
       display: flex;
+
       align-items: center;
-      gap: 10px;
+
+      gap: 11px;
+
       color: #fff;
+
       text-decoration: none;
-      font-weight: 800;
-      font-size: 15px;
     }
 
+
     .brand-mark {
-      width: 35px;
-      height: 35px;
+
+      width: 36px;
+
+      height: 36px;
+
       display: grid;
+
       place-items: center;
+
       border-radius: 10px;
-      background: #fff;
-      color: #07111f;
+
+      background:
+        #ffffff;
+
+      color:
+        #07111f;
+
+      font-size: 15px;
+
       font-weight: 900;
     }
 
-    .logout-btn {
-      border: 1px solid rgba(255,255,255,.13);
-      background: rgba(255,255,255,.05);
-      color: rgba(255,255,255,.8);
-      padding: 9px 16px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 12px;
-      font-weight: 700;
+
+    .brand span {
+
+      font-size: 14px;
+
+      font-weight: 850;
+
+      letter-spacing:
+        -.02em;
     }
+
+
+    /* =====================================================
+       LOGOUT
+    ===================================================== */
+
+    .logout-btn {
+
+      min-width: 70px;
+
+      height: 36px;
+
+      padding:
+        0 14px;
+
+      border-radius: 9px;
+
+      border:
+        1px solid
+        rgba(255,255,255,.22);
+
+      background:
+        rgba(255,255,255,.025);
+
+      color:
+        #ffffff;
+
+      font-size: 11px;
+
+      font-weight: 800;
+
+      cursor: pointer;
+
+      transition:
+        background .2s ease,
+        border-color .2s ease,
+        transform .2s ease;
+    }
+
 
     .logout-btn:hover {
-      background: rgba(255,255,255,.1);
-      color: #fff;
+
+      background:
+        rgba(255,255,255,.08);
+
+      border-color:
+        rgba(255,255,255,.38);
+
+      transform:
+        translateY(-1px);
     }
+
+
+    .logout-btn:active {
+
+      transform:
+        translateY(0);
+    }
+
+
+    /* =====================================================
+       MAIN
+    ===================================================== */
 
     .dashboard-main {
-      width: min(1180px, 90%);
-      margin: auto;
-      padding: 70px 0 90px;
+
+      width: 90%;
+
+      max-width: 1180px;
+
+      margin:
+        0 auto;
+
+      padding:
+        65px 0 90px;
     }
 
-    .eyebrow {
-      color: rgba(255,255,255,.42);
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: .16em;
+
+    /* =====================================================
+       PAGE HEADING
+    ===================================================== */
+
+    .dashboard-heading {
+
+      margin-bottom:
+        38px;
     }
 
-    .dashboard-main h1 {
-      margin: 10px 0 8px;
-      font-size: clamp(34px, 5vw, 52px);
-      line-height: 1.05;
-      letter-spacing: -.04em;
+
+    .dashboard-heading .eyebrow {
+
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 7px;
+
+      margin-bottom:
+        13px;
+
+      color:
+        rgba(255,255,255,.42);
+
+      font-size: 9px;
+
+      font-weight: 850;
+
+      letter-spacing:
+        .15em;
     }
 
-    .dashboard-main > p {
-      margin: 0 0 42px;
-      color: rgba(255,255,255,.55);
-      font-size: 14px;
+
+    .dashboard-heading .eyebrow::before {
+
+      content: "";
+
+      width: 6px;
+
+      height: 6px;
+
+      border-radius: 50%;
+
+      background:
+        #65dca0;
+
+      box-shadow:
+        0 0 10px
+        rgba(101,220,160,.55);
     }
 
-    .student-info {
-      margin: 0 0 30px;
-      padding: 14px 18px;
-      border: 1px solid rgba(255,255,255,.09);
-      border-radius: 14px;
-      background: rgba(255,255,255,.035);
-      color: rgba(255,255,255,.58);
-      font-size: 12px;
+
+    .dashboard-heading h1 {
+
+      margin:
+        0 0 10px;
+
+      color:
+        #ffffff;
+
+      font-size:
+        clamp(
+          32px,
+          5vw,
+          50px
+        );
+
+      line-height:
+        1.05;
+
+      letter-spacing:
+        -.045em;
+
+      font-weight:
+        850;
     }
 
-    .student-info strong {
-      color: #fff;
+
+    .dashboard-heading p {
+
+      margin: 0;
+
+      color:
+        rgba(255,255,255,.48);
+
+      font-size: 13px;
+
+      line-height:
+        1.7;
     }
+
+
+    /* =====================================================
+       STUDENT INFO
+    ===================================================== */
+
+    #studentInfo {
+
+      display: inline-flex;
+
+      align-items: center;
+
+      flex-wrap: wrap;
+
+      gap: 5px;
+
+      margin-top:
+        17px;
+
+      padding:
+        10px 14px;
+
+      border-radius:
+        10px;
+
+      border:
+        1px solid
+        rgba(255,255,255,.08);
+
+      background:
+        rgba(255,255,255,.035);
+
+      color:
+        rgba(255,255,255,.48);
+
+      font-size:
+        10px;
+
+      line-height:
+        1.5;
+    }
+
+
+    #studentInfo strong {
+
+      color:
+        #ffffff;
+
+      font-weight:
+        800;
+    }
+
+
+    /* =====================================================
+       BOOK GRID
+    ===================================================== */
 
     .book-grid {
+
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 24px;
+
+      grid-template-columns:
+        repeat(
+          3,
+          minmax(0,1fr)
+        );
+
+      gap:
+        24px;
+
+      align-items:
+        stretch;
     }
 
+
+    /* =====================================================
+       COMMON BOOK CARD
+    ===================================================== */
+
     .book-card {
+
       position: relative;
-      overflow: hidden;
+
       min-width: 0;
-      border-radius: 22px;
+
+      overflow: hidden;
+
+      border-radius:
+        20px;
+
+      border:
+        1px solid
+        rgba(255,255,255,.10);
+
       background:
         linear-gradient(
           145deg,
-          rgba(255,255,255,.09),
-          rgba(255,255,255,.025)
+          rgba(27,45,69,.72),
+          rgba(9,20,34,.95)
         );
-      border: 1px solid rgba(255,255,255,.11);
-      box-shadow: 0 25px 70px rgba(0,0,0,.3);
-    }
 
-    .book-unlocked {
+      box-shadow:
+        0 25px 70px
+        rgba(0,0,0,.30);
+
       transition:
         transform .3s ease,
         border-color .3s ease,
         box-shadow .3s ease;
     }
 
-    .book-unlocked:hover {
-      transform: translateY(-7px);
-      border-color: rgba(255,255,255,.25);
-      box-shadow: 0 32px 80px rgba(0,0,0,.42);
-    }
+
+    /* =====================================================
+       BOOK COVER
+    ===================================================== */
 
     .book-cover {
+
       position: relative;
-      aspect-ratio: 1 / 1.28;
+
+      width: 100%;
+
+      aspect-ratio:
+        1 / 1.28;
+
       overflow: hidden;
-      background: #101a2a;
+
+      background:
+        #101a2a;
     }
+
 
     .book-cover img {
+
       width: 100%;
+
       height: 100%;
+
       display: block;
+
       object-fit: cover;
-      transition: transform .5s ease;
+
+      transition:
+        transform .5s ease;
     }
 
-    .book-unlocked:hover .book-cover img {
-      transform: scale(1.035);
+
+    /* =====================================================
+       UNLOCKED BOOK
+    ===================================================== */
+
+    .book-unlocked:hover {
+
+      transform:
+        translateY(-7px);
+
+      border-color:
+        rgba(255,255,255,.24);
+
+      box-shadow:
+        0 35px 85px
+        rgba(0,0,0,.42);
     }
+
+
+    .book-unlocked:hover
+    .book-cover img {
+
+      transform:
+        scale(1.035);
+    }
+
+
+    /* =====================================================
+       STATUS
+    ===================================================== */
 
     .status {
+
       position: absolute;
+
       left: 16px;
+
       bottom: 16px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(4,10,20,.82);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255,255,255,.14);
-      color: #fff;
-      font-size: 9px;
-      font-weight: 800;
-      letter-spacing: .09em;
+
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 5px;
+
+      padding:
+        8px 12px;
+
+      border-radius:
+        999px;
+
+      background:
+        rgba(4,10,20,.84);
+
+      border:
+        1px solid
+        rgba(255,255,255,.14);
+
+      backdrop-filter:
+        blur(12px);
+
+      color:
+        #ffffff;
+
+      font-size:
+        9px;
+
+      font-weight:
+        850;
+
+      letter-spacing:
+        .07em;
     }
+
+
+    /* =====================================================
+       BOOK CONTENT
+    ===================================================== */
 
     .book-content {
-      padding: 22px;
+
+      padding:
+        22px;
     }
+
 
     .book-meta {
+
       display: flex;
+
       align-items: center;
+
+      flex-wrap: wrap;
+
       gap: 7px;
-      margin-bottom: 10px;
-      color: rgba(255,255,255,.4);
-      font-size: 9px;
-      font-weight: 800;
-      letter-spacing: .12em;
+
+      margin-bottom:
+        10px;
+
+      color:
+        rgba(255,255,255,.38);
+
+      font-size:
+        8px;
+
+      font-weight:
+        850;
+
+      letter-spacing:
+        .12em;
     }
 
-    .book-content h3 {
-      margin: 0 0 9px;
-      font-size: 23px;
-      line-height: 1.15;
+
+    .book-content h3,
+    .locked-content h3 {
+
+      margin:
+        0 0 9px;
+
+      color:
+        #ffffff;
+
+      font-size:
+        23px;
+
+      line-height:
+        1.15;
+
+      letter-spacing:
+        -.025em;
+
+      font-weight:
+        850;
     }
 
-    .book-content p {
-      margin: 0 0 20px;
-      color: rgba(255,255,255,.53);
-      font-size: 13px;
-      line-height: 1.6;
+
+    .book-content p,
+    .locked-content p {
+
+      margin:
+        0 0 20px;
+
+      color:
+        rgba(255,255,255,.50);
+
+      font-size:
+        13px;
+
+      line-height:
+        1.6;
     }
+
+
+    /* =====================================================
+       BUTTONS
+    ===================================================== */
 
     .open-btn,
     .buy-btn {
+
       width: 100%;
+
+      min-height:
+        49px;
+
       display: flex;
+
       align-items: center;
+
       justify-content: space-between;
-      padding: 13px 16px;
-      border-radius: 11px;
-      text-decoration: none;
-      font-size: 12px;
-      font-weight: 800;
+
+      gap: 15px;
+
+      padding:
+        0 16px;
+
+      border-radius:
+        11px;
+
+      font-size:
+        12px;
+
+      font-weight:
+        850;
+
+      text-decoration:
+        none;
+
       cursor: pointer;
+
+      transition:
+        transform .2s ease,
+        background .2s ease,
+        border-color .2s ease;
     }
+
+
+    /* =====================================================
+       OPEN ANSWERS
+    ===================================================== */
 
     .open-btn {
-      background: #fff;
-      color: #07111f;
+
+      border:
+        1px solid
+        rgba(255,255,255,.85);
+
+      background:
+        #ffffff;
+
+      color:
+        #07111f;
     }
 
+
     .open-btn:hover {
-      transform: translateY(-2px);
-      background: #eef2f6;
+
+      transform:
+        translateY(-2px);
+
+      background:
+        #edf1f5;
     }
+
 
     .open-btn span:last-child,
     .buy-btn span:last-child {
-      font-size: 18px;
+
+      font-size:
+        18px;
+
+      line-height:
+        1;
     }
+
+
+    /* =====================================================
+       LOCKED CARD
+    ===================================================== */
 
     .locked-card {
-      min-height: 520px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 32px;
+
+      padding: 0;
+
+      overflow: hidden;
+
       background:
-        radial-gradient(
-          circle at 85% 10%,
-          rgba(255,255,255,.06),
-          transparent 35%
-        ),
-        rgba(255,255,255,.025);
+        linear-gradient(
+          145deg,
+          rgba(27,45,69,.55),
+          rgba(8,18,31,.96)
+        );
     }
 
-    .lock-icon {
-      width: 58px;
-      height: 58px;
-      display: grid;
-      place-items: center;
-      margin-bottom: 25px;
-      border-radius: 17px;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.1);
-      font-size: 24px;
+
+    /* =====================================================
+       LOCKED COVER
+    ===================================================== */
+
+    .locked-card .book-cover {
+
+      position: relative;
+
+      aspect-ratio:
+        1 / 1.28;
     }
+
+
+    .locked-card .book-cover img {
+
+      width: 100%;
+
+      height: 100%;
+
+      object-fit: cover;
+
+      display: block;
+
+      filter:
+        brightness(.55)
+        saturate(.82);
+
+      transition:
+        transform .5s ease,
+        filter .3s ease;
+    }
+
+
+    .locked-card:hover
+    .book-cover img {
+
+      transform:
+        scale(1.025);
+
+      filter:
+        brightness(.65)
+        saturate(.90);
+    }
+
+
+    /* =====================================================
+       LOCKED COVER OVERLAY
+    ===================================================== */
+
+    .locked-card .book-cover::after {
+
+      content: "";
+
+      position: absolute;
+
+      inset: 0;
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(3,9,18,.05) 20%,
+          rgba(3,9,18,.25) 55%,
+          rgba(3,9,18,.72) 100%
+        );
+
+      pointer-events:
+        none;
+    }
+
+
+    /* =====================================================
+       LOCKED CONTENT
+    ===================================================== */
+
+    .locked-content {
+
+      padding:
+        22px;
+    }
+
 
     .locked-label {
+
       display: inline-flex;
-      width: fit-content;
-      padding: 7px 10px;
-      margin-bottom: 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.06);
-      color: rgba(255,255,255,.48);
-      font-size: 9px;
-      font-weight: 800;
-      letter-spacing: .12em;
+
+      align-items: center;
+
+      width:
+        fit-content;
+
+      padding:
+        7px 10px;
+
+      margin-bottom:
+        11px;
+
+      border-radius:
+        999px;
+
+      background:
+        rgba(255,255,255,.065);
+
+      border:
+        1px solid
+        rgba(255,255,255,.07);
+
+      color:
+        rgba(255,255,255,.50);
+
+      font-size:
+        9px;
+
+      font-weight:
+        850;
+
+      letter-spacing:
+        .12em;
     }
 
-    .locked-card h3 {
-      margin: 0 0 9px;
-      font-size: 22px;
-    }
 
-    .locked-card p {
-      max-width: 250px;
-      margin: 0;
-      color: rgba(255,255,255,.4);
-      font-size: 13px;
-      line-height: 1.65;
-    }
+    /* =====================================================
+       BUY BUTTON
+    ===================================================== */
 
     .buy-btn {
-      margin-top: 25px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.07);
-      color: #fff;
+
+      margin-top:
+        3px;
+
+      border:
+        1px solid
+        rgba(255,255,255,.13);
+
+      background:
+        rgba(255,255,255,.065);
+
+      color:
+        #ffffff;
     }
+
 
     .buy-btn:hover {
-      background: rgba(255,255,255,.12);
+
+      transform:
+        translateY(-2px);
+
+      background:
+        rgba(255,255,255,.11);
+
+      border-color:
+        rgba(255,255,255,.22);
     }
+
+
+    /* =====================================================
+       ACCESS STATUS
+    ===================================================== */
 
     .locked-access {
-      margin-top: 16px;
-      padding-top: 17px;
-      border-top: 1px solid rgba(255,255,255,.08);
-      color: rgba(255,255,255,.32);
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: .05em;
+
+      margin-top:
+        16px;
+
+      padding-top:
+        16px;
+
+      border-top:
+        1px solid
+        rgba(255,255,255,.07);
+
+      color:
+        rgba(255,255,255,.28);
+
+      font-size:
+        9px;
+
+      font-weight:
+        750;
+
+      letter-spacing:
+        .07em;
     }
+
+
+    /* =====================================================
+       LOADING
+    ===================================================== */
 
     .loading-state {
-      grid-column: 1 / -1;
-      padding: 50px 20px;
-      text-align: center;
-      color: rgba(255,255,255,.45);
+
+      grid-column:
+        1 / -1;
+
+      padding:
+        60px 20px;
+
+      text-align:
+        center;
+
+      color:
+        rgba(255,255,255,.40);
+
+      font-size:
+        13px;
     }
 
-    @media (max-width: 900px) {
-      .book-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
 
-    @media (max-width: 620px) {
-      .dash-header {
-        height: 62px;
-        padding: 0 5%;
-      }
+    /* =====================================================
+       TABLET
+    ===================================================== */
 
-      .brand span {
-        display: none;
-      }
+    @media (max-width: 1000px) {
 
       .dashboard-main {
-        width: 90%;
-        padding: 50px 0 70px;
+
+        width:
+          92%;
       }
+
 
       .book-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
+
+        grid-template-columns:
+          repeat(
+            2,
+            minmax(0,1fr)
+          );
       }
 
-      .locked-card {
-        min-height: 300px;
-      }
     }
+
+
+    /* =====================================================
+       MOBILE
+    ===================================================== */
+
+    @media (max-width: 650px) {
+
+      .dash-header {
+
+        height:
+          64px;
+
+        padding:
+          0 5%;
+      }
+
+
+      .brand span {
+
+        font-size:
+          12px;
+      }
+
+
+      .brand-mark {
+
+        width:
+          34px;
+
+        height:
+          34px;
+
+        border-radius:
+          9px;
+      }
+
+
+      .logout-btn {
+
+        height:
+          34px;
+
+        min-width:
+          65px;
+
+        font-size:
+          10px;
+      }
+
+
+      .dashboard-main {
+
+        width:
+          90%;
+
+        padding:
+          45px 0 70px;
+      }
+
+
+      .dashboard-heading {
+
+        margin-bottom:
+          28px;
+      }
+
+
+      .dashboard-heading h1 {
+
+        font-size:
+          34px;
+      }
+
+
+      .dashboard-heading p {
+
+        font-size:
+          12px;
+      }
+
+
+      #studentInfo {
+
+        display:
+          block;
+
+        width:
+          100%;
+
+        font-size:
+          9px;
+      }
+
+
+      .book-grid {
+
+        grid-template-columns:
+          1fr;
+
+        gap:
+          20px;
+      }
+
+
+      .book-content,
+      .locked-content {
+
+        padding:
+          20px;
+      }
+
+
+      .book-content h3,
+      .locked-content h3 {
+
+        font-size:
+          21px;
+      }
+
+
+      .book-content p,
+      .locked-content p {
+
+        font-size:
+          12px;
+      }
+
+
+      .status {
+
+        left:
+          13px;
+
+        bottom:
+          13px;
+
+        padding:
+          7px 10px;
+
+        font-size:
+          8px;
+      }
+
+    }
+
+
+    /* =====================================================
+       SMALL MOBILE
+    ===================================================== */
+
+    @media (max-width: 400px) {
+
+      .dashboard-main {
+
+        width:
+          92%;
+      }
+
+
+      .dashboard-heading h1 {
+
+        font-size:
+          30px;
+      }
+
+
+      .brand span {
+
+        display:
+          none;
+      }
+
+    }
+
   </style>
+
 </head>
 
-<body class="dash">
+
+<body>
+
+
+  <!-- =====================================================
+       HEADER
+  ===================================================== -->
 
   <header class="dash-header">
 
-    <a class="brand" href="index.html">
-      <span class="brand-mark">B</span>
+
+    <a
+      href="index.html"
+      class="brand"
+    >
+
+      <span class="brand-mark">
+        B
+      </span>
 
       <span>
         BookFair Digital
       </span>
+
     </a>
+
 
     <button
       class="logout-btn"
@@ -375,41 +1176,85 @@
       Logout
     </button>
 
+
   </header>
+
+
+
+  <!-- =====================================================
+       MAIN
+  ===================================================== -->
 
   <main class="dashboard-main">
 
-    <div class="eyebrow">
-      STUDENT PORTAL
-    </div>
 
-    <h1>
-      My Digital Books
-    </h1>
+    <!-- ===================================================
+         HEADING
+    =================================================== -->
 
-    <p>
-      Your assigned digital resources are shown below.
-    </p>
+    <section class="dashboard-heading">
 
-    <div class="student-info" id="studentInfo">
-      Checking your account…
-    </div>
 
-    <div
+      <div class="eyebrow">
+        DIGITAL BOOK ACCESS
+      </div>
+
+
+      <h1>
+        Your Digital Books
+      </h1>
+
+
+      <p>
+        Access the digital resources connected
+        to your physical BookFair books.
+      </p>
+
+
+      <div id="studentInfo">
+        Loading your account...
+      </div>
+
+
+    </section>
+
+
+
+    <!-- ===================================================
+         BOOK GRID
+         dashboard.js WILL CREATE THE 3 CARDS HERE
+    =================================================== -->
+
+    <section
       class="book-grid"
       id="bookGrid"
     >
+
+
       <div class="loading-state">
-        Loading your books…
+
+        Loading your books...
+
       </div>
-    </div>
+
+
+    </section>
+
 
   </main>
 
+
+
+  <!-- =====================================================
+       DASHBOARD JAVASCRIPT
+       CACHE VERSION = 6
+  ===================================================== -->
+
   <script
     type="module"
-    src="dashboard.js?v=4"
+    src="dashboard.js?v=6"
   ></script>
+
 
 </body>
 
