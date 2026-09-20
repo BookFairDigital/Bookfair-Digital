@@ -6,7 +6,7 @@ import {
 
 
 /* =====================================================
-   STORAGE KEYS
+   STORAGE
 ===================================================== */
 
 const LOGIN_KEY = "bf_login";
@@ -15,7 +15,7 @@ const STUDENT_DOC_KEY = "bf_student_doc";
 
 
 /* =====================================================
-   BOOK CONFIG
+   BOOKS
 ===================================================== */
 
 const BOOKS = [
@@ -24,54 +24,37 @@ const BOOKS = [
     number: "01",
     name: "Book 01",
     title: "A/L Accounting",
-
     description:
       "Complete digital answer resource for your A/L Accounting book.",
-
-    image:
-      "assets/accounting.jpg",
-
-    answerPage:
-      "accounting.html"
+    image: "assets/accounting.jpg",
+    answerPage: "accounting.html"
   },
-
 
   {
     number: "02",
     name: "Book 02",
     title: "LKAS & SLFRS · Part-I",
-
     description:
       "Digital answer resource for Book 02.",
-
-    image:
-      "assets/book-02.jpg",
-
-    answerPage:
-      "#"
+    image: "assets/book-02.jpg",
+    answerPage: "#"
   },
-
 
   {
     number: "03",
     name: "Book 03",
     title: "LKAS & SLFRS · Part-II",
-
     description:
       "Digital answer resource for Book 03.",
-
-    image:
-      "assets/book-03.jpg",
-
-    answerPage:
-      "#"
+    image: "assets/book-03.jpg",
+    answerPage: "#"
   }
 
 ];
 
 
 /* =====================================================
-   NORMALIZE BOOK
+   HELPERS
 ===================================================== */
 
 function normalizeBook(value) {
@@ -83,10 +66,6 @@ function normalizeBook(value) {
 
 }
 
-
-/* =====================================================
-   GET ASSIGNED BOOK
-===================================================== */
 
 function getAssignedBook(student) {
 
@@ -136,13 +115,12 @@ document.addEventListener(
   "DOMContentLoaded",
   () => {
 
-    const logoutButton =
+    const button =
       document.getElementById("logout");
 
+    if (button) {
 
-    if (logoutButton) {
-
-      logoutButton.addEventListener(
+      button.addEventListener(
         "click",
         logoutStudent
       );
@@ -162,36 +140,13 @@ function renderBooks(student) {
   const grid =
     document.getElementById("bookGrid");
 
-
-  if (!grid) {
-    return;
-  }
+  if (!grid) return;
 
 
-  const assignedBook =
-    getAssignedBook(student);
-
-
-  const assignedNormalized =
-    normalizeBook(assignedBook);
-
-
-  console.log(
-    "BookFair Dashboard"
-  );
-
-
-  console.log(
-    "Username:",
-    student.username ||
-    student.Username
-  );
-
-
-  console.log(
-    "Assigned Book:",
-    assignedBook
-  );
+  const assigned =
+    normalizeBook(
+      getAssignedBook(student)
+    );
 
 
   grid.innerHTML = "";
@@ -200,8 +155,8 @@ function renderBooks(student) {
   BOOKS.forEach(
     (book) => {
 
-      const allowed =
-        assignedNormalized ===
+      const isAssigned =
+        assigned ===
         normalizeBook(book.name);
 
 
@@ -214,10 +169,10 @@ function renderBooks(student) {
 
 
       /* =================================================
-         ASSIGNED BOOK
+         UNLOCKED
       ================================================= */
 
-      if (allowed) {
+      if (isAssigned) {
 
         card.className =
           "book-card book-unlocked";
@@ -270,49 +225,49 @@ function renderBooks(student) {
             ${
               book.answerPage !== "#"
 
-                ? `
+              ? `
 
-                  <a
-                    class="open-btn"
-                    href="${book.answerPage}"
-                  >
+                <a
+                  class="open-btn"
+                  href="${book.answerPage}"
+                >
 
-                    <span>
-                      Open Answers
-                    </span>
+                  <span>
+                    Open Answers
+                  </span>
 
-                    <span>
-                      →
-                    </span>
+                  <span>
+                    →
+                  </span>
 
-                  </a>
+                </a>
 
-                `
+              `
 
-                : `
+              : `
 
-                  <button
-                    class="open-btn"
-                    type="button"
-                    disabled
-                    style="
-                      opacity:.45;
-                      cursor:not-allowed;
-                      border:0;
-                    "
-                  >
+                <button
+                  class="open-btn"
+                  type="button"
+                  disabled
+                  style="
+                    opacity:.45;
+                    cursor:not-allowed;
+                    border:0;
+                  "
+                >
 
-                    <span>
-                      Coming Soon
-                    </span>
+                  <span>
+                    Coming Soon
+                  </span>
 
-                    <span>
-                      →
-                    </span>
+                  <span>
+                    →
+                  </span>
 
-                  </button>
+                </button>
 
-                `
+              `
             }
 
           </div>
@@ -323,7 +278,7 @@ function renderBooks(student) {
 
 
       /* =================================================
-         LOCKED BOOK
+         LOCKED
       ================================================= */
 
       else {
@@ -429,12 +384,8 @@ function renderBooks(student) {
           "click",
           () => {
 
-            const bookName =
-              button.dataset.buyBook;
-
-
             alert(
-              `${bookName} purchase option will be available soon.`
+              `${button.dataset.buyBook} purchase option will be available soon.`
             );
 
           }
@@ -447,19 +398,26 @@ function renderBooks(student) {
 
 
 /* =====================================================
-   LOAD STUDENT
+   LOAD DASHBOARD
 ===================================================== */
 
-async function loadStudent() {
+function loadDashboard() {
 
   console.log(
-    "Loading BookFair dashboard..."
+    "BOOKFAIR DASHBOARD START"
   );
 
 
-  /* =================================================
-     GET SAVED LOGIN
-  ================================================= */
+  /*
+   * IMPORTANT:
+   *
+   * Dashboard uses the student object already
+   * saved by app.js during successful login.
+   *
+   * No Firestore request is required to display
+   * the dashboard.
+   */
+
 
   const username =
     localStorage.getItem(
@@ -473,29 +431,28 @@ async function loadStudent() {
     );
 
 
-  const savedDocId =
-    localStorage.getItem(
-      STUDENT_DOC_KEY
-    );
-
-
   console.log(
-    "Saved username:",
+    "Dashboard username:",
     username
   );
 
 
   console.log(
-    "Saved document ID:",
-    savedDocId
+    "Saved student exists:",
+    !!savedStudent
   );
 
 
   /* =================================================
-     NO LOGIN
+     NO LOGIN DATA
   ================================================= */
 
-  if (!username) {
+  if (!username || !savedStudent) {
+
+    console.warn(
+      "No saved student login found."
+    );
+
 
     location.replace(
       "login.html"
@@ -507,249 +464,26 @@ async function loadStudent() {
 
 
   /* =================================================
-     USE SAVED STUDENT FIRST
-     
-     IMPORTANT:
-     We don't immediately redirect to login
-     just because Firestore lookup has an issue.
+     READ SAVED STUDENT
   ================================================= */
 
-  let student = null;
+  let student;
 
 
-  if (savedStudent) {
+  try {
 
-    try {
-
-      student =
-        JSON.parse(
-          savedStudent
-        );
-
-    }
-
-    catch (error) {
-
-      console.error(
-        "Saved student data invalid:",
-        error
+    student =
+      JSON.parse(
+        savedStudent
       );
-
-    }
 
   }
 
-
-  /* =================================================
-     IF WE HAVE SAVED STUDENT
-     
-     Show dashboard immediately.
-  ================================================= */
-
-  if (student) {
-
-    const studentInfo =
-      document.getElementById(
-        "studentInfo"
-      );
-
-
-    if (studentInfo) {
-
-      const name =
-        student.fullName ||
-        student["Full Name"] ||
-        student.username ||
-        student.Username ||
-        username;
-
-
-      const assigned =
-        getAssignedBook(student);
-
-
-      studentInfo.innerHTML = `
-
-        Signed in as
-
-        <strong>
-          ${name}
-        </strong>
-
-        · Assigned book:
-
-        <strong>
-          ${assigned || "Not assigned"}
-        </strong>
-
-      `;
-
-    }
-
-
-    renderBooks(
-      student
-    );
-
-
-    /*
-     * Dashboard is now displayed.
-     *
-     * Do NOT redirect to login.html here.
-     */
-
-
-    /* =================================================
-       OPTIONAL FIRESTORE REFRESH
-    ================================================= */
-
-    if (savedDocId) {
-
-      try {
-
-        const studentRef =
-          doc(
-            db,
-            "students",
-            savedDocId
-          );
-
-
-        const snapshot =
-          await getDoc(
-            studentRef
-          );
-
-
-        if (snapshot.exists()) {
-
-          const freshStudent =
-            snapshot.data();
-
-
-          /*
-           * Keep important identity values.
-           */
-
-          freshStudent.docId =
-            savedDocId;
-
-
-          freshStudent.username =
-            freshStudent.username ||
-            freshStudent.Username ||
-            username;
-
-
-          freshStudent.assignedBook =
-            getAssignedBook(
-              freshStudent
-            );
-
-
-          /*
-           * Update local storage.
-           */
-
-          localStorage.setItem(
-            STUDENT_KEY,
-            JSON.stringify(
-              freshStudent
-            )
-          );
-
-
-          /*
-           * Refresh dashboard.
-           */
-
-          const freshInfo =
-            document.getElementById(
-              "studentInfo"
-            );
-
-
-          if (freshInfo) {
-
-            const freshName =
-              freshStudent.fullName ||
-              freshStudent["Full Name"] ||
-              freshStudent.username ||
-              username;
-
-
-            const freshBook =
-              getAssignedBook(
-                freshStudent
-              );
-
-
-            freshInfo.innerHTML = `
-
-              Signed in as
-
-              <strong>
-                ${freshName}
-              </strong>
-
-              · Assigned book:
-
-              <strong>
-                ${freshBook || "Not assigned"}
-              </strong>
-
-            `;
-
-          }
-
-
-          renderBooks(
-            freshStudent
-          );
-
-        }
-
-      }
-
-      catch (error) {
-
-        /*
-         * IMPORTANT:
-         *
-         * If Firestore refresh fails,
-         * DON'T kick the student out.
-         *
-         * The saved login is still displayed.
-         */
-
-        console.warn(
-          "Could not refresh student data:",
-          error
-        );
-
-      }
-
-    }
-
-
-    return;
-
-  }
-
-
-  /* =================================================
-     OLD / MISSING STUDENT DATA
-  ================================================= */
-
-  /*
-   * If there is a username but no saved student
-   * profile, only then try Firestore.
-   */
-
-  if (!savedDocId) {
-
-    console.warn(
-      "No saved Firestore document ID."
+  catch (error) {
+
+    console.error(
+      "Invalid student data:",
+      error
     );
 
 
@@ -757,9 +491,12 @@ async function loadStudent() {
       LOGIN_KEY
     );
 
-
     localStorage.removeItem(
       STUDENT_KEY
+    );
+
+    localStorage.removeItem(
+      STUDENT_DOC_KEY
     );
 
 
@@ -773,202 +510,91 @@ async function loadStudent() {
 
 
   /* =================================================
-     FIRESTORE FALLBACK
+     STUDENT NAME
   ================================================= */
 
-  try {
-
-    const studentRef =
-      doc(
-        db,
-        "students",
-        savedDocId
-      );
+  const name =
+    student.fullName ||
+    student["Full Name"] ||
+    student.username ||
+    student.Username ||
+    username;
 
 
-    const snapshot =
-      await getDoc(
-        studentRef
-      );
+  /* =================================================
+     ASSIGNED BOOK
+  ================================================= */
+
+  const assigned =
+    getAssignedBook(student);
 
 
-    if (!snapshot.exists()) {
-
-      console.error(
-        "Student document not found."
-      );
-
-
-      localStorage.removeItem(
-        LOGIN_KEY
-      );
-
-      localStorage.removeItem(
-        STUDENT_KEY
-      );
-
-      localStorage.removeItem(
-        STUDENT_DOC_KEY
-      );
+  console.log(
+    "Student:",
+    name
+  );
 
 
-      location.replace(
-        "login.html"
-      );
-
-      return;
-
-    }
+  console.log(
+    "Assigned Book:",
+    assigned
+  );
 
 
-    student =
-      snapshot.data();
+  /* =================================================
+     SHOW STUDENT INFO
+  ================================================= */
 
-
-    if (
-      student.active === false
-    ) {
-
-      localStorage.removeItem(
-        LOGIN_KEY
-      );
-
-      localStorage.removeItem(
-        STUDENT_KEY
-      );
-
-      localStorage.removeItem(
-        STUDENT_DOC_KEY
-      );
-
-
-      location.replace(
-        "login.html"
-      );
-
-      return;
-
-    }
-
-
-    student.docId =
-      savedDocId;
-
-
-    student.username =
-      student.username ||
-      student.Username ||
-      username;
-
-
-    student.assignedBook =
-      getAssignedBook(
-        student
-      );
-
-
-    localStorage.setItem(
-      STUDENT_KEY,
-      JSON.stringify(
-        student
-      )
+  const studentInfo =
+    document.getElementById(
+      "studentInfo"
     );
 
 
-    /* =================================================
-       SHOW STUDENT
-    ================================================= */
+  if (studentInfo) {
 
-    const studentInfo =
-      document.getElementById(
-        "studentInfo"
-      );
+    studentInfo.innerHTML = `
 
+      Signed in as
 
-    if (studentInfo) {
+      <strong>
+        ${name}
+      </strong>
 
-      const name =
-        student.fullName ||
-        student["Full Name"] ||
-        student.username ||
-        username;
+      · Assigned book:
 
+      <strong>
+        ${assigned || "Not assigned"}
+      </strong>
 
-      const assigned =
-        getAssignedBook(student);
-
-
-      studentInfo.innerHTML = `
-
-        Signed in as
-
-        <strong>
-          ${name}
-        </strong>
-
-        · Assigned book:
-
-        <strong>
-          ${assigned || "Not assigned"}
-        </strong>
-
-      `;
-
-    }
-
-
-    renderBooks(
-      student
-    );
+    `;
 
   }
 
 
-  catch (error) {
+  /* =================================================
+     RENDER BOOKS
+  ================================================= */
 
-    console.error(
-      "Dashboard Firestore error:",
-      error
-    );
-
-
-    /*
-     * IMPORTANT:
-     *
-     * Don't automatically kick the student
-     * to login just because Firestore has
-     * a temporary error.
-     *
-     * If we don't have student data,
-     * show a useful message instead.
-     */
-
-    const grid =
-      document.getElementById(
-        "bookGrid"
-      );
+  renderBooks(
+    student
+  );
 
 
-    if (grid) {
-
-      grid.innerHTML = `
-
-        <div class="loading-state">
-
-          Unable to refresh your account
-          right now.
-
-          <br><br>
-
-          Please refresh this page.
-
-        </div>
-
-      `;
-
-    }
-
-  }
+  /*
+   * STOP HERE.
+   *
+   * There is NO:
+   *
+   * location.href = "login.html"
+   *
+   * and NO:
+   *
+   * location.href = "index.html"
+   *
+   *
+   * Student stays on dashboard.
+   */
 
 }
 
@@ -977,4 +603,18 @@ async function loadStudent() {
    START
 ===================================================== */
 
-loadStudent();
+if (
+  document.readyState === "loading"
+) {
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    loadDashboard
+  );
+
+}
+else {
+
+  loadDashboard();
+
+}
