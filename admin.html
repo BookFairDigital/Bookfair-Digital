@@ -103,7 +103,7 @@ td strong{color:#fff}
 .pill.gold{color:#fcd34d;background:rgba(245,158,11,.09);border:1px solid rgba(245,158,11,.18)}
 .empty{padding:40px;text-align:center;color:#70859a;font-size:12px}
 
-.book-panel{margin-top:20px}
+.order-stats{margin-top:0}.order-status-select{height:32px;min-width:130px;font-size:9px}.book-panel{margin-top:20px}
 .book-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:18px}
 .book-box{padding:16px;border:1px solid var(--border);border-radius:13px;background:rgba(255,255,255,.025)}
 .book-box h3{margin:0 0 5px;font-size:13px}
@@ -131,8 +131,8 @@ td strong{color:#fff}
 
 #importStatus{display:none;margin-top:16px;padding:14px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid var(--border)}
 .progress{height:7px;background:#071525;border-radius:99px;overflow:hidden;margin-top:10px}
-# importProgress{width:0}
-# importProgress{height:100%;background:var(--green);width:0;transition:width .2s}
+#importProgress{width:0}
+#importProgress{height:100%;background:var(--green);width:0;transition:width .2s}
 .failed-item{font-size:10px;color:#aebdcb;border-bottom:1px solid rgba(255,255,255,.05);padding:7px 0}
 
 .toast{position:fixed;right:20px;bottom:20px;z-index:900;display:none;max-width:380px;padding:13px 16px;border-radius:11px;background:#102b45;border:1px solid rgba(74,222,128,.25);color:#fff;font-size:11px;box-shadow:0 20px 50px rgba(0,0,0,.35)}
@@ -171,6 +171,7 @@ td strong{color:#fff}
 <aside class="sidebar">
   <div class="side-title">ADMIN CONSOLE</div>
   <a class="nav-item active" href="#students"><span class="nav-dot"></span>Student Management</a>
+  <a class="nav-item" href="#orders"><span class="nav-dot"></span>Online Orders</a>
   <a class="nav-item" href="#books"><span class="nav-dot"></span>Books</a>
   <a class="nav-item" href="#import"><span class="nav-dot"></span>Excel Import</a>
   <a class="nav-item" href="#students"><span class="nav-dot"></span>Activity</a>
@@ -180,7 +181,7 @@ td strong{color:#fff}
 
   <div class="topline">
     <div>
-      <div class="eyebrow">BOOKFAIR DIGITAL · ADMIN</div>
+      <div class="eyebrow">BOOKFAIR DIGITAL · ADMIN CONSOLE</div>
       <h1>Admin Dashboard</h1>
       <p class="subtitle">Manage student accounts, book assignments and Excel imports.</p>
     </div>
@@ -203,6 +204,46 @@ td strong{color:#fff}
     <div class="stat"><div class="stat-label">BOOK 03</div><div class="stat-value" id="b3">0</div></div>
     <div class="stat"><div class="stat-label">REGISTERED</div><div class="stat-value" id="registered">0</div></div>
     <div class="stat"><div class="stat-label">PENDING</div><div class="stat-value" id="pending">0</div></div>
+  </section>
+
+  <section class="stats order-stats">
+    <div class="stat"><div class="stat-label">TOTAL ORDERS</div><div class="stat-value" id="orderCount">0</div></div>
+    <div class="stat"><div class="stat-label">PENDING ORDERS</div><div class="stat-value" id="pendingOrders">0</div></div>
+    <div class="stat"><div class="stat-label">TODAY REVENUE</div><div class="stat-value" id="todayRevenue">Rs 0</div></div>
+    <div class="stat"><div class="stat-label">THIS MONTH</div><div class="stat-value" id="monthRevenue">Rs 0</div></div>
+    <div class="stat"><div class="stat-label">TOTAL REVENUE</div><div class="stat-value" id="totalRevenue">Rs 0</div></div>
+  </section>
+
+  <section class="panel" id="orders">
+    <div class="panel-head">
+      <div>
+        <div class="panel-title">Online Orders</div>
+        <div class="panel-sub">Customer details, bank slips, payment status and revenue.</div>
+      </div>
+      <div class="filters">
+        <input id="orderSearch" type="search" placeholder="Search order, customer, mobile…">
+        <select id="orderStatusFilter">
+          <option value="all">All Order Status</option>
+          <option value="Payment Checking">Payment Checking</option>
+          <option value="Paid">Paid</option>
+          <option value="Completed">Completed</option>
+          <option value="Cancelled">Cancelled</option>
+        </select>
+        <button class="admin-btn" id="refreshOrdersBtn" type="button">↻ Refresh Orders</button>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>ORDER</th><th>BOOK</th><th>CUSTOMER</th><th>DISTRICT</th>
+            <th>QTY</th><th>AMOUNT</th><th>PAYMENT</th><th>BANK SLIP</th><th>STATUS</th>
+          </tr>
+        </thead>
+        <tbody id="orderRows"></tbody>
+      </table>
+      <div id="orderEmpty" class="empty">No online orders found.</div>
+    </div>
   </section>
 
   <section class="panel" id="students">
@@ -385,7 +426,7 @@ document.getElementById("adminLogout")?.addEventListener("click", async () => {
 });
 </script>
 
-<script type="module" src="admin.js?v=13"></script>
+<script type="module" src="admin-orders.js?v=14"></script>
 
 </body>
 </html>

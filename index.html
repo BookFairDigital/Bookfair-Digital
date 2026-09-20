@@ -3787,7 +3787,17 @@
        JAVASCRIPT
   ===================================================== -->
 
-  <script>
+  <script type="module">
+
+    import {
+      db,
+      storage,
+      doc,
+      setDoc,
+      ref,
+      uploadBytes,
+      getDownloadURL
+    } from "./firebase.js";
 
 
     /* =====================================================
@@ -4492,12 +4502,45 @@
         };
 
 
-        /*
-          Save order details locally.
-          Firebase order storage can be
-          connected separately.
-        */
+        /* =================================================
+           SAVE ORDER + BANK SLIP TO FIREBASE
+        ================================================= */
 
+        const safeSlipName =
+          uploadedSlip.name.replace(
+            /[^a-zA-Z0-9._-]/g,
+            "_"
+          );
+
+        const slipRef =
+          ref(
+            storage,
+            `order-slips/${orderNumber}-${safeSlipName}`
+          );
+
+        await uploadBytes(
+          slipRef,
+          uploadedSlip
+        );
+
+        order.slipStoragePath =
+          slipRef.fullPath;
+
+        order.slipDownloadURL =
+          await getDownloadURL(
+            slipRef
+          );
+
+        await setDoc(
+          doc(
+            db,
+            "orders",
+            orderNumber
+          ),
+          order
+        );
+
+        /* Keep local confirmation data too. */
         localStorage.setItem(
           "bf_last_order",
           JSON.stringify(order)

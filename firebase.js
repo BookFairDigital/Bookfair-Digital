@@ -1,58 +1,22 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 import {
-  initializeApp
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged
+  getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-
 import {
-  getFirestore,
-  doc,
-  getDoc,
-  setDoc,
-  collection,
-  getDocs,
-  deleteDoc
+  getFirestore, doc, getDoc, setDoc, addDoc, collection, getDocs, deleteDoc
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-
 import {
-  firebaseConfig
-} from "./firebase-config.js";
+  getStorage, ref, uploadBytes, getDownloadURL, deleteObject
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-storage.js";
+import { firebaseConfig } from "./firebase-config.js";
 
-
-/*
- * Main application
- */
-const app =
-  initializeApp(firebaseConfig);
-
-export const auth =
-  getAuth(app);
-
-export const db =
-  getFirestore(app);
-
-
-/*
- * Export config so admin.js can create
- * student Firebase Auth accounts using
- * a separate Auth instance.
- */
-export { firebaseConfig };
-
+const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+export const storage = getStorage(app);
 
 export {
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged,
-  doc,
-  getDoc,
-  setDoc,
-  collection,
-  getDocs,
-  deleteDoc
+  firebaseConfig, signInWithEmailAndPassword, signOut, onAuthStateChanged,
+  doc, getDoc, setDoc, addDoc, collection, getDocs, deleteDoc,
+  ref, uploadBytes, getDownloadURL, deleteObject
 };

@@ -6,7 +6,10 @@ import {
   getDocs,
   getDoc,
   collection,
-  deleteDoc
+  deleteDoc,
+  storage,
+  ref,
+  getDownloadURL
 } from "./firebase.js";
 
 import {
@@ -94,6 +97,7 @@ async function initAdmin() {
 
 
   let students = [];
+  let orders = [];
 
 
   /* ===================================================
@@ -1871,9 +1875,9 @@ async function initAdmin() {
           excelRows.length;
 
 
-        if ($("importStatus")) {
+        if ($("importStatusModal")) {
 
-          $("importStatus")
+          $("importStatusModal")
             .style.display =
             "block";
 
@@ -2519,6 +2523,179 @@ async function initAdmin() {
   );
 
 
+
+  /* ===================================================
+     ONLINE ORDERS + REVENUE
+  =================================================== */
+
+  function money(value) {
+    return `Rs ${Number(value || 0).toLocaleString("en-LK", {
+      maximumFractionDigits: 0
+    })}`;
+  }
+
+  function formatDate(value) {
+    const d = new Date(value);
+    if (Number.isNaN(d.getTime())) return "—";
+    return d.toLocaleString("en-LK", {
+      year: "numeric",
+      month: "short",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+  }
+
+  function revenueOrder(order) {
+    const status = String(order.status || "").toLowerCase();
+    return status === "paid" || status === "completed";
+  }
+
+  function loadOrderStats() {
+    const now = new Date();
+
+    const pending = orders.filter(
+      o => String(o.status || "Payment Checking") === "Payment Checking"
+    ).length;
+
+    const today = orders
+      .filter(o => {
+        if (!revenueOrder(o)) return false;
+        const d = new Date(o.createdAt);
+        return !Number.isNaN(d.getTime()) &&
+          d.toDateString() === now.toDateString();
+      })
+      .reduce((n,o) => n + Number(o.total || 0), 0);
+
+    const month = orders
+      .filter(o => {
+        if (!revenueOrder(o)) return false;
+        const d = new Date(o.createdAt);
+        return !Number.isNaN(d.getTime()) &&
+          d.getFullYear() === now.getFullYear() &&
+          d.getMonth() === now.getMonth();
+      })
+      .reduce((n,o) => n + Number(o.total || 0), 0);
+
+    const total = orders
+      .filter(revenueOrder)
+      .reduce((n,o) => n + Number(o.total || 0), 0);
+
+    if ($("orderCount")) $("orderCount").textContent = orders.length;
+    if ($("pendingOrders")) $("pendingOrders").textContent = pending;
+    if ($("todayRevenue")) $("todayRevenue").textContent = money(today);
+    if ($("monthRevenue")) $("monthRevenue").textContent = money(month);
+    if ($("totalRevenue")) $("totalRevenue").textContent = money(total);
+  }
+
+  function renderOrders() {
+    const search = String($("orderSearch")?.value || "").toLowerCase().trim();
+    const statusFilter = $("orderStatusFilter")?.value || "all";
+
+    const filtered = orders.filter(order => {
+      const c = order.customer || {};
+      const text = [
+        order.orderNumber, order.book, order.bookCode,
+        c.fullName, c.mobile, c.district, order.slipFileName
+      ].join(" ").toLowerCase();
+
+      return (!search || text.includes(search)) &&
+        (statusFilter === "all" ||
+         String(order.status || "Payment Checking") === statusFilter);
+    });
+
+    const rows = $("orderRows");
+    if (rows) {
+      rows.innerHTML = filtered.map(order => {
+        const c = order.customer || {};
+        const status = order.status || "Payment Checking";
+        const slip = order.slipDownloadURL
+          ? `<a class="admin-btn" target="_blank" rel="noopener" href="${esc(order.slipDownloadURL)}">View Slip</a>`
+          : `<span class="muted">${esc(order.slipFileName || "No slip")}</span>`;
+
+        return `
+          <tr>
+            <td><strong>${esc(order.orderNumber || order.id)}</strong><div class="muted">${esc(formatDate(order.createdAt))}</div></td>
+            <td>${esc(order.book || "—")}</td>
+            <td><strong>${esc(c.fullName || "—")}</strong><div class="muted">${esc(c.mobile || "")}</div></td>
+            <td>${esc(c.district || "—")}</td>
+            <td>${esc(order.quantity || 0)}</td>
+            <td><strong>${money(order.total)}</strong></td>
+            <td><span class="pill ${revenueOrder(order) ? "green" : "gold"}">${esc(status.toUpperCase())}</span></td>
+            <td>${slip}</td>
+            <td>
+              <select class="order-status-select" data-order-id="${esc(order.id)}">
+                ${["Payment Checking","Paid","Completed","Cancelled"].map(v =>
+                  `<option value="${v}" ${status === v ? "selected" : ""}>${v}</option>`
+                ).join("")}
+              </select>
+            </td>
+          </tr>`;
+      }).join("");
+    }
+
+    const empty = $("orderEmpty");
+    if (empty) empty.style.display = filtered.length ? "none" : "block";
+    loadOrderStats();
+  }
+
+  async function loadOrders() {
+    try {
+      const snapshot = await getDocs(collection(db, "orders"));
+      orders = snapshot.docs.map(item => ({
+        id: item.id,
+        ...item.data()
+      }));
+      orders.sort((a,b) =>
+        new Date(b.createdAt || 0) - new Date(a.createdAt || 0)
+      );
+      renderOrders();
+    } catch (error) {
+      console.error("LOAD ORDERS ERROR:", error);
+      const empty = $("orderEmpty");
+      if (empty) {
+        empty.style.display = "block";
+        empty.textContent = "Could not load orders. Check Firestore 'orders' permissions.";
+      }
+    }
+  }
+
+  async function updateOrderStatus(orderId, statusValue) {
+    try {
+      await setDoc(doc(db, "orders", orderId), {
+        status: statusValue,
+        updatedAt: new Date().toISOString()
+      }, { merge: true });
+
+      const order = orders.find(item => item.id === orderId);
+      if (order) order.status = statusValue;
+
+      renderOrders();
+      showToast(`Order ${orderId} → ${statusValue}`);
+    } catch (error) {
+      console.error("ORDER STATUS ERROR:", error);
+      showToast(error.message || "Could not update order status.", true);
+    }
+  }
+
+  document.addEventListener("change", event => {
+    const select = event.target.closest(".order-status-select");
+    if (!select) return;
+    updateOrderStatus(select.dataset.orderId, select.value);
+  });
+
+  $("orderSearch")?.addEventListener("input", renderOrders);
+  $("orderStatusFilter")?.addEventListener("change", renderOrders);
+
+  $("refreshOrdersBtn")?.addEventListener("click", async () => {
+    const b = $("refreshOrdersBtn");
+    if (b) { b.disabled = true; b.textContent = "Refreshing…"; }
+    try { await loadOrders(); showToast("Orders refreshed."); }
+    finally {
+      if (b) { b.disabled = false; b.textContent = "↻ Refresh Orders"; }
+    }
+  });
+
   /* ===================================================
      INITIAL LOAD
      
@@ -2526,5 +2703,6 @@ async function initAdmin() {
   =================================================== */
 
   await loadStudents();
+  await loadOrders();
 
 }
