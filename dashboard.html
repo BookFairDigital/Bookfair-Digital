@@ -10,7 +10,9 @@
     content="width=device-width, initial-scale=1"
   >
 
-  <title>BookFair Digital — Dashboard</title>
+  <title>
+    BookFair Digital — Dashboard
+  </title>
 
   <meta
     name="description"
@@ -26,6 +28,45 @@
   <style>
 
     /* =====================================================
+       ROOT
+    ===================================================== */
+
+    :root {
+
+      --navy:
+        #071525;
+
+      --navy-2:
+        #0a1d31;
+
+      --blue:
+        #0d2944;
+
+      --blue-2:
+        #163a5f;
+
+      --green:
+        #22c55e;
+
+      --green-light:
+        #4ade80;
+
+      --green-dark:
+        #16a34a;
+
+      --white:
+        #f8fafc;
+
+      --muted:
+        #a8b4c3;
+
+      --border:
+        rgba(255,255,255,.10);
+
+    }
+
+
+    /* =====================================================
        RESET
     ===================================================== */
 
@@ -36,10 +77,15 @@
 
     html,
     body {
+
       width: 100%;
+
       min-height: 100%;
+
       margin: 0;
+
       padding: 0;
+
     }
 
 
@@ -49,28 +95,120 @@
 
       font-family:
         Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
         Arial,
         Helvetica,
         sans-serif;
 
-      color: #ffffff;
+      color:
+        var(--white);
 
       background:
 
         radial-gradient(
-          circle at 50% -10%,
-          rgba(45,79,130,.22),
-          transparent 38%
+          circle at 10% 10%,
+          rgba(34,197,94,.10),
+          transparent 28%
+        ),
+
+        radial-gradient(
+          circle at 90% 85%,
+          rgba(22,163,74,.08),
+          transparent 30%
         ),
 
         linear-gradient(
           135deg,
-          #07111f 0%,
-          #0b1728 48%,
-          #08121f 100%
+          var(--navy),
+          var(--blue),
+          var(--navy)
         );
 
-      overflow-x: hidden;
+      overflow-x:
+        hidden;
+
+    }
+
+
+    /* =====================================================
+       BACKGROUND GLOW
+    ===================================================== */
+
+    body::before {
+
+      content: "";
+
+      position: fixed;
+
+      width: 430px;
+
+      height: 430px;
+
+      top: -220px;
+
+      right: -170px;
+
+      border-radius: 50%;
+
+      background:
+        rgba(34,197,94,.10);
+
+      filter:
+        blur(100px);
+
+      pointer-events:
+        none;
+
+      animation:
+        glowMove 12s ease-in-out infinite alternate;
+
+    }
+
+
+    body::after {
+
+      content: "";
+
+      position: fixed;
+
+      width: 380px;
+
+      height: 380px;
+
+      left: -200px;
+
+      bottom: -200px;
+
+      border-radius: 50%;
+
+      background:
+        rgba(14,165,233,.07);
+
+      filter:
+        blur(100px);
+
+      pointer-events:
+        none;
+
+    }
+
+
+    @keyframes glowMove {
+
+      from {
+        transform:
+          translate3d(0,0,0)
+          scale(1);
+      }
+
+      to {
+        transform:
+          translate3d(-40px,40px,0)
+          scale(1.12);
+      }
+
     }
 
 
@@ -104,10 +242,14 @@
         rgba(255,255,255,.08);
 
       background:
-        rgba(6,16,29,.92);
+        rgba(7,21,37,.90);
 
       backdrop-filter:
         blur(18px);
+
+      -webkit-backdrop-filter:
+        blur(18px);
+
     }
 
 
@@ -123,44 +265,57 @@
 
       gap: 11px;
 
-      color: #fff;
+      color:
+        var(--white);
 
-      text-decoration: none;
+      text-decoration:
+        none;
+
     }
 
 
     .brand-mark {
 
-      width: 36px;
+      width: 38px;
 
-      height: 36px;
+      height: 38px;
 
       display: grid;
 
       place-items: center;
 
-      border-radius: 10px;
+      border-radius: 11px;
 
       background:
-        #ffffff;
+        linear-gradient(
+          135deg,
+          var(--green),
+          var(--green-dark)
+        );
 
       color:
-        #07111f;
+        #ffffff;
 
-      font-size: 15px;
+      font-size: 16px;
 
       font-weight: 900;
+
+      box-shadow:
+        0 8px 25px
+        rgba(34,197,94,.20);
+
     }
 
 
-    .brand span {
+    .brand span:last-child {
 
       font-size: 14px;
 
-      font-weight: 850;
+      font-weight: 800;
 
       letter-spacing:
         -.02em;
+
     }
 
 
@@ -170,24 +325,24 @@
 
     .logout-btn {
 
-      min-width: 70px;
+      min-width: 76px;
 
-      height: 36px;
+      height: 37px;
 
       padding:
-        0 14px;
+        0 15px;
 
-      border-radius: 9px;
+      border-radius: 10px;
 
       border:
         1px solid
-        rgba(255,255,255,.22);
+        rgba(255,255,255,.15);
 
       background:
-        rgba(255,255,255,.025);
+        rgba(255,255,255,.045);
 
       color:
-        #ffffff;
+        var(--white);
 
       font-size: 11px;
 
@@ -196,22 +351,25 @@
       cursor: pointer;
 
       transition:
-        background .2s ease,
-        border-color .2s ease,
-        transform .2s ease;
+        all .2s ease;
+
     }
 
 
     .logout-btn:hover {
 
       background:
-        rgba(255,255,255,.08);
+        rgba(34,197,94,.12);
 
       border-color:
-        rgba(255,255,255,.38);
+        rgba(34,197,94,.40);
+
+      color:
+        var(--green-light);
 
       transform:
         translateY(-1px);
+
     }
 
 
@@ -219,6 +377,7 @@
 
       transform:
         translateY(0);
+
     }
 
 
@@ -227,6 +386,10 @@
     ===================================================== */
 
     .dashboard-main {
+
+      position: relative;
+
+      z-index: 2;
 
       width: 90%;
 
@@ -237,17 +400,19 @@
 
       padding:
         65px 0 90px;
+
     }
 
 
     /* =====================================================
-       PAGE HEADING
+       HEADING
     ===================================================== */
 
     .dashboard-heading {
 
       margin-bottom:
         38px;
+
     }
 
 
@@ -257,20 +422,21 @@
 
       align-items: center;
 
-      gap: 7px;
+      gap: 8px;
 
       margin-bottom:
         13px;
 
       color:
-        rgba(255,255,255,.42);
+        rgba(255,255,255,.45);
 
       font-size: 9px;
 
       font-weight: 850;
 
       letter-spacing:
-        .15em;
+        .16em;
+
     }
 
 
@@ -278,18 +444,19 @@
 
       content: "";
 
-      width: 6px;
+      width: 7px;
 
-      height: 6px;
+      height: 7px;
 
       border-radius: 50%;
 
       background:
-        #65dca0;
+        var(--green-light);
 
       box-shadow:
-        0 0 10px
-        rgba(101,220,160,.55);
+        0 0 12px
+        rgba(74,222,128,.60);
+
     }
 
 
@@ -299,37 +466,44 @@
         0 0 10px;
 
       color:
-        #ffffff;
+        var(--white);
 
       font-size:
         clamp(
-          32px,
+          34px,
           5vw,
-          50px
+          52px
         );
 
       line-height:
-        1.05;
+        1.04;
 
       letter-spacing:
         -.045em;
 
       font-weight:
         850;
+
     }
 
 
     .dashboard-heading p {
 
-      margin: 0;
+      max-width:
+        580px;
+
+      margin:
+        0;
 
       color:
         rgba(255,255,255,.48);
 
-      font-size: 13px;
+      font-size:
+        13px;
 
       line-height:
         1.7;
+
     }
 
 
@@ -348,39 +522,41 @@
       gap: 5px;
 
       margin-top:
-        17px;
+        18px;
 
       padding:
-        10px 14px;
+        11px 15px;
 
       border-radius:
-        10px;
+        11px;
 
       border:
         1px solid
-        rgba(255,255,255,.08);
+        rgba(34,197,94,.16);
 
       background:
-        rgba(255,255,255,.035);
+        rgba(34,197,94,.055);
 
       color:
-        rgba(255,255,255,.48);
+        rgba(255,255,255,.50);
 
       font-size:
         10px;
 
       line-height:
         1.5;
+
     }
 
 
     #studentInfo strong {
 
       color:
-        #ffffff;
+        var(--green-light);
 
       font-weight:
         800;
+
     }
 
 
@@ -403,11 +579,12 @@
 
       align-items:
         stretch;
+
     }
 
 
     /* =====================================================
-       COMMON BOOK CARD
+       BOOK CARD
     ===================================================== */
 
     .book-card {
@@ -428,8 +605,8 @@
       background:
         linear-gradient(
           145deg,
-          rgba(27,45,69,.72),
-          rgba(9,20,34,.95)
+          rgba(13,41,68,.78),
+          rgba(7,21,37,.96)
         );
 
       box-shadow:
@@ -440,11 +617,12 @@
         transform .3s ease,
         border-color .3s ease,
         box-shadow .3s ease;
+
     }
 
 
     /* =====================================================
-       BOOK COVER
+       COVER
     ===================================================== */
 
     .book-cover {
@@ -459,7 +637,8 @@
       overflow: hidden;
 
       background:
-        #101a2a;
+        #101c2c;
+
     }
 
 
@@ -475,11 +654,12 @@
 
       transition:
         transform .5s ease;
+
     }
 
 
     /* =====================================================
-       UNLOCKED BOOK
+       UNLOCKED
     ===================================================== */
 
     .book-unlocked:hover {
@@ -488,11 +668,12 @@
         translateY(-7px);
 
       border-color:
-        rgba(255,255,255,.24);
+        rgba(74,222,128,.32);
 
       box-shadow:
         0 35px 85px
-        rgba(0,0,0,.42);
+        rgba(0,0,0,.45);
+
     }
 
 
@@ -501,6 +682,7 @@
 
       transform:
         scale(1.035);
+
     }
 
 
@@ -520,7 +702,7 @@
 
       align-items: center;
 
-      gap: 5px;
+      gap: 6px;
 
       padding:
         8px 12px;
@@ -549,6 +731,7 @@
 
       letter-spacing:
         .07em;
+
     }
 
 
@@ -560,6 +743,7 @@
 
       padding:
         22px;
+
     }
 
 
@@ -587,6 +771,7 @@
 
       letter-spacing:
         .12em;
+
     }
 
 
@@ -597,19 +782,20 @@
         0 0 9px;
 
       color:
-        #ffffff;
+        var(--white);
 
       font-size:
-        23px;
+        22px;
 
       line-height:
-        1.15;
+        1.18;
 
       letter-spacing:
         -.025em;
 
       font-weight:
         850;
+
     }
 
 
@@ -627,6 +813,7 @@
 
       line-height:
         1.6;
+
     }
 
 
@@ -671,24 +858,34 @@
         transform .2s ease,
         background .2s ease,
         border-color .2s ease;
+
     }
 
 
     /* =====================================================
-       OPEN ANSWERS
+       OPEN BUTTON
     ===================================================== */
 
     .open-btn {
 
       border:
         1px solid
-        rgba(255,255,255,.85);
+        rgba(34,197,94,.65);
 
       background:
-        #ffffff;
+        linear-gradient(
+          135deg,
+          var(--green),
+          var(--green-dark)
+        );
 
       color:
-        #07111f;
+        #ffffff;
+
+      box-shadow:
+        0 10px 25px
+        rgba(34,197,94,.15);
+
     }
 
 
@@ -697,8 +894,10 @@
       transform:
         translateY(-2px);
 
-      background:
-        #edf1f5;
+      box-shadow:
+        0 14px 30px
+        rgba(34,197,94,.24);
+
     }
 
 
@@ -710,6 +909,7 @@
 
       line-height:
         1;
+
     }
 
 
@@ -719,16 +919,13 @@
 
     .locked-card {
 
-      padding: 0;
-
-      overflow: hidden;
-
       background:
         linear-gradient(
           145deg,
-          rgba(27,45,69,.55),
-          rgba(8,18,31,.96)
+          rgba(13,41,68,.52),
+          rgba(7,21,37,.96)
         );
+
     }
 
 
@@ -736,32 +933,16 @@
        LOCKED COVER
     ===================================================== */
 
-    .locked-card .book-cover {
-
-      position: relative;
-
-      aspect-ratio:
-        1 / 1.28;
-    }
-
-
     .locked-card .book-cover img {
 
-      width: 100%;
-
-      height: 100%;
-
-      object-fit: cover;
-
-      display: block;
-
       filter:
-        brightness(.55)
-        saturate(.82);
+        brightness(.52)
+        saturate(.78);
 
       transition:
         transform .5s ease,
         filter .3s ease;
+
     }
 
 
@@ -772,14 +953,11 @@
         scale(1.025);
 
       filter:
-        brightness(.65)
-        saturate(.90);
+        brightness(.62)
+        saturate(.88);
+
     }
 
-
-    /* =====================================================
-       LOCKED COVER OVERLAY
-    ===================================================== */
 
     .locked-card .book-cover::after {
 
@@ -792,13 +970,14 @@
       background:
         linear-gradient(
           180deg,
-          rgba(3,9,18,.05) 20%,
-          rgba(3,9,18,.25) 55%,
-          rgba(3,9,18,.72) 100%
+          rgba(3,9,18,.05) 15%,
+          rgba(3,9,18,.30) 55%,
+          rgba(3,9,18,.78) 100%
         );
 
       pointer-events:
         none;
+
     }
 
 
@@ -810,6 +989,7 @@
 
       padding:
         22px;
+
     }
 
 
@@ -832,11 +1012,11 @@
         999px;
 
       background:
-        rgba(255,255,255,.065);
+        rgba(255,255,255,.055);
 
       border:
         1px solid
-        rgba(255,255,255,.07);
+        rgba(255,255,255,.08);
 
       color:
         rgba(255,255,255,.50);
@@ -849,6 +1029,7 @@
 
       letter-spacing:
         .12em;
+
     }
 
 
@@ -866,10 +1047,11 @@
         rgba(255,255,255,.13);
 
       background:
-        rgba(255,255,255,.065);
+        rgba(255,255,255,.055);
 
       color:
-        #ffffff;
+        var(--white);
+
     }
 
 
@@ -879,15 +1061,19 @@
         translateY(-2px);
 
       background:
-        rgba(255,255,255,.11);
+        rgba(34,197,94,.10);
 
       border-color:
-        rgba(255,255,255,.22);
+        rgba(34,197,94,.30);
+
+      color:
+        var(--green-light);
+
     }
 
 
     /* =====================================================
-       ACCESS STATUS
+       LOCKED ACCESS
     ===================================================== */
 
     .locked-access {
@@ -913,6 +1099,7 @@
 
       letter-spacing:
         .07em;
+
     }
 
 
@@ -932,10 +1119,43 @@
         center;
 
       color:
-        rgba(255,255,255,.40);
+        rgba(255,255,255,.42);
 
       font-size:
         13px;
+
+    }
+
+
+    /* =====================================================
+       FOOTER
+    ===================================================== */
+
+    .dashboard-footer {
+
+      position: relative;
+
+      z-index: 2;
+
+      width: 90%;
+
+      max-width: 1180px;
+
+      margin:
+        0 auto;
+
+      padding:
+        0 0 35px;
+
+      color:
+        rgba(255,255,255,.25);
+
+      text-align:
+        center;
+
+      font-size:
+        10px;
+
     }
 
 
@@ -949,6 +1169,7 @@
 
         width:
           92%;
+
       }
 
 
@@ -959,6 +1180,7 @@
             2,
             minmax(0,1fr)
           );
+
       }
 
     }
@@ -977,13 +1199,15 @@
 
         padding:
           0 5%;
+
       }
 
 
-      .brand span {
+      .brand span:last-child {
 
         font-size:
           12px;
+
       }
 
 
@@ -997,6 +1221,7 @@
 
         border-radius:
           9px;
+
       }
 
 
@@ -1010,6 +1235,7 @@
 
         font-size:
           10px;
+
       }
 
 
@@ -1019,7 +1245,8 @@
           90%;
 
         padding:
-          45px 0 70px;
+          45px 0 65px;
+
       }
 
 
@@ -1027,6 +1254,7 @@
 
         margin-bottom:
           28px;
+
       }
 
 
@@ -1034,6 +1262,7 @@
 
         font-size:
           34px;
+
       }
 
 
@@ -1041,6 +1270,7 @@
 
         font-size:
           12px;
+
       }
 
 
@@ -1054,6 +1284,7 @@
 
         font-size:
           9px;
+
       }
 
 
@@ -1064,6 +1295,7 @@
 
         gap:
           20px;
+
       }
 
 
@@ -1072,6 +1304,7 @@
 
         padding:
           20px;
+
       }
 
 
@@ -1080,6 +1313,7 @@
 
         font-size:
           21px;
+
       }
 
 
@@ -1088,6 +1322,7 @@
 
         font-size:
           12px;
+
       }
 
 
@@ -1104,6 +1339,18 @@
 
         font-size:
           8px;
+
+      }
+
+
+      .dashboard-footer {
+
+        width:
+          90%;
+
+        font-size:
+          9px;
+
       }
 
     }
@@ -1119,6 +1366,7 @@
 
         width:
           92%;
+
       }
 
 
@@ -1126,13 +1374,36 @@
 
         font-size:
           30px;
+
       }
 
 
-      .brand span {
+      .brand span:last-child {
 
         display:
           none;
+
+      }
+
+    }
+
+
+    /* =====================================================
+       REDUCED MOTION
+    ===================================================== */
+
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+
+        animation:
+          none !important;
+
+        transition:
+          none !important;
+
       }
 
     }
@@ -1155,6 +1426,7 @@
     <a
       href="index.html"
       class="brand"
+      aria-label="BookFair Digital Home"
     >
 
       <span class="brand-mark">
@@ -1189,7 +1461,7 @@
 
 
     <!-- ===================================================
-         HEADING
+         PAGE HEADING
     =================================================== -->
 
     <section class="dashboard-heading">
@@ -1211,6 +1483,11 @@
       </p>
 
 
+      <!--
+        dashboard.js fills this
+        after login.
+      -->
+
       <div id="studentInfo">
         Loading your account...
       </div>
@@ -1222,7 +1499,6 @@
 
     <!-- ===================================================
          BOOK GRID
-         dashboard.js WILL CREATE THE 3 CARDS HERE
     =================================================== -->
 
     <section
@@ -1246,13 +1522,29 @@
 
 
   <!-- =====================================================
+       FOOTER
+  ===================================================== -->
+
+  <footer class="dashboard-footer">
+
+    © 2026 BookFair Digital.
+    Student Digital Book Platform.
+
+  </footer>
+
+
+
+  <!-- =====================================================
        DASHBOARD JAVASCRIPT
-       CACHE VERSION = 6
+
+       IMPORTANT:
+       v=10 forces the browser to load
+       the latest dashboard.js.
   ===================================================== -->
 
   <script
     type="module"
-    src="dashboard.js?v=6"
+    src="dashboard.js?v=10"
   ></script>
 
 
