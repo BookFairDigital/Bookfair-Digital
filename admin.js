@@ -1,274 +1,2720 @@
 import {
   auth,
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut
+  db,
+  doc,
+  setDoc,
+  getDocs,
+  getDoc,
+  collection,
+  deleteDoc,
+  firebaseConfig
 } from "./firebase.js";
 
+import {
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 
-/* =========================================
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signOut as signOutStudent
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+import {
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+
+/* =====================================================
    ADMIN CONFIG
-========================================= */
+===================================================== */
 
 const ADMIN_UID =
   "SU2kLL2ovwPXGyJ436s8PJpLJQZ2";
 
-const ADMIN_USERNAME =
-  "admin";
 
-const ADMIN_INTERNAL_EMAIL =
-  "admin@bookfairdigital.local";
+/* =====================================================
+   SECONDARY STUDENT AUTH
+===================================================== */
+
+const studentApp = initializeApp(
+  firebaseConfig,
+  "studentProvisioning"
+);
+
+const studentAuth = getAuth(studentApp);
 
 
-/* =========================================
-   ELEMENTS
-========================================= */
-
-const form =
-  document.getElementById(
-    "adminLogin"
+function studentEmail(username) {
+  return (
+    username.trim().toLowerCase() +
+    "@bookfairdigital.local"
   );
-
-const message =
-  document.getElementById(
-    "adminMsg"
-  );
+}
 
 
-/* =========================================
-   AUTO SESSION LOGIN
-========================================= */
+/* =====================================================
+   ADMIN AUTH CHECK
+===================================================== */
 
 onAuthStateChanged(
   auth,
   async (user) => {
 
-    /*
-     * No existing session.
-     * Stay on login page.
-     */
-
     if (!user) {
+      window.location.href = "admin-login.html";
       return;
     }
 
+    if (user.uid !== ADMIN_UID) {
 
-    /*
-     * Existing Firebase session belongs
-     * to the administrator.
-     */
+      try {
+        await signOut(auth);
+      } catch (_) {}
 
-    if (
-      user.uid ===
-      ADMIN_UID
-    ) {
-
-      window.location.replace(
-        "admin.html"
+      alert(
+        "This account is not authorized as an administrator."
       );
 
+      window.location.href = "admin-login.html";
       return;
     }
 
-
-    /*
-     * A different Firebase account is
-     * currently logged in.
-     *
-     * Automatically remove that session.
-     */
-
-    try {
-
-      await signOut(auth);
-
-    } catch (_) {}
-
+    initAdmin();
   }
 );
 
 
-/* =========================================
-   LOGIN
-========================================= */
+/* =====================================================
+   ADMIN DASHBOARD
+===================================================== */
 
-if (form) {
+async function initAdmin() {
 
-  form.addEventListener(
-    "submit",
-    async (event) => {
-
-      event.preventDefault();
+  const $ = (id) =>
+    document.getElementById(id);
 
 
-      const username =
-        document
-          .getElementById(
-            "adminUsername"
+  const rows =
+    $("rows");
+
+  const empty =
+    $("empty");
+
+  const modal =
+    $("modal");
+
+  const toast =
+    $("toast");
+
+  const detailModal =
+    $("detailModal");
+
+
+  let students = [];
+
+
+  /* ===================================================
+     ESCAPE HTML
+  =================================================== */
+
+  function esc(value) {
+
+    return String(value ?? "")
+      .replace(
+        /[&<>"']/g,
+        (char) => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;"
+        })[char]
+      );
+
+  }
+
+
+  /* ===================================================
+     BOOK NAME
+  =================================================== */
+
+  function bookName(book) {
+
+    if (book === "01") {
+      return "Book 01 · A/L Accounting";
+    }
+
+    if (book === "02") {
+      return "Book 02";
+    }
+
+    if (book === "03") {
+      return "Book 03";
+    }
+
+    return "Not assigned";
+  }
+
+
+  /* ===================================================
+     NORMALIZE BOOK
+  =================================================== */
+
+  function normalizeBook(value) {
+
+    const text =
+      String(value ?? "")
+        .trim()
+        .toLowerCase();
+
+
+    if (
+      text === "01" ||
+      text === "book 01" ||
+      text.includes("book 01")
+    ) {
+      return "01";
+    }
+
+
+    if (
+      text === "02" ||
+      text === "book 02" ||
+      text.includes("book 02")
+    ) {
+      return "02";
+    }
+
+
+    if (
+      text === "03" ||
+      text === "book 03" ||
+      text.includes("book 03")
+    ) {
+      return "03";
+    }
+
+
+    return "";
+  }
+
+
+  /* ===================================================
+     VALID USERNAME
+  =================================================== */
+
+  function validUsername(username) {
+
+    return /^[A-Za-z0-9._-]{3,40}$/.test(
+      username
+    );
+
+  }
+
+
+  /* ===================================================
+     RANDOM PASSWORD
+  =================================================== */
+
+  function randomPassword() {
+
+    const chars =
+      "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789";
+
+    return Array.from(
+      { length: 10 },
+      () =>
+        chars[
+          Math.floor(
+            Math.random() * chars.length
           )
-          .value
-          .trim()
-          .toLowerCase();
+        ]
+    ).join("");
+
+  }
 
 
-      const password =
-        document
-          .getElementById(
-            "adminPassword"
+  /* ===================================================
+     TOAST
+  =================================================== */
+
+  function showToast(
+    text,
+    error = false
+  ) {
+
+    if (!toast) {
+      return;
+    }
+
+    toast.textContent = text;
+
+    toast.className =
+      "toast show" +
+      (error ? " error" : "");
+
+
+    setTimeout(() => {
+
+      toast.classList.remove(
+        "show"
+      );
+
+    }, 2800);
+
+  }
+
+
+  /* ===================================================
+     LOAD STUDENTS
+  =================================================== */
+
+  async function loadStudents() {
+
+    const status =
+      $("dbStatus");
+
+
+    try {
+
+      if (status) {
+        status.textContent =
+          "● Loading students...";
+        status.classList.remove("error");
+      }
+
+
+      const snapshot =
+        await getDocs(
+          collection(
+            db,
+            "students"
           )
-          .value;
-
-
-      const button =
-        form.querySelector(
-          "button[type='submit']"
         );
 
 
-      /*
-       * Basic validation
-       */
+      students =
+        snapshot.docs.map(
+          (item) => ({
+            id: item.id,
+            ...item.data()
+          })
+        );
+
+
+      if (status) {
+
+        status.textContent =
+          "● Firestore connected";
+
+        status.classList.remove(
+          "error"
+        );
+
+      }
+
+
+      render();
+
+
+    } catch (error) {
+
+      console.error(
+        "LOAD STUDENTS ERROR:",
+        error
+      );
+
+
+      if (status) {
+
+        status.textContent =
+          "● Firestore unavailable";
+
+        status.classList.add(
+          "error"
+        );
+
+      }
+
+
+      showToast(
+        "Could not load students from Firestore.",
+        true
+      );
+
+    }
+
+  }
+
+
+  /* ===================================================
+     BOOK COUNTS
+  =================================================== */
+
+  function updateBookManagement() {
+
+    const book01 =
+      students.filter(
+        (student) =>
+          normalizeBook(
+            student.assignedBook ||
+            student.book
+          ) === "01"
+      ).length;
+
+
+    const book02 =
+      students.filter(
+        (student) =>
+          normalizeBook(
+            student.assignedBook ||
+            student.book
+          ) === "02"
+      ).length;
+
+
+    const book03 =
+      students.filter(
+        (student) =>
+          normalizeBook(
+            student.assignedBook ||
+            student.book
+          ) === "03"
+      ).length;
+
+
+    if ($("book1Count")) {
+      $("book1Count").textContent =
+        book01;
+    }
+
+
+    if ($("book2Count")) {
+      $("book2Count").textContent =
+        book02;
+    }
+
+
+    if ($("book3Count")) {
+      $("book3Count").textContent =
+        book03;
+    }
+
+  }
+
+
+  /* ===================================================
+     RENDER DASHBOARD
+  =================================================== */
+
+  function render() {
+
+    const search =
+      (
+        $("search")?.value ||
+        ""
+      )
+        .toLowerCase()
+        .trim();
+
+
+    const bookFilter =
+      $("bookFilter")?.value ||
+      "all";
+
+
+    const registrationFilter =
+      $("registrationFilter")?.value ||
+      "all";
+
+
+    const filtered =
+      students.filter(
+        (student) => {
+
+          const searchable = `
+            ${student.username || ""}
+            ${student.fullName || ""}
+            ${student.district || ""}
+            ${student.contact || ""}
+          `.toLowerCase();
+
+
+          const matchesSearch =
+            searchable.includes(
+              search
+            );
+
+
+          const studentBook =
+            normalizeBook(
+              student.assignedBook ||
+              student.book
+            );
+
+
+          const matchesBook =
+            bookFilter === "all" ||
+            bookFilter === "" ||
+            studentBook === bookFilter;
+
+
+          const matchesRegistration =
+            registrationFilter === "all" ||
+            registrationFilter === "" ||
+
+            (
+              registrationFilter ===
+                "registered" &&
+              student.registered === true
+            ) ||
+
+            (
+              registrationFilter ===
+                "pending" &&
+              student.registered !== true
+            );
+
+
+          return (
+            matchesSearch &&
+            matchesBook &&
+            matchesRegistration
+          );
+
+        }
+      );
+
+
+    if (rows) {
+
+      rows.innerHTML =
+        filtered
+          .map(
+            (student) => {
+
+              const studentBook =
+                normalizeBook(
+                  student.assignedBook ||
+                  student.book
+                );
+
+
+              return `
+                <tr
+                  class="student-row"
+                  data-id="${esc(student.id)}"
+                  style="cursor:pointer;"
+                >
+
+                  <td>
+                    <strong>
+                      ${esc(
+                        student.username ||
+                        student.id
+                      )}
+                    </strong>
+                  </td>
+
+                  <td>
+                    <span class="muted">
+                      ${esc(
+                        student.password ||
+                        "—"
+                      )}
+                    </span>
+                  </td>
+
+                  <td>
+                    ${esc(
+                      bookName(
+                        studentBook
+                      )
+                    )}
+                  </td>
+
+                  <td>
+                    ${esc(
+                      student.fullName ||
+                      "Not registered"
+                    )}
+                  </td>
+
+                  <td>
+                    ${esc(
+                      student.district ||
+                      "—"
+                    )}
+                  </td>
+
+                  <td>
+                    ${esc(
+                      student.contact ||
+                      "—"
+                    )}
+                  </td>
+
+                  <td>
+                    <span
+                      class="pill ${
+                        student.registered
+                          ? "green"
+                          : "gold"
+                      }"
+                    >
+                      ${
+                        student.registered
+                          ? "REGISTERED"
+                          : "PENDING"
+                      }
+                    </span>
+                  </td>
+
+                  <td>
+                    <span
+                      class="pill ${
+                        student.active === false
+                          ? "gold"
+                          : "green"
+                      }"
+                    >
+                      ${
+                        student.active === false
+                          ? "INACTIVE"
+                          : "ACTIVE"
+                      }
+                    </span>
+                  </td>
+
+                  <td>
+                    <button
+                      class="delete-student admin-btn danger"
+                      data-id="${esc(student.id)}"
+                      data-username="${esc(
+                        student.username ||
+                        student.id
+                      )}"
+                      type="button"
+                    >
+                      Delete
+                    </button>
+                  </td>
+
+                </tr>
+              `;
+
+            }
+          )
+          .join("");
+
+    }
+
+
+    if (empty) {
+
+      empty.style.display =
+        filtered.length
+          ? "none"
+          : "block";
+
+    }
+
+
+    /* -----------------------------------------------
+       STATS
+    ------------------------------------------------ */
+
+    if ($("total")) {
+
+      $("total").textContent =
+        students.length;
+
+    }
+
+
+    if ($("b1")) {
+
+      $("b1").textContent =
+        students.filter(
+          (student) =>
+            normalizeBook(
+              student.assignedBook ||
+              student.book
+            ) === "01"
+        ).length;
+
+    }
+
+
+    if ($("b2")) {
+
+      $("b2").textContent =
+        students.filter(
+          (student) =>
+            normalizeBook(
+              student.assignedBook ||
+              student.book
+            ) === "02"
+        ).length;
+
+    }
+
+
+    if ($("b3")) {
+
+      $("b3").textContent =
+        students.filter(
+          (student) =>
+            normalizeBook(
+              student.assignedBook ||
+              student.book
+            ) === "03"
+        ).length;
+
+    }
+
+
+    if ($("registered")) {
+
+      $("registered").textContent =
+        students.filter(
+          (student) =>
+            student.registered === true
+        ).length;
+
+    }
+
+
+    if ($("pending")) {
+
+      $("pending").textContent =
+        students.filter(
+          (student) =>
+            student.registered !== true
+        ).length;
+
+    }
+
+
+    if ($("active")) {
+
+      $("active").textContent =
+        students.filter(
+          (student) =>
+            student.active !== false
+        ).length;
+
+    }
+
+
+    if ($("inactive")) {
+
+      $("inactive").textContent =
+        students.filter(
+          (student) =>
+            student.active === false
+        ).length;
+
+    }
+
+
+    updateBookManagement();
+
+
+    /* -----------------------------------------------
+       ROW CLICK
+    ------------------------------------------------ */
+
+    document
+      .querySelectorAll(
+        ".student-row"
+      )
+      .forEach(
+        (row) => {
+
+          row.onclick =
+            (event) => {
+
+              if (
+                event.target.closest(
+                  ".delete-student"
+                )
+              ) {
+                return;
+              }
+
+
+              showDetails(
+                row.dataset.id
+              );
+
+            };
+
+        }
+      );
+
+
+    /* -----------------------------------------------
+       DELETE BUTTONS
+    ------------------------------------------------ */
+
+    document
+      .querySelectorAll(
+        ".delete-student"
+      )
+      .forEach(
+        (button) => {
+
+          button.onclick =
+            async (event) => {
+
+              event.stopPropagation();
+
+
+              const id =
+                button.dataset.id;
+
+
+              const username =
+                button.dataset.username;
+
+
+              const confirmed =
+                confirm(
+                  `Delete student account "${username}"?\n\n` +
+                  `This will permanently delete the Firestore student record.\n\n` +
+                  `This action cannot be undone.`
+                );
+
+
+              if (!confirmed) {
+                return;
+              }
+
+
+              button.disabled =
+                true;
+
+              button.textContent =
+                "Deleting…";
+
+
+              try {
+
+                await deleteDoc(
+                  doc(
+                    db,
+                    "students",
+                    id
+                  )
+                );
+
+
+                students =
+                  students.filter(
+                    (student) =>
+                      student.id !== id
+                  );
+
+
+                render();
+
+
+                showToast(
+                  `Student ${username} deleted successfully.`
+                );
+
+
+              } catch (error) {
+
+                console.error(
+                  "DELETE ERROR:",
+                  error
+                );
+
+
+                button.disabled =
+                  false;
+
+                button.textContent =
+                  "Delete";
+
+
+                showToast(
+                  "Could not delete this student.",
+                  true
+                );
+
+              }
+
+            };
+
+        }
+      );
+
+  }
+
+
+  /* ===================================================
+     STUDENT DETAILS
+  =================================================== */
+
+  function showDetails(id) {
+
+    const student =
+      students.find(
+        (item) =>
+          item.id === id
+      );
+
+
+    if (!student) {
+      return;
+    }
+
+
+    const studentBook =
+      normalizeBook(
+        student.assignedBook ||
+        student.book
+      );
+
+
+    const detailContent =
+      $("detailContent");
+
+
+    if (!detailContent) {
+      return;
+    }
+
+
+    detailContent.innerHTML = `
+
+      <div
+        class="detail-grid"
+        style="
+          display:grid;
+          grid-template-columns:
+            repeat(2,minmax(0,1fr));
+          gap:16px;
+        "
+      >
+
+        <div>
+          <small>USERNAME</small>
+          <strong style="display:block;margin-top:4px;">
+            ${esc(
+              student.username ||
+              student.id
+            )}
+          </strong>
+        </div>
+
+        <div>
+          <small>PASSWORD</small>
+          <strong style="display:block;margin-top:4px;">
+            ${esc(
+              student.password ||
+              "—"
+            )}
+          </strong>
+        </div>
+
+        <div>
+          <small>ASSIGNED BOOK</small>
+          <strong style="display:block;margin-top:4px;">
+            ${esc(
+              bookName(
+                studentBook
+              )
+            )}
+          </strong>
+        </div>
+
+        <div>
+          <small>FULL NAME</small>
+          <strong style="display:block;margin-top:4px;">
+            ${esc(
+              student.fullName ||
+              "Not registered"
+            )}
+          </strong>
+        </div>
+
+        <div>
+          <small>DISTRICT</small>
+          <strong style="display:block;margin-top:4px;">
+            ${esc(
+              student.district ||
+              "Not provided"
+            )}
+          </strong>
+        </div>
+
+        <div>
+          <small>CONTACT NUMBER</small>
+          <strong style="display:block;margin-top:4px;">
+            ${esc(
+              student.contact ||
+              "Not provided"
+            )}
+          </strong>
+        </div>
+
+        <div>
+          <small>REGISTRATION</small>
+          <strong style="display:block;margin-top:4px;">
+            ${
+              student.registered
+                ? "Registered"
+                : "First Login / Pending"
+            }
+          </strong>
+        </div>
+
+        <div>
+          <small>ACCOUNT</small>
+          <strong style="display:block;margin-top:4px;">
+            ${
+              student.active === false
+                ? "Inactive"
+                : "Active"
+            }
+          </strong>
+        </div>
+
+      </div>
+    `;
+
+
+    detailModal?.classList.add(
+      "show"
+    );
+
+  }
+
+
+  /* ===================================================
+     CREATE / MIGRATE STUDENT
+  =================================================== */
+
+  async function createStudent(
+    username,
+    password,
+    book
+  ) {
+
+    username =
+      username.trim();
+
+    password =
+      password.trim();
+
+
+    if (
+      !validUsername(username)
+    ) {
+
+      throw new Error(
+        "Username must contain 3–40 letters, numbers, dot, underscore or hyphen."
+      );
+
+    }
+
+
+    if (
+      password.length < 6
+    ) {
+
+      throw new Error(
+        "Password must be at least 6 characters."
+      );
+
+    }
+
+
+    if (
+      !["01", "02", "03"]
+        .includes(book)
+    ) {
+
+      throw new Error(
+        "Invalid book assignment."
+      );
+
+    }
+
+
+    /* -----------------------------------------------
+       USERNAME LOOKUP
+    ------------------------------------------------ */
+
+    const usernameLookup =
+      doc(
+        db,
+        "studentsByUsername",
+        username
+      );
+
+
+    const lookupSnapshot =
+      await getDoc(
+        usernameLookup
+      );
+
+
+    if (
+      lookupSnapshot.exists()
+    ) {
+
+      throw new Error(
+        "That username is already connected to a Firebase account."
+      );
+
+    }
+
+
+    /* -----------------------------------------------
+       OLD STUDENT DOCUMENT
+    ------------------------------------------------ */
+
+    const oldRef =
+      doc(
+        db,
+        "students",
+        username
+      );
+
+
+    const oldSnapshot =
+      await getDoc(
+        oldRef
+      );
+
+
+    let oldData = null;
+
+
+    if (
+      oldSnapshot.exists()
+    ) {
+
+      oldData =
+        oldSnapshot.data();
+
+    }
+
+
+    /* -----------------------------------------------
+       CREATE FIREBASE AUTH ACCOUNT
+    ------------------------------------------------ */
+
+    let credential;
+
+
+    try {
+
+      credential =
+        await createUserWithEmailAndPassword(
+          studentAuth,
+          studentEmail(username),
+          password
+        );
+
+
+    } catch (error) {
+
+      console.error(
+        "STUDENT AUTH CREATE ERROR:",
+        error
+      );
+
+
+      if (
+        error?.code ===
+        "auth/email-already-in-use"
+      ) {
+
+        throw new Error(
+          "A Firebase Auth account already exists for this username."
+        );
+
+      }
+
+
+      if (
+        error?.code ===
+        "auth/weak-password"
+      ) {
+
+        throw new Error(
+          "Password is too weak. Please use at least 6 characters."
+        );
+
+      }
+
+
+      throw error;
+
+    }
+
+
+    const uid =
+      credential.user.uid;
+
+
+    /* -----------------------------------------------
+       STUDENT DATA
+    ------------------------------------------------ */
+
+    const studentData = {
+
+      username:
+        oldData?.username ||
+        username,
+
+      password,
+
+      assignedBook:
+        oldData?.assignedBook ||
+        `Book ${book}`,
+
+      fullName:
+        oldData?.fullName ||
+        "",
+
+      district:
+        oldData?.district ||
+        "",
+
+      contact:
+        oldData?.contact ||
+        "",
+
+      registered:
+        oldData?.registered === true,
+
+      active:
+        oldData?.active !== false,
+
+      authUid:
+        uid,
+
+      createdAt:
+        oldData?.createdAt ||
+        new Date().toISOString()
+
+    };
+
+
+    /* -----------------------------------------------
+       SAVE FIRESTORE PROFILE
+    ------------------------------------------------ */
+
+    try {
+
+      await setDoc(
+        doc(
+          db,
+          "students",
+          uid
+        ),
+        studentData
+      );
+
+
+      await setDoc(
+        usernameLookup,
+        {
+          username:
+            studentData.username,
+
+          uid
+        }
+      );
+
+
+      if (
+        oldSnapshot.exists()
+      ) {
+
+        await deleteDoc(
+          oldRef
+        );
+
+      }
+
+
+    } catch (error) {
+
+      console.error(
+        "STUDENT PROFILE ERROR:",
+        error
+      );
+
+
+      throw new Error(
+        "Firebase account was created, but the student profile could not be saved."
+      );
+
+    }
+
+
+    /* -----------------------------------------------
+       SIGN OUT SECONDARY AUTH
+    ------------------------------------------------ */
+
+    try {
+
+      await signOutStudent(
+        studentAuth
+      );
+
+    } catch (_) {}
+
+
+    return {
+
+      username:
+        studentData.username,
+
+      password,
+
+      book,
+
+      uid,
+
+      migrated:
+        Boolean(oldData)
+
+    };
+
+  }
+
+
+  /* ===================================================
+     NEW STUDENT BUTTON
+  =================================================== */
+
+  if ($("newBtn")) {
+
+    $("newBtn").onclick =
+      () => {
+
+        modal?.classList.add(
+          "show"
+        );
+
+
+        if ($("newUser")) {
+          $("newUser").value = "";
+        }
+
+
+        if ($("newPass")) {
+          $("newPass").value =
+            randomPassword();
+        }
+
+
+        $("newUser")?.focus();
+
+      };
+
+  }
+
+
+  /* ===================================================
+     CLOSE MODALS
+  =================================================== */
+
+  function closeModal() {
+
+    modal?.classList.remove(
+      "show"
+    );
+
+  }
+
+
+  $("close")?.addEventListener(
+    "click",
+    closeModal
+  );
+
+
+  $("cancel")?.addEventListener(
+    "click",
+    closeModal
+  );
+
+
+  $("detailClose")?.addEventListener(
+    "click",
+    () => {
+
+      detailModal?.classList.remove(
+        "show"
+      );
+
+    }
+  );
+
+
+  /* ===================================================
+     GENERATE PASSWORD
+  =================================================== */
+
+  $("gen")?.addEventListener(
+    "click",
+    () => {
+
+      if ($("newPass")) {
+
+        $("newPass").value =
+          randomPassword();
+
+      }
+
+    }
+  );
+
+
+  /* ===================================================
+     CREATE BUTTON
+  =================================================== */
+
+  $("create")?.addEventListener(
+    "click",
+    async () => {
+
+      const button =
+        $("create");
+
+
+      const username =
+        $("newUser")
+          ?.value
+          .trim() || "";
+
+
+      const password =
+        $("newPass")
+          ?.value
+          .trim() || "";
+
+
+      const book =
+        $("newBook")
+          ?.value || "01";
+
 
       if (
         !username ||
         !password
       ) {
 
-        message.textContent =
-          "Please enter your username and password.";
-
-        message.className =
-          "error-msg";
-
-        return;
-
-      }
-
-
-      /*
-       * Visible admin username.
-       *
-       * Firebase uses the internal email
-       * behind the scenes.
-       */
-
-      if (
-        username !==
-        ADMIN_USERNAME
-      ) {
-
-        message.textContent =
-          "Invalid admin username or password.";
-
-        message.className =
-          "error-msg";
+        showToast(
+          "Username and password are required.",
+          true
+        );
 
         return;
 
       }
 
-
-      /*
-       * Loading state
-       */
 
       button.disabled =
         true;
 
-      button.innerHTML =
-        "Authenticating…";
-
-
-      message.textContent =
-        "Checking administrator access…";
-
-      message.className =
-        "";
+      button.textContent =
+        "Creating…";
 
 
       try {
 
-        /*
-         * Firebase authentication
-         */
-
-        const credential =
-          await signInWithEmailAndPassword(
-            auth,
-            ADMIN_INTERNAL_EMAIL,
-            password
+        const result =
+          await createStudent(
+            username,
+            password,
+            book
           );
 
 
-        /*
-         * Double-check UID.
-         *
-         * Even if the internal email exists,
-         * only the configured admin UID may
-         * access the dashboard.
-         */
+        closeModal();
+
+
+        await loadStudents();
+
 
         if (
-          credential.user.uid !==
-          ADMIN_UID
+          result.migrated
         ) {
 
-          await signOut(auth);
+          showToast(
+            `Student ${username} migrated successfully.`
+          );
 
-          throw new Error(
-            "Unauthorized administrator."
+
+          alert(
+            `STUDENT ACCOUNT MIGRATED\n\n` +
+            `Username: ${username}\n` +
+            `Password: ${password}\n` +
+            `Assigned: ${bookName(book)}\n\n` +
+            `The username has not changed.`
+          );
+
+
+        } else {
+
+          showToast(
+            `Student ${username} created successfully.`
+          );
+
+
+          alert(
+            `STUDENT ACCOUNT CREATED\n\n` +
+            `Username: ${username}\n` +
+            `Password: ${password}\n` +
+            `Assigned: ${bookName(book)}\n\n` +
+            `The student can now use the normal login page.`
           );
 
         }
 
 
-        /*
-         * Success
-         */
+      } catch (error) {
 
-        message.textContent =
-          "Access granted. Opening dashboard…";
-
-        message.className =
-          "success-msg";
+        console.error(
+          "CREATE/MIGRATE ERROR:",
+          error
+        );
 
 
-        setTimeout(
-          () => {
+        showToast(
+          error.message ||
+          "Account creation failed.",
+          true
+        );
 
-            window.location.replace(
-              "admin.html"
+
+      } finally {
+
+        button.disabled =
+          false;
+
+        button.textContent =
+          "Create Student";
+
+      }
+
+    }
+  );
+
+
+  /* ===================================================
+     EXCEL DOWNLOAD
+  =================================================== */
+
+  function downloadExcel(
+    list,
+    filename
+  ) {
+
+    if (
+      typeof XLSX ===
+      "undefined"
+    ) {
+
+      showToast(
+        "Excel library is not loaded.",
+        true
+      );
+
+      return;
+
+    }
+
+
+    const data =
+      list.map(
+        (student) => ({
+
+          "Username":
+            student.username || "",
+
+          "Password":
+            student.password || "",
+
+          "Assigned Book":
+            student.assignedBook || "",
+
+          "Full Name":
+            student.fullName || "",
+
+          "District":
+            student.district || "",
+
+          "Contact Number":
+            student.contact || ""
+
+        })
+      );
+
+
+    const worksheet =
+      XLSX.utils.json_to_sheet(
+        data
+      );
+
+
+    worksheet["!cols"] = [
+      { wch: 20 },
+      { wch: 20 },
+      { wch: 28 },
+      { wch: 25 },
+      { wch: 18 },
+      { wch: 18 }
+    ];
+
+
+    const workbook =
+      XLSX.utils.book_new();
+
+
+    XLSX.utils.book_append_sheet(
+      workbook,
+      worksheet,
+      "Student Accounts"
+    );
+
+
+    XLSX.writeFile(
+      workbook,
+      filename
+    );
+
+  }
+
+
+  $("downloadBtn")?.addEventListener(
+    "click",
+    () => {
+
+      downloadExcel(
+        students,
+        "bookfair-students-export.xlsx"
+      );
+
+    }
+  );
+
+
+  /* ===================================================
+     EXCEL TEMPLATE
+  =================================================== */
+
+  function downloadTemplate() {
+
+    if (
+      typeof XLSX ===
+      "undefined"
+    ) {
+
+      showToast(
+        "Excel library is not loaded.",
+        true
+      );
+
+      return;
+
+    }
+
+
+    const exampleRows = [
+
+      {
+        "Username":
+          "BF26-000001",
+
+        "Password":
+          "BookFair@123",
+
+        "Assigned Book":
+          "Book 01",
+
+        "Full Name":
+          "",
+
+        "District":
+          "",
+
+        "Contact Number":
+          ""
+      },
+
+      {
+        "Username":
+          "BF26-10001",
+
+        "Password":
+          "BookFair@456",
+
+        "Assigned Book":
+          "Book 02",
+
+        "Full Name":
+          "",
+
+        "District":
+          "",
+
+        "Contact Number":
+          ""
+      },
+
+      {
+        "Username":
+          "BF26-11001",
+
+        "Password":
+          "BookFair@789",
+
+        "Assigned Book":
+          "Book 03",
+
+        "Full Name":
+          "",
+
+        "District":
+          "",
+
+        "Contact Number":
+          ""
+      }
+
+    ];
+
+
+    const worksheet =
+      XLSX.utils.json_to_sheet(
+        exampleRows
+      );
+
+
+    worksheet["!cols"] = [
+      { wch: 20 },
+      { wch: 20 },
+      { wch: 25 },
+      { wch: 25 },
+      { wch: 18 },
+      { wch: 18 }
+    ];
+
+
+    const workbook =
+      XLSX.utils.book_new();
+
+
+    XLSX.utils.book_append_sheet(
+      workbook,
+      worksheet,
+      "Student Accounts"
+    );
+
+
+    const instructions =
+      XLSX.utils.aoa_to_sheet([
+
+        [
+          "BookFair Digital — Student Import"
+        ],
+
+        [],
+
+        [
+          "Username",
+          "Required. Must be unique."
+        ],
+
+        [
+          "Password",
+          "Required. Minimum 6 characters."
+        ],
+
+        [
+          "Assigned Book",
+          "Book 01, Book 02 or Book 03."
+        ],
+
+        [
+          "Full Name",
+          "Optional."
+        ],
+
+        [
+          "District",
+          "Optional."
+        ],
+
+        [
+          "Contact Number",
+          "Optional."
+        ],
+
+        [],
+
+        [
+          "Delete the example rows before importing real students."
+        ],
+
+        [
+          "Keep this Excel file secure because it contains passwords."
+        ]
+
+      ]);
+
+
+    instructions["!cols"] = [
+      { wch: 25 },
+      { wch: 80 }
+    ];
+
+
+    XLSX.utils.book_append_sheet(
+      workbook,
+      instructions,
+      "Instructions"
+    );
+
+
+    XLSX.writeFile(
+      workbook,
+      "BookFair-Student-Template.xlsx"
+    );
+
+  }
+
+
+  $("templateBtn")?.addEventListener(
+    "click",
+    downloadTemplate
+  );
+
+
+  /* ===================================================
+     IMPORT BUTTON
+  =================================================== */
+
+  $("importBtn")?.addEventListener(
+    "click",
+    () => {
+
+      $("fileInput")?.click();
+
+    }
+  );
+
+
+  /* ===================================================
+     EXCEL IMPORT
+  =================================================== */
+
+  $("fileInput")?.addEventListener(
+    "change",
+    async () => {
+
+      const file =
+        $("fileInput")
+          ?.files?.[0];
+
+
+      if (!file) {
+        return;
+      }
+
+
+      if (
+        typeof XLSX ===
+        "undefined"
+      ) {
+
+        showToast(
+          "Excel library is not loaded.",
+          true
+        );
+
+        return;
+
+      }
+
+
+      const button =
+        $("importBtn");
+
+
+      if (button) {
+
+        button.disabled =
+          true;
+
+        button.textContent =
+          "Importing…";
+
+      }
+
+
+      try {
+
+        const workbook =
+          XLSX.read(
+            await file.arrayBuffer(),
+            {
+              type: "array"
+            }
+          );
+
+
+        const sheet =
+          workbook.Sheets[
+            workbook.SheetNames[0]
+          ];
+
+
+        const excelRows =
+          XLSX.utils.sheet_to_json(
+            sheet,
+            {
+              defval: ""
+            }
+          );
+
+
+        if (
+          !excelRows.length
+        ) {
+
+          throw new Error(
+            "The Excel sheet is empty."
+          );
+
+        }
+
+
+        const columns = {};
+
+
+        Object.keys(
+          excelRows[0]
+        ).forEach(
+          (key) => {
+
+            columns[
+              key
+                .trim()
+                .toLowerCase()
+            ] = key;
+
+          }
+        );
+
+
+        const usernameColumn =
+          columns["username"];
+
+        const passwordColumn =
+          columns["password"];
+
+        const bookColumn =
+          columns["assigned book"];
+
+        const fullNameColumn =
+          columns["full name"];
+
+        const districtColumn =
+          columns["district"];
+
+        const contactColumn =
+          columns["contact number"];
+
+
+        if (
+          !usernameColumn ||
+          !passwordColumn ||
+          !bookColumn
+        ) {
+
+          throw new Error(
+            "Excel must contain Username, Password and Assigned Book columns."
+          );
+
+        }
+
+
+        let success = 0;
+        let failed = 0;
+        let skipped = 0;
+
+
+        const failedRows = [];
+
+
+        const total =
+          excelRows.length;
+
+
+        if ($("importStatus")) {
+
+          $("importStatus")
+            .style.display =
+            "block";
+
+        }
+
+
+        if ($("importTitle")) {
+
+          $("importTitle").textContent =
+            "Importing students…";
+
+        }
+
+
+        if ($("importCount")) {
+
+          $("importCount").textContent =
+            `0 / ${total}`;
+
+        }
+
+
+        if ($("importProgress")) {
+
+          $("importProgress").style.width =
+            "0%";
+
+        }
+
+
+        for (
+          let index = 0;
+          index < total;
+          index++
+        ) {
+
+          const row =
+            excelRows[index];
+
+
+          const username =
+            String(
+              row[usernameColumn] ??
+              ""
+            ).trim();
+
+
+          const password =
+            String(
+              row[passwordColumn] ??
+              ""
+            ).trim();
+
+
+          const book =
+            normalizeBook(
+              row[bookColumn]
             );
 
-          },
-          250
+
+          const fullName =
+            String(
+              row[fullNameColumn] ??
+              ""
+            ).trim();
+
+
+          const district =
+            String(
+              row[districtColumn] ??
+              ""
+            ).trim();
+
+
+          const contact =
+            String(
+              row[contactColumn] ??
+              ""
+            ).trim();
+
+
+          if (
+            !username &&
+            !password &&
+            !book
+          ) {
+
+            skipped++;
+
+          } else {
+
+            try {
+
+              if (
+                !validUsername(
+                  username
+                )
+              ) {
+
+                throw new Error(
+                  "Invalid username."
+                );
+
+              }
+
+
+              if (
+                password.length < 6
+              ) {
+
+                throw new Error(
+                  "Password must be at least 6 characters."
+                );
+
+              }
+
+
+              if (!book) {
+
+                throw new Error(
+                  "Invalid assigned book."
+                );
+
+              }
+
+
+              /* ---------------------------------------
+                 USERNAME LOOKUP
+              --------------------------------------- */
+
+              const usernameRef =
+                doc(
+                  db,
+                  "studentsByUsername",
+                  username
+                );
+
+
+              const existingLookup =
+                await getDoc(
+                  usernameRef
+                );
+
+
+              if (
+                existingLookup.exists()
+              ) {
+
+                throw new Error(
+                  "Username is already connected to a Firebase account."
+                );
+
+              }
+
+
+              /* ---------------------------------------
+                 OLD STUDENT DOCUMENT
+              --------------------------------------- */
+
+              const oldRef =
+                doc(
+                  db,
+                  "students",
+                  username
+                );
+
+
+              const oldSnapshot =
+                await getDoc(
+                  oldRef
+                );
+
+
+              const oldData =
+                oldSnapshot.exists()
+                  ? oldSnapshot.data()
+                  : null;
+
+
+              /* ---------------------------------------
+                 FIREBASE AUTH
+              --------------------------------------- */
+
+              const credential =
+                await createUserWithEmailAndPassword(
+                  studentAuth,
+                  studentEmail(username),
+                  password
+                );
+
+
+              const uid =
+                credential.user.uid;
+
+
+              /* ---------------------------------------
+                 FIRESTORE PROFILE
+              --------------------------------------- */
+
+              await setDoc(
+                doc(
+                  db,
+                  "students",
+                  uid
+                ),
+                {
+
+                  username:
+                    oldData?.username ||
+                    username,
+
+                  password,
+
+                  assignedBook:
+                    oldData?.assignedBook ||
+                    `Book ${book}`,
+
+                  fullName:
+                    fullName ||
+                    oldData?.fullName ||
+                    "",
+
+                  district:
+                    district ||
+                    oldData?.district ||
+                    "",
+
+                  contact:
+                    contact ||
+                    oldData?.contact ||
+                    "",
+
+                  registered:
+                    Boolean(
+                      oldData?.registered
+                    ),
+
+                  active:
+                    oldData?.active !== false,
+
+                  authUid:
+                    uid,
+
+                  createdAt:
+                    oldData?.createdAt ||
+                    new Date().toISOString()
+
+                }
+              );
+
+
+              /* ---------------------------------------
+                 USERNAME LOOKUP
+              --------------------------------------- */
+
+              await setDoc(
+                usernameRef,
+                {
+                  username,
+                  uid
+                }
+              );
+
+
+              /* ---------------------------------------
+                 DELETE OLD DOCUMENT
+              --------------------------------------- */
+
+              if (
+                oldSnapshot.exists()
+              ) {
+
+                await deleteDoc(
+                  oldRef
+                );
+
+              }
+
+
+              try {
+
+                await signOutStudent(
+                  studentAuth
+                );
+
+              } catch (_) {}
+
+
+              success++;
+
+
+            } catch (error) {
+
+              console.error(
+                "IMPORT STUDENT ERROR:",
+                error
+              );
+
+
+              try {
+
+                await signOutStudent(
+                  studentAuth
+                );
+
+              } catch (_) {}
+
+
+              failed++;
+
+
+              failedRows.push({
+
+                username:
+                  username ||
+                  `Row ${index + 2}`,
+
+                reason:
+                  error.message ||
+                  "Import failed."
+
+              });
+
+            }
+
+          }
+
+
+          const processed =
+            index + 1;
+
+
+          if ($("importCount")) {
+
+            $("importCount").textContent =
+              `${processed} / ${total}`;
+
+          }
+
+
+          if ($("importProgress")) {
+
+            $("importProgress").style.width =
+              `${Math.round(
+                processed /
+                total *
+                100
+              )}%`;
+
+          }
+
+        }
+
+
+        if ($("importTitle")) {
+
+          $("importTitle").textContent =
+            "Import complete";
+
+        }
+
+
+        await loadStudents();
+
+
+        if ($("importSuccess")) {
+
+          $("importSuccess").textContent =
+            success;
+
+        }
+
+
+        if ($("importFailed")) {
+
+          $("importFailed").textContent =
+            failed;
+
+        }
+
+
+        if ($("importSkipped")) {
+
+          $("importSkipped").textContent =
+            skipped;
+
+        }
+
+
+        const failedWrap =
+          $("failedWrap");
+
+
+        const failedList =
+          $("failedList");
+
+
+        if (
+          failedRows.length
+        ) {
+
+          if (failedWrap) {
+
+            failedWrap.style.display =
+              "block";
+
+          }
+
+
+          if (failedList) {
+
+            failedList.innerHTML =
+              failedRows
+                .map(
+                  (item) => `
+                    <div
+                      class="failed-item"
+                      style="padding:6px 0;"
+                    >
+                      <strong>
+                        ${esc(
+                          item.username
+                        )}
+                      </strong>
+
+                      <span>
+                        — ${esc(
+                          item.reason
+                        )}
+                      </span>
+                    </div>
+                  `
+                )
+                .join("");
+
+          }
+
+        } else {
+
+          if (failedWrap) {
+
+            failedWrap.style.display =
+              "none";
+
+          }
+
+
+          if (failedList) {
+
+            failedList.innerHTML =
+              "";
+
+          }
+
+        }
+
+
+        $("importResultModal")
+          ?.classList
+          .add("show");
+
+
+        showToast(
+          `${success} student account(s) imported successfully.`
         );
 
 
       } catch (error) {
 
         console.error(
-          "ADMIN LOGIN ERROR:",
+          "IMPORT ERROR:",
           error
         );
 
 
-        message.textContent =
-          "Invalid admin username or password.";
+        showToast(
+          error.message ||
+          "Excel import failed.",
+          true
+        );
 
-        message.className =
-          "error-msg";
+
+      } finally {
+
+        if ($("fileInput")) {
+
+          $("fileInput").value =
+            "";
+
+        }
 
 
-        button.disabled =
-          false;
+        if (button) {
 
-        button.innerHTML =
-          "Sign in to Dashboard <span>→</span>";
+          button.disabled =
+            false;
+
+          button.textContent =
+            "Import";
+
+        }
 
       }
 
     }
   );
+
+
+  /* ===================================================
+     SEARCH / FILTERS
+  =================================================== */
+
+  $("search")?.addEventListener(
+    "input",
+    render
+  );
+
+
+  $("bookFilter")?.addEventListener(
+    "change",
+    render
+  );
+
+
+  $("registrationFilter")?.addEventListener(
+    "change",
+    render
+  );
+
+
+  /* ===================================================
+     IMPORT RESULT CLOSE
+  =================================================== */
+
+  $("importResultClose")?.addEventListener(
+    "click",
+    () => {
+
+      $("importResultModal")
+        ?.classList
+        .remove("show");
+
+    }
+  );
+
+
+  $("importResultCloseBtn")?.addEventListener(
+    "click",
+    () => {
+
+      $("importResultModal")
+        ?.classList
+        .remove("show");
+
+    }
+  );
+
+
+  /* ===================================================
+     DELETE BOOK STUDENTS
+  =================================================== */
+
+  async function deleteBookStudents(
+    bookNumber
+  ) {
+
+    const bookTitle =
+      bookName(bookNumber);
+
+
+    const matchingStudents =
+      students.filter(
+        (student) =>
+          normalizeBook(
+            student.assignedBook ||
+            student.book
+          ) === bookNumber
+      );
+
+
+    const count =
+      matchingStudents.length;
+
+
+    if (count === 0) {
+
+      alert(
+        `${bookTitle}\n\nThere are no student accounts assigned to this book.`
+      );
+
+      return;
+
+    }
+
+
+    const confirmed =
+      confirm(
+        `DELETE ${bookTitle}?\n\n` +
+        `${count} student account(s) are currently assigned to this book.\n\n` +
+        `All ${count} student Firestore records will be permanently deleted.\n\n` +
+        `This action cannot be undone.\n\n` +
+        `Do you want to continue?`
+      );
+
+
+    if (!confirmed) {
+      return;
+    }
+
+
+    const button =
+      $(`deleteBook${bookNumber}`);
+
+
+    if (button) {
+
+      button.disabled =
+        true;
+
+      button.textContent =
+        "Deleting…";
+
+    }
+
+
+    try {
+
+      let deleted = 0;
+
+
+      for (
+        const student
+        of matchingStudents
+      ) {
+
+        await deleteDoc(
+          doc(
+            db,
+            "students",
+            student.id
+          )
+        );
+
+
+        deleted++;
+
+      }
+
+
+      const deletedIds =
+        new Set(
+          matchingStudents.map(
+            (student) =>
+              student.id
+          )
+        );
+
+
+      students =
+        students.filter(
+          (student) =>
+            !deletedIds.has(
+              student.id
+            )
+        );
+
+
+      render();
+
+
+      showToast(
+        `${bookTitle}: ${deleted} student account(s) deleted successfully.`
+      );
+
+
+      alert(
+        `${bookTitle}\n\n${deleted} student account(s) deleted successfully.`
+      );
+
+
+    } catch (error) {
+
+      console.error(
+        "BOOK DELETE ERROR:",
+        error
+      );
+
+
+      showToast(
+        `Could not completely delete ${bookTitle}.`,
+        true
+      );
+
+
+      await loadStudents();
+
+
+    } finally {
+
+      if (button) {
+
+        button.disabled =
+          false;
+
+        button.textContent =
+          `Delete ${bookNumber} Students`;
+
+      }
+
+    }
+
+  }
+
+
+  /* ===================================================
+     BOOK DELETE BUTTONS
+  =================================================== */
+
+  $("deleteBook01")?.addEventListener(
+    "click",
+    () => {
+      deleteBookStudents("01");
+    }
+  );
+
+
+  $("deleteBook02")?.addEventListener(
+    "click",
+    () => {
+      deleteBookStudents("02");
+    }
+  );
+
+
+  $("deleteBook03")?.addEventListener(
+    "click",
+    () => {
+      deleteBookStudents("03");
+    }
+  );
+
+
+  /* ===================================================
+     INITIAL LOAD
+  =================================================== */
+
+  await loadStudents();
 
 }
