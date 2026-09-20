@@ -1,155 +1,110 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="en">
 
 <head>
 
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+ 
+
+  <title>BookFair Digital | Quality Educational Books</title>
+
+ 
 
   <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1"
-  >
 
-  <title>BookFair Digital</title>
-
-  <meta
     name="description"
-    content="BookFair Digital — Digital access for selected educational books."
+
+    content="BookFair Digital - Educational books for students with online ordering, Cash on Delivery and Free Delivery."
+
   >
 
-  <link
-    rel="stylesheet"
-    href="styles.css"
-  >
+ 
 
   <style>
 
-    /* ==================================================
-       RESET
-    ================================================== */
+    * {
 
-    html,
+      margin: 0;
+
+      padding: 0;
+
+      box-sizing: border-box;
+
+    }
+
+ 
+
+    html {
+
+      scroll-behavior: smooth;
+
+    }
+
+ 
+
     body {
-      width: 100% !important;
-      min-width: 100% !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      overflow-x: hidden !important;
+
+      font-family:
+
+        Inter,
+
+        system-ui,
+
+        -apple-system,
+
+        BlinkMacSystemFont,
+
+        "Segoe UI",
+
+        sans-serif;
+
+      background: #f7f9fc;
+
+      color: #172033;
+
+      line-height: 1.6;
+
     }
 
-    body {
-      min-height: 100vh !important;
-      color: #fff !important;
+ 
 
-      background:
-        linear-gradient(
-          135deg,
-          #07142f 0%,
-          #102454 52%,
-          #0a193e 100%
-        ) !important;
+    a {
+
+      text-decoration: none;
+
+      color: inherit;
+
     }
 
-    main {
-      width: 100% !important;
-      max-width: none !important;
-      margin: 0 !important;
-      padding: 0 !important;
+ 
+
+    button,
+
+    input,
+
+    select,
+
+    textarea {
+
+      font: inherit;
+
     }
 
+ 
 
-    /* ==================================================
-       BACKGROUND
-    ================================================== */
+    /* =========================================
 
-    .bf-page-bg {
+       NAVBAR
 
-      position: fixed;
+    ========================================= */
 
-      inset: 0;
+ 
 
-      z-index: -20;
-
-      pointer-events: none;
-
-      background:
-
-        radial-gradient(
-          circle at 76% 22%,
-          rgba(249,182,39,.10),
-          transparent 28%
-        ),
-
-        radial-gradient(
-          circle at 8% 70%,
-          rgba(46,87,175,.20),
-          transparent 35%
-        ),
-
-        linear-gradient(
-          135deg,
-          #07142f,
-          #102454 52%,
-          #0a193e
-        );
-    }
-
-
-    .bf-page-bg::before {
-
-      content: "";
-
-      position: absolute;
-
-      width: 700px;
-      height: 700px;
-
-      right: -300px;
-      top: 40px;
-
-      border-radius: 50%;
-
-      border:
-        1px solid
-        rgba(255,255,255,.035);
-
-      box-shadow:
-
-        0 0 0 90px
-        rgba(255,255,255,.014),
-
-        0 0 0 180px
-        rgba(255,255,255,.008);
-    }
-
-
-    .bf-page-bg::after {
-
-      content: "";
-
-      position: absolute;
-
-      width: 500px;
-      height: 500px;
-
-      left: -260px;
-      bottom: -180px;
-
-      border-radius: 50%;
-
-      background:
-        rgba(36,76,160,.18);
-
-      filter:
-        blur(100px);
-    }
-
-
-    /* ==================================================
-       NAVIGATION
-    ================================================== */
-
-    .bf-nav {
+    .navbar {
 
       position: sticky;
 
@@ -157,41 +112,41 @@
 
       z-index: 1000;
 
-      width: 100% !important;
+      background: rgba(255, 255, 255, 0.94);
 
-      border-bottom:
-        1px solid
-        rgba(255,255,255,.08);
+      backdrop-filter: blur(16px);
 
-      background:
-        rgba(7,20,47,.90);
+      border-bottom: 1px solid #e8edf4;
 
-      backdrop-filter:
-        blur(18px);
     }
 
+ 
 
-    .bf-nav-inner {
+    .nav-container {
 
-      width:
-        min(
-          1180px,
-          calc(100% - 40px)
-        );
+      max-width: 1200px;
 
-      min-height: 72px;
+      min-height: 74px;
 
       margin: auto;
+
+      padding: 0 22px;
+
+ 
 
       display: flex;
 
       align-items: center;
 
       justify-content: space-between;
+
+      gap: 25px;
+
     }
 
+ 
 
-    .bf-brand {
+    .brand {
 
       display: flex;
 
@@ -199,170 +154,203 @@
 
       gap: 11px;
 
-      color: #fff !important;
+ 
 
-      text-decoration: none !important;
+      font-size: 21px;
+
+      font-weight: 800;
+
+      letter-spacing: -0.5px;
+
     }
 
+ 
 
-    .bf-brand-mark {
+    .brand-icon {
 
-      width: 40px;
-      height: 40px;
+      width: 42px;
+
+      height: 42px;
+
+      border-radius: 12px;
+
+ 
 
       display: grid;
 
       place-items: center;
 
-      border-radius: 11px;
+ 
 
-      color:
-        #102454;
-
-      background:
-        linear-gradient(
-          145deg,
-          #ffd86c,
-          #d99b1c
-        );
-
-      font-size: 17px;
-
-      font-weight: 950;
-
-      box-shadow:
-        0 8px 25px
-        rgba(249,182,39,.18);
-    }
-
-
-    .bf-brand-name {
+      background: #111827;
 
       color: #fff;
 
-      font-size: 14px;
+ 
 
-      font-weight: 850;
+      font-size: 21px;
 
-      letter-spacing:
-        -.025em;
+ 
+
+      box-shadow:
+
+        0 8px 20px rgba(17, 24, 39, 0.15);
+
     }
 
+ 
 
-    .bf-nav-links {
+    .nav-links {
 
       display: flex;
 
       align-items: center;
 
       gap: 8px;
+
     }
 
+ 
 
-    .bf-nav-links a {
+    .nav-links a {
 
-      color:
-        rgba(255,255,255,.70) !important;
+      padding: 10px 14px;
 
-      text-decoration: none !important;
+ 
 
-      padding:
-        9px 13px;
+      border-radius: 10px;
 
-      border-radius: 9px;
+ 
 
-      font-size: 11px;
+      color: #566176;
 
-      font-weight: 750;
+ 
 
-      transition:
-        .2s ease;
+      font-size: 14px;
+
+      font-weight: 650;
+
+ 
+
+      transition: 0.2s ease;
+
     }
 
+ 
 
-    .bf-nav-links a:hover {
+    .nav-links a:hover {
 
-      color:
-        #fff !important;
+      background: #f1f4f8;
 
-      background:
-        rgba(255,255,255,.06);
+      color: #111827;
+
     }
 
+ 
 
-    .bf-nav-login {
+    .nav-buy {
 
-      color:
-        #102454 !important;
+      background: #111827 !important;
 
-      background:
-        linear-gradient(
-          135deg,
-          #ffd45f,
-          #e2a722
-        );
+      color: #fff !important;
 
-      font-weight:
-        900 !important;
     }
 
+ 
 
-    /* ==================================================
+    .nav-buy:hover {
+
+      background: #253047 !important;
+
+    }
+
+ 
+
+ 
+
+    /* =========================================
+
        HERO
-    ================================================== */
 
-    .bf-hero {
+    ========================================= */
+
+ 
+
+    .hero {
 
       position: relative;
 
-      width:
-        min(
-          1180px,
-          calc(100% - 40px)
-        ) !important;
+      overflow: hidden;
 
-      max-width:
-        1180px !important;
+ 
 
-      min-height:
-        calc(100vh - 72px);
+      background:
 
-      margin:
-        0 auto !important;
+        radial-gradient(
 
-      padding:
-        45px 0 65px !important;
+          circle at 10% 20%,
 
-      display: grid !important;
+          rgba(59, 130, 246, 0.13),
 
-      grid-template-columns:
-        minmax(0,1fr)
-        minmax(400px,.86fr);
+          transparent 28%
+
+        ),
+
+        radial-gradient(
+
+          circle at 90% 30%,
+
+          rgba(16, 185, 129, 0.12),
+
+          transparent 28%
+
+        ),
+
+        linear-gradient(
+
+          135deg,
+
+          #ffffff 0%,
+
+          #f4f7fb 100%
+
+        );
+
+    }
+
+ 
+
+    .hero-container {
+
+      max-width: 1200px;
+
+      min-height: 620px;
+
+ 
+
+      margin: auto;
+
+      padding: 80px 22px 70px;
+
+ 
+
+      display: grid;
+
+      grid-template-columns: 1.05fr 0.95fr;
+
+ 
 
       align-items: center;
 
-      gap: 50px;
+ 
 
-      background:
-        transparent !important;
+      gap: 55px;
+
     }
 
+ 
 
-    /* ==================================================
-       HERO TEXT
-    ================================================== */
-
-    .bf-hero-copy {
-
-      position: relative;
-
-      z-index: 5;
-
-      padding-left: 4px;
-    }
-
-
-    .bf-eyebrow {
+    .hero-badge {
 
       display: inline-flex;
 
@@ -370,178 +358,131 @@
 
       gap: 8px;
 
-      padding:
-        8px 12px;
+ 
 
-      border:
-        1px solid
-        rgba(249,182,39,.28);
+      padding: 8px 13px;
+
+ 
+
+      border: 1px solid #dce4ef;
+
+      background: #fff;
+
+ 
 
       border-radius: 999px;
 
-      color:
-        #f9b627;
+ 
 
-      background:
-        rgba(249,182,39,.055);
+      font-size: 12px;
 
-      font-size: 8px;
+      font-weight: 750;
 
-      font-weight: 900;
+ 
 
-      letter-spacing:
-        .16em;
+      color: #475569;
+
+ 
+
+      margin-bottom: 20px;
+
+ 
+
+      box-shadow:
+
+        0 8px 25px rgba(15, 23, 42, 0.05);
+
     }
 
+ 
 
-    .bf-eyebrow::before {
+    .hero-badge span {
 
-      content: "";
+      width: 7px;
 
-      width: 6px;
-      height: 6px;
+      height: 7px;
+
+ 
 
       border-radius: 50%;
 
-      background:
-        #f9b627;
+ 
 
-      box-shadow:
-        0 0 12px
-        rgba(249,182,39,.75);
+      background: #16a34a;
+
     }
 
+ 
 
-    /* ==================================================
-       HERO HEADING
-       DIGITAL ACCESS = GOLD
-       NO HIGHLIGHT BOX
-    ================================================== */
+    .hero h1 {
 
-    .bf-hero h1 {
+      font-size: clamp(42px, 6vw, 72px);
 
-      max-width: 680px;
+ 
 
-      margin:
-        22px 0 18px !important;
+      line-height: 1.03;
 
-      color:
-        #fff !important;
+ 
 
-      font-size:
-        clamp(
-          46px,
-          5.4vw,
-          72px
-        ) !important;
+      letter-spacing: -3px;
 
-      line-height:
-        1.02 !important;
+ 
 
-      letter-spacing:
-        -.055em !important;
+      max-width: 700px;
 
-      font-weight:
-        850 !important;
+ 
+
+      margin-bottom: 22px;
+
+ 
+
+      color: #101827;
+
     }
 
+ 
 
-    .bf-hero h1 .gold {
+    .hero h1 strong {
 
-      color:
-        #f9b627 !important;
+      color: #2563eb;
 
-      background:
-        none !important;
-
-      background-color:
-        transparent !important;
-
-      background-image:
-        none !important;
-
-      -webkit-background-clip:
-        initial !important;
-
-      background-clip:
-        initial !important;
-
-      -webkit-text-fill-color:
-        #f9b627 !important;
-
-      text-shadow:
-        none !important;
-
-      padding:
-        0 !important;
-
-      margin:
-        0 !important;
-
-      border:
-        0 !important;
-
-      box-shadow:
-        none !important;
     }
 
+ 
 
-    /* ==================================================
-       DESCRIPTION
-    ================================================== */
+    .hero p {
 
-    .bf-description {
+      max-width: 590px;
 
-      max-width: 560px;
+ 
 
-      margin: 0;
+      font-size: 17px;
 
-      color:
-        rgba(255,255,255,.60);
+ 
 
-      font-size: 14px;
+      color: #667085;
 
-      line-height:
-        1.75;
+ 
+
+      margin-bottom: 30px;
+
     }
 
+ 
 
-    .bf-gold-line {
-
-      width: 62px;
-
-      height: 3px;
-
-      margin-top: 23px;
-
-      border-radius: 99px;
-
-      background:
-        linear-gradient(
-          90deg,
-          #ffd45f,
-          #e2a722
-        );
-    }
-
-
-    /* ==================================================
-       BUTTONS
-    ================================================== */
-
-    .bf-actions {
+    .hero-buttons {
 
       display: flex;
 
       flex-wrap: wrap;
 
-      gap: 10px;
+      gap: 12px;
 
-      margin-top: 26px;
     }
 
+ 
 
-    .bf-btn {
+    .btn {
 
       display: inline-flex;
 
@@ -549,77 +490,109 @@
 
       justify-content: center;
 
-      gap: 8px;
+      gap: 9px;
 
-      min-height: 46px;
+ 
 
-      padding:
-        0 18px;
+      min-height: 48px;
 
-      border-radius: 10px;
+ 
 
-      text-decoration: none !important;
+      padding: 0 20px;
 
-      font-size: 10px;
+ 
 
-      font-weight: 900;
+      border-radius: 12px;
 
-      transition:
-        transform .2s ease,
-        box-shadow .2s ease;
+ 
+
+      border: 1px solid transparent;
+
+ 
+
+      font-size: 14px;
+
+      font-weight: 750;
+
+ 
+
+      cursor: pointer;
+
+ 
+
+      transition: 0.2s ease;
+
     }
 
+ 
 
-    .bf-btn:hover {
+    .btn-primary {
 
-      transform:
-        translateY(-2px);
-    }
+      background: #111827;
 
+      color: #fff;
 
-    .bf-btn-primary {
-
-      color:
-        #102454 !important;
-
-      background:
-        linear-gradient(
-          135deg,
-          #ffd45f,
-          #e2a722
-        );
+ 
 
       box-shadow:
-        0 12px 30px
-        rgba(249,182,39,.16);
+
+        0 10px 25px rgba(17, 24, 39, 0.16);
+
     }
 
+ 
 
-    .bf-btn-secondary {
+    .btn-primary:hover {
 
-      color:
-        #fff !important;
+      transform: translateY(-2px);
 
-      border:
-        1px solid
-        rgba(255,255,255,.13);
+      background: #263247;
 
-      background:
-        rgba(255,255,255,.045);
     }
 
+ 
 
-    /* ==================================================
-       BOOK CAROUSEL
-    ================================================== */
+    .btn-secondary {
 
-    .bf-carousel {
+      background: #fff;
+
+      border-color: #dce3ec;
+
+      color: #172033;
+
+    }
+
+ 
+
+    .btn-secondary:hover {
+
+      background: #f8fafc;
+
+      transform: translateY(-2px);
+
+    }
+
+ 
+
+ 
+
+    /* =========================================
+
+       HERO BOOK CAROUSEL
+
+    ========================================= */
+
+ 
+
+    .hero-visual {
 
       position: relative;
 
-      width: 100%;
+ 
 
-      min-height: 570px;
+      min-height: 470px;
+
+ 
 
       display: flex;
 
@@ -627,1667 +600,2322 @@
 
       justify-content: center;
 
-      overflow: visible;
     }
 
+ 
 
-    .bf-carousel-glow {
+    .hero-carousel {
 
-      position: absolute;
+      position: relative;
 
-      width: 450px;
+ 
+
+      width: min(390px, 82vw);
+
       height: 450px;
 
-      border-radius: 50%;
-
-      background:
-        radial-gradient(
-          circle,
-          rgba(249,182,39,.16),
-          rgba(38,76,157,.08) 48%,
-          transparent 70%
-        );
-    }
-
-
-    .bf-carousel-ring {
-
-      position: absolute;
-
-      width: 510px;
-      height: 510px;
-
-      border-radius: 50%;
-
-      border:
-        1px solid
-        rgba(255,255,255,.045);
-
-      box-shadow:
-        0 0 0 70px
-        rgba(255,255,255,.012);
-    }
-
-
-    /* ==================================================
-       SLIDES
-    ================================================== */
-
-    .bf-slide {
-
-      position: absolute;
-
-      width:
-        min(
-          285px,
-          46vw
-        );
-
-      aspect-ratio:
-        1086 / 1536;
-
-      overflow: hidden;
-
-      border-radius: 8px;
-
-      border:
-        1px solid
-        rgba(255,255,255,.20);
-
-      background:
-        #102454;
-
-      box-shadow:
-        0 35px 75px
-        rgba(0,0,0,.48);
-
-      opacity: 0;
-
-      transform:
-        translateX(120px)
-        scale(.90)
-        rotate(5deg);
-
-      transition:
-        opacity .7s ease,
-        transform .85s cubic-bezier(.22,.61,.36,1);
-
-      pointer-events:
-        none;
-    }
-
-
-    .bf-slide img {
-
-      width: 100%;
-      height: 100%;
-
-      display: block;
-
-      object-fit: cover;
-    }
-
-
-    .bf-slide.active {
-
-      opacity: 1;
-
-      transform:
-        translateX(25px)
-        scale(1)
-        rotate(2deg);
-
-      z-index: 5;
-    }
-
-
-    .bf-slide.previous {
-
-      opacity: .16;
-
-      transform:
-        translateX(-145px)
-        scale(.82)
-        rotate(-8deg);
-
-      z-index: 2;
-    }
-
-
-    /* ==================================================
-       SLIDE INFORMATION
-    ================================================== */
-
-    .bf-slide-info {
-
-      position: absolute;
-
-      right: 0;
-
-      bottom: 55px;
-
-      z-index: 20;
-
-      min-width: 160px;
-
-      padding:
-        11px 13px;
-
-      border:
-        1px solid
-        rgba(249,182,39,.22);
-
-      border-radius: 10px;
-
-      background:
-        rgba(9,25,61,.91);
-
-      backdrop-filter:
-        blur(12px);
-
-      box-shadow:
-        0 15px 35px
-        rgba(0,0,0,.25);
-    }
-
-
-    .bf-slide-number {
-
-      color:
-        #f9b627;
-
-      font-size: 8px;
-
-      font-weight: 900;
-
-      letter-spacing:
-        .12em;
-    }
-
-
-    .bf-slide-title {
-
-      margin-top: 4px;
-
-      color:
-        #fff;
-
-      font-size: 10px;
-
-      font-weight: 800;
-    }
-
-
-    /* ==================================================
-       DOTS
-    ================================================== */
-
-    .bf-carousel-dots {
-
-      position: absolute;
-
-      bottom: 22px;
-
-      left: 50%;
-
-      transform:
-        translateX(-50%);
-
-      z-index: 30;
+ 
 
       display: flex;
 
       align-items: center;
 
-      gap: 6px;
+      justify-content: center;
+
     }
 
+ 
 
-    .bf-dot {
+    .hero-slide {
+
+      position: absolute;
+
+ 
+
+      width: 100%;
+
+      height: 100%;
+
+ 
+
+      padding: 14px;
+
+ 
+
+      border-radius: 26px;
+
+ 
+
+      background: #fff;
+
+ 
+
+      box-shadow:
+
+        0 30px 70px rgba(15, 23, 42, 0.16),
+
+        0 8px 25px rgba(15, 23, 42, 0.06);
+
+ 
+
+      opacity: 0;
+
+ 
+
+      transform:
+
+        translateX(45px)
+
+        scale(0.96);
+
+ 
+
+      transition:
+
+        opacity 0.65s ease,
+
+        transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+
+ 
+
+      pointer-events: none;
+
+    }
+
+ 
+
+    .hero-slide.active {
+
+      opacity: 1;
+
+ 
+
+      transform:
+
+        translateX(0)
+
+        scale(1);
+
+ 
+
+      pointer-events: auto;
+
+    }
+
+ 
+
+    .hero-slide img {
+
+      width: 100%;
+
+      height: 100%;
+
+ 
+
+      display: block;
+
+ 
+
+      object-fit: contain;
+
+ 
+
+      border-radius: 18px;
+
+ 
+
+      background: #f8fafc;
+
+    }
+
+ 
+
+    .hero-book-label {
+
+      position: absolute;
+
+ 
+
+      left: 28px;
+
+      bottom: 28px;
+
+ 
+
+      padding: 9px 13px;
+
+ 
+
+      border-radius: 10px;
+
+ 
+
+      background: rgba(17, 24, 39, 0.92);
+
+ 
+
+      color: #fff;
+
+ 
+
+      font-size: 11px;
+
+      font-weight: 800;
+
+ 
+
+      backdrop-filter: blur(10px);
+
+    }
+
+ 
+
+    .floating-info {
+
+      position: absolute;
+
+ 
+
+      padding: 13px 16px;
+
+ 
+
+      border-radius: 14px;
+
+ 
+
+      background: rgba(255, 255, 255, 0.96);
+
+ 
+
+      border: 1px solid #e7ecf3;
+
+ 
+
+      box-shadow:
+
+        0 16px 35px rgba(15, 23, 42, 0.10);
+
+ 
+
+      font-size: 12px;
+
+      font-weight: 750;
+
+ 
+
+      z-index: 10;
+
+    }
+
+ 
+
+    .floating-one {
+
+      top: 55px;
+
+      right: -5px;
+
+    }
+
+ 
+
+    .floating-two {
+
+      bottom: 70px;
+
+      left: -5px;
+
+    }
+
+ 
+
+    .carousel-dots {
+
+      position: absolute;
+
+ 
+
+      bottom: 5px;
+
+      left: 50%;
+
+ 
+
+      transform: translateX(-50%);
+
+ 
+
+      display: flex;
+
+      gap: 7px;
+
+ 
+
+      z-index: 20;
+
+    }
+
+ 
+
+    .carousel-dot {
 
       width: 7px;
+
       height: 7px;
 
-      padding: 0;
+ 
 
       border: 0;
 
       border-radius: 50%;
 
-      background:
-        rgba(255,255,255,.22);
+ 
+
+      background: #cbd5e1;
+
+ 
 
       cursor: pointer;
 
+ 
+
       transition:
-        .3s ease;
+
+        width 0.25s ease,
+
+        background 0.25s ease;
+
     }
 
+ 
 
-    .bf-dot.active {
+    .carousel-dot.active {
 
       width: 23px;
 
-      border-radius: 99px;
+ 
 
-      background:
-        #f9b627;
+      border-radius: 999px;
+
+ 
+
+      background: #2563eb;
+
     }
 
+ 
 
-    /* ==================================================
-       COLLECTION
-    ================================================== */
+ 
 
-    .bf-collection {
+    /* =========================================
 
-      width:
-        min(
-          1180px,
-          calc(100% - 40px)
-        ) !important;
+       COMMON
 
-      max-width:
-        1180px !important;
+    ========================================= */
 
-      margin:
-        0 auto !important;
+ 
 
-      padding:
-        85px 0 105px !important;
+    .section {
 
-      background:
-        transparent !important;
+      max-width: 1200px;
+
+ 
+
+      margin: auto;
+
+ 
+
+      padding: 85px 22px;
+
     }
 
+ 
 
-    .bf-section-head {
+    .section-heading {
+
+      max-width: 720px;
+
+ 
+
+      margin: 0 auto 45px;
+
+ 
+
+      text-align: center;
+
+    }
+
+ 
+
+    .eyebrow {
+
+      display: inline-block;
+
+ 
+
+      margin-bottom: 10px;
+
+ 
+
+      color: #2563eb;
+
+ 
+
+      font-size: 12px;
+
+      font-weight: 850;
+
+ 
+
+      letter-spacing: 1.2px;
+
+ 
+
+      text-transform: uppercase;
+
+    }
+
+ 
+
+ 
+
+    /* =========================================
+
+       ONLINE STORE
+
+    ========================================= */
+
+ 
+
+    .store-section {
+
+      background: #fff;
+
+ 
+
+      border-top: 1px solid #edf1f5;
+
+      border-bottom: 1px solid #edf1f5;
+
+    }
+
+ 
+
+    .store-section-inner {
+
+      max-width: 1200px;
+
+ 
+
+      margin: auto;
+
+ 
+
+      padding: 90px 22px;
+
+    }
+
+ 
+
+    .store-heading {
 
       display: flex;
+
+ 
 
       align-items: end;
 
       justify-content: space-between;
 
-      gap: 30px;
+ 
 
-      margin-bottom: 30px;
+      gap: 25px;
+
+ 
+
+      margin-bottom: 38px;
+
     }
 
+ 
 
-    .bf-section-label {
+    .store-heading-left {
 
-      margin-bottom: 8px;
+      max-width: 680px;
 
-      color:
-        #f9b627;
-
-      font-size: 8px;
-
-      font-weight: 900;
-
-      letter-spacing:
-        .17em;
     }
 
+ 
 
-    .bf-section-head h2 {
+    .store-heading h2 {
 
-      margin: 0;
+      font-size: clamp(32px, 4vw, 46px);
 
-      color:
-        #fff !important;
+ 
 
-      font-size:
-        clamp(
-          30px,
-          4vw,
-          45px
-        ) !important;
+      line-height: 1.1;
 
-      line-height:
-        1;
+ 
 
-      letter-spacing:
-        -.045em;
+      letter-spacing: -1.8px;
+
+ 
+
+      color: #101827;
+
+ 
+
+      margin-bottom: 12px;
+
     }
 
+ 
 
-    .bf-section-head p {
+    .store-heading p {
 
-      max-width: 390px;
+      color: #6b7280;
 
-      margin: 0;
+ 
 
-      color:
-        rgba(255,255,255,.46);
+      font-size: 15px;
 
-      font-size: 11px;
-
-      line-height:
-        1.7;
-
-      text-align: right;
     }
 
+ 
 
-    /* ==================================================
-       BOOK CARDS
-    ================================================== */
+    .store-trust {
 
-    .bf-book-grid {
+      display: flex;
 
-      display: grid;
+ 
 
-      grid-template-columns:
-        repeat(
-          3,
-          minmax(0,1fr)
-        );
+      flex-wrap: wrap;
 
-      gap: 18px;
-    }
+ 
 
+      justify-content: flex-end;
 
-    .bf-book-card {
-
-      position: relative;
-
-      overflow: hidden;
-
-      border:
-        1px solid
-        rgba(255,255,255,.10);
-
-      border-radius: 18px;
-
-      background:
-        linear-gradient(
-          145deg,
-          rgba(29,57,124,.82),
-          rgba(9,27,66,.94)
-        );
-
-      box-shadow:
-        0 25px 60px
-        rgba(0,0,0,.22);
-
-      transition:
-        transform .3s ease,
-        border-color .3s ease,
-        box-shadow .3s ease;
-    }
-
-
-    .bf-book-card:hover {
-
-      transform:
-        translateY(-7px);
-
-      border-color:
-        rgba(249,182,39,.30);
-
-      box-shadow:
-        0 32px 70px
-        rgba(0,0,0,.30);
-    }
-
-
-    .bf-card-number {
-
-      position: absolute;
-
-      top: 27px;
-      right: 27px;
-
-      z-index: 5;
-
-      width: 34px;
-      height: 34px;
-
-      display: grid;
-
-      place-items: center;
-
-      border-radius: 9px;
-
-      background:
-        rgba(8,22,51,.84);
-
-      border:
-        1px solid
-        rgba(249,182,39,.24);
-
-      color:
-        #fff;
-
-      font-size: 8px;
-
-      font-weight: 900;
-    }
-
-
-    .bf-card-image {
-
-      padding:
-        15px 15px 0;
-    }
-
-
-    .bf-card-image img {
-
-      width: 100%;
-
-      aspect-ratio:
-        1086 / 1536;
-
-      display: block;
-
-      object-fit: cover;
-
-      border-radius: 9px;
-
-      box-shadow:
-        0 18px 38px
-        rgba(0,0,0,.30);
-    }
-
-
-    .bf-card-body {
-
-      padding:
-        20px 19px 23px;
-    }
-
-
-    .bf-available {
-
-      display: block;
-
-      margin-bottom: 10px;
-
-      color:
-        #61dca0;
-
-      font-size: 8px;
-
-      font-weight: 900;
-
-      letter-spacing:
-        .10em;
-    }
-
-
-    .bf-card-body h3 {
-
-      margin: 0;
-
-      color:
-        #fff !important;
-
-      font-size:
-        17px !important;
-
-      line-height:
-        1.45 !important;
-
-      letter-spacing:
-        -.02em;
-    }
-
-
-    .bf-card-body p {
-
-      margin:
-        7px 0 0;
-
-      color:
-        rgba(255,255,255,.40);
-
-      font-size: 10px;
-    }
-
-
-    /* ==================================================
-       LOGIN CTA
-    ================================================== */
-
-    .bf-login {
-
-      width:
-        min(
-          1180px,
-          calc(100% - 40px)
-        ) !important;
-
-      max-width:
-        1180px !important;
-
-      margin:
-        0 auto !important;
-
-      padding:
-        0 0 100px !important;
-    }
-
-
-    .bf-login-box {
-
-      position: relative;
-
-      overflow: hidden;
-
-      padding:
-        43px;
-
-      border:
-        1px solid
-        rgba(249,182,39,.17);
-
-      border-radius: 20px;
-
-      background:
-        linear-gradient(
-          135deg,
-          rgba(30,59,129,.76),
-          rgba(11,29,68,.90)
-        );
-
-      box-shadow:
-        0 25px 70px
-        rgba(0,0,0,.22);
-    }
-
-
-    .bf-login-box h2 {
-
-      margin:
-        0 0 8px;
-
-      color:
-        #fff !important;
-
-      font-size:
-        clamp(
-          25px,
-          3vw,
-          35px
-        ) !important;
-
-      letter-spacing:
-        -.04em;
-    }
-
-
-    .bf-login-box p {
-
-      max-width: 570px;
-
-      margin: 0;
-
-      color:
-        rgba(255,255,255,.47);
-
-      font-size: 11px;
-
-      line-height:
-        1.7;
-    }
-
-
-    .bf-login-box a {
-
-      display: inline-flex;
-
-      align-items: center;
+ 
 
       gap: 8px;
 
-      margin-top: 20px;
-
-      min-height: 43px;
-
-      padding:
-        0 17px;
-
-      border-radius: 9px;
-
-      color:
-        #102454 !important;
-
-      background:
-        linear-gradient(
-          135deg,
-          #ffd45f,
-          #e2a722
-        );
-
-      text-decoration:
-        none !important;
-
-      font-size: 10px;
-
-      font-weight: 900;
     }
 
+ 
 
-    /* ==================================================
-       FOOTER
-    ================================================== */
+    .trust-pill {
 
-    .bf-footer {
+      display: inline-flex;
 
-      width: 100% !important;
+ 
 
-      border-top:
-        1px solid
-        rgba(255,255,255,.07);
+      align-items: center;
 
-      background:
-        rgba(5,16,39,.48);
+ 
 
-      padding:
-        28px 0 32px;
+      gap: 7px;
+
+ 
+
+      padding: 9px 12px;
+
+ 
+
+      border: 1px solid #e2e8f0;
+
+ 
+
+      border-radius: 999px;
+
+ 
+
+      background: #f8fafc;
+
+ 
+
+      color: #475569;
+
+ 
+
+      font-size: 12px;
+
+      font-weight: 750;
+
+ 
+
+      white-space: nowrap;
+
     }
 
+ 
 
-    .bf-footer-inner {
+ 
 
-      width:
-        min(
-          1180px,
-          calc(100% - 40px)
-        );
+    /* =========================================
+
+       PROFESSIONAL STORE CARDS
+
+    ========================================= */
+
+ 
+
+    .store-grid {
+
+      display: grid;
+
+ 
+
+      grid-template-columns:
+
+        repeat(3, minmax(0, 1fr));
+
+ 
+
+      gap: 28px;
+
+ 
+
+      max-width: 1160px;
+
+ 
 
       margin: auto;
 
+    }
+
+ 
+
+    .store-card {
+
+      position: relative;
+
+ 
+
+      overflow: hidden;
+
+ 
+
+      min-width: 0;
+
+ 
+
+      background: #fff;
+
+ 
+
+      border: 1px solid #e3e8ef;
+
+ 
+
+      border-radius: 24px;
+
+ 
+
+      box-shadow:
+
+        0 12px 32px rgba(15, 23, 42, 0.06);
+
+ 
+
+      transition:
+
+        transform 0.25s ease,
+
+        box-shadow 0.25s ease,
+
+        border-color 0.25s ease;
+
+    }
+
+ 
+
+    .store-card:hover {
+
+      transform: translateY(-7px);
+
+ 
+
+      border-color: #cbd5e1;
+
+ 
+
+      box-shadow:
+
+        0 25px 55px rgba(15, 23, 42, 0.12);
+
+    }
+
+ 
+
+    .store-image-wrap {
+
+      position: relative;
+
+ 
+
+      padding: 18px;
+
+ 
+
+      background:
+
+        linear-gradient(
+
+          145deg,
+
+          #f8fafc,
+
+          #eef2f7
+
+        );
+
+    }
+
+ 
+
+    .store-image {
+
+      width: 100%;
+
+ 
+
+      aspect-ratio: 4 / 3;
+
+ 
+
+      object-fit: contain;
+
+ 
+
+      display: block;
+
+ 
+
+      border-radius: 16px;
+
+ 
+
+      background: #fff;
+
+ 
+
+      box-shadow:
+
+        0 10px 25px rgba(15, 23, 42, 0.08);
+
+    }
+
+ 
+
+    .demo-badge {
+
+      position: absolute;
+
+ 
+
+      top: 30px;
+
+      left: 30px;
+
+ 
+
+      padding: 6px 9px;
+
+ 
+
+      border-radius: 7px;
+
+ 
+
+      background: #111827;
+
+ 
+
+      color: #fff;
+
+ 
+
+      font-size: 9px;
+
+      font-weight: 850;
+
+ 
+
+      letter-spacing: 0.8px;
+
+    }
+
+ 
+
+    .book-number {
+
+      position: absolute;
+
+ 
+
+      top: 30px;
+
+      right: 30px;
+
+ 
+
+      padding: 6px 9px;
+
+ 
+
+      border-radius: 7px;
+
+ 
+
+      background: rgba(255,255,255,0.94);
+
+ 
+
+      color: #334155;
+
+ 
+
+      font-size: 10px;
+
+      font-weight: 850;
+
+ 
+
+      border: 1px solid #e2e8f0;
+
+    }
+
+ 
+
+    .store-body {
+
+      padding: 23px;
+
+    }
+
+ 
+
+    .store-body h3 {
+
+      font-size: 20px;
+
+ 
+
+      line-height: 1.25;
+
+ 
+
+      color: #111827;
+
+ 
+
+      margin-bottom: 7px;
+
+    }
+
+ 
+
+    .store-subtitle {
+
+      min-height: 42px;
+
+ 
+
+      color: #737e8e;
+
+ 
+
+      font-size: 13px;
+
+ 
+
+      margin-bottom: 17px;
+
+    }
+
+ 
+
+    .store-price-row {
+
       display: flex;
+
+ 
+
+      align-items: end;
+
+ 
+
+      justify-content: space-between;
+
+ 
+
+      gap: 15px;
+
+ 
+
+      margin-bottom: 17px;
+
+    }
+
+ 
+
+    .price-label {
+
+      display: block;
+
+ 
+
+      color: #8a94a4;
+
+ 
+
+      font-size: 10px;
+
+      font-weight: 800;
+
+ 
+
+      letter-spacing: 0.8px;
+
+ 
+
+      text-transform: uppercase;
+
+ 
+
+      margin-bottom: 2px;
+
+    }
+
+ 
+
+    .store-price {
+
+      font-size: 26px;
+
+ 
+
+      font-weight: 900;
+
+ 
+
+      letter-spacing: -0.8px;
+
+ 
+
+      color: #111827;
+
+    }
+
+ 
+
+    .benefits {
+
+      display: flex;
+
+ 
+
+      flex-wrap: wrap;
+
+ 
+
+      gap: 7px;
+
+ 
+
+      margin-bottom: 20px;
+
+    }
+
+ 
+
+    .benefit {
+
+      display: inline-flex;
+
+ 
+
+      align-items: center;
+
+ 
+
+      gap: 5px;
+
+ 
+
+      padding: 7px 9px;
+
+ 
+
+      border-radius: 8px;
+
+ 
+
+      background: #f5f7fa;
+
+ 
+
+      color: #526071;
+
+ 
+
+      font-size: 10px;
+
+ 
+
+      font-weight: 750;
+
+    }
+
+ 
+
+    .buy-btn {
+
+      width: 100%;
+
+ 
+
+      min-height: 49px;
+
+ 
+
+      border: 0;
+
+ 
+
+      border-radius: 12px;
+
+ 
+
+      background: #111827;
+
+ 
+
+      color: #fff;
+
+ 
+
+      font-size: 14px;
+
+      font-weight: 800;
+
+ 
+
+      cursor: pointer;
+
+ 
+
+      transition: 0.2s ease;
+
+    }
+
+ 
+
+    .buy-btn:hover {
+
+      background: #2563eb;
+
+ 
+
+      transform: translateY(-1px);
+
+    }
+
+ 
+
+ 
+
+    /* =========================================
+
+       ORDER PANEL
+
+    ========================================= */
+
+ 
+
+    .order-area {
+
+      display: none;
+
+ 
+
+      margin-top: 38px;
+
+ 
+
+      padding: 30px;
+
+ 
+
+      border-radius: 24px;
+
+ 
+
+      background: #f8fafc;
+
+ 
+
+      border: 1px solid #dfe6ef;
+
+    }
+
+ 
+
+    .order-area.active {
+
+      display: block;
+
+ 
+
+      animation: fadeUp 0.25s ease;
+
+    }
+
+ 
+
+    @keyframes fadeUp {
+
+      from {
+
+        opacity: 0;
+
+        transform: translateY(8px);
+
+      }
+
+ 
+
+      to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+
+      }
+
+    }
+
+ 
+
+    .order-header {
+
+      display: flex;
+
+ 
 
       align-items: center;
 
       justify-content: space-between;
 
-      gap: 20px;
+ 
 
-      color:
-        rgba(255,255,255,.30);
+      gap: 15px;
 
-      font-size: 9px;
-    }
+ 
 
-
-    /* ==================================================
-       TABLET
-    ================================================== */
-
-    @media (max-width: 950px) {
-
-      .bf-hero {
-
-        grid-template-columns:
-          1fr;
-
-        min-height:
-          auto;
-
-        padding:
-          65px 0 55px !important;
-      }
-
-
-      .bf-hero-copy {
-
-        text-align:
-          center;
-
-        padding-left:
-          0;
-      }
-
-
-      .bf-description {
-
-        margin:
-          0 auto;
-      }
-
-
-      .bf-gold-line {
-
-        margin-left:
-          auto;
-
-        margin-right:
-          auto;
-      }
-
-
-      .bf-actions {
-
-        justify-content:
-          center;
-      }
-
-
-      .bf-carousel {
-
-        min-height:
-          510px;
-      }
-
-
-      .bf-section-head {
-
-        align-items:
-          flex-start;
-
-        flex-direction:
-          column;
-      }
-
-
-      .bf-section-head p {
-
-        text-align:
-          left;
-      }
-
-
-      .bf-book-grid {
-
-        grid-template-columns:
-          repeat(
-            2,
-            minmax(0,1fr)
-          );
-      }
+      margin-bottom: 25px;
 
     }
 
+ 
 
-    /* ==================================================
-       MOBILE
-    ================================================== */
+    .order-header h3 {
 
-    @media (max-width: 650px) {
+      font-size: 24px;
 
-      .bf-nav-inner {
+ 
 
-        width:
-          calc(100% - 24px);
-
-        min-height:
-          66px;
-      }
-
-
-      .bf-brand-name {
-
-        font-size:
-          12px;
-      }
-
-
-      .bf-nav-links a {
-
-        padding:
-          8px 9px;
-
-        font-size:
-          9px;
-      }
-
-
-      .bf-nav-links a:first-child {
-
-        display:
-          none;
-      }
-
-
-      .bf-hero {
-
-        width:
-          calc(100% - 24px) !important;
-
-        padding:
-          52px 0 35px !important;
-      }
-
-
-      .bf-hero h1 {
-
-        font-size:
-          clamp(
-            38px,
-            11vw,
-            53px
-          ) !important;
-      }
-
-
-      .bf-description {
-
-        font-size:
-          12px;
-      }
-
-
-      .bf-carousel {
-
-        min-height:
-          445px;
-      }
-
-
-      .bf-carousel-ring {
-
-        width:
-          360px;
-
-        height:
-          360px;
-      }
-
-
-      .bf-slide {
-
-        width:
-          min(
-            220px,
-            55vw
-          );
-      }
-
-
-      .bf-slide.active {
-
-        transform:
-          translateX(25px)
-          scale(1)
-          rotate(2deg);
-      }
-
-
-      .bf-slide.previous {
-
-        transform:
-          translateX(-105px)
-          scale(.80)
-          rotate(-8deg);
-      }
-
-
-      .bf-slide-info {
-
-        right:
-          0;
-
-        bottom:
-          55px;
-
-        min-width:
-          130px;
-
-        padding:
-          9px 11px;
-      }
-
-
-      .bf-slide-title {
-
-        font-size:
-          9px;
-      }
-
-
-      .bf-collection,
-      .bf-login {
-
-        width:
-          calc(100% - 24px) !important;
-      }
-
-
-      .bf-book-grid {
-
-        grid-template-columns:
-          1fr;
-      }
-
-
-      .bf-login-box {
-
-        padding:
-          30px 22px;
-      }
-
-
-      .bf-footer-inner {
-
-        width:
-          calc(100% - 24px);
-
-        flex-direction:
-          column;
-
-        align-items:
-          flex-start;
-      }
+      color: #111827;
 
     }
 
-  </style>
+ 
 
-</head>
+    .close-order {
 
+      width: 38px;
 
-<body>
+      height: 38px;
 
+ 
 
-  <!-- ==================================================
-       BACKGROUND
-  ================================================== -->
+      border: 1px solid #dce3eb;
 
-  <div class="bf-page-bg"></div>
+ 
 
+      background: #fff;
 
-  <!-- ==================================================
-       NAV
-  ================================================== -->
+ 
 
-  <nav class="bf-nav">
+      border-radius: 10px;
 
-    <div class="bf-nav-inner">
+ 
 
+      cursor: pointer;
 
-      <a
-        href="index.html"
-        class="bf-brand"
-      >
+ 
 
-        <span class="bf-brand-mark">
-          B
-        </span>
+      font-size: 18px;
 
-        <span class="bf-brand-name">
-          BookFair Digital
-        </span>
+ 
 
-      </a>
+      color: #64748b;
 
+    }
 
-      <div class="bf-nav-links">
+ 
 
-        <a href="#collection">
-          Collection
-        </a>
+    .order-grid {
 
+      display: grid;
 
-        <a
-          href="login.html"
-          class="bf-nav-login"
-        >
-          Login →
-        </a>
+ 
 
-      </div>
+      grid-template-columns: 1.2fr 0.8fr;
 
+ 
 
-    </div>
+      gap: 25px;
 
-  </nav>
+    }
 
+ 
 
-  <!-- ==================================================
-       MAIN
-  ================================================== -->
+    .form-card,
 
-  <main>
+    .summary-card {
 
+      background: #fff;
 
-    <!-- ==================================================
-         HERO
-    ================================================== -->
+ 
 
-    <section class="bf-hero">
+      border: 1px solid #e2e8f0;
 
+ 
 
-      <!-- TEXT -->
+      border-radius: 18px;
 
-      <div class="bf-hero-copy">
+ 
 
+      padding: 23px;
 
-        <div class="bf-eyebrow">
-          DIGITAL BOOK COLLECTION
-        </div>
+    }
 
+ 
 
-        <h1>
+    .form-grid {
 
-          Your books.
+      display: grid;
 
-          <br>
+ 
 
-          Your
+      grid-template-columns: 1fr 1fr;
 
-          <span class="gold">
-            digital access.
-          </span>
+ 
 
-        </h1>
+      gap: 15px;
 
+    }
 
-        <p class="bf-description">
+ 
 
-          Access the digital resources connected
-          to your physical books through
-          BookFair Digital.
+    .form-group {
 
-        </p>
+      margin-bottom: 15px;
 
+    }
 
-        <div class="bf-gold-line"></div>
+ 
 
+    .form-group.full {
 
-        <div class="bf-actions">
+      grid-column: 1 / -1;
 
+    }
 
-          <a
-            href="#collection"
-            class="bf-btn bf-btn-primary"
-          >
+ 
 
-            Explore Collection
+    .form-group label {
 
-            <span>
-              ↓
-            </span>
+      display: block;
 
-          </a>
+ 
 
+      margin-bottom: 7px;
 
-          <a
-            href="login.html"
-            class="bf-btn bf-btn-secondary"
-          >
+ 
 
-            Login
+      color: #344054;
 
-            <span>
-              →
-            </span>
+ 
 
-          </a>
+      font-size: 12px;
 
+      font-weight: 750;
 
-        </div>
+    }
 
+ 
 
-      </div>
+    .form-group input,
 
+    .form-group select,
 
-      <!-- ==================================================
-           AUTOMATIC BOOK CAROUSEL
-      ================================================== -->
+    .form-group textarea {
 
-      <div class="bf-carousel">
+      width: 100%;
 
+ 
 
-        <div class="bf-carousel-glow"></div>
+      border: 1px solid #d9e1eb;
 
-        <div class="bf-carousel-ring"></div>
+ 
 
+      background: #fff;
 
-        <!-- BOOK 01 -->
+ 
 
-        <div
-          class="bf-slide active"
-          data-index="0"
-        >
+      border-radius: 10px;
 
-          <img
-            src="assets/accounting.jpg"
-            alt="Book 01"
-          >
+ 
 
-        </div>
+      padding: 12px 13px;
 
+ 
 
-        <!-- BOOK 02 -->
+      outline: none;
 
-        <div
-          class="bf-slide"
-          data-index="1"
-        >
+ 
 
-          <img
-            src="assets/book-02.jpg"
-            alt="Book 02"
-          >
+      color: #172033;
 
-        </div>
+ 
 
+      font-size: 13px;
 
-        <!-- BOOK 03 -->
+ 
 
-        <div
-          class="bf-slide"
-          data-index="2"
-        >
+      transition: 0.2s ease;
 
-          <img
-            src="assets/book-03.jpg"
-            alt="Book 03"
-          >
+    }
 
-        </div>
+ 
 
+    .form-group textarea {
 
-        <!-- CURRENT BOOK -->
+      min-height: 100px;
 
-        <div class="bf-slide-info">
+ 
 
+      resize: vertical;
 
-          <div
-            class="bf-slide-number"
-            id="slideNumber"
-          >
-            BOOK 01
-          </div>
+    }
 
+ 
 
-          <div
-            class="bf-slide-title"
-            id="slideTitle"
-          >
-            A/L Accounting
-          </div>
+    .form-group input:focus,
 
+    .form-group select:focus,
 
-        </div>
+    .form-group textarea:focus {
 
+      border-color: #2563eb;
 
-        <!-- DOTS -->
+ 
 
-        <div class="bf-carousel-dots">
+      box-shadow:
 
+        0 0 0 3px rgba(37, 99, 235, 0.08);
 
-          <button
-            class="bf-dot active"
-            data-slide="0"
-            aria-label="Book 01"
-          ></button>
+    }
 
+ 
 
-          <button
-            class="bf-dot"
-            data-slide="1"
-            aria-label="Book 02"
-          ></button>
+    .fixed-option {
 
+      display: flex;
 
-          <button
-            class="bf-dot"
-            data-slide="2"
-            aria-label="Book 03"
-          ></button>
+ 
 
+      align-items: center;
 
-        </div>
+      justify-content: space-between;
 
+ 
 
-      </div>
+      padding: 13px;
 
+ 
 
-    </section>
+      border: 1px solid #dfe5ed;
 
+ 
 
-    <!-- ==================================================
-         COLLECTION
-    ================================================== -->
+      border-radius: 10px;
 
-    <section
-      id="collection"
-      class="bf-collection"
-    >
+ 
 
+      background: #f8fafc;
 
-      <div class="bf-section-head">
+ 
 
+      font-size: 13px;
 
-        <div>
+      font-weight: 700;
 
-          <div class="bf-section-label">
-            OUR COLLECTION
-          </div>
+    }
 
+ 
 
-          <h2>
-            Three books. One platform.
-          </h2>
+    .fixed-option span:last-child {
 
-        </div>
+      color: #16a34a;
 
+ 
 
-        <p>
+      font-weight: 850;
 
-          Explore the books available through
-          BookFair Digital. Digital resources are
-          available to students with assigned access.
+    }
 
-        </p>
+ 
 
+    .summary-card h4 {
 
-      </div>
+      font-size: 16px;
 
+ 
 
-      <div class="bf-book-grid">
+      margin-bottom: 20px;
 
+    }
 
-        <!-- BOOK 01 -->
+ 
 
-        <article class="bf-book-card">
+    .summary-row {
 
+      display: flex;
 
-          <span class="bf-card-number">
-            01
-          </span>
+ 
 
+      align-items: center;
 
-          <div class="bf-card-image">
+      justify-content: space-between;
 
-            <img
-              src="assets/accounting.jpg"
-              alt="A/L Accounting"
-              loading="lazy"
-            >
+ 
 
-          </div>
+      gap: 15px;
 
+ 
 
-          <div class="bf-card-body">
+      padding: 11px 0;
 
+ 
 
-            <span class="bf-available">
-              ● AVAILABLE
-            </span>
+      border-bottom: 1px solid #edf1f5;
 
+ 
 
-            <h3>
-              A/L Accounting
-            </br>
-          ආදර්ශ ප්‍රශ්න පත්‍ර සංග්‍රහය 
-              <br>
-              I - වන ප්‍රශ්න පත්‍රය 
+      font-size: 13px;
 
-            <p>
-              Digital answer resource
-            </p>
+    }
 
+ 
 
-          </div>
+    .summary-row span:first-child {
 
+      color: #6b7280;
 
-        </article>
+    }
 
+ 
 
-        <!-- BOOK 02 -->
+    .summary-row span:last-child {
 
-        <article class="bf-book-card">
+      color: #172033;
 
+ 
 
-          <span class="bf-card-number">
-            02
-          </span>
+      font-weight: 750;
 
+ 
 
-          <div class="bf-card-image">
+      text-align: right;
 
-            <img
-              src="assets/book-02.jpg"
-              alt="LKAS & SLFRS Part I"
-              loading="lazy"
-            >
+    }
 
-          </div>
+ 
 
+    .summary-total {
 
-          <div class="bf-card-body">
+      display: flex;
 
+ 
 
-            <span class="bf-available">
-              ● AVAILABLE
-            </span>
+      align-items: center;
 
+      justify-content: space-between;
 
-            <h3>
+ 
 
-              LKAS &amp; SLFRS
-              <br>
-              ප්‍රශ්නෝත්තර සංග්‍රහය
-              <br>
-              (Part-I)
+      margin-top: 18px;
 
-            </h3>
+ 
 
+      padding-top: 17px;
 
-            <p>
-              Digital answer resource
-            </p>
+ 
 
+      border-top: 2px solid #111827;
 
-          </div>
+    }
 
+ 
 
-        </article>
+    .summary-total span:first-child {
 
+      font-size: 14px;
 
-        <!-- BOOK 03 -->
+ 
 
-        <article class="bf-book-card">
+      font-weight: 800;
 
+    }
 
-          <span class="bf-card-number">
-            03
-          </span>
+ 
 
+    .summary-total span:last-child {
 
-          <div class="bf-card-image">
+      font-size: 25px;
 
-            <img
-              src="assets/book-03.jpg"
-              alt="LKAS & SLFRS Part II"
-              loading="lazy"
-            >
+ 
 
-          </div>
+      font-weight: 900;
 
+ 
 
-          <div class="bf-card-body">
+      color: #111827;
 
+    }
 
-            <span class="bf-available">
-              ● AVAILABLE
-            </span>
+ 
 
+    .whatsapp-order-btn {
 
-            <h3>
+      width: 100%;
 
-              LKAS &amp; SLFRS
-              <br>
-              ප්‍රශ්නෝත්තර සංග්‍රහය
-              <br>
-              (Part-II)
+ 
 
-            </h3>
+      margin-top: 20px;
 
+ 
 
-            <p>
-              Digital answer resource
-            </p>
+      min-height: 51px;
 
+ 
 
-          </div>
+      border: 0;
 
+ 
 
-        </article>
+      border-radius: 12px;
 
+ 
 
-      </div>
+      background: #16a34a;
 
+ 
 
-    </section>
+      color: #fff;
 
+ 
 
-    <!-- ==================================================
-         LOGIN CTA
-    ================================================== -->
+      font-size: 14px;
 
-    <section class="bf-login">
+      font-weight: 850;
 
+ 
 
-      <div class="bf-login-box">
+      cursor: pointer;
 
+ 
 
-        <h2>
-          Already have a book?
-        </h2>
+      transition: 0.2s ease;
 
+    }
 
-        <p>
+ 
 
-          Use the username and password printed
-          on your physical-book sticker to access
-          your assigned digital resources.
+    .whatsapp-order-btn:hover {
 
-        </p>
+      background: #12823d;
 
+ 
 
-        <a href="login.html">
+      transform: translateY(-1px);
 
-          Login to Digital Access
+    }
 
-          <span>
-            →
-          </span>
+ 
 
-        </a>
+    .order-note {
 
+      margin-top: 11px;
 
-      </div>
+ 
 
+      color: #8a94a4;
 
-    </section>
+ 
 
+      font-size: 10px;
 
-  </main>
+ 
 
+      line-height: 1.5;
 
-  <!-- ==================================================
+ 
+
+      text-align: center;
+
+    }
+
+ 
+
+ 
+
+    /* =========================================
+
+       COLLECTION
+
+    ========================================= */
+
+ 
+
+    .collection-section {
+
+      background: #f7f9fc;
+
+    }
+
+ 
+
+    .section-heading h2 {
+
+      font-size: clamp(30px, 4vw, 45px);
+
+ 
+
+      line-height: 1.1;
+
+ 
+
+      letter-spacing: -1.6px;
+
+ 
+
+      color: #111827;
+
+ 
+
+      margin-bottom: 13px;
+
+    }
+
+ 
+
+    .section-heading p {
+
+      color: #697586;
+
+ 
+
+      font-size: 15px;
+
+    }
+
+ 
+
+    .collection-grid {
+
+      display: grid;
+
+ 
+
+      grid-template-columns:
+
+        repeat(3, minmax(0, 1fr));
+
+ 
+
+      gap: 24px;
+
+    }
+
+ 
+
+    .collection-card {
+
+      overflow: hidden;
+
+ 
+
+      border: 1px solid #e2e8f0;
+
+ 
+
+      border-radius: 20px;
+
+ 
+
+      background: #fff;
+
+ 
+
+      box-shadow:
+
+        0 10px 28px rgba(15, 23, 42, 0.05);
+
+ 
+
+      transition: 0.25s ease;
+
+    }
+
+ 
+
+    .collection-card:hover {
+
+      transform: translateY(-5px);
+
+ 
+
+      box-shadow:
+
+        0 20px 42px rgba(15, 23, 42, 0.09);
+
+    }
+
+ 
+
+    .collection-image {
+
+      width: 100%;
+
+ 
+
+      height: 310px;
+
+ 
+
+      object-fit: contain;
+
+ 
+
+      display: block;
+
+ 
+
+      background: #f2f5f9;
+
+ 
+
+      padding: 20px;
+
+    }
+
+ 
+
+    .collection-body {
+
+      padding: 22px;
+
+    }
+
+ 
+
+    .collection-tag {
+
+      display: inline-block;
+
+ 
+
+      margin-bottom: 9px;
+
+ 
+
+      color: #2563eb;
+
+ 
+
+      font-size: 10px;
+
+      font-weight: 850;
+
+ 
+
+      letter-spacing: 0.9px;
+
+ 
+
+      text-transform: uppercase;
+
+    }
+
+ 
+
+    .collection-body h3 {
+
+      font-size: 19px;
+
+ 
+
+      line-height: 1.3;
+
+ 
+
+      margin-bottom: 4px;
+
+    }
+
+ 
+
+    .collection-body p {
+
+      color: #697586;
+
+ 
+
+      font-size: 13px;
+
+    }
+
+ 
+
+ 
+
+    /* =========================================
+
+       LOGIN CTA
+
+    ========================================= */
+
+ 
+
+    .login-section {
+
+      padding: 80px 22px;
+
+ 
+
+      background: #111827;
+
+ 
+
+      color: #fff;
+
+    }
+
+ 
+
+    .login-container {
+
+      max-width: 1050px;
+
+ 
+
+      margin: auto;
+
+ 
+
+      text-align: center;
+
+    }
+
+ 
+
+    .login-container h2 {
+
+      font-size: clamp(30px, 4vw, 44px);
+
+ 
+
+      letter-spacing: -1.5px;
+
+ 
+
+      margin-bottom: 13px;
+
+    }
+
+ 
+
+    .login-container p {
+
+      max-width: 600px;
+
+ 
+
+      margin: 0 auto 27px;
+
+ 
+
+      color: #aeb7c6;
+
+ 
+
+      font-size: 14px;
+
+    }
+
+ 
+
+    .login-button {
+
+      display: inline-flex;
+
+ 
+
+      align-items: center;
+
+      justify-content: center;
+
+ 
+
+      min-height: 48px;
+
+ 
+
+      padding: 0 22px;
+
+ 
+
+      border-radius: 11px;
+
+ 
+
+      background: #fff;
+
+ 
+
+      color: #111827;
+
+ 
+
+      font-size: 14px;
+
+      font-weight: 800;
+
+ 
+
+      transition: 0.2s ease;
+
+    }
+
+ 
+
+    .login-button:hover {
+
+      transform: translateY(-2px);
+
+ 
+
+      background: #eaf0f8;
+
+    }
+
+ 
+
+ 
+
+    /* =========================================
+
        FOOTER
-  ================================================== -->
 
-  <footer class="bf-footer">
+    ========================================= */
 
+ 
 
-    <div class="bf-footer-inner">
+    footer {
 
-      <span>
-        © 2026 BookFair Digital
-      </span>
+      background: #0b101a;
 
+ 
 
-      <span>
-        Digital educational resources
-      </span>
+      color: #fff;
 
-    </div>
+ 
 
-
-  </footer>
-
-
-  <!-- ==================================================
-       AUTOMATIC CAROUSEL SCRIPT
-    ================================================== -->
-
-  <script>
-
-    const slides =
-      document.querySelectorAll(
-        ".bf-slide"
-      );
-
-
-    const dots =
-      document.querySelectorAll(
-        ".bf-dot"
-      );
-
-
-    const slideNumber =
-      document.getElementById(
-        "slideNumber"
-      );
-
-
-    const slideTitle =
-      document.getElementById(
-        "slideTitle"
-      );
-
-
-    const titles = [
-
-      "A/L Accounting",
-
-      "LKAS & SLFRS · Part-I",
-
-      "LKAS & SLFRS · Part-II"
-
-    ];
-
-
-    let currentSlide = 0;
-
-
-    function showSlide(index) {
-
-      currentSlide =
-        (
-          index +
-          slides.length
-        )
-        %
-        slides.length;
-
-
-      slides.forEach(
-        (slide, i) => {
-
-          slide.classList.remove(
-            "active",
-            "previous"
-          );
-
-
-          if (
-            i === currentSlide
-          ) {
-
-            slide.classList.add(
-              "active"
-            );
-
-          }
-
-
-          else if (
-            i ===
-            (
-              currentSlide -
-              1 +
-              slides.length
-            )
-            %
-            slides.length
-          ) {
-
-            slide.classList.add(
-              "previous"
-            );
-
-          }
-
-        }
-      );
-
-
-      dots.forEach(
-        (dot, i) => {
-
-          dot.classList.toggle(
-            "active",
-            i === currentSlide
-          );
-
-        }
-      );
-
-
-      slideNumber.textContent =
-        `BOOK ${
-          String(
-            currentSlide + 1
-          )
-          .padStart(
-            2,
-            "0"
-          )
-        }`;
-
-
-      slideTitle.textContent =
-        titles[currentSlide];
+      padding: 45px 22px 25px;
 
     }
 
+ 
 
-    function nextSlide() {
+    .footer-container {
 
-      showSlide(
-        currentSlide + 1
-      );
+      max-width: 1200px;
+
+ 
+
+      margin: auto;
 
     }
 
+ 
 
-    dots.forEach(
-      (dot) => {
+    .footer-main {
 
-        dot.addEventListener(
-          "click",
-          () => {
+      display: flex;
 
-            showSlide(
-              Number(
-                dot.dataset.slide
-              )
-            );
+ 
 
-          }
-        );
+      align-items: flex-start;
+
+      justify-content: space-between;
+
+ 
+
+      gap: 30px;
+
+ 
+
+      padding-bottom: 30px;
+
+    }
+
+ 
+
+    .footer-brand {
+
+      font-size: 18px;
+
+ 
+
+      font-weight: 850;
+
+ 
+
+      margin-bottom: 8px;
+
+    }
+
+ 
+
+    .footer-text {
+
+      max-width: 430px;
+
+ 
+
+      color: #8994a5;
+
+ 
+
+      font-size: 12px;
+
+    }
+
+ 
+
+    .footer-links {
+
+      display: flex;
+
+ 
+
+      flex-wrap: wrap;
+
+ 
+
+      gap: 15px;
+
+ 
+
+      color: #aab3c1;
+
+ 
+
+      font-size: 12px;
+
+    }
+
+ 
+
+    .footer-links a:hover {
+
+      color: #fff;
+
+    }
+
+ 
+
+    .copyright {
+
+      border-top: 1px solid #202735;
+
+ 
+
+      padding-top: 20px;
+
+ 
+
+      color: #6f7b8d;
+
+ 
+
+      font-size: 11px;
+
+ 
+
+      text-align: center;
+
+    }
+
+ 
+
+ 
+
+    /* =========================================
+
+       WHATSAPP FLOAT
+
+    ========================================= */
+
+ 
+
+    .whatsapp-float {
+
+      position: fixed;
+
+ 
+
+      right: 22px;
+
+      bottom: 22px;
+
+ 
+
+      z-index: 2000;
+
+ 
+
+      display: flex;
+
+ 
+
+      align-items: center;
+
+ 
+
+      gap: 10px;
+
+ 
+
+      min-height: 52px;
+
+ 
+
+      padding: 0 18px 0 14px;
+
+ 
+
+      border-radius: 999px;
+
+ 
+
+      background: #25d366;
+
+ 
+
+      color: #fff;
+
+ 
+
+      box-shadow:
+
+        0 14px 35px rgba(15, 23, 42, 0.20);
+
+ 
+
+      font-size: 13px;
+
+      font-weight: 800;
+
+ 
+
+      transition: 0.25s ease;
+
+    }
+
+ 
+
+    .whatsapp-float:hover {
+
+      transform: translateY(-4px);
+
+ 
+
+      background: #1ebe5d;
+
+ 
+
+      box-shadow:
+
+        0 18px 42px rgba(15, 23, 42, 0.25);
+
+    }
+
+ 
+
+    .whatsapp-icon {
+
+      width: 28px;
+
+      height: 28px;
+
+ 
+
+      flex-shrink: 0;
+
+    }
+
+ 
+
+    .whatsapp-tooltip {
+
+      position: absolute;
+
+ 
+
+      right: 0;
+
+ 
+
+      bottom: calc(100% + 10px);
+
+ 
+
+      width: max-content;
+
+ 
+
+      padding: 9px 12px;
+
+ 
+
+      border-radius: 9px;
+
+ 
+
+      background: #111827;
+
+ 
+
+      color: #fff;
+
+ 
+
+      font-size: 11px;
+
+      font-weight: 700;
+
+ 
+
+      opacity: 0;
+
+ 
+
+      pointer-events: none;
+
+ 
+
+      transform: translateY(5px);
+
+ 
+
+      transition: 0.2s ease;
+
+    }
+
+ 
+
+    .whatsapp-float:hover .whatsapp-tooltip {
+
+      opacity: 1;
+
+ 
+
+      transform: translateY(0);
+
+    }
+
+ 
+
+ 
+
+    /* =========================================
+
+       RESPONSIVE
+
+    ========================================= */
+
+ 
+
+    @media (max-width: 1000px) {
+
+ 
+
+      .hero-container {
+
+        grid-template-columns: 1fr;
+
+ 
+
+        text-align: center;
 
       }
-    );
 
+ 
 
-    /*
+      .hero p {
 
-      BOOK 01
-         ↓
-      BOOK 02
-         ↓
-      BOOK 03
-         ↓
-      BOOK 01
-         ↓
-      CONTINUE FOREVER
+        margin-left: auto;
 
-    */
+        margin-right: auto;
 
-    setInterval(
-      nextSlide,
-      3500
-    );
+      }
 
+ 
 
-    showSlide(0);
+      .hero-buttons {
 
-  </script>
+        justify-content: center;
 
+      }
 
-</body>
+ 
 
-</html>
+      .hero-visual {
+
+        min-height: 490px;
+
+      }
+
+ 
+
+      .store-heading {
+
+        flex-direction: column;
+
+ 
+
+        align-items: flex-start;
+
+      }
+
+ 
+
+      .store-trust {
+
+        justify-content: flex-start;
