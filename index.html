@@ -1,3874 +1,2549 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>BookFair Digital | Quality Educational Books</title>
+ 
 
-  <meta
-    name="description"
-    content="BookFair Digital - Educational books with online ordering, bank deposit payment and free delivery."
-  >
+  <title>BookFair Digital</title>
+
+ 
 
   <style>
+
     * {
-      margin: 0;
-      padding: 0;
+
       box-sizing: border-box;
+
+      margin: 0;
+
+      padding: 0;
+
     }
+
+ 
 
     html {
+
       scroll-behavior: smooth;
+
     }
+
+ 
 
     body {
-      font-family:
-        Inter,
-        system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        sans-serif;
-      background: #f7f9fc;
-      color: #172033;
+
+      font-family: Arial, Helvetica, sans-serif;
+
+      background: #f7f8fa;
+
+      color: #17202a;
+
       line-height: 1.6;
+
     }
+
+ 
 
     a {
+
       text-decoration: none;
+
       color: inherit;
+
     }
+
+ 
 
     button,
+
     input,
+
     select,
+
     textarea {
+
       font: inherit;
+
     }
 
-    /* =========================================
+ 
+
+    /* =========================
+
        NAVBAR
-    ========================================= */
 
-    .navbar {
+    ========================= */
+
+ 
+
+    header {
+
+      background: #ffffff;
+
+      border-bottom: 1px solid #e5e7eb;
+
       position: sticky;
+
       top: 0;
+
       z-index: 1000;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid #e8edf4;
+
     }
 
-    .nav-container {
+ 
+
+    .nav {
+
       max-width: 1200px;
-      min-height: 74px;
+
       margin: auto;
+
+      min-height: 72px;
+
       padding: 0 22px;
 
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 25px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-
-      font-size: 21px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-    }
-
-    .brand-icon {
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
-
-      display: grid;
-      place-items: center;
-
-      background: #111827;
-      color: #fff;
-
-      font-size: 21px;
-
-      box-shadow:
-        0 8px 20px rgba(17, 24, 39, 0.15);
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .nav-links a {
-      padding: 10px 14px;
-      border-radius: 10px;
-
-      color: #566176;
-
-      font-size: 14px;
-      font-weight: 650;
-
-      transition: 0.2s ease;
-    }
-
-    .nav-links a:hover {
-      background: #f1f4f8;
-      color: #111827;
-    }
-
-    .nav-buy {
-      background: #111827 !important;
-      color: #fff !important;
-    }
-
-    .nav-buy:hover {
-      background: #253047 !important;
-    }
-
-    /* =========================================
-       HERO
-    ========================================= */
-
-    .hero {
-      position: relative;
-      overflow: hidden;
-
-      background:
-        radial-gradient(
-          circle at 10% 20%,
-          rgba(59, 130, 246, 0.13),
-          transparent 28%
-        ),
-        radial-gradient(
-          circle at 90% 30%,
-          rgba(16, 185, 129, 0.12),
-          transparent 28%
-        ),
-        linear-gradient(
-          135deg,
-          #ffffff 0%,
-          #f4f7fb 100%
-        );
-    }
-
-    .hero-container {
-      max-width: 1200px;
-      min-height: 620px;
-
-      margin: auto;
-      padding: 80px 22px 70px;
-
-      display: grid;
-      grid-template-columns: 1.05fr 0.95fr;
 
       align-items: center;
-
-      gap: 55px;
-    }
-
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-
-      padding: 8px 13px;
-
-      border: 1px solid #dce4ef;
-      background: #fff;
-
-      border-radius: 999px;
-
-      font-size: 12px;
-      font-weight: 750;
-
-      color: #475569;
-
-      margin-bottom: 20px;
-
-      box-shadow:
-        0 8px 25px rgba(15, 23, 42, 0.05);
-    }
-
-    .hero-badge span {
-      width: 7px;
-      height: 7px;
-
-      border-radius: 50%;
-
-      background: #16a34a;
-    }
-
-    .hero h1 {
-      font-size: clamp(42px, 6vw, 72px);
-      line-height: 1.03;
-      letter-spacing: -3px;
-
-      max-width: 700px;
-
-      margin-bottom: 22px;
-
-      color: #101827;
-    }
-
-    .hero h1 strong {
-      color: #2563eb;
-    }
-
-    .hero p {
-      max-width: 590px;
-
-      font-size: 17px;
-
-      color: #667085;
-
-      margin-bottom: 30px;
-    }
-
-    .hero-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 9px;
-
-      min-height: 48px;
-
-      padding: 0 20px;
-
-      border-radius: 12px;
-
-      border: 1px solid transparent;
-
-      font-size: 14px;
-      font-weight: 750;
-
-      cursor: pointer;
-
-      transition: 0.2s ease;
-    }
-
-    .btn-primary {
-      background: #111827;
-      color: #fff;
-
-      box-shadow:
-        0 10px 25px rgba(17, 24, 39, 0.16);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      background: #263247;
-    }
-
-    .btn-secondary {
-      background: #fff;
-      border-color: #dce3ec;
-      color: #172033;
-    }
-
-    .btn-secondary:hover {
-      background: #f8fafc;
-      transform: translateY(-2px);
-    }
-
-    /* =========================================
-       HERO BOOK CAROUSEL
-    ========================================= */
-
-    .hero-visual {
-      position: relative;
-
-      min-height: 470px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .hero-carousel {
-      position: relative;
-
-      width: min(390px, 82vw);
-      height: 450px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .hero-slide {
-      position: absolute;
-
-      width: 100%;
-      height: 100%;
-
-      padding: 14px;
-
-      border-radius: 26px;
-
-      background: #fff;
-
-      box-shadow:
-        0 30px 70px rgba(15, 23, 42, 0.16),
-        0 8px 25px rgba(15, 23, 42, 0.06);
-
-      opacity: 0;
-
-      transform:
-        translateX(45px)
-        scale(0.96);
-
-      transition:
-        opacity 0.65s ease,
-        transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
-
-      pointer-events: none;
-    }
-
-    .hero-slide.active {
-      opacity: 1;
-
-      transform:
-        translateX(0)
-        scale(1);
-
-      pointer-events: auto;
-    }
-
-    .hero-slide img {
-      width: 100%;
-      height: 100%;
-
-      display: block;
-
-      object-fit: contain;
-
-      border-radius: 18px;
-
-      background: #f8fafc;
-    }
-
-    .hero-book-label {
-      position: absolute;
-
-      left: 28px;
-      bottom: 28px;
-
-      padding: 9px 13px;
-
-      border-radius: 10px;
-
-      background: rgba(17, 24, 39, 0.92);
-
-      color: #fff;
-
-      font-size: 11px;
-      font-weight: 800;
-
-      backdrop-filter: blur(10px);
-    }
-
-    .floating-info {
-      position: absolute;
-
-      padding: 13px 16px;
-
-      border-radius: 14px;
-
-      background: rgba(255, 255, 255, 0.96);
-
-      border: 1px solid #e7ecf3;
-
-      box-shadow:
-        0 16px 35px rgba(15, 23, 42, 0.10);
-
-      font-size: 12px;
-      font-weight: 750;
-
-      z-index: 10;
-    }
-
-    .floating-one {
-      top: 55px;
-      right: -5px;
-    }
-
-    .floating-two {
-      bottom: 70px;
-      left: -5px;
-    }
-
-    .carousel-dots {
-      position: absolute;
-
-      bottom: 5px;
-      left: 50%;
-
-      transform: translateX(-50%);
-
-      display: flex;
-      gap: 7px;
-
-      z-index: 20;
-    }
-
-    .carousel-dot {
-      width: 7px;
-      height: 7px;
-
-      border: 0;
-      border-radius: 50%;
-
-      background: #cbd5e1;
-
-      cursor: pointer;
-
-      transition:
-        width 0.25s ease,
-        background 0.25s ease;
-    }
-
-    .carousel-dot.active {
-      width: 23px;
-
-      border-radius: 999px;
-
-      background: #2563eb;
-    }
-
-    /* =========================================
-       ONLINE STORE
-    ========================================= */
-
-    .store-section {
-      background: #fff;
-
-      border-top: 1px solid #edf1f5;
-      border-bottom: 1px solid #edf1f5;
-    }
-
-    .store-section-inner {
-      max-width: 1200px;
-
-      margin: auto;
-
-      padding: 90px 22px;
-    }
-
-    .store-heading {
-      display: flex;
-
-      align-items: end;
-      justify-content: space-between;
-
-      gap: 25px;
-
-      margin-bottom: 38px;
-    }
-
-    .store-heading-left {
-      max-width: 680px;
-    }
-
-    .eyebrow {
-      display: inline-block;
-
-      margin-bottom: 10px;
-
-      color: #2563eb;
-
-      font-size: 12px;
-      font-weight: 850;
-
-      letter-spacing: 1.2px;
-
-      text-transform: uppercase;
-    }
-
-    .store-heading h2 {
-      font-size: clamp(32px, 4vw, 46px);
-
-      line-height: 1.1;
-
-      letter-spacing: -1.8px;
-
-      color: #101827;
-
-      margin-bottom: 12px;
-    }
-
-    .store-heading p {
-      color: #6b7280;
-
-      font-size: 15px;
-    }
-
-    .store-trust {
-      display: flex;
-
-      flex-wrap: wrap;
-
-      justify-content: flex-end;
-
-      gap: 8px;
-    }
-
-    .trust-pill {
-      display: inline-flex;
-
-      align-items: center;
-
-      gap: 7px;
-
-      padding: 9px 12px;
-
-      border: 1px solid #e2e8f0;
-
-      border-radius: 999px;
-
-      background: #f8fafc;
-
-      color: #475569;
-
-      font-size: 12px;
-      font-weight: 750;
-
-      white-space: nowrap;
-    }
-
-    /* =========================================
-       PROFESSIONAL STORE CARDS
-    ========================================= */
-
-    .store-grid {
-      display: grid;
-
-      grid-template-columns:
-        repeat(3, minmax(0, 1fr));
-
-      gap: 28px;
-
-      max-width: 1160px;
-
-      margin: auto;
-    }
-
-    .store-card {
-      position: relative;
-
-      overflow: hidden;
-
-      min-width: 0;
-
-      background: #fff;
-
-      border: 1px solid #e3e8ef;
-
-      border-radius: 24px;
-
-      box-shadow:
-        0 12px 32px rgba(15, 23, 42, 0.06);
-
-      transition:
-        transform 0.25s ease,
-        box-shadow 0.25s ease,
-        border-color 0.25s ease;
-    }
-
-    .store-card:hover {
-      transform: translateY(-7px);
-
-      border-color: #cbd5e1;
-
-      box-shadow:
-        0 25px 55px rgba(15, 23, 42, 0.12);
-    }
-
-    .store-image-wrap {
-      position: relative;
-
-      padding: 18px;
-
-      background:
-        linear-gradient(
-          145deg,
-          #f8fafc,
-          #eef2f7
-        );
-    }
-
-    .store-image {
-      width: 100%;
-
-      aspect-ratio: 4 / 3;
-
-      object-fit: contain;
-
-      display: block;
-
-      border-radius: 16px;
-
-      background: #fff;
-
-      box-shadow:
-        0 10px 25px rgba(15, 23, 42, 0.08);
-    }
-
-    .demo-badge {
-      position: absolute;
-
-      top: 30px;
-      left: 30px;
-
-      padding: 6px 9px;
-
-      border-radius: 7px;
-
-      background: #111827;
-
-      color: #fff;
-
-      font-size: 9px;
-      font-weight: 850;
-
-      letter-spacing: 0.8px;
-    }
-
-    .book-number {
-      position: absolute;
-
-      top: 30px;
-      right: 30px;
-
-      padding: 6px 9px;
-
-      border-radius: 7px;
-
-      background: rgba(255,255,255,0.94);
-
-      color: #334155;
-
-      font-size: 10px;
-      font-weight: 850;
-
-      border: 1px solid #e2e8f0;
-    }
-
-    .store-body {
-      padding: 23px;
-    }
-
-    .store-body h3 {
-      font-size: 20px;
-
-      line-height: 1.25;
-
-      color: #111827;
-
-      margin-bottom: 7px;
-    }
-
-    .store-subtitle {
-      min-height: 42px;
-
-      color: #737e8e;
-
-      font-size: 13px;
-
-      margin-bottom: 17px;
-    }
-
-    .store-price-row {
-      display: flex;
-
-      align-items: end;
 
       justify-content: space-between;
 
-      gap: 15px;
-
-      margin-bottom: 17px;
     }
 
-    .price-label {
-      display: block;
+ 
 
-      color: #8a94a4;
+    .logo {
 
-      font-size: 10px;
-      font-weight: 800;
-
-      letter-spacing: 0.8px;
-
-      text-transform: uppercase;
-
-      margin-bottom: 2px;
-    }
-
-    .store-price {
-      font-size: 26px;
-
-      font-weight: 900;
-
-      letter-spacing: -0.8px;
-
-      color: #111827;
-    }
-
-    .benefits {
-      display: flex;
-
-      flex-wrap: wrap;
-
-      gap: 7px;
-
-      margin-bottom: 20px;
-    }
-
-    .benefit {
-      display: inline-flex;
-
-      align-items: center;
-
-      gap: 5px;
-
-      padding: 7px 9px;
-
-      border-radius: 8px;
-
-      background: #f5f7fa;
-
-      color: #526071;
-
-      font-size: 10px;
-      font-weight: 750;
-    }
-
-    .buy-btn {
-      width: 100%;
-
-      min-height: 49px;
-
-      border: 0;
-
-      border-radius: 12px;
-
-      background: #111827;
-
-      color: #fff;
-
-      font-size: 14px;
-      font-weight: 800;
-
-      cursor: pointer;
-
-      transition: 0.2s ease;
-    }
-
-    .buy-btn:hover {
-      background: #2563eb;
-
-      transform: translateY(-1px);
-    }
-
-    /* =========================================
-       ORDER AREA
-    ========================================= */
-
-    .order-area {
-      display: none;
-
-      margin-top: 38px;
-
-      padding: 30px;
-
-      border-radius: 24px;
-
-      background: #f8fafc;
-
-      border: 1px solid #dfe6ef;
-    }
-
-    .order-area.active {
-      display: block;
-
-      animation: fadeUp 0.25s ease;
-    }
-
-    @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(8px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .order-header {
-      display: flex;
-
-      align-items: center;
-      justify-content: space-between;
-
-      gap: 15px;
-
-      margin-bottom: 25px;
-    }
-
-    .order-header h3 {
       font-size: 24px;
 
+      font-weight: 800;
+
       color: #111827;
+
     }
 
-    .close-order {
-      width: 38px;
-      height: 38px;
+ 
 
-      border: 1px solid #dce3eb;
+    .logo span {
 
-      background: #fff;
+      color: #2563eb;
+
+    }
+
+ 
+
+    .nav-links {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 24px;
+
+    }
+
+ 
+
+    .nav-links a {
+
+      font-size: 15px;
+
+      font-weight: 600;
+
+      color: #4b5563;
+
+    }
+
+ 
+
+    .nav-links a:hover {
+
+      color: #2563eb;
+
+    }
+
+ 
+
+    .login-btn {
+
+      background: #2563eb;
+
+      color: #fff !important;
+
+      padding: 10px 18px;
 
       border-radius: 10px;
 
-      cursor: pointer;
-
-      font-size: 18px;
-
-      color: #64748b;
     }
 
-    .order-grid {
-      display: grid;
+ 
 
-      grid-template-columns: 1.2fr 0.8fr;
+    /* =========================
 
-      gap: 25px;
+       HERO
+
+    ========================= */
+
+ 
+
+    .hero {
+
+      background: linear-gradient(135deg, #eff6ff, #ffffff);
+
+      min-height: 580px;
+
+      display: flex;
+
+      align-items: center;
+
+      overflow: hidden;
+
     }
 
-    .form-card,
-    .summary-card {
-      background: #fff;
+ 
 
-      border: 1px solid #e2e8f0;
+    .hero-inner {
 
-      border-radius: 18px;
+      width: 100%;
 
-      padding: 23px;
-    }
+      max-width: 1200px;
 
-    .form-grid {
+      margin: auto;
+
+      padding: 70px 22px;
+
       display: grid;
 
       grid-template-columns: 1fr 1fr;
 
-      gap: 15px;
+      gap: 40px;
+
+      align-items: center;
+
     }
 
-    .form-group {
-      margin-bottom: 15px;
+ 
+
+    .hero-text h1 {
+
+      font-size: clamp(42px, 6vw, 68px);
+
+      line-height: 1.05;
+
+      margin-bottom: 20px;
+
+      color: #111827;
+
     }
 
-    .form-group.full {
-      grid-column: 1 / -1;
+ 
+
+    .hero-text h1 span {
+
+      color: #2563eb;
+
     }
 
-    .form-group label {
-      display: block;
+ 
 
-      margin-bottom: 7px;
+    .hero-text p {
 
-      color: #344054;
+      max-width: 560px;
 
-      font-size: 12px;
-      font-weight: 750;
+      font-size: 18px;
+
+      color: #6b7280;
+
+      margin-bottom: 28px;
+
     }
 
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-      width: 100%;
+ 
 
-      border: 1px solid #d9e1eb;
+    .hero-btn {
 
-      background: #fff;
+      display: inline-block;
 
-      border-radius: 10px;
+      background: #2563eb;
 
-      padding: 12px 13px;
+      color: #fff;
 
-      outline: none;
+      padding: 14px 24px;
 
-      color: #172033;
+      border-radius: 12px;
 
-      font-size: 13px;
+      font-weight: 700;
 
-      transition: 0.2s ease;
+      box-shadow: 0 10px 25px rgba(37, 99, 235, .18);
+
     }
 
-    .form-group textarea {
-      min-height: 100px;
+ 
 
-      resize: vertical;
+    .hero-books {
+
+      position: relative;
+
+      height: 400px;
+
+      display: flex;
+
+      justify-content: center;
+
+      align-items: center;
+
     }
 
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus {
-      border-color: #2563eb;
+ 
 
-      box-shadow:
-        0 0 0 3px rgba(37, 99, 235, 0.08);
-    }
+    .hero-slide {
 
-    /* =========================================
-       BANK DETAILS
-    ========================================= */
+      position: absolute;
 
-    .payment-box {
-      padding: 17px;
+      width: 245px;
 
-      border: 1px solid #dbe4ef;
+      height: 330px;
+
+      object-fit: cover;
 
       border-radius: 14px;
 
-      background:
-        linear-gradient(
-          135deg,
-          #f8fbff,
-          #f1f6fc
-        );
+      box-shadow: 0 25px 55px rgba(0,0,0,.18);
+
+      opacity: 0;
+
+      transform: translateY(30px) scale(.92) rotate(-3deg);
+
+      transition: all .7s ease;
+
     }
 
-    .payment-title {
+ 
+
+    .hero-slide.active {
+
+      opacity: 1;
+
+      transform: translateY(0) scale(1) rotate(0deg);
+
+    }
+
+ 
+
+    .hero-dots {
+
+      position: absolute;
+
+      bottom: 0;
+
       display: flex;
+
+      gap: 8px;
+
+    }
+
+ 
+
+    .hero-dot {
+
+      width: 9px;
+
+      height: 9px;
+
+      background: #cbd5e1;
+
+      border-radius: 50%;
+
+    }
+
+ 
+
+    .hero-dot.active {
+
+      background: #2563eb;
+
+    }
+
+ 
+
+    /* =========================
+
+       GENERAL
+
+    ========================= */
+
+ 
+
+    .section {
+
+      max-width: 1200px;
+
+      margin: auto;
+
+      padding: 80px 22px;
+
+    }
+
+ 
+
+    .section-title {
+
+      text-align: center;
+
+      margin-bottom: 45px;
+
+    }
+
+ 
+
+    .section-title h2 {
+
+      font-size: 36px;
+
+      margin-bottom: 8px;
+
+      color: #111827;
+
+    }
+
+ 
+
+    .section-title p {
+
+      color: #6b7280;
+
+    }
+
+ 
+
+    /* =========================
+
+       ONLINE STORE
+
+    ========================= */
+
+ 
+
+    #store {
+
+      background: #ffffff;
+
+    }
+
+ 
+
+    .store-benefits {
+
+      display: flex;
+
+      justify-content: center;
+
+      flex-wrap: wrap;
+
+      gap: 12px;
+
+      margin-bottom: 35px;
+
+    }
+
+ 
+
+    .benefit {
+
+      background: #eff6ff;
+
+      color: #1d4ed8;
+
+      padding: 9px 15px;
+
+      border-radius: 999px;
+
+      font-size: 13px;
+
+      font-weight: 700;
+
+    }
+
+ 
+
+    .products {
+
+      display: grid;
+
+      grid-template-columns: repeat(3, 1fr);
+
+      gap: 25px;
+
+    }
+
+ 
+
+    .product-card {
+
+      background: #fff;
+
+      border: 1px solid #e5e7eb;
+
+      border-radius: 18px;
+
+      overflow: hidden;
+
+      box-shadow: 0 10px 30px rgba(0,0,0,.06);
+
+      transition: transform .25s ease, box-shadow .25s ease;
+
+    }
+
+ 
+
+    .product-card:hover {
+
+      transform: translateY(-6px);
+
+      box-shadow: 0 18px 40px rgba(0,0,0,.10);
+
+    }
+
+ 
+
+    .product-image {
+
+      height: 320px;
+
+      background: #f3f4f6;
+
+      display: flex;
+
+      justify-content: center;
 
       align-items: center;
 
-      gap: 9px;
+      padding: 20px;
+
+    }
+
+ 
+
+    .product-image img {
+
+      max-height: 280px;
+
+      max-width: 90%;
+
+      object-fit: contain;
+
+      border-radius: 8px;
+
+    }
+
+ 
+
+    .product-content {
+
+      padding: 22px;
+
+    }
+
+ 
+
+    .demo-label {
+
+      display: inline-block;
+
+      background: #fff7ed;
+
+      color: #c2410c;
+
+      padding: 5px 9px;
+
+      border-radius: 6px;
+
+      font-size: 11px;
+
+      font-weight: 800;
+
+      margin-bottom: 10px;
+
+    }
+
+ 
+
+    .product-content h3 {
+
+      font-size: 21px;
+
+      margin-bottom: 5px;
+
+    }
+
+ 
+
+    .product-content p {
+
+      color: #6b7280;
+
+      min-height: 48px;
 
       margin-bottom: 14px;
 
-      font-size: 14px;
+    }
 
-      font-weight: 850;
+ 
+
+    .price {
+
+      font-size: 26px;
+
+      font-weight: 800;
 
       color: #111827;
+
+      margin-bottom: 17px;
+
     }
 
-    .bank-details {
+ 
+
+    .buy-btn {
+
+      width: 100%;
+
+      border: none;
+
+      background: #2563eb;
+
+      color: #fff;
+
+      padding: 13px;
+
+      border-radius: 10px;
+
+      cursor: pointer;
+
+      font-weight: 800;
+
+    }
+
+ 
+
+    .buy-btn:hover {
+
+      background: #1d4ed8;
+
+    }
+
+ 
+
+    /* =========================
+
+       COLLECTION
+
+    ========================= */
+
+ 
+
+    .collection {
+
+      background: #f7f8fa;
+
+    }
+
+ 
+
+    .collection-grid {
+
       display: grid;
 
-      gap: 8px;
+      grid-template-columns: repeat(3, 1fr);
+
+      gap: 25px;
+
     }
 
+ 
+
+    .collection-card {
+
+      background: #fff;
+
+      border-radius: 16px;
+
+      padding: 18px;
+
+      border: 1px solid #e5e7eb;
+
+    }
+
+ 
+
+    .collection-card img {
+
+      width: 100%;
+
+      height: 300px;
+
+      object-fit: contain;
+
+      background: #f3f4f6;
+
+      border-radius: 10px;
+
+      margin-bottom: 15px;
+
+    }
+
+ 
+
+    .collection-card h3 {
+
+      font-size: 21px;
+
+      margin-bottom: 4px;
+
+    }
+
+ 
+
+    .collection-card p {
+
+      color: #6b7280;
+
+    }
+
+ 
+
+    /* =========================
+
+       ORDER MODAL
+
+    ========================= */
+
+ 
+
+    .modal-overlay {
+
+      position: fixed;
+
+      inset: 0;
+
+      background: rgba(15, 23, 42, .68);
+
+      z-index: 2000;
+
+      display: none;
+
+      overflow-y: auto;
+
+      padding: 25px 15px;
+
+    }
+
+ 
+
+    .modal-overlay.show {
+
+      display: block;
+
+    }
+
+ 
+
+    .modal {
+
+      max-width: 760px;
+
+      margin: 20px auto;
+
+      background: #fff;
+
+      border-radius: 20px;
+
+      overflow: hidden;
+
+      box-shadow: 0 30px 80px rgba(0,0,0,.25);
+
+    }
+
+ 
+
+    .modal-header {
+
+      padding: 22px 25px;
+
+      border-bottom: 1px solid #e5e7eb;
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+
+    }
+
+ 
+
+    .modal-header h2 {
+
+      font-size: 24px;
+
+    }
+
+ 
+
+    .close-btn {
+
+      border: none;
+
+      background: #f3f4f6;
+
+      width: 38px;
+
+      height: 38px;
+
+      border-radius: 50%;
+
+      cursor: pointer;
+
+      font-size: 20px;
+
+    }
+
+ 
+
+    .modal-body {
+
+      padding: 25px;
+
+    }
+
+ 
+
+    .selected-book {
+
+      display: flex;
+
+      gap: 15px;
+
+      padding: 15px;
+
+      background: #f8fafc;
+
+      border: 1px solid #e5e7eb;
+
+      border-radius: 12px;
+
+      margin-bottom: 25px;
+
+      align-items: center;
+
+    }
+
+ 
+
+    .selected-book img {
+
+      width: 75px;
+
+      height: 95px;
+
+      object-fit: contain;
+
+      border-radius: 7px;
+
+      background: #fff;
+
+    }
+
+ 
+
+    .selected-book h3 {
+
+      margin-bottom: 4px;
+
+    }
+
+ 
+
+    .selected-price {
+
+      font-weight: 800;
+
+      color: #2563eb;
+
+    }
+
+ 
+
+    .form-grid {
+
+      display: grid;
+
+      grid-template-columns: 1fr 1fr;
+
+      gap: 17px;
+
+    }
+
+ 
+
+    .form-group {
+
+      margin-bottom: 17px;
+
+    }
+
+ 
+
+    .form-group.full {
+
+      grid-column: 1 / -1;
+
+    }
+
+ 
+
+    .form-group label {
+
+      display: block;
+
+      font-weight: 700;
+
+      font-size: 14px;
+
+      margin-bottom: 7px;
+
+    }
+
+ 
+
+    .form-group input,
+
+    .form-group select,
+
+    .form-group textarea {
+
+      width: 100%;
+
+      border: 1px solid #d1d5db;
+
+      border-radius: 9px;
+
+      padding: 12px;
+
+      outline: none;
+
+      background: #fff;
+
+    }
+
+ 
+
+    .form-group input:focus,
+
+    .form-group select:focus,
+
+    .form-group textarea:focus {
+
+      border-color: #2563eb;
+
+      box-shadow: 0 0 0 3px rgba(37,99,235,.10);
+
+    }
+
+ 
+
+    .form-group textarea {
+
+      min-height: 90px;
+
+      resize: vertical;
+
+    }
+
+ 
+
+    .payment-box {
+
+      background: #eff6ff;
+
+      border: 1px solid #bfdbfe;
+
+      padding: 18px;
+
+      border-radius: 12px;
+
+      margin: 5px 0 20px;
+
+    }
+
+ 
+
+    .payment-box h3 {
+
+      margin-bottom: 10px;
+
+      color: #1d4ed8;
+
+    }
+
+ 
+
     .bank-row {
+
+      display: flex;
+
+      justify-content: space-between;
+
+      border-bottom: 1px solid #dbeafe;
+
+      padding: 7px 0;
+
+      gap: 20px;
+
+    }
+
+ 
+
+    .bank-row:last-child {
+
+      border-bottom: none;
+
+    }
+
+ 
+
+    .bank-row span:first-child {
+
+      color: #64748b;
+
+    }
+
+ 
+
+    .bank-row span:last-child {
+
+      font-weight: 700;
+
+      text-align: right;
+
+    }
+
+ 
+
+    .upload-box {
+
+      border: 2px dashed #cbd5e1;
+
+      border-radius: 12px;
+
+      padding: 20px;
+
+      text-align: center;
+
+      margin-bottom: 20px;
+
+      background: #f8fafc;
+
+    }
+
+ 
+
+    .upload-box input {
+
+      margin-top: 10px;
+
+    }
+
+ 
+
+    .upload-note {
+
+      font-size: 12px;
+
+      color: #64748b;
+
+      margin-top: 8px;
+
+    }
+
+ 
+
+    .order-total {
+
+      background: #111827;
+
+      color: #fff;
+
+      border-radius: 12px;
+
+      padding: 18px;
+
+      margin-top: 20px;
+
+    }
+
+ 
+
+    .total-line {
+
+      display: flex;
+
+      justify-content: space-between;
+
+      margin: 6px 0;
+
+    }
+
+ 
+
+    .total-final {
+
+      border-top: 1px solid #374151;
+
+      margin-top: 10px;
+
+      padding-top: 12px;
+
+      font-size: 21px;
+
+      font-weight: 800;
+
+    }
+
+ 
+
+    .submit-order {
+
+      width: 100%;
+
+      border: none;
+
+      background: #16a34a;
+
+      color: #fff;
+
+      padding: 15px;
+
+      border-radius: 11px;
+
+      cursor: pointer;
+
+      font-weight: 800;
+
+      font-size: 16px;
+
+      margin-top: 20px;
+
+    }
+
+ 
+
+    .submit-order:hover {
+
+      background: #15803d;
+
+    }
+
+ 
+
+    /* =========================
+
+       CONFIRMATION
+
+    ========================= */
+
+ 
+
+    .confirmation {
+
+      display: none;
+
+      padding: 30px 25px;
+
+    }
+
+ 
+
+    .confirmation.show {
+
+      display: block;
+
+    }
+
+ 
+
+    .success-icon {
+
+      width: 70px;
+
+      height: 70px;
+
+      border-radius: 50%;
+
+      background: #dcfce7;
+
+      color: #16a34a;
+
       display: flex;
 
       align-items: center;
+
+      justify-content: center;
+
+      font-size: 36px;
+
+      margin: 0 auto 18px;
+
+    }
+
+ 
+
+    .confirmation h2 {
+
+      text-align: center;
+
+      font-size: 28px;
+
+      margin-bottom: 7px;
+
+    }
+
+ 
+
+    .confirmation-subtitle {
+
+      text-align: center;
+
+      color: #64748b;
+
+      margin-bottom: 25px;
+
+    }
+
+ 
+
+    .order-number {
+
+      text-align: center;
+
+      background: #eff6ff;
+
+      color: #1d4ed8;
+
+      border-radius: 10px;
+
+      padding: 12px;
+
+      font-weight: 800;
+
+      margin-bottom: 20px;
+
+    }
+
+ 
+
+    .confirmation-card {
+
+      border: 1px solid #e5e7eb;
+
+      border-radius: 14px;
+
+      overflow: hidden;
+
+      margin-bottom: 20px;
+
+    }
+
+ 
+
+    .confirmation-row {
+
+      display: flex;
 
       justify-content: space-between;
 
       gap: 20px;
 
-      padding: 9px 0;
+      padding: 13px 16px;
 
-      border-bottom: 1px solid #e5ebf2;
+      border-bottom: 1px solid #e5e7eb;
 
-      font-size: 12px;
     }
 
-    .bank-row:last-child {
-      border-bottom: 0;
+ 
+
+    .confirmation-row:last-child {
+
+      border-bottom: none;
+
     }
 
-    .bank-label {
-      color: #778294;
+ 
+
+    .confirmation-row span:first-child {
+
+      color: #64748b;
+
     }
 
-    .bank-value {
-      color: #172033;
+ 
 
-      font-weight: 800;
+    .confirmation-row span:last-child {
+
+      font-weight: 700;
 
       text-align: right;
+
     }
 
-    .demo-bank-note {
-      margin-top: 12px;
+ 
 
-      padding: 9px 11px;
+    .status-box {
 
-      border-radius: 9px;
+      background: #fffbeb;
 
-      background: #fff7ed;
-
-      border: 1px solid #fed7aa;
-
-      color: #9a3412;
-
-      font-size: 10px;
-
-      line-height: 1.5;
-    }
-
-    /* =========================================
-       SLIP UPLOAD
-    ========================================= */
-
-    .upload-box {
-      position: relative;
-
-      display: block;
-
-      border: 1.5px dashed #cbd5e1;
-
-      border-radius: 14px;
-
-      background: #f8fafc;
-
-      padding: 20px;
-
-      text-align: center;
-
-      cursor: pointer;
-
-      transition: 0.2s ease;
-    }
-
-    .upload-box:hover {
-      border-color: #2563eb;
-
-      background: #f5f8ff;
-    }
-
-    .upload-box.has-file {
-      border-color: #16a34a;
-
-      background: #f0fdf4;
-    }
-
-    .upload-icon {
-      font-size: 27px;
-
-      margin-bottom: 5px;
-    }
-
-    .upload-title {
-      color: #172033;
-
-      font-size: 13px;
-
-      font-weight: 800;
-
-      margin-bottom: 3px;
-    }
-
-    .upload-help {
-      color: #7a8697;
-
-      font-size: 10px;
-    }
-
-    #bankSlip {
-      position: absolute;
-
-      width: 1px;
-      height: 1px;
-
-      opacity: 0;
-
-      pointer-events: none;
-    }
-
-    .slip-file-name {
-      display: none;
-
-      margin-top: 10px;
-
-      color: #15803d;
-
-      font-size: 11px;
-
-      font-weight: 750;
-
-      word-break: break-word;
-    }
-
-    .upload-box.has-file .slip-file-name {
-      display: block;
-    }
-
-    /* =========================================
-       ORDER SUMMARY
-    ========================================= */
-
-    .summary-card h4 {
-      font-size: 16px;
-
-      margin-bottom: 20px;
-    }
-
-    .summary-row {
-      display: flex;
-
-      align-items: center;
-      justify-content: space-between;
-
-      gap: 15px;
-
-      padding: 11px 0;
-
-      border-bottom: 1px solid #edf1f5;
-
-      font-size: 13px;
-    }
-
-    .summary-row span:first-child {
-      color: #6b7280;
-    }
-
-    .summary-row span:last-child {
-      color: #172033;
-
-      font-weight: 750;
-
-      text-align: right;
-    }
-
-    .summary-total {
-      display: flex;
-
-      align-items: center;
-      justify-content: space-between;
-
-      margin-top: 18px;
-
-      padding-top: 17px;
-
-      border-top: 2px solid #111827;
-    }
-
-    .summary-total span:first-child {
-      font-size: 14px;
-
-      font-weight: 800;
-    }
-
-    .summary-total span:last-child {
-      font-size: 25px;
-
-      font-weight: 900;
-
-      color: #111827;
-    }
-
-    /* =========================================
-       SLIP PREVIEW
-    ========================================= */
-
-    .summary-slip {
-      display: none;
-
-      margin-top: 18px;
-
-      padding-top: 17px;
-
-      border-top: 1px solid #e5eaf0;
-    }
-
-    .summary-slip.active {
-      display: block;
-    }
-
-    .summary-slip-title {
-      display: flex;
-
-      align-items: center;
-      justify-content: space-between;
-
-      margin-bottom: 10px;
-
-      font-size: 12px;
-
-      font-weight: 800;
-
-      color: #344054;
-    }
-
-    .summary-slip-preview {
-      width: 100%;
-
-      max-height: 230px;
-
-      object-fit: contain;
-
-      display: block;
-
-      border-radius: 10px;
-
-      border: 1px solid #dfe5ed;
-
-      background: #f8fafc;
-    }
-
-    .summary-slip-file {
-      margin-top: 7px;
-
-      color: #667085;
-
-      font-size: 10px;
-
-      word-break: break-word;
-    }
-
-    .pdf-preview-note {
-      display: none;
-
-      padding: 20px;
-
-      border-radius: 10px;
-
-      border: 1px solid #dfe5ed;
-
-      background: #f8fafc;
-
-      color: #667085;
-
-      font-size: 12px;
-
-      text-align: center;
-    }
-
-    /* =========================================
-       WHATSAPP ORDER
-    ========================================= */
-
-    .whatsapp-order-btn {
-      width: 100%;
-
-      margin-top: 20px;
-
-      min-height: 51px;
-
-      border: 0;
+      border: 1px solid #fde68a;
 
       border-radius: 12px;
 
-      background: #16a34a;
+      padding: 17px;
 
-      color: #fff;
+      margin-bottom: 20px;
 
-      font-size: 14px;
-      font-weight: 850;
-
-      cursor: pointer;
-
-      transition: 0.2s ease;
     }
 
-    .whatsapp-order-btn:hover {
-      background: #12823d;
+ 
 
-      transform: translateY(-1px);
-    }
-
-    .order-note {
-      margin-top: 11px;
-
-      color: #8a94a4;
-
-      font-size: 10px;
-
-      line-height: 1.5;
-
-      text-align: center;
-    }
-
-    /* =========================================
-       COLLECTION
-    ========================================= */
-
-    .collection-section {
-      background: #f7f9fc;
-    }
-
-    .section {
-      max-width: 1200px;
-
-      margin: auto;
-
-      padding: 85px 22px;
-    }
-
-    .section-heading {
-      max-width: 720px;
-
-      margin: 0 auto 45px;
-
-      text-align: center;
-    }
-
-    .section-heading h2 {
-      font-size: clamp(30px, 4vw, 45px);
-
-      line-height: 1.1;
-
-      letter-spacing: -1.6px;
-
-      color: #111827;
-
-      margin-bottom: 13px;
-    }
-
-    .section-heading p {
-      color: #697586;
-
-      font-size: 15px;
-    }
-
-    .collection-grid {
-      display: grid;
-
-      grid-template-columns:
-        repeat(3, minmax(0, 1fr));
-
-      gap: 24px;
-    }
-
-    .collection-card {
-      overflow: hidden;
-
-      border: 1px solid #e2e8f0;
-
-      border-radius: 20px;
-
-      background: #fff;
-
-      box-shadow:
-        0 10px 28px rgba(15, 23, 42, 0.05);
-
-      transition: 0.25s ease;
-    }
-
-    .collection-card:hover {
-      transform: translateY(-5px);
-
-      box-shadow:
-        0 20px 42px rgba(15, 23, 42, 0.09);
-    }
-
-    .collection-image {
-      width: 100%;
-
-      height: 310px;
-
-      object-fit: contain;
+    .status-box strong {
 
       display: block;
 
-      background: #f2f5f9;
-
-      padding: 20px;
-    }
-
-    .collection-body {
-      padding: 22px;
-    }
-
-    .collection-tag {
-      display: inline-block;
-
-      margin-bottom: 9px;
-
-      color: #2563eb;
-
-      font-size: 10px;
-      font-weight: 850;
-
-      letter-spacing: 0.9px;
-
-      text-transform: uppercase;
-    }
-
-    .collection-body h3 {
-      font-size: 19px;
-
-      line-height: 1.3;
+      color: #a16207;
 
       margin-bottom: 4px;
+
     }
 
-    .collection-body p {
-      color: #697586;
+ 
 
-      font-size: 13px;
-    }
+    .whatsapp-order {
 
-    /* =========================================
-       LOGIN CTA
-    ========================================= */
+      width: 100%;
 
-    .login-section {
-      padding: 80px 22px;
-
-      background: #111827;
-
-      color: #fff;
-    }
-
-    .login-container {
-      max-width: 1050px;
-
-      margin: auto;
+      display: block;
 
       text-align: center;
-    }
-
-    .login-container h2 {
-      font-size: clamp(30px, 4vw, 44px);
-
-      letter-spacing: -1.5px;
-
-      margin-bottom: 13px;
-    }
-
-    .login-container p {
-      max-width: 600px;
-
-      margin: 0 auto 27px;
-
-      color: #aeb7c6;
-
-      font-size: 14px;
-    }
-
-    .login-button {
-      display: inline-flex;
-
-      align-items: center;
-      justify-content: center;
-
-      min-height: 48px;
-
-      padding: 0 22px;
-
-      border-radius: 11px;
-
-      background: #fff;
-
-      color: #111827;
-
-      font-size: 14px;
-      font-weight: 800;
-
-      transition: 0.2s ease;
-    }
-
-    .login-button:hover {
-      transform: translateY(-2px);
-
-      background: #eaf0f8;
-    }
-
-    /* =========================================
-       FOOTER
-    ========================================= */
-
-    footer {
-      background: #0b101a;
-
-      color: #fff;
-
-      padding: 45px 22px 25px;
-    }
-
-    .footer-container {
-      max-width: 1200px;
-
-      margin: auto;
-    }
-
-    .footer-main {
-      display: flex;
-
-      align-items: flex-start;
-      justify-content: space-between;
-
-      gap: 30px;
-
-      padding-bottom: 30px;
-    }
-
-    .footer-brand {
-      font-size: 18px;
-
-      font-weight: 850;
-
-      margin-bottom: 8px;
-    }
-
-    .footer-text {
-      max-width: 430px;
-
-      color: #8994a5;
-
-      font-size: 12px;
-    }
-
-    .footer-links {
-      display: flex;
-
-      flex-wrap: wrap;
-
-      gap: 15px;
-
-      color: #aab3c1;
-
-      font-size: 12px;
-    }
-
-    .footer-links a:hover {
-      color: #fff;
-    }
-
-    .copyright {
-      border-top: 1px solid #202735;
-
-      padding-top: 20px;
-
-      color: #6f7b8d;
-
-      font-size: 11px;
-
-      text-align: center;
-    }
-
-    /* =========================================
-       FLOATING WHATSAPP
-    ========================================= */
-
-    .whatsapp-float {
-      position: fixed;
-
-      right: 22px;
-      bottom: 22px;
-
-      z-index: 2000;
-
-      display: flex;
-
-      align-items: center;
-
-      gap: 10px;
-
-      min-height: 52px;
-
-      padding: 0 18px 0 14px;
-
-      border-radius: 999px;
 
       background: #25d366;
 
       color: #fff;
 
-      box-shadow:
-        0 14px 35px rgba(15, 23, 42, 0.20);
+      padding: 14px;
 
-      font-size: 13px;
+      border-radius: 10px;
+
       font-weight: 800;
 
-      transition: 0.25s ease;
+      margin-bottom: 10px;
+
     }
 
-    .whatsapp-float:hover {
-      transform: translateY(-4px);
+ 
 
-      background: #1ebe5d;
+    .new-order {
 
-      box-shadow:
-        0 18px 42px rgba(15, 23, 42, 0.25);
+      width: 100%;
+
+      border: 1px solid #d1d5db;
+
+      background: #fff;
+
+      padding: 13px;
+
+      border-radius: 10px;
+
+      cursor: pointer;
+
+      font-weight: 700;
+
     }
 
-    .whatsapp-icon {
-      width: 28px;
-      height: 28px;
+ 
 
-      flex-shrink: 0;
+    /* =========================
+
+       WHATSAPP FLOAT
+
+    ========================= */
+
+ 
+
+    .whatsapp-float {
+
+      position: fixed;
+
+      right: 20px;
+
+      bottom: 20px;
+
+      z-index: 1500;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 9px;
+
+      background: #25d366;
+
+      color: #fff;
+
+      padding: 13px 18px;
+
+      border-radius: 999px;
+
+      font-weight: 800;
+
+      box-shadow: 0 12px 30px rgba(0,0,0,.20);
+
     }
 
-    .whatsapp-tooltip {
-      position: absolute;
+ 
 
-      right: 0;
+    .whatsapp-float svg {
 
-      bottom: calc(100% + 10px);
+      width: 22px;
 
-      width: max-content;
+      height: 22px;
 
-      padding: 9px 12px;
+      fill: currentColor;
 
-      border-radius: 9px;
+    }
+
+ 
+
+    /* =========================
+
+       FOOTER
+
+    ========================= */
+
+ 
+
+    footer {
 
       background: #111827;
 
       color: #fff;
 
-      font-size: 11px;
-      font-weight: 700;
+      text-align: center;
 
-      opacity: 0;
+      padding: 35px 20px;
 
-      pointer-events: none;
-
-      transform: translateY(5px);
-
-      transition: 0.2s ease;
     }
 
-    .whatsapp-float:hover .whatsapp-tooltip {
-      opacity: 1;
+ 
 
-      transform: translateY(0);
+    footer p {
+
+      color: #9ca3af;
+
+      font-size: 14px;
+
     }
 
-    /* =========================================
+ 
+
+    /* =========================
+
        RESPONSIVE
-    ========================================= */
 
-    @media (max-width: 1000px) {
+    ========================= */
 
-      .hero-container {
+ 
+
+    @media (max-width: 850px) {
+
+      .hero-inner {
+
         grid-template-columns: 1fr;
+
         text-align: center;
+
       }
 
-      .hero p {
+ 
+
+      .hero-text p {
+
         margin-left: auto;
+
         margin-right: auto;
+
       }
 
-      .hero-buttons {
-        justify-content: center;
+ 
+
+      .hero-books {
+
+        height: 360px;
+
       }
 
-      .hero-visual {
-        min-height: 490px;
-      }
+ 
 
-      .store-heading {
-        flex-direction: column;
-        align-items: flex-start;
-      }
+      .products,
 
-      .store-trust {
-        justify-content: flex-start;
-      }
-
-      .store-grid,
       .collection-grid {
-        grid-template-columns:
-          repeat(2, minmax(0, 1fr));
-      }
 
-      .order-grid {
         grid-template-columns: 1fr;
-      }
-    }
 
-    @media (max-width: 700px) {
-
-      .nav-container {
-        min-height: 65px;
       }
 
-      .brand {
-        font-size: 17px;
-      }
+ 
 
-      .brand-icon {
-        width: 37px;
-        height: 37px;
-      }
+      .product-card {
 
-      .nav-links {
-        gap: 2px;
-      }
+        max-width: 500px;
 
-      .nav-links a {
-        padding: 8px;
-
-        font-size: 11px;
-      }
-
-      .hero-container {
-        min-height: auto;
-
-        padding:
-          65px 18px 55px;
-      }
-
-      .hero h1 {
-        font-size: 43px;
-
-        letter-spacing: -2px;
-      }
-
-      .hero p {
-        font-size: 15px;
-      }
-
-      .hero-visual {
-        min-height: 430px;
-      }
-
-      .hero-carousel {
-        width: min(330px, 78vw);
-
-        height: 390px;
-      }
-
-      .floating-one {
-        right: 0;
-
-        top: 30px;
-      }
-
-      .floating-two {
-        left: 0;
-
-        bottom: 55px;
-      }
-
-      .section,
-      .store-section-inner {
-        padding:
-          65px 18px;
-      }
-
-      .store-grid,
-      .collection-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .store-card {
-        max-width: 430px;
+        margin: auto;
 
         width: 100%;
 
-        margin: auto;
       }
 
-      .store-heading h2 {
-        font-size: 34px;
+    }
+
+ 
+
+    @media (max-width: 600px) {
+
+      .nav {
+
+        min-height: 64px;
+
       }
 
-      .store-heading {
-        margin-bottom: 28px;
+ 
+
+      .logo {
+
+        font-size: 20px;
+
       }
 
-      .order-area {
-        padding: 18px;
+ 
+
+      .nav-links {
+
+        gap: 10px;
+
       }
+
+ 
+
+      .nav-links a:not(.login-btn) {
+
+        display: none;
+
+      }
+
+ 
+
+      .section {
+
+        padding: 60px 15px;
+
+      }
+
+ 
+
+      .section-title h2 {
+
+        font-size: 30px;
+
+      }
+
+ 
+
+      .hero {
+
+        min-height: auto;
+
+      }
+
+ 
+
+      .hero-inner {
+
+        padding: 55px 18px;
+
+      }
+
+ 
+
+      .hero-books {
+
+        height: 330px;
+
+      }
+
+ 
+
+      .hero-slide {
+
+        width: 210px;
+
+        height: 285px;
+
+      }
+
+ 
 
       .form-grid {
+
         grid-template-columns: 1fr;
+
       }
+
+ 
 
       .form-group.full {
+
         grid-column: auto;
+
       }
 
-      .collection-image {
-        height: 330px;
+ 
+
+      .modal-body {
+
+        padding: 18px;
+
       }
 
-      .footer-main {
+ 
+
+      .modal-header {
+
+        padding: 18px;
+
+      }
+
+ 
+
+      .bank-row {
+
         flex-direction: column;
+
+        gap: 2px;
+
       }
+
+ 
+
+      .bank-row span:last-child {
+
+        text-align: left;
+
+      }
+
+ 
 
       .whatsapp-float {
+
         right: 14px;
 
         bottom: 14px;
 
-        min-height: 48px;
+        padding: 13px;
 
-        padding-right: 15px;
-      }
-    }
-
-    @media (max-width: 420px) {
-
-      .nav-links a:first-child {
-        display: none;
-      }
-
-      .hero h1 {
-        font-size: 38px;
-      }
-
-      .hero-buttons {
-        flex-direction: column;
-      }
-
-      .hero-buttons .btn {
-        width: 100%;
-      }
-
-      .hero-carousel {
-        width: 275px;
-
-        height: 360px;
-      }
-
-      .floating-info {
-        font-size: 10px;
-
-        padding: 10px 12px;
-      }
-
-      .store-body {
-        padding: 20px;
-      }
-
-      .bank-row {
-        align-items: flex-start;
-
-        flex-direction: column;
-
-        gap: 2px;
-      }
-
-      .bank-value {
-        text-align: left;
-      }
-
-      .whatsapp-float {
         width: 52px;
+
         height: 52px;
 
-        min-height: 52px;
-
-        padding: 0;
-
         justify-content: center;
+
       }
 
-      .whatsapp-float > span:not(.whatsapp-tooltip) {
+ 
+
+      .whatsapp-float span {
+
         display: none;
+
       }
+
     }
+
   </style>
+
 </head>
 
+ 
 
 <body>
 
+ 
 
-  <!-- =========================================
+  <!-- =========================
+
        NAVBAR
-  ========================================== -->
 
-  <header class="navbar">
+  ========================= -->
 
-    <div class="nav-container">
+ 
 
-      <a href="index.html" class="brand">
+  <header>
 
-        <span class="brand-icon">
-          📚
-        </span>
+    <nav class="nav">
 
-        <span>
-          BookFair Digital
-        </span>
+ 
+
+      <a href="#" class="logo">
+
+        BookFair<span>Digital</span>
 
       </a>
 
+ 
 
-      <nav class="nav-links">
+      <div class="nav-links">
 
-        <a
-          href="#store"
-          class="nav-buy"
-        >
-          🛒 Online Buy
-        </a>
+        <a href="#store">Online Store</a>
 
-        <a href="#collection">
-          Collection
-        </a>
+        <a href="#collection">Collection</a>
 
-        <a href="login.html">
-          Login
-        </a>
+        <a href="login.html" class="login-btn">Student Login</a>
 
-      </nav>
+      </div>
 
-    </div>
+ 
+
+    </nav>
 
   </header>
 
+ 
 
-  <!-- =========================================
+ 
+
+  <!-- =========================
+
        HERO
-  ========================================== -->
+
+  ========================= -->
+
+ 
 
   <section class="hero">
 
-    <div class="hero-container">
+ 
 
+    <div class="hero-inner">
 
-      <div class="hero-content">
+ 
 
-        <div class="hero-badge">
+      <div class="hero-text">
 
-          <span></span>
-
-          Educational Books • BookFair Digital
-
-        </div>
-
+ 
 
         <h1>
 
           Learn Better.<br>
 
-          <strong>
-            Study Smarter.
-          </strong>
+          <span>Study Smarter.</span>
 
         </h1>
 
+ 
 
         <p>
 
-          Quality educational books designed to support
-          students with focused learning, revision and
-          exam preparation.
+          Quality educational books designed to help students
+
+          understand, revise and succeed.
 
         </p>
 
+ 
 
-        <div class="hero-buttons">
+        <a href="#store" class="hero-btn">
 
-          <a
-            href="#store"
-            class="btn btn-primary"
-          >
+          Shop Books →
 
-            🛒 Buy Books
+        </a>
 
-            <span>
-              →
-            </span>
-
-          </a>
-
-
-          <a
-            href="#collection"
-            class="btn btn-secondary"
-          >
-
-            Explore Collection
-
-          </a>
-
-
-          <a
-            href="login.html"
-            class="btn btn-secondary"
-          >
-
-            Student Login
-
-          </a>
-
-        </div>
+ 
 
       </div>
 
+ 
 
-      <!-- HERO BOOK CAROUSEL -->
+      <div class="hero-books">
 
-      <div class="hero-visual">
+ 
 
+        <img
 
-        <div class="floating-info floating-one">
+          class="hero-slide active"
 
-          🚚 FREE DELIVERY
+          src="assets/accounting.jpg"
 
-        </div>
+          alt="Book 01"
 
+        >
 
-        <div class="hero-carousel">
+ 
 
+        <img
 
-          <div
-            class="hero-slide active"
-            data-slide="0"
-          >
+          class="hero-slide"
 
-            <img
-              src="assets/accounting.jpg"
-              alt="Book 01 - A/L Accounting"
-            >
+          src="assets/book-02.jpg"
 
-            <div class="hero-book-label">
-              BOOK 01 · A/L Accounting
-            </div>
+          alt="Book 02"
 
-          </div>
+        >
 
+ 
 
-          <div
-            class="hero-slide"
-            data-slide="1"
-          >
+        <img
 
-            <img
-              src="assets/book-02.jpg"
-              alt="Book 02 - LKAS and SLFRS Part I"
-            >
+          class="hero-slide"
 
-            <div class="hero-book-label">
-              BOOK 02 · LKAS &amp; SLFRS Part-I
-            </div>
+          src="assets/book-03.jpg"
 
-          </div>
+          alt="Book 03"
 
+        >
 
-          <div
-            class="hero-slide"
-            data-slide="2"
-          >
+ 
 
-            <img
-              src="assets/book-03.jpg"
-              alt="Book 03 - LKAS and SLFRS Part II"
-            >
+        <div class="hero-dots">
 
-            <div class="hero-book-label">
-              BOOK 03 · LKAS &amp; SLFRS Part-II
-            </div>
+          <span class="hero-dot active"></span>
 
-          </div>
+          <span class="hero-dot"></span>
 
-
-          <div class="carousel-dots">
-
-            <button
-              class="carousel-dot active"
-              data-index="0"
-              aria-label="Show Book 01"
-            ></button>
-
-            <button
-              class="carousel-dot"
-              data-index="1"
-              aria-label="Show Book 02"
-            ></button>
-
-            <button
-              class="carousel-dot"
-              data-index="2"
-              aria-label="Show Book 03"
-            ></button>
-
-          </div>
-
+          <span class="hero-dot"></span>
 
         </div>
 
-
-        <div class="floating-info floating-two">
-
-          🏦 Bank Deposit
-
-        </div>
-
+ 
 
       </div>
+
+ 
 
     </div>
 
+ 
+
   </section>
 
+ 
 
-  <!-- =========================================
+ 
+
+  <!-- =========================
+
        ONLINE STORE
-  ========================================== -->
 
-  <section
-    id="store"
-    class="store-section"
-  >
+  ========================= -->
 
-    <div class="store-section-inner">
+ 
 
+  <section id="store" class="section">
 
-      <div class="store-heading">
+ 
 
+    <div class="section-title">
 
-        <div class="store-heading-left">
+ 
 
-          <span class="eyebrow">
-            Online Store
-          </span>
+      <h2>Online Store</h2>
 
-
-          <h2>
-            Get Your Books Online
-          </h2>
-
-
-          <p>
-
-            Select your book, enter your delivery details,
-            upload your bank slip and confirm your order
-            through WhatsApp.
-
-          </p>
-
-        </div>
-
-
-        <div class="store-trust">
-
-          <span class="trust-pill">
-            🚚 Free Delivery
-          </span>
-
-          <span class="trust-pill">
-            🏦 Bank Deposit
-          </span>
-
-          <span class="trust-pill">
-            📎 Slip Upload
-          </span>
-
-          <span class="trust-pill">
-            📱 WhatsApp Orders
-          </span>
-
-        </div>
-
-
-      </div>
-
-
-      <!-- PRODUCT CARDS -->
-
-      <div class="store-grid">
-
-
-        <!-- BOOK 01 -->
-
-        <article class="store-card">
-
-          <div class="store-image-wrap">
-
-            <span class="demo-badge">
-              DEMO PRICE
-            </span>
-
-            <span class="book-number">
-              BOOK 01
-            </span>
-
-
-            <img
-              class="store-image"
-              src="assets/accounting.jpg"
-              alt="A/L Accounting"
-            >
-
-          </div>
-
-
-          <div class="store-body">
-
-            <h3>
-              A/L Accounting
-            </h3>
-
-
-            <p class="store-subtitle">
-
-              Advanced Level Accounting study material
-              for focused learning and revision.
-
-            </p>
-
-
-            <div class="store-price-row">
-
-              <div>
-
-                <span class="price-label">
-                  Demo Price
-                </span>
-
-                <div class="store-price">
-                  Rs. 1,500
-                </div>
-
-              </div>
-
-            </div>
-
-
-            <div class="benefits">
-
-              <span class="benefit">
-                🚚 FREE DELIVERY
-              </span>
-
-              <span class="benefit">
-                🏦 BANK DEPOSIT
-              </span>
-
-            </div>
-
-
-            <button
-              class="buy-btn"
-              data-book="Book 01 - A/L Accounting"
-              data-price="1500"
-            >
-
-              Buy Now&nbsp; →
-
-            </button>
-
-          </div>
-
-        </article>
-
-
-        <!-- BOOK 02 -->
-
-        <article class="store-card">
-
-          <div class="store-image-wrap">
-
-            <span class="demo-badge">
-              DEMO PRICE
-            </span>
-
-            <span class="book-number">
-              BOOK 02
-            </span>
-
-
-            <img
-              class="store-image"
-              src="assets/book-02.jpg"
-              alt="LKAS and SLFRS Part I"
-            >
-
-          </div>
-
-
-          <div class="store-body">
-
-            <h3>
-              LKAS &amp; SLFRS
-            </h3>
-
-
-            <p class="store-subtitle">
-
-              ප්‍රශ්නෝත්තර සංග්‍රහය · Part-I
-              for Accounting students.
-
-            </p>
-
-
-            <div class="store-price-row">
-
-              <div>
-
-                <span class="price-label">
-                  Demo Price
-                </span>
-
-                <div class="store-price">
-                  Rs. 1,800
-                </div>
-
-              </div>
-
-            </div>
-
-
-            <div class="benefits">
-
-              <span class="benefit">
-                🚚 FREE DELIVERY
-              </span>
-
-              <span class="benefit">
-                🏦 BANK DEPOSIT
-              </span>
-
-            </div>
-
-
-            <button
-              class="buy-btn"
-              data-book="Book 02 - LKAS & SLFRS Part-I"
-              data-price="1800"
-            >
-
-              Buy Now&nbsp; →
-
-            </button>
-
-          </div>
-
-        </article>
-
-
-        <!-- BOOK 03 -->
-
-        <article class="store-card">
-
-          <div class="store-image-wrap">
-
-            <span class="demo-badge">
-              DEMO PRICE
-            </span>
-
-            <span class="book-number">
-              BOOK 03
-            </span>
-
-
-            <img
-              class="store-image"
-              src="assets/book-03.jpg"
-              alt="LKAS and SLFRS Part II"
-            >
-
-          </div>
-
-
-          <div class="store-body">
-
-            <h3>
-              LKAS &amp; SLFRS
-            </h3>
-
-
-            <p class="store-subtitle">
-
-              ප්‍රශ්නෝත්තර සංග්‍රහය · Part-II
-              for Accounting students.
-
-            </p>
-
-
-            <div class="store-price-row">
-
-              <div>
-
-                <span class="price-label">
-                  Demo Price
-                </span>
-
-                <div class="store-price">
-                  Rs. 1,800
-                </div>
-
-              </div>
-
-            </div>
-
-
-            <div class="benefits">
-
-              <span class="benefit">
-                🚚 FREE DELIVERY
-              </span>
-
-              <span class="benefit">
-                🏦 BANK DEPOSIT
-              </span>
-
-            </div>
-
-
-            <button
-              class="buy-btn"
-              data-book="Book 03 - LKAS & SLFRS Part-II"
-              data-price="1800"
-            >
-
-              Buy Now&nbsp; →
-
-            </button>
-
-          </div>
-
-        </article>
-
-
-      </div>
-
-
-      <!-- =========================================
-           ORDER AREA
-      ========================================== -->
-
-      <div
-        id="orderArea"
-        class="order-area"
-      >
-
-
-        <div class="order-header">
-
-          <div>
-
-            <span class="eyebrow">
-              Place Your Order
-            </span>
-
-            <h3>
-              Complete Your Details
-            </h3>
-
-          </div>
-
-
-          <button
-            type="button"
-            class="close-order"
-            id="closeOrder"
-            aria-label="Close order"
-          >
-            ×
-          </button>
-
-        </div>
-
-
-        <div class="order-grid">
-
-
-          <!-- CUSTOMER FORM -->
-
-          <div class="form-card">
-
-            <form id="orderForm">
-
-              <div class="form-grid">
-
-
-                <div class="form-group full">
-
-                  <label for="customerName">
-                    Full Name
-                  </label>
-
-                  <input
-                    type="text"
-                    id="customerName"
-                    placeholder="Enter your full name"
-                    required
-                  >
-
-                </div>
-
-
-                <div class="form-group">
-
-                  <label for="customerMobile">
-                    Mobile Number
-                  </label>
-
-                  <input
-                    type="tel"
-                    id="customerMobile"
-                    placeholder="07XXXXXXXX"
-                    required
-                  >
-
-                </div>
-
-
-                <div class="form-group">
-
-                  <label for="customerDistrict">
-                    District
-                  </label>
-
-                  <select
-                    id="customerDistrict"
-                    required
-                  >
-
-                    <option value="">
-                      Select District
-                    </option>
-
-                    <option>Ampara</option>
-                    <option>Anuradhapura</option>
-                    <option>Badulla</option>
-                    <option>Batticaloa</option>
-                    <option>Colombo</option>
-                    <option>Galle</option>
-                    <option>Gampaha</option>
-                    <option>Hambantota</option>
-                    <option>Jaffna</option>
-                    <option>Kalutara</option>
-                    <option>Kandy</option>
-                    <option>Kegalle</option>
-                    <option>Kilinochchi</option>
-                    <option>Kurunegala</option>
-                    <option>Mannar</option>
-                    <option>Matale</option>
-                    <option>Matara</option>
-                    <option>Monaragala</option>
-                    <option>Mullaitivu</option>
-                    <option>Nuwara Eliya</option>
-                    <option>Polonnaruwa</option>
-                    <option>Puttalam</option>
-                    <option>Ratnapura</option>
-                    <option>Trincomalee</option>
-                    <option>Vavuniya</option>
-
-                  </select>
-
-                </div>
-
-
-                <div class="form-group">
-
-                  <label for="orderBook">
-                    Book
-                  </label>
-
-                  <select
-                    id="orderBook"
-                    required
-                  >
-
-                    <option
-                      value="Book 01 - A/L Accounting"
-                      data-price="1500"
-                    >
-                      Book 01 - A/L Accounting
-                    </option>
-
-                    <option
-                      value="Book 02 - LKAS & SLFRS Part-I"
-                      data-price="1800"
-                    >
-                      Book 02 - LKAS & SLFRS Part-I
-                    </option>
-
-                    <option
-                      value="Book 03 - LKAS & SLFRS Part-II"
-                      data-price="1800"
-                    >
-                      Book 03 - LKAS & SLFRS Part-II
-                    </option>
-
-                  </select>
-
-                </div>
-
-
-                <div class="form-group">
-
-                  <label for="orderQuantity">
-                    Quantity
-                  </label>
-
-                  <input
-                    type="number"
-                    id="orderQuantity"
-                    value="1"
-                    min="1"
-                    max="20"
-                    required
-                  >
-
-                </div>
-
-
-                <!-- PAYMENT METHOD -->
-
-                <div class="form-group full">
-
-                  <label>
-                    Payment Method
-                  </label>
-
-
-                  <div class="payment-box">
-
-
-                    <div class="payment-title">
-
-                      🏦
-
-                      <span>
-                        Bank Deposit
-                      </span>
-
-                    </div>
-
-
-                    <div class="bank-details">
-
-
-                      <div class="bank-row">
-
-                        <span class="bank-label">
-                          Bank
-                        </span>
-
-                        <span class="bank-value">
-                          Demo Commercial Bank
-                        </span>
-
-                      </div>
-
-
-                      <div class="bank-row">
-
-                        <span class="bank-label">
-                          Account Name
-                        </span>
-
-                        <span class="bank-value">
-                          BookFair Digital
-                        </span>
-
-                      </div>
-
-
-                      <div class="bank-row">
-
-                        <span class="bank-label">
-                          Account Number
-                        </span>
-
-                        <span class="bank-value">
-                          0000000000
-                        </span>
-
-                      </div>
-
-
-                      <div class="bank-row">
-
-                        <span class="bank-label">
-                          Branch
-                        </span>
-
-                        <span class="bank-value">
-                          Demo Branch
-                        </span>
-
-                      </div>
-
-
-                    </div>
-
-
-                    <div class="demo-bank-note">
-
-                      ⚠️ Demo bank details are currently
-                      displayed. Replace these with your
-                      real bank details before publishing.
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-
-                <!-- BANK SLIP -->
-
-                <div class="form-group full">
-
-                  <label>
-                    Bank Slip
-                  </label>
-
-
-                  <label
-                    for="bankSlip"
-                    class="upload-box"
-                    id="uploadBox"
-                  >
-
-                    <input
-                      type="file"
-                      id="bankSlip"
-                      accept="image/*,.pdf"
-                    >
-
-
-                    <div class="upload-icon">
-                      📎
-                    </div>
-
-
-                    <div class="upload-title">
-                      Upload Bank Slip
-                    </div>
-
-
-                    <div class="upload-help">
-
-                      JPG, PNG, WEBP or PDF ·
-                      Maximum 5MB
-
-                    </div>
-
-
-                    <div
-                      class="slip-file-name"
-                      id="slipFileName"
-                    ></div>
-
-                  </label>
-
-                </div>
-
-
-                <!-- DELIVERY -->
-
-                <div class="form-group full">
-
-                  <label>
-                    Delivery
-                  </label>
-
-
-                  <div class="payment-box">
-
-                    <div class="payment-title">
-
-                      🚚
-
-                      <span>
-                        Standard Delivery
-                      </span>
-
-                      <span
-                        style="
-                          margin-left:auto;
-                          color:#16a34a;
-                          font-size:12px;
-                        "
-                      >
-                        FREE
-                      </span>
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-
-                <!-- ADDRESS -->
-
-                <div class="form-group full">
-
-                  <label for="deliveryAddress">
-                    Delivery Address
-                  </label>
-
-                  <textarea
-                    id="deliveryAddress"
-                    placeholder="Enter your complete delivery address"
-                    required
-                  ></textarea>
-
-                </div>
-
-
-              </div>
-
-            </form>
-
-          </div>
-
-
-          <!-- ORDER SUMMARY -->
-
-          <div class="summary-card">
-
-
-            <h4>
-              Order Summary
-            </h4>
-
-
-            <div class="summary-row">
-
-              <span>
-                Book
-              </span>
-
-              <span id="summaryBook">
-                Book 01 - A/L Accounting
-              </span>
-
-            </div>
-
-
-            <div class="summary-row">
-
-              <span>
-                Unit Price
-              </span>
-
-              <span id="summaryPrice">
-                Rs. 1,500
-              </span>
-
-            </div>
-
-
-            <div class="summary-row">
-
-              <span>
-                Quantity
-              </span>
-
-              <span id="summaryQuantity">
-                1
-              </span>
-
-            </div>
-
-
-            <div class="summary-row">
-
-              <span>
-                Payment
-              </span>
-
-              <span>
-                Bank Deposit
-              </span>
-
-            </div>
-
-
-            <div class="summary-row">
-
-              <span>
-                Delivery
-              </span>
-
-              <span>
-                FREE
-              </span>
-
-            </div>
-
-
-            <div class="summary-total">
-
-              <span>
-                Total
-              </span>
-
-              <span id="summaryTotal">
-                Rs. 1,500
-              </span>
-
-            </div>
-
-
-            <!-- SLIP PREVIEW -->
-
-            <div
-              class="summary-slip"
-              id="summarySlip"
-            >
-
-              <div class="summary-slip-title">
-
-                <span>
-                  📎 Bank Slip
-                </span>
-
-                <span>
-                  Uploaded
-                </span>
-
-              </div>
-
-
-              <img
-                id="summarySlipPreview"
-                class="summary-slip-preview"
-                alt="Bank slip preview"
-              >
-
-
-              <div
-                id="pdfPreviewNote"
-                class="pdf-preview-note"
-              >
-                📄 PDF bank slip selected
-              </div>
-
-
-              <div
-                id="summarySlipFile"
-                class="summary-slip-file"
-              ></div>
-
-            </div>
-
-
-            <button
-              type="button"
-              id="whatsappOrder"
-              class="whatsapp-order-btn"
-            >
-
-              💬 Confirm Order on WhatsApp
-
-            </button>
-
-
-            <p class="order-note">
-
-              Your order details will open in WhatsApp.
-              Please attach the same bank slip there
-              before sending the message.
-
-            </p>
-
-          </div>
-
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- =========================================
-       OUR COLLECTION
-  ========================================== -->
-
-  <section
-    id="collection"
-    class="collection-section"
-  >
-
-    <div class="section">
-
-
-      <div class="section-heading">
-
-        <span class="eyebrow">
-          Our Collection
-        </span>
-
-
-        <h2>
-          Explore Our Books
-        </h2>
-
-
-        <p>
-
-          Explore the BookFair Digital collection
-          available for students.
-
-        </p>
-
-      </div>
-
-
-      <div class="collection-grid">
-
-
-        <article class="collection-card">
-
-          <img
-            class="collection-image"
-            src="assets/accounting.jpg"
-            alt="A/L Accounting"
-          >
-
-
-          <div class="collection-body">
-
-            <span class="collection-tag">
-              Book 01
-            </span>
-
-            <h3>
-              A/L Accounting
-            </h3>
-
-            <p>
-              Advanced Level Accounting
-            </p>
-
-          </div>
-
-        </article>
-
-
-        <article class="collection-card">
-
-          <img
-            class="collection-image"
-            src="assets/book-02.jpg"
-            alt="LKAS and SLFRS Part I"
-          >
-
-
-          <div class="collection-body">
-
-            <span class="collection-tag">
-              Book 02
-            </span>
-
-            <h3>
-              LKAS &amp; SLFRS
-            </h3>
-
-            <p>
-              ප්‍රශ්නෝත්තර සංග්‍රහය · Part-I
-            </p>
-
-          </div>
-
-        </article>
-
-
-        <article class="collection-card">
-
-          <img
-            class="collection-image"
-            src="assets/book-03.jpg"
-            alt="LKAS and SLFRS Part II"
-          >
-
-
-          <div class="collection-body">
-
-            <span class="collection-tag">
-              Book 03
-            </span>
-
-            <h3>
-              LKAS &amp; SLFRS
-            </h3>
-
-            <p>
-              ප්‍රශ්නෝත්තර සංග්‍රහය · Part-II
-            </p>
-
-          </div>
-
-        </article>
-
-
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- =========================================
-       LOGIN CTA
-  ========================================== -->
-
-  <section class="login-section">
-
-    <div class="login-container">
-
-      <h2>
-        Already Have Your Book Account?
-      </h2>
-
+ 
 
       <p>
 
-        Login to access your assigned digital learning
-        materials and continue your studies.
+        Order your books online with Bank Deposit.
 
       </p>
 
-
-      <a
-        href="login.html"
-        class="login-button"
-      >
-
-        Student Login&nbsp; →
-
-      </a>
+ 
 
     </div>
 
-  </section>
+ 
 
+    <div class="store-benefits">
 
-  <!-- =========================================
-       FOOTER
-  ========================================== -->
+ 
 
-  <footer>
+      <div class="benefit">
 
-    <div class="footer-container">
+        ✓ Bank Deposit
 
+      </div>
 
-      <div class="footer-main">
+ 
 
-        <div>
+      <div class="benefit">
 
-          <div class="footer-brand">
-            📚 BookFair Digital
-          </div>
+        ✓ FREE Delivery
 
+      </div>
 
-          <p class="footer-text">
+ 
 
-            Educational books and digital learning
-            resources for students.
+      <div class="benefit">
+
+        ✓ Order Confirmation
+
+      </div>
+
+ 
+
+    </div>
+
+ 
+
+ 
+
+    <div class="products">
+
+ 
+
+      <!-- BOOK 01 -->
+
+ 
+
+      <div class="product-card">
+
+ 
+
+        <div class="product-image">
+
+ 
+
+          <img
+
+            src="assets/accounting.jpg"
+
+            alt="A/L Accounting"
+
+          >
+
+ 
+
+        </div>
+
+ 
+
+        <div class="product-content">
+
+ 
+
+          <span class="demo-label">
+
+            DEMO PRICE
+
+          </span>
+
+ 
+
+          <h3>
+
+            A/L Accounting
+
+          </h3>
+
+ 
+
+          <p>
+
+            Complete study and revision resource.
 
           </p>
 
-        </div>
+ 
 
+          <div class="price">
 
-        <div class="footer-links">
+            Rs. 1,500
 
-          <a href="#store">
-            Online Buy
-          </a>
+          </div>
 
-          <a href="#collection">
-            Collection
-          </a>
+ 
 
-          <a href="login.html">
-            Student Login
-          </a>
+          <button
 
-          <a
-            href="https://wa.me/94715680746"
-            target="_blank"
-            rel="noopener noreferrer"
+            class="buy-btn"
+
+            onclick="openOrder(
+
+              'Book 01',
+
+              'A/L Accounting',
+
+              1500,
+
+              'assets/accounting.jpg'
+
+            )"
+
           >
-            WhatsApp
-          </a>
+
+            Buy Now
+
+          </button>
+
+ 
 
         </div>
 
-      </div>
-
-
-      <div class="copyright">
-
-        © 2026 BookFair Digital.
-        All rights reserved.
+ 
 
       </div>
+
+ 
+
+ 
+
+      <!-- BOOK 02 -->
+
+ 
+
+      <div class="product-card">
+
+ 
+
+        <div class="product-image">
+
+ 
+
+          <img
+
+            src="assets/book-02.jpg"
+
+            alt="LKAS SLFRS Part-I"
+
+          >
+
+ 
+
+        </div>
+
+ 
+
+        <div class="product-content">
+
+ 
+
+          <span class="demo-label">
+
+            DEMO PRICE
+
+          </span>
+
+ 
+
+          <h3>
+
+            LKAS &amp; SLFRS · Part-I
+
+          </h3>
+
+ 
+
+          <p>
+
+            Question and answer collection.
+
+          </p>
+
+ 
+
+          <div class="price">
+
+            Rs. 1,800
+
+          </div>
+
+ 
+
+          <button
+
+            class="buy-btn"
+
+            onclick="openOrder(
+
+              'Book 02',
+
+              'LKAS & SLFRS Part-I',
+
+              1800,
+
+              'assets/book-02.jpg'
+
+            )"
+
+          >
+
+            Buy Now
+
+          </button>
+
+ 
+
+        </div>
+
+ 
+
+      </div>
+
+ 
+
+ 
+
+      <!-- BOOK 03 -->
+
+ 
+
+      <div class="product-card">
+
+ 
+
+        <div class="product-image">
+
+ 
+
+          <img
+
+            src="assets/book-03.jpg"
+
+            alt="LKAS SLFRS Part-II"
+
+          >
+
+ 
+
+        </div>
+
+ 
+
+        <div class="product-content">
+
+ 
+
+          <span class="demo-label">
+
+            DEMO PRICE
+
+          </span>
+
+ 
+
+          <h3>
+
+            LKAS &amp; SLFRS · Part-II
+
+          </h3>
+
+ 
+
+          <p>
+
+            Question and answer collection.
+
+          </p>
+
+ 
+
+          <div class="price">
+
+            Rs. 1,800
+
+          </div>
+
+ 
+
+          <button
+
+            class="buy-btn"
+
+            onclick="openOrder(
+
+              'Book 03',
+
+              'LKAS & SLFRS Part-II',
+
+              1800,
+
+              'assets/book-03.jpg'
+
+            )"
+
+          >
+
+            Buy Now
+
+          </button>
+
+ 
+
+        </div>
+
+ 
+
+      </div>
+
+ 
 
     </div>
 
-  </footer>
+ 
 
+  </section>
 
-  <!-- =========================================
-       FLOATING WHATSAPP
-  ========================================== -->
+ 
 
-  <a
-    href="https://wa.me/94715680746?text=Hello%20BookFair%20Digital%2C%20I%20need%20more%20information."
-    class="whatsapp-float"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="Chat with us on WhatsApp"
+ 
+
+  <!-- =========================
+
+       COLLECTION
+
+  ========================= -->
+
+ 
+
+  <section id="collection" class="collection">
+
+ 
+
+    <div class="section">
+
+ 
+
+      <div class="section-title">
+
+ 
+
+        <h2>Our Collection</h2>
+
+ 
+
+        <p>
+
+          Explore our available educational books.
+
+        </p>
+
+ 
+
+      </div>
+
+ 
+
+ 
+
+      <div class="collection-grid">
+
+ 
+
+        <div class="collection-card">
+
+ 
+
+          <img
+
+            src="assets/accounting.jpg"
+
+            alt="A/L Accounting"
+
+          >
+
+ 
+
+          <h3>
+
+            A/L Accounting
+
+          </h3>
+
+ 
+
+          <p>
+
+            Sinhala Medium
+
+          </p>
+
+ 
+
+        </div>
+
+ 
+
+ 
+
+        <div class="collection-card">
+
+ 
+
+          <img
+
+            src="assets/book-02.jpg"
+
+            alt="LKAS SLFRS Part-I"
+
+          >
+
+ 
+
+          <h3>
+
+            LKAS &amp; SLFRS
+
+          </h3>
+
+ 
+
+          <p>
+
+            ප්‍රශ්නෝත්තර සංග්‍රහය · Part-I
+
+          </p>
+
+ 
+
+        </div>
+
+ 
+
+ 
+
+        <div class="collection-card">
+
+ 
+
+          <img
+
+            src="assets/book-03.jpg"
+
+            alt="LKAS SLFRS Part-II"
+
+          >
+
+ 
+
+          <h3>
+
+            LKAS &amp; SLFRS
+
+          </h3>
+
+ 
+
+          <p>
+
+            ප්‍රශ්නෝත්තර සංග්‍රහය · Part-II
+
+          </p>
+
+ 
+
+        </div>
+
+ 
+
+      </div>
+
+ 
+
+    </div>
+
+ 
+
+  </section>
+
+ 
+
+ 
+
+  <!-- =========================
+
+       ORDER MODAL
+
+  ========================= -->
+
+ 
+
+  <div
+
+    id="orderModal"
+
+    class="modal-overlay"
+
   >
 
-    <span class="whatsapp-tooltip">
-      Need help? Chat with us!
-    </span>
+ 
 
+    <div class="modal">
 
-    <svg
-      class="whatsapp-icon"
-      viewBox="0 0 32 32"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+ 
 
-      <path
-        d="M16.02 3C8.84 3 3.02 8.81 3.02 15.99C3.02 18.28 3.62 20.43 4.67 22.31L3 29L9.86 27.36C11.69 28.35 13.79 28.92 16.02 28.92C23.2 28.92 29.02 23.11 29.02 15.93C29.02 8.81 23.2 3 16.02 3Z"
-        fill="white"
-      />
+      <div class="modal-header">
 
-      <path
-        d="M22.77 19.04C22.4 18.85 20.59 17.96 20.25 17.84C19.91 17.72 19.66 17.66 19.41 18.04C19.16 18.41 18.44 19.23 18.22 19.48C18 19.73 17.78 19.76 17.41 19.57C17.04 19.38 15.84 18.99 14.42 17.72C13.32 16.74 12.58 15.53 12.37 15.16C12.15 14.78 12.35 14.57 12.54 14.38C12.71 14.21 12.91 13.94 13.1 13.72C13.29 13.5 13.35 13.34 13.47 13.09C13.59 12.84 13.53 12.62 13.44 12.43C13.35 12.24 12.62 10.43 12.32 9.69C12.03 8.98 11.73 9.08 11.5 9.07C11.28 9.06 11.02 9.06 10.77 9.06C10.52 9.06 10.11 9.15 9.77 9.53C9.43 9.9 8.47 10.8 8.47 12.62C8.47 14.44 9.8 16.2 9.98 16.45C10.17 16.7 12.6 20.45 16.32 22.06C17.2 22.44 17.89 22.67 18.43 22.84C19.31 23.12 20.11 23.08 20.75 22.98C21.46 22.87 22.94 22.08 23.25 21.21C23.56 20.34 23.56 19.59 23.47 19.44C23.38 19.28 23.13 19.22 22.77 19.04Z"
-        fill="#25D366"
-      />
+ 
 
-    </svg>
+        <h2 id="modalTitle">
 
+          Place Your Order
 
-    <span>
-      Chat with us
-    </span>
+        </h2>
 
-  </a>
+ 
 
+        <button
 
-  <!-- =========================================
-       JAVASCRIPT
-  ========================================== -->
+          class="close-btn"
 
-  <script>
+          onclick="closeOrder()"
 
-    /* ========================================
-       HERO CAROUSEL
-    ======================================== */
+        >
 
-    const heroSlides =
-      document.querySelectorAll(".hero-slide");
+          ×
 
-    const carouselDots =
-      document.querySelectorAll(".carousel-dot");
+        </button>
 
-    let currentSlide = 0;
+ 
 
-    let carouselTimer;
+      </div>
 
+ 
 
-    function showSlide(index) {
+ 
 
-      currentSlide = index;
+      <!-- ORDER FORM -->
 
+ 
 
-      heroSlides.forEach(
-        (slide, i) => {
+      <div
 
-          slide.classList.toggle(
-            "active",
-            i === currentSlide
-          );
+        id="orderFormSection"
 
-        }
-      );
+        class="modal-body"
 
+      >
 
-      carouselDots.forEach(
-        (dot, i) => {
+ 
 
-          dot.classList.toggle(
-            "active",
-            i === currentSlide
-          );
+        <div class="selected-book">
 
-        }
-      );
+ 
 
-    }
+          <img
 
+            id="selectedBookImage"
 
-    function nextSlide() {
+            src=""
 
-      const next =
-        (currentSlide + 1) %
-        heroSlides.length;
+            alt=""
 
-      showSlide(next);
+          >
 
-    }
+ 
 
+          <div>
 
-    function startCarousel() {
+ 
 
-      clearInterval(
-        carouselTimer
-      );
+            <h3 id="selectedBookName">
 
-      carouselTimer =
-        setInterval(
-          nextSlide,
-          3000
-        );
+              Book
 
-    }
+            </h3>
 
+ 
 
-    carouselDots.forEach(
-      (dot) => {
+            <div
 
-        dot.addEventListener(
-          "click",
-          () => {
+              id="selectedBookPrice"
 
-            showSlide(
-              Number(dot.dataset.index)
-            );
+              class="selected-price"
 
-            startCarousel();
+            >
 
-          }
-        );
+              Rs. 0
 
-      }
-    );
+            </div>
 
+ 
 
-    showSlide(0);
+          </div>
 
-    startCarousel();
+ 
 
+        </div>
 
-    /* ========================================
-       STORE ELEMENTS
-    ======================================== */
+ 
 
-    const buyButtons =
-      document.querySelectorAll(".buy-btn");
+ 
 
-    const orderArea =
-      document.getElementById("orderArea");
+        <form id="orderForm">
 
-    const closeOrder =
-      document.getElementById("closeOrder");
+ 
 
-    const orderBook =
-      document.getElementById("orderBook");
+          <input
 
-    const orderQuantity =
-      document.getElementById("orderQuantity");
+            type="hidden"
 
-    const summaryBook =
-      document.getElementById("summaryBook");
+            id="bookCode"
 
-    const summaryPrice =
-      document.getElementById("summaryPrice");
+          >
 
-    const summaryQuantity =
-      document.getElementById("summaryQuantity");
+ 
 
-    const summaryTotal =
-      document.getElementById("summaryTotal");
+          <input
 
-    const whatsappOrder =
-      document.getElementById("whatsappOrder");
+            type="hidden"
 
-    const bankSlip =
-      document.getElementById("bankSlip");
+            id="bookName"
 
-    const uploadBox =
-      document.getElementById("uploadBox");
+          >
 
-    const slipFileName =
-      document.getElementById("slipFileName");
+ 
 
-    const summarySlip =
-      document.getElementById("summarySlip");
+          <input
 
-    const summarySlipPreview =
-      document.getElementById(
-        "summarySlipPreview"
-      );
+            type="hidden"
 
-    const summarySlipFile =
-      document.getElementById(
-        "summarySlipFile"
-      );
+            id="bookPrice"
 
-    const pdfPreviewNote =
-      document.getElementById(
-        "pdfPreviewNote"
-      );
+          >
 
+ 
 
-    /* ========================================
-       PRICE FORMAT
-    ======================================== */
+ 
 
-    function formatPrice(value) {
+          <div class="form-grid">
 
-      return (
-        "Rs. " +
-        Number(value).toLocaleString("en-LK")
-      );
+ 
 
-    }
+            <div class="form-group">
 
+ 
 
-    /* ========================================
-       UPDATE ORDER SUMMARY
-    ======================================== */
+              <label for="fullName">
 
-    function updateOrderSummary() {
-
-      const selected =
-        orderBook.options[
-          orderBook.selectedIndex
-        ];
-
-
-      if (!selected) {
-        return;
-      }
-
-
-      const book =
-        selected.value;
-
-
-      const price =
-        Number(
-          selected.dataset.price || 0
-        );
-
-
-      let quantity =
-        Number(
-          orderQuantity.value || 1
-        );
-
-
-      if (quantity < 1) {
-
-        quantity = 1;
-
-        orderQuantity.value = 1;
-
-      }
-
-
-      if (quantity > 20) {
-
-        quantity = 20;
-
-        orderQuantity.value = 20;
-
-      }
-
-
-      const total =
-        price * quantity;
-
-
-      summaryBook.textContent =
-        book;
-
-      summaryPrice.textContent =
-        formatPrice(price);
-
-      summaryQuantity.textContent =
-        quantity;
-
-      summaryTotal.textContent =
-        formatPrice(total);
-
-    }
-
-
-    /* ========================================
-       BUY NOW
-    ======================================== */
-
-    buyButtons.forEach(
-      (button) => {
-
-        button.addEventListener(
-          "click",
-          () => {
-
-            const book =
-              button.dataset.book;
-
-
-            for (
-              let i = 0;
-              i < orderBook.options.length;
-              i++
-            ) {
-
-              if (
-                orderBook.options[i].value ===
-                book
-              ) {
-
-                orderBook.selectedIndex =
-                  i;
-
-                break;
-
-              }
-
-            }
-
-
-            orderQuantity.value = 1;
-
-
-            updateOrderSummary();
-
-
-            orderArea.classList.add(
-              "active"
-            );
-
-
-            setTimeout(
-              () => {
-
-                orderArea.scrollIntoView({
-                  behavior: "smooth",
-                  block: "start"
-                });
-
-              },
-              50
-            );
-
-          }
-        );
-
-      }
-    );
-
-
-    /* ========================================
-       BOOK CHANGE
-    ======================================== */
-
-    orderBook.addEventListener(
-      "change",
-      updateOrderSummary
-    );
-
-
-    /* ========================================
-       QUANTITY CHANGE
-    ======================================== */
-
-    orderQuantity.addEventListener(
-      "input",
-      updateOrderSummary
-    );
-
-
-    /* ========================================
-       CLOSE ORDER
-    ======================================== */
-
-    closeOrder.addEventListener(
-      "click",
-      () => {
-
-        orderArea.classList.remove(
-          "active"
-        );
-
-      }
-    );
-
-
-    /* ========================================
-       BANK SLIP UPLOAD
-    ======================================== */
-
-    bankSlip.addEventListener(
-      "change",
-      () => {
-
-        const file =
-          bankSlip.files[0];
-
-
-        if (!file) {
-          return;
-        }
-
-
-        const maxSize =
-          5 * 1024 * 1024;
-
-
-        if (file.size > maxSize) {
-
-          alert(
-            "Bank slip must be 5MB or smaller."
-          );
-
-          bankSlip.value = "";
-
-          uploadBox.classList.remove(
-            "has-file"
-          );
-
-          summarySlip.classList.remove(
-            "active"
-          );
-
-          return;
-
-        }
-
-
-        uploadBox.classList.add(
-          "has-file"
-        );
-
-
-        slipFileName.textContent =
-          "✓ " + file.name;
-
-
-        summarySlip.classList.add(
-          "active"
-        );
-
-
-        summarySlipFile.textContent =
-          file.name;
-
-
-        summarySlipPreview.style.display =
-          "none";
-
-        pdfPreviewNote.style.display =
-          "none";
-
-
-        /*
-          IMAGE PREVIEW
-        */
-
-        if (
-          file.type.startsWith("image/")
-        ) {
-
-          const reader =
-            new FileReader();
-
-
-          reader.onload =
-            function(event) {
-
-              summarySlipPreview.src =
-                event.target.result;
-
-              summarySlipPreview.style.display =
-                "block";
-
-            };
-
-
-          reader.readAsDataURL(file);
-
-        }
-
-
-        /*
-          PDF INFO
-        */
-
-        else if (
-          file.type === "application/pdf" ||
-          file.name.toLowerCase().endsWith(".pdf")
-        ) {
-
-          pdfPreviewNote.style.display =
-            "block";
-
-        }
-
-      }
-    );
-
-
-    /* ========================================
-       WHATSAPP ORDER
-    ======================================== */
-
-    whatsappOrder.addEventListener(
-      "click",
-      () => {
-
-
-        const name =
-          document
-            .getElementById("customerName")
-            .value
-            .trim();
-
-
-        const mobile =
-          document
-            .getElementById("customerMobile")
-            .value
-            .trim();
-
-
-        const district =
-          document
-            .getElementById("customerDistrict")
-            .value
-            .trim();
-
-
-        const book =
-          orderBook.value;
-
-
-        const quantity =
-          Number(
-            orderQuantity.value || 1
-          );
-
-
-        const address =
-          document
-            .getElementById("deliveryAddress")
-            .value
-            .trim();
-
-
-        const slip =
-          bankSlip.files[0];
-
-
-        /* VALIDATION */
-
-        if (
-          !name ||
-          !mobile ||
-          !district ||
-          !book ||
-          !address
-        ) {
-
-          alert(
-            "Please complete all required order details."
-          );
-
-          return;
-
-        }
-
-
-        if (!slip) {
-
-          alert(
-            "Please upload your bank slip before confirming the order."
-          );
-
-          return;
-
-        }
-
-
-        const selected =
-          orderBook.options[
-            orderBook.selectedIndex
-          ];
-
-
-        const price =
-          Number(
-            selected.dataset.price || 0
-          );
-
-
-        const total =
-          price * quantity;
-
-
-        /* ==================================
-           WHATSAPP MESSAGE
-        ================================== */
-
-        const message =
-`Hello BookFair Digital,
-
-I would like to confirm my order.
-
-📚 Book: ${book}
-🔢 Quantity: ${quantity}
-
-👤 Full Name: ${name}
-📱 Mobile Number: ${mobile}
-📍 District: ${district}
-
-🏠 Delivery Address:
-${address}
-
-🏦 Payment Method: Bank Deposit
-📎 Bank Slip: ${slip.name}
-
-🚚 Delivery: FREE
-
-💰 Total: ${formatPrice(total)}
-
-I have uploaded the bank slip and will attach the same slip to this WhatsApp message.
-
-Thank you.`;
-
-
-        const whatsappUrl =
-          "https://wa.me/94715680746?text=" +
-          encodeURIComponent(message);
-
-
-        window.open(
-          whatsappUrl,
-          "_blank"
-        );
-
-      }
-    );
-
-
-    /* ========================================
-       INITIAL SUMMARY
-    ======================================== */
-
-    updateOrderSummary();
-
-  </script>
-
-</body>
-</html>
+                Full Name
