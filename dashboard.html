@@ -10,9 +10,7 @@
     content="width=device-width, initial-scale=1"
   >
 
-  <title>
-    BookFair Digital — Dashboard
-  </title>
+  <title>BookFair Digital — Dashboard</title>
 
   <meta
     name="description"
@@ -24,7 +22,6 @@
     href="styles.css"
   >
 
-
   <style>
 
     /* =====================================================
@@ -32,7 +29,6 @@
     ===================================================== */
 
     :root {
-
       --navy: #071525;
       --navy-2: #0a1d31;
 
@@ -44,12 +40,9 @@
       --green-dark: #16a34a;
 
       --white: #f8fafc;
-
       --muted: #a8b4c3;
 
-      --border:
-        rgba(255,255,255,.10);
-
+      --border: rgba(255,255,255,.10);
     }
 
 
@@ -61,21 +54,15 @@
       box-sizing: border-box;
     }
 
-
     html,
     body {
-
       width: 100%;
       min-height: 100%;
-
       margin: 0;
       padding: 0;
-
     }
 
-
     body {
-
       min-height: 100vh;
 
       font-family:
@@ -90,7 +77,6 @@
       color: var(--white);
 
       background:
-
         radial-gradient(
           circle at 10% 10%,
           rgba(34,197,94,.10),
@@ -111,7 +97,6 @@
         );
 
       overflow-x: hidden;
-
     }
 
 
@@ -120,7 +105,6 @@
     ===================================================== */
 
     body::before {
-
       content: "";
 
       position: fixed;
@@ -136,19 +120,15 @@
       background:
         rgba(34,197,94,.10);
 
-      filter:
-        blur(100px);
+      filter: blur(100px);
 
       pointer-events: none;
 
       animation:
         glowMove 12s ease-in-out infinite alternate;
-
     }
 
-
     body::after {
-
       content: "";
 
       position: fixed;
@@ -164,30 +144,23 @@
       background:
         rgba(14,165,233,.07);
 
-      filter:
-        blur(100px);
+      filter: blur(100px);
 
       pointer-events: none;
-
     }
-
 
     @keyframes glowMove {
 
       from {
-
         transform:
           translate3d(0,0,0)
           scale(1);
-
       }
 
       to {
-
         transform:
           translate3d(-40px,40px,0)
           scale(1.12);
-
       }
 
     }
@@ -227,7 +200,6 @@
 
       -webkit-backdrop-filter:
         blur(18px);
-
     }
 
 
@@ -246,9 +218,7 @@
       color: var(--white);
 
       text-decoration: none;
-
     }
-
 
     .brand-mark {
 
@@ -276,9 +246,7 @@
       box-shadow:
         0 8px 25px
         rgba(34,197,94,.20);
-
     }
-
 
     .brand span:last-child {
 
@@ -287,7 +255,6 @@
       font-weight: 800;
 
       letter-spacing: -.02em;
-
     }
 
 
@@ -321,9 +288,7 @@
 
       transition:
         all .2s ease;
-
     }
-
 
     .logout-btn:hover {
 
@@ -338,15 +303,6 @@
 
       transform:
         translateY(-1px);
-
-    }
-
-
-    .logout-btn:active {
-
-      transform:
-        translateY(0);
-
     }
 
 
@@ -367,7 +323,6 @@
       margin: 0 auto;
 
       padding: 65px 0 90px;
-
     }
 
 
@@ -376,11 +331,8 @@
     ===================================================== */
 
     .dashboard-heading {
-
       margin-bottom: 38px;
-
     }
-
 
     .dashboard-heading .eyebrow {
 
@@ -400,9 +352,7 @@
       font-weight: 850;
 
       letter-spacing: .16em;
-
     }
-
 
     .dashboard-heading .eyebrow::before {
 
@@ -419,9 +369,7 @@
       box-shadow:
         0 0 12px
         rgba(74,222,128,.60);
-
     }
-
 
     .dashboard-heading h1 {
 
@@ -443,9 +391,7 @@
       letter-spacing: -.045em;
 
       font-weight: 850;
-
     }
-
 
     .dashboard-heading p {
 
@@ -459,7 +405,6 @@
       font-size: 13px;
 
       line-height: 1.7;
-
     }
 
 
@@ -472,9 +417,7 @@
       width: 100%;
 
       margin-top: 20px;
-
     }
-
 
     .student-info-card {
 
@@ -483,8 +426,6 @@
       align-items: center;
 
       flex-wrap: wrap;
-
-      gap: 0;
 
       width: 100%;
 
@@ -506,9 +447,7 @@
       box-shadow:
         0 12px 35px
         rgba(0,0,0,.12);
-
     }
-
 
     .student-info-card > div {
 
@@ -520,16 +459,11 @@
       border-right:
         1px solid
         rgba(255,255,255,.07);
-
     }
-
 
     .student-info-card > div:last-child {
-
       border-right: none;
-
     }
-
 
     .info-label {
 
@@ -545,9 +479,7 @@
       font-weight: 850;
 
       letter-spacing: .13em;
-
     }
-
 
     .student-info-card strong {
 
@@ -559,7 +491,6 @@
       font-size: 11px;
 
       font-weight: 800;
-
     }
 
 
@@ -580,7 +511,6 @@
       gap: 24px;
 
       align-items: stretch;
-
     }
 
 
@@ -621,9 +551,7 @@
         transform .3s ease,
         border-color .3s ease,
         box-shadow .3s ease;
-
     }
-
 
     .book-card:hover {
 
@@ -633,9 +561,7 @@
       box-shadow:
         0 35px 85px
         rgba(0,0,0,.42);
-
     }
-
 
     .book-card.unlocked:hover {
 
@@ -647,15 +573,6 @@
         rgba(0,0,0,.42),
         0 0 0 1px
         rgba(34,197,94,.05);
-
-    }
-
-
-    .book-card.locked:hover {
-
-      border-color:
-        rgba(255,255,255,.16);
-
     }
 
 
@@ -676,9 +593,7 @@
 
       background:
         #101c2c;
-
     }
-
 
     .book-cover img {
 
@@ -692,16 +607,13 @@
       transition:
         transform .5s ease,
         filter .3s ease;
-
     }
-
 
     .book-card:hover
     .book-cover img {
 
       transform:
         scale(1.035);
-
     }
 
 
@@ -751,7 +663,6 @@
       box-shadow:
         0 8px 20px
         rgba(0,0,0,.22);
-
     }
 
 
@@ -791,9 +702,7 @@
 
       backdrop-filter:
         blur(1px);
-
     }
-
 
     .lock-icon {
 
@@ -818,7 +727,6 @@
       box-shadow:
         0 10px 30px
         rgba(0,0,0,.28);
-
     }
 
 
@@ -832,17 +740,6 @@
       filter:
         brightness(.55)
         saturate(.75);
-
-    }
-
-
-    .book-card.locked:hover
-    .book-cover img {
-
-      filter:
-        brightness(.64)
-        saturate(.84);
-
     }
 
 
@@ -859,9 +756,7 @@
       flex-direction: column;
 
       padding: 22px;
-
     }
-
 
     .book-label {
 
@@ -875,9 +770,7 @@
       font-weight: 850;
 
       letter-spacing: .12em;
-
     }
-
 
     .book-content h2 {
 
@@ -894,14 +787,11 @@
       letter-spacing: -.025em;
 
       font-weight: 850;
-
     }
-
 
     .book-content p {
 
-      margin:
-        0;
+      margin: 0;
 
       color:
         rgba(255,255,255,.50);
@@ -909,12 +799,158 @@
       font-size: 13px;
 
       line-height: 1.6;
-
     }
 
 
     /* =====================================================
-       ACTION AREA
+       PAPER CARDS
+    ===================================================== */
+
+    .paper-grid {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          2,
+          minmax(0,1fr)
+        );
+
+      gap: 10px;
+
+      margin-top: 22px;
+    }
+
+    .paper-card {
+
+      min-height: 48px;
+
+      display: grid;
+
+      grid-template-columns:
+        40px 1fr 22px;
+
+      align-items: center;
+
+      gap: 9px;
+
+      padding:
+        0 13px;
+
+      border:
+        1px solid
+        rgba(34,197,94,.22);
+
+      border-radius: 12px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(34,197,94,.07),
+          rgba(7,21,37,.55)
+        );
+
+      color:
+        #f8fafc;
+
+      text-decoration: none !important;
+
+      transition:
+        transform .2s ease,
+        border-color .2s ease,
+        background .2s ease,
+        box-shadow .2s ease;
+    }
+
+    .paper-card:hover {
+
+      transform:
+        translateY(-2px);
+
+      border-color:
+        rgba(74,222,128,.55);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(34,197,94,.13),
+          rgba(13,41,68,.75)
+        );
+
+      box-shadow:
+        0 8px 22px
+        rgba(0,0,0,.22);
+    }
+
+    .paper-card:active {
+      transform: translateY(0);
+    }
+
+    .paper-number {
+
+      width: 30px;
+      height: 30px;
+
+      display: grid;
+
+      place-items: center;
+
+      border-radius: 8px;
+
+      background:
+        rgba(34,197,94,.15);
+
+      color:
+        #4ade80;
+
+      font-size: 10px;
+
+      font-weight: 900;
+    }
+
+    .paper-title {
+
+      color:
+        #f8fafc;
+
+      font-size: 11px;
+
+      font-weight: 800;
+
+      white-space: nowrap;
+    }
+
+    .paper-arrow {
+
+      color:
+        #4ade80;
+
+      font-size: 17px;
+
+      font-weight: 400;
+
+      text-align: right;
+
+      transition:
+        transform .2s ease;
+    }
+
+    .paper-card:hover
+    .paper-arrow {
+
+      transform:
+        translateX(4px);
+    }
+
+    .book01-card
+    .book-content {
+
+      padding-bottom: 24px;
+    }
+
+
+    /* =====================================================
+       ACTION BUTTONS
     ===================================================== */
 
     .book-action-area {
@@ -928,13 +964,7 @@
       flex-direction: column;
 
       gap: 12px;
-
     }
-
-
-    /* =====================================================
-       MAIN ACTION BUTTON
-    ===================================================== */
 
     .book-action {
 
@@ -968,61 +998,7 @@
         box-shadow .2s ease,
         background .2s ease,
         border-color .2s ease;
-
     }
-
-
-    .book-action:visited,
-    .book-action:hover,
-    .book-action:active {
-
-      text-decoration: none !important;
-
-    }
-
-
-    /* =====================================================
-       OPEN ANSWERS
-    ===================================================== */
-
-    .unlocked-action {
-
-      color:
-        #ffffff !important;
-
-      background:
-        linear-gradient(
-          135deg,
-          var(--green),
-          var(--green-dark)
-        );
-
-      border:
-        1px solid
-        rgba(74,222,128,.65);
-
-      box-shadow:
-        0 10px 25px
-        rgba(34,197,94,.16);
-
-    }
-
-
-    .unlocked-action:hover {
-
-      transform:
-        translateY(-2px);
-
-      box-shadow:
-        0 15px 32px
-        rgba(34,197,94,.28);
-
-    }
-
-
-    /* =====================================================
-       BUY BOOK
-    ===================================================== */
 
     .locked-buy {
 
@@ -1039,39 +1015,16 @@
       border:
         1px solid
         rgba(255,255,255,.12);
-
-      box-shadow:
-        0 8px 22px
-        rgba(0,0,0,.18);
-
     }
-
 
     .locked-buy:hover {
 
       transform:
         translateY(-2px);
 
-      background:
-        linear-gradient(
-          135deg,
-          rgba(33,71,102,.98),
-          rgba(22,51,78,.98)
-        );
-
       border-color:
         rgba(74,222,128,.32);
-
-      box-shadow:
-        0 12px 28px
-        rgba(0,0,0,.25);
-
     }
-
-
-    /* =====================================================
-       BUTTON ARROW
-    ===================================================== */
 
     .action-arrow {
 
@@ -1079,112 +1032,15 @@
 
       line-height: 1;
 
-      font-weight: 400;
-
       transition:
         transform .2s ease;
-
     }
-
 
     .book-action:hover
     .action-arrow {
 
       transform:
         translateX(4px);
-
-    }
-
-
-    /* =====================================================
-       ACCESS STATUS
-    ===================================================== */
-
-    .access-status {
-
-      width: fit-content;
-
-      display: inline-flex;
-
-      align-items: center;
-
-      gap: 7px;
-
-      padding:
-        6px 10px;
-
-      border-radius: 999px;
-
-      font-size: 9px;
-
-      font-weight: 850;
-
-      letter-spacing: .06em;
-
-    }
-
-
-    /* =====================================================
-       ACTIVE STATUS
-    ===================================================== */
-
-    .unlocked-status {
-
-      color:
-        #86efac;
-
-      background:
-        rgba(34,197,94,.08);
-
-      border:
-        1px solid
-        rgba(34,197,94,.18);
-
-    }
-
-
-    .status-dot {
-
-      width: 7px;
-      height: 7px;
-
-      flex: 0 0 7px;
-
-      border-radius: 50%;
-
-      background:
-        var(--green);
-
-      box-shadow:
-        0 0 9px
-        rgba(34,197,94,.75);
-
-    }
-
-
-    /* =====================================================
-       LOCKED STATUS
-    ===================================================== */
-
-    .locked-status {
-
-      color:
-        #94a3b8;
-
-      background:
-        rgba(148,163,184,.07);
-
-      border:
-        1px solid
-        rgba(148,163,184,.13);
-
-    }
-
-
-    .status-lock {
-
-      font-size: 9px;
-
     }
 
 
@@ -1193,6 +1049,8 @@
     ===================================================== */
 
     .book-grid > div[style] {
+
+      grid-column: 1 / -1;
 
       border-radius: 18px;
 
@@ -1205,15 +1063,12 @@
 
       color:
         rgba(255,255,255,.60);
-
     }
-
 
     .book-grid > div[style] h2 {
 
       color:
         var(--white);
-
     }
 
 
@@ -1242,7 +1097,6 @@
       text-align: center;
 
       font-size: 10px;
-
     }
 
 
@@ -1253,11 +1107,8 @@
     @media (max-width: 1000px) {
 
       .dashboard-main {
-
         width: 92%;
-
       }
-
 
       .book-grid {
 
@@ -1266,7 +1117,6 @@
             2,
             minmax(0,1fr)
           );
-
       }
 
     }
@@ -1284,16 +1134,11 @@
 
         padding:
           0 5%;
-
       }
-
 
       .brand span:last-child {
-
         font-size: 12px;
-
       }
-
 
       .brand-mark {
 
@@ -1301,9 +1146,7 @@
         height: 34px;
 
         border-radius: 9px;
-
       }
-
 
       .logout-btn {
 
@@ -1312,9 +1155,7 @@
         min-width: 65px;
 
         font-size: 10px;
-
       }
-
 
       .dashboard-main {
 
@@ -1322,30 +1163,19 @@
 
         padding:
           45px 0 65px;
-
       }
-
 
       .dashboard-heading {
-
         margin-bottom: 28px;
-
       }
-
 
       .dashboard-heading h1 {
-
         font-size: 34px;
-
       }
-
 
       .dashboard-heading p {
-
         font-size: 12px;
-
       }
-
 
       .student-info-card {
 
@@ -1353,9 +1183,7 @@
 
         grid-template-columns:
           1fr 1fr;
-
       }
-
 
       .student-info-card > div {
 
@@ -1368,53 +1196,73 @@
         border-bottom:
           1px solid
           rgba(255,255,255,.07);
-
       }
-
 
       .student-info-card > div:nth-child(2n) {
-
         border-right: none;
-
       }
-
 
       .student-info-card > div:nth-last-child(-n+2) {
-
         border-bottom: none;
-
       }
-
 
       .book-grid {
 
         grid-template-columns: 1fr;
 
         gap: 20px;
-
       }
 
+      /* Paper cards remain 2 columns on mobile */
+      .paper-grid {
+
+        grid-template-columns:
+          repeat(
+            2,
+            minmax(0,1fr)
+          );
+
+        gap: 9px;
+      }
+
+      .paper-card {
+
+        min-height: 48px;
+
+        grid-template-columns:
+          34px 1fr 18px;
+
+        padding:
+          0 9px;
+      }
+
+      .paper-number {
+
+        width: 27px;
+        height: 27px;
+
+        font-size: 9px;
+      }
+
+      .paper-title {
+        font-size: 10px;
+      }
+
+      .paper-arrow {
+        font-size: 15px;
+      }
 
       .book-content {
-
         padding: 20px;
-
       }
-
 
       .book-content h2 {
-
         font-size: 21px;
-
       }
-
 
       .book-content p {
-
         font-size: 12px;
-
       }
-
 
       .assigned-badge {
 
@@ -1425,23 +1273,13 @@
           7px 10px;
 
         font-size: 8px;
-
       }
-
-
-      .access-status {
-
-        font-size: 8px;
-
-      }
-
 
       .dashboard-footer {
 
         width: 90%;
 
         font-size: 9px;
-
       }
 
     }
@@ -1454,32 +1292,20 @@
     @media (max-width: 400px) {
 
       .dashboard-main {
-
         width: 92%;
-
       }
-
 
       .dashboard-heading h1 {
-
         font-size: 30px;
-
       }
-
 
       .brand span:last-child {
-
         display: none;
-
       }
-
 
       .student-info-card {
-
         grid-template-columns: 1fr;
-
       }
-
 
       .student-info-card > div,
       .student-info-card > div:nth-child(2n) {
@@ -1489,14 +1315,10 @@
         border-bottom:
           1px solid
           rgba(255,255,255,.07);
-
       }
 
-
       .student-info-card > div:last-child {
-
         border-bottom: none;
-
       }
 
     }
@@ -1517,55 +1339,9 @@
 
         transition:
           none !important;
-
       }
 
     }
-
-  
-/* =====================================================
-   BOOK 01 PAPER LIST
-   ===================================================== */
-.paper-grid{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:10px;
-  margin-top:20px;
-}
-.paper-card{
-  min-height:48px;
-  display:grid;
-  grid-template-columns:40px 1fr 20px;
-  align-items:center;
-  gap:8px;
-  padding:0 12px;
-  border:1px solid rgba(74,222,128,.18);
-  border-radius:11px;
-  background:rgba(34,197,94,.055);
-  color:#f8fafc;
-  text-decoration:none;
-  transition:.2s ease;
-}
-.paper-card:hover{
-  transform:translateY(-2px);
-  border-color:rgba(74,222,128,.45);
-  background:rgba(34,197,94,.10);
-}
-.paper-number{
-  width:30px;height:30px;
-  display:grid;place-items:center;
-  border-radius:8px;
-  background:rgba(34,197,94,.14);
-  color:#4ade80;
-  font-size:10px;
-  font-weight:900;
-}
-.paper-title{font-size:11px;font-weight:800}
-.paper-arrow{font-size:17px;color:#4ade80;text-align:right}
-.book01-card .book-content{padding-bottom:24px}
-@media(max-width:650px){
-  .paper-grid{grid-template-columns:1fr}
-}
 
   </style>
 
@@ -1609,7 +1385,6 @@
   </header>
 
 
-
   <!-- =====================================================
        MAIN
   ===================================================== -->
@@ -1642,7 +1417,6 @@
     </section>
 
 
-
     <!-- ===================================================
          BOOK GRID
     =================================================== -->
@@ -1664,10 +1438,9 @@
   </main>
 
 
-
   <!-- =====================================================
        FOOTER
-    ===================================================== -->
+  ===================================================== -->
 
   <footer class="dashboard-footer">
 
@@ -1677,15 +1450,13 @@
   </footer>
 
 
-
   <!-- =====================================================
        DASHBOARD JAVASCRIPT
-       Cache version updated
   ===================================================== -->
 
   <script
     type="module"
-    src="dashboard.js?v=13"
+    src="dashboard.js?v=14"
   ></script>
 
 
