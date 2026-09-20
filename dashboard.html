@@ -33,32 +33,19 @@
 
     :root {
 
-      --navy:
-        #071525;
+      --navy: #071525;
+      --navy-2: #0a1d31;
 
-      --navy-2:
-        #0a1d31;
+      --blue: #0d2944;
+      --blue-2: #163a5f;
 
-      --blue:
-        #0d2944;
+      --green: #22c55e;
+      --green-light: #4ade80;
+      --green-dark: #16a34a;
 
-      --blue-2:
-        #163a5f;
+      --white: #f8fafc;
 
-      --green:
-        #22c55e;
-
-      --green-light:
-        #4ade80;
-
-      --green-dark:
-        #16a34a;
-
-      --white:
-        #f8fafc;
-
-      --muted:
-        #a8b4c3;
+      --muted: #a8b4c3;
 
       --border:
         rgba(255,255,255,.10);
@@ -79,11 +66,9 @@
     body {
 
       width: 100%;
-
       min-height: 100%;
 
       margin: 0;
-
       padding: 0;
 
     }
@@ -102,8 +87,7 @@
         Helvetica,
         sans-serif;
 
-      color:
-        var(--white);
+      color: var(--white);
 
       background:
 
@@ -126,8 +110,7 @@
           var(--navy)
         );
 
-      overflow-x:
-        hidden;
+      overflow-x: hidden;
 
     }
 
@@ -143,11 +126,9 @@
       position: fixed;
 
       width: 430px;
-
       height: 430px;
 
       top: -220px;
-
       right: -170px;
 
       border-radius: 50%;
@@ -158,8 +139,7 @@
       filter:
         blur(100px);
 
-      pointer-events:
-        none;
+      pointer-events: none;
 
       animation:
         glowMove 12s ease-in-out infinite alternate;
@@ -174,11 +154,9 @@
       position: fixed;
 
       width: 380px;
-
       height: 380px;
 
       left: -200px;
-
       bottom: -200px;
 
       border-radius: 50%;
@@ -189,8 +167,7 @@
       filter:
         blur(100px);
 
-      pointer-events:
-        none;
+      pointer-events: none;
 
     }
 
@@ -198,15 +175,19 @@
     @keyframes glowMove {
 
       from {
+
         transform:
           translate3d(0,0,0)
           scale(1);
+
       }
 
       to {
+
         transform:
           translate3d(-40px,40px,0)
           scale(1.12);
+
       }
 
     }
@@ -219,17 +200,14 @@
     .dash-header {
 
       width: 100%;
-
       height: 72px;
 
       display: flex;
 
       align-items: center;
-
       justify-content: space-between;
 
-      padding:
-        0 5.5%;
+      padding: 0 5.5%;
 
       position: sticky;
 
@@ -265,11 +243,9 @@
 
       gap: 11px;
 
-      color:
-        var(--white);
+      color: var(--white);
 
-      text-decoration:
-        none;
+      text-decoration: none;
 
     }
 
@@ -277,7 +253,6 @@
     .brand-mark {
 
       width: 38px;
-
       height: 38px;
 
       display: grid;
@@ -293,11 +268,9 @@
           var(--green-dark)
         );
 
-      color:
-        #ffffff;
+      color: #ffffff;
 
       font-size: 16px;
-
       font-weight: 900;
 
       box-shadow:
@@ -313,8 +286,7 @@
 
       font-weight: 800;
 
-      letter-spacing:
-        -.02em;
+      letter-spacing: -.02em;
 
     }
 
@@ -326,11 +298,9 @@
     .logout-btn {
 
       min-width: 76px;
-
       height: 37px;
 
-      padding:
-        0 15px;
+      padding: 0 15px;
 
       border-radius: 10px;
 
@@ -341,8 +311,7 @@
       background:
         rgba(255,255,255,.045);
 
-      color:
-        var(--white);
+      color: var(--white);
 
       font-size: 11px;
 
@@ -395,11 +364,9 @@
 
       max-width: 1180px;
 
-      margin:
-        0 auto;
+      margin: 0 auto;
 
-      padding:
-        65px 0 90px;
+      padding: 65px 0 90px;
 
     }
 
@@ -410,8 +377,7 @@
 
     .dashboard-heading {
 
-      margin-bottom:
-        38px;
+      margin-bottom: 38px;
 
     }
 
@@ -424,8 +390,7 @@
 
       gap: 8px;
 
-      margin-bottom:
-        13px;
+      margin-bottom: 13px;
 
       color:
         rgba(255,255,255,.45);
@@ -434,8 +399,7 @@
 
       font-weight: 850;
 
-      letter-spacing:
-        .16em;
+      letter-spacing: .16em;
 
     }
 
@@ -445,7 +409,6 @@
       content: "";
 
       width: 7px;
-
       height: 7px;
 
       border-radius: 50%;
@@ -475,34 +438,27 @@
           52px
         );
 
-      line-height:
-        1.04;
+      line-height: 1.04;
 
-      letter-spacing:
-        -.045em;
+      letter-spacing: -.045em;
 
-      font-weight:
-        850;
+      font-weight: 850;
 
     }
 
 
     .dashboard-heading p {
 
-      max-width:
-        580px;
+      max-width: 580px;
 
-      margin:
-        0;
+      margin: 0;
 
       color:
         rgba(255,255,255,.48);
 
-      font-size:
-        13px;
+      font-size: 13px;
 
-      line-height:
-        1.7;
+      line-height: 1.7;
 
     }
 
@@ -513,49 +469,96 @@
 
     #studentInfo {
 
-      display: inline-flex;
+      width: 100%;
+
+      margin-top: 20px;
+
+    }
+
+
+    .student-info-card {
+
+      display: flex;
 
       align-items: center;
 
       flex-wrap: wrap;
 
-      gap: 5px;
+      gap: 0;
 
-      margin-top:
-        18px;
+      width: 100%;
 
-      padding:
-        11px 15px;
+      overflow: hidden;
 
-      border-radius:
-        11px;
+      border-radius: 14px;
 
       border:
         1px solid
-        rgba(34,197,94,.16);
+        rgba(34,197,94,.15);
 
       background:
-        rgba(34,197,94,.055);
+        linear-gradient(
+          135deg,
+          rgba(34,197,94,.07),
+          rgba(255,255,255,.025)
+        );
 
-      color:
-        rgba(255,255,255,.50);
-
-      font-size:
-        10px;
-
-      line-height:
-        1.5;
+      box-shadow:
+        0 12px 35px
+        rgba(0,0,0,.12);
 
     }
 
 
-    #studentInfo strong {
+    .student-info-card > div {
+
+      min-width: 150px;
+
+      padding:
+        14px 20px;
+
+      border-right:
+        1px solid
+        rgba(255,255,255,.07);
+
+    }
+
+
+    .student-info-card > div:last-child {
+
+      border-right: none;
+
+    }
+
+
+    .info-label {
+
+      display: block;
+
+      margin-bottom: 5px;
+
+      color:
+        rgba(255,255,255,.35);
+
+      font-size: 8px;
+
+      font-weight: 850;
+
+      letter-spacing: .13em;
+
+    }
+
+
+    .student-info-card strong {
+
+      display: block;
 
       color:
         var(--green-light);
 
-      font-weight:
-        800;
+      font-size: 11px;
+
+      font-weight: 800;
 
     }
 
@@ -574,11 +577,9 @@
           minmax(0,1fr)
         );
 
-      gap:
-        24px;
+      gap: 24px;
 
-      align-items:
-        stretch;
+      align-items: stretch;
 
     }
 
@@ -595,8 +596,11 @@
 
       overflow: hidden;
 
-      border-radius:
-        20px;
+      display: flex;
+
+      flex-direction: column;
+
+      border-radius: 20px;
 
       border:
         1px solid
@@ -621,8 +625,42 @@
     }
 
 
+    .book-card:hover {
+
+      transform:
+        translateY(-6px);
+
+      box-shadow:
+        0 35px 85px
+        rgba(0,0,0,.42);
+
+    }
+
+
+    .book-card.unlocked:hover {
+
+      border-color:
+        rgba(74,222,128,.35);
+
+      box-shadow:
+        0 35px 85px
+        rgba(0,0,0,.42),
+        0 0 0 1px
+        rgba(34,197,94,.05);
+
+    }
+
+
+    .book-card.locked:hover {
+
+      border-color:
+        rgba(255,255,255,.16);
+
+    }
+
+
     /* =====================================================
-       COVER
+       BOOK COVER
     ===================================================== */
 
     .book-cover {
@@ -645,7 +683,6 @@
     .book-cover img {
 
       width: 100%;
-
       height: 100%;
 
       display: block;
@@ -653,31 +690,13 @@
       object-fit: cover;
 
       transition:
-        transform .5s ease;
+        transform .5s ease,
+        filter .3s ease;
 
     }
 
 
-    /* =====================================================
-       UNLOCKED
-    ===================================================== */
-
-    .book-unlocked:hover {
-
-      transform:
-        translateY(-7px);
-
-      border-color:
-        rgba(74,222,128,.32);
-
-      box-shadow:
-        0 35px 85px
-        rgba(0,0,0,.45);
-
-    }
-
-
-    .book-unlocked:hover
+    .book-card:hover
     .book-cover img {
 
       transform:
@@ -687,16 +706,17 @@
 
 
     /* =====================================================
-       STATUS
+       ASSIGNED BADGE
     ===================================================== */
 
-    .status {
+    .assigned-badge {
 
       position: absolute;
 
-      left: 16px;
+      left: 15px;
+      bottom: 15px;
 
-      bottom: 16px;
+      z-index: 3;
 
       display: inline-flex;
 
@@ -705,32 +725,123 @@
       gap: 6px;
 
       padding:
-        8px 12px;
+        8px 11px;
 
-      border-radius:
-        999px;
+      border-radius: 999px;
 
       background:
-        rgba(4,10,20,.84);
+        rgba(5,20,12,.88);
 
       border:
         1px solid
-        rgba(255,255,255,.14);
+        rgba(74,222,128,.38);
+
+      color:
+        var(--green-light);
+
+      font-size: 9px;
+
+      font-weight: 850;
+
+      letter-spacing: .07em;
 
       backdrop-filter:
         blur(12px);
 
+      box-shadow:
+        0 8px 20px
+        rgba(0,0,0,.22);
+
+    }
+
+
+    /* =====================================================
+       LOCKED OVERLAY
+    ===================================================== */
+
+    .locked-overlay {
+
+      position: absolute;
+
+      inset: 0;
+
+      z-index: 2;
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 8px;
+
+      background:
+        rgba(3,9,18,.42);
+
       color:
-        #ffffff;
+        rgba(255,255,255,.88);
 
-      font-size:
-        9px;
+      font-size: 10px;
 
-      font-weight:
-        850;
+      font-weight: 850;
 
-      letter-spacing:
-        .07em;
+      letter-spacing: .16em;
+
+      backdrop-filter:
+        blur(1px);
+
+    }
+
+
+    .lock-icon {
+
+      width: 44px;
+      height: 44px;
+
+      display: grid;
+
+      place-items: center;
+
+      border-radius: 50%;
+
+      background:
+        rgba(5,12,22,.76);
+
+      border:
+        1px solid
+        rgba(255,255,255,.16);
+
+      font-size: 18px;
+
+      box-shadow:
+        0 10px 30px
+        rgba(0,0,0,.28);
+
+    }
+
+
+    /* =====================================================
+       LOCKED IMAGE
+    ===================================================== */
+
+    .book-card.locked
+    .book-cover img {
+
+      filter:
+        brightness(.55)
+        saturate(.75);
+
+    }
+
+
+    .book-card.locked:hover
+    .book-cover img {
+
+      filter:
+        brightness(.64)
+        saturate(.84);
 
     }
 
@@ -741,93 +852,95 @@
 
     .book-content {
 
-      padding:
-        22px;
-
-    }
-
-
-    .book-meta {
+      flex: 1;
 
       display: flex;
 
-      align-items: center;
+      flex-direction: column;
 
-      flex-wrap: wrap;
-
-      gap: 7px;
-
-      margin-bottom:
-        10px;
-
-      color:
-        rgba(255,255,255,.38);
-
-      font-size:
-        8px;
-
-      font-weight:
-        850;
-
-      letter-spacing:
-        .12em;
+      padding: 22px;
 
     }
 
 
-    .book-content h3,
-    .locked-content h3 {
+    .book-label {
+
+      margin-bottom: 10px;
+
+      color:
+        rgba(255,255,255,.42);
+
+      font-size: 9px;
+
+      font-weight: 850;
+
+      letter-spacing: .12em;
+
+    }
+
+
+    .book-content h2 {
 
       margin:
-        0 0 9px;
+        0 0 10px;
 
       color:
         var(--white);
 
-      font-size:
-        22px;
+      font-size: 22px;
 
-      line-height:
-        1.18;
+      line-height: 1.18;
 
-      letter-spacing:
-        -.025em;
+      letter-spacing: -.025em;
 
-      font-weight:
-        850;
+      font-weight: 850;
 
     }
 
 
-    .book-content p,
-    .locked-content p {
+    .book-content p {
 
       margin:
-        0 0 20px;
+        0;
 
       color:
         rgba(255,255,255,.50);
 
-      font-size:
-        13px;
+      font-size: 13px;
 
-      line-height:
-        1.6;
+      line-height: 1.6;
 
     }
 
 
     /* =====================================================
-       BUTTONS
+       ACTION AREA
     ===================================================== */
 
-    .open-btn,
-    .buy-btn {
+    .book-action-area {
+
+      margin-top: auto;
+
+      padding-top: 24px;
+
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 12px;
+
+    }
+
+
+    /* =====================================================
+       MAIN ACTION BUTTON
+    ===================================================== */
+
+    .book-action {
 
       width: 100%;
 
-      min-height:
-        49px;
+      min-height: 49px;
 
       display: flex;
 
@@ -838,39 +951,44 @@
       gap: 15px;
 
       padding:
-        0 16px;
+        0 17px;
 
-      border-radius:
-        11px;
+      border-radius: 12px;
 
-      font-size:
-        12px;
+      text-decoration: none !important;
 
-      font-weight:
-        850;
+      font-size: 12px;
 
-      text-decoration:
-        none;
+      font-weight: 850;
 
       cursor: pointer;
 
       transition:
         transform .2s ease,
+        box-shadow .2s ease,
         background .2s ease,
         border-color .2s ease;
 
     }
 
 
+    .book-action:visited,
+    .book-action:hover,
+    .book-action:active {
+
+      text-decoration: none !important;
+
+    }
+
+
     /* =====================================================
-       OPEN BUTTON
+       OPEN ANSWERS
     ===================================================== */
 
-    .open-btn {
+    .unlocked-action {
 
-      border:
-        1px solid
-        rgba(34,197,94,.65);
+      color:
+        #ffffff !important;
 
       background:
         linear-gradient(
@@ -879,250 +997,222 @@
           var(--green-dark)
         );
 
-      color:
-        #ffffff;
+      border:
+        1px solid
+        rgba(74,222,128,.65);
 
       box-shadow:
         0 10px 25px
-        rgba(34,197,94,.15);
+        rgba(34,197,94,.16);
 
     }
 
 
-    .open-btn:hover {
+    .unlocked-action:hover {
 
       transform:
         translateY(-2px);
 
       box-shadow:
-        0 14px 30px
-        rgba(34,197,94,.24);
-
-    }
-
-
-    .open-btn span:last-child,
-    .buy-btn span:last-child {
-
-      font-size:
-        18px;
-
-      line-height:
-        1;
+        0 15px 32px
+        rgba(34,197,94,.28);
 
     }
 
 
     /* =====================================================
-       LOCKED CARD
+       BUY BOOK
     ===================================================== */
 
-    .locked-card {
+    .locked-buy {
+
+      color:
+        #ffffff !important;
 
       background:
         linear-gradient(
-          145deg,
-          rgba(13,41,68,.52),
-          rgba(7,21,37,.96)
+          135deg,
+          rgba(24,54,83,.95),
+          rgba(16,40,63,.95)
         );
 
-    }
+      border:
+        1px solid
+        rgba(255,255,255,.12);
 
-
-    /* =====================================================
-       LOCKED COVER
-    ===================================================== */
-
-    .locked-card .book-cover img {
-
-      filter:
-        brightness(.52)
-        saturate(.78);
-
-      transition:
-        transform .5s ease,
-        filter .3s ease;
+      box-shadow:
+        0 8px 22px
+        rgba(0,0,0,.18);
 
     }
 
 
-    .locked-card:hover
-    .book-cover img {
+    .locked-buy:hover {
 
       transform:
-        scale(1.025);
-
-      filter:
-        brightness(.62)
-        saturate(.88);
-
-    }
-
-
-    .locked-card .book-cover::after {
-
-      content: "";
-
-      position: absolute;
-
-      inset: 0;
+        translateY(-2px);
 
       background:
         linear-gradient(
-          180deg,
-          rgba(3,9,18,.05) 15%,
-          rgba(3,9,18,.30) 55%,
-          rgba(3,9,18,.78) 100%
+          135deg,
+          rgba(33,71,102,.98),
+          rgba(22,51,78,.98)
         );
 
-      pointer-events:
-        none;
+      border-color:
+        rgba(74,222,128,.32);
+
+      box-shadow:
+        0 12px 28px
+        rgba(0,0,0,.25);
 
     }
 
 
     /* =====================================================
-       LOCKED CONTENT
+       BUTTON ARROW
     ===================================================== */
 
-    .locked-content {
+    .action-arrow {
 
-      padding:
-        22px;
+      font-size: 19px;
+
+      line-height: 1;
+
+      font-weight: 400;
+
+      transition:
+        transform .2s ease;
 
     }
 
 
-    .locked-label {
+    .book-action:hover
+    .action-arrow {
+
+      transform:
+        translateX(4px);
+
+    }
+
+
+    /* =====================================================
+       ACCESS STATUS
+    ===================================================== */
+
+    .access-status {
+
+      width: fit-content;
 
       display: inline-flex;
 
       align-items: center;
 
-      width:
-        fit-content;
+      gap: 7px;
 
       padding:
-        7px 10px;
+        6px 10px;
 
-      margin-bottom:
-        11px;
+      border-radius: 999px;
 
-      border-radius:
-        999px;
+      font-size: 9px;
 
-      background:
-        rgba(255,255,255,.055);
+      font-weight: 850;
 
-      border:
-        1px solid
-        rgba(255,255,255,.08);
-
-      color:
-        rgba(255,255,255,.50);
-
-      font-size:
-        9px;
-
-      font-weight:
-        850;
-
-      letter-spacing:
-        .12em;
+      letter-spacing: .06em;
 
     }
 
 
     /* =====================================================
-       BUY BUTTON
+       ACTIVE STATUS
     ===================================================== */
 
-    .buy-btn {
+    .unlocked-status {
 
-      margin-top:
-        3px;
+      color:
+        #86efac;
+
+      background:
+        rgba(34,197,94,.08);
 
       border:
         1px solid
-        rgba(255,255,255,.13);
+        rgba(34,197,94,.18);
+
+    }
+
+
+    .status-dot {
+
+      width: 7px;
+      height: 7px;
+
+      flex: 0 0 7px;
+
+      border-radius: 50%;
 
       background:
-        rgba(255,255,255,.055);
+        var(--green);
+
+      box-shadow:
+        0 0 9px
+        rgba(34,197,94,.75);
+
+    }
+
+
+    /* =====================================================
+       LOCKED STATUS
+    ===================================================== */
+
+    .locked-status {
+
+      color:
+        #94a3b8;
+
+      background:
+        rgba(148,163,184,.07);
+
+      border:
+        1px solid
+        rgba(148,163,184,.13);
+
+    }
+
+
+    .status-lock {
+
+      font-size: 9px;
+
+    }
+
+
+    /* =====================================================
+       SESSION MESSAGE
+    ===================================================== */
+
+    .book-grid > div[style] {
+
+      border-radius: 18px;
+
+      border:
+        1px solid
+        rgba(255,255,255,.09);
+
+      background:
+        rgba(7,21,37,.65);
+
+      color:
+        rgba(255,255,255,.60);
+
+    }
+
+
+    .book-grid > div[style] h2 {
 
       color:
         var(--white);
-
-    }
-
-
-    .buy-btn:hover {
-
-      transform:
-        translateY(-2px);
-
-      background:
-        rgba(34,197,94,.10);
-
-      border-color:
-        rgba(34,197,94,.30);
-
-      color:
-        var(--green-light);
-
-    }
-
-
-    /* =====================================================
-       LOCKED ACCESS
-    ===================================================== */
-
-    .locked-access {
-
-      margin-top:
-        16px;
-
-      padding-top:
-        16px;
-
-      border-top:
-        1px solid
-        rgba(255,255,255,.07);
-
-      color:
-        rgba(255,255,255,.28);
-
-      font-size:
-        9px;
-
-      font-weight:
-        750;
-
-      letter-spacing:
-        .07em;
-
-    }
-
-
-    /* =====================================================
-       LOADING
-    ===================================================== */
-
-    .loading-state {
-
-      grid-column:
-        1 / -1;
-
-      padding:
-        60px 20px;
-
-      text-align:
-        center;
-
-      color:
-        rgba(255,255,255,.42);
-
-      font-size:
-        13px;
 
     }
 
@@ -1141,8 +1231,7 @@
 
       max-width: 1180px;
 
-      margin:
-        0 auto;
+      margin: 0 auto;
 
       padding:
         0 0 35px;
@@ -1150,11 +1239,9 @@
       color:
         rgba(255,255,255,.25);
 
-      text-align:
-        center;
+      text-align: center;
 
-      font-size:
-        10px;
+      font-size: 10px;
 
     }
 
@@ -1167,8 +1254,7 @@
 
       .dashboard-main {
 
-        width:
-          92%;
+        width: 92%;
 
       }
 
@@ -1194,8 +1280,7 @@
 
       .dash-header {
 
-        height:
-          64px;
+        height: 64px;
 
         padding:
           0 5%;
@@ -1205,44 +1290,35 @@
 
       .brand span:last-child {
 
-        font-size:
-          12px;
+        font-size: 12px;
 
       }
 
 
       .brand-mark {
 
-        width:
-          34px;
+        width: 34px;
+        height: 34px;
 
-        height:
-          34px;
-
-        border-radius:
-          9px;
+        border-radius: 9px;
 
       }
 
 
       .logout-btn {
 
-        height:
-          34px;
+        height: 34px;
 
-        min-width:
-          65px;
+        min-width: 65px;
 
-        font-size:
-          10px;
+        font-size: 10px;
 
       }
 
 
       .dashboard-main {
 
-        width:
-          90%;
+        width: 90%;
 
         padding:
           45px 0 65px;
@@ -1252,104 +1328,119 @@
 
       .dashboard-heading {
 
-        margin-bottom:
-          28px;
+        margin-bottom: 28px;
 
       }
 
 
       .dashboard-heading h1 {
 
-        font-size:
-          34px;
+        font-size: 34px;
 
       }
 
 
       .dashboard-heading p {
 
-        font-size:
-          12px;
+        font-size: 12px;
 
       }
 
 
-      #studentInfo {
+      .student-info-card {
 
-        display:
-          block;
+        display: grid;
 
-        width:
-          100%;
+        grid-template-columns:
+          1fr 1fr;
 
-        font-size:
-          9px;
+      }
+
+
+      .student-info-card > div {
+
+        min-width: 0;
+
+        border-right:
+          1px solid
+          rgba(255,255,255,.07);
+
+        border-bottom:
+          1px solid
+          rgba(255,255,255,.07);
+
+      }
+
+
+      .student-info-card > div:nth-child(2n) {
+
+        border-right: none;
+
+      }
+
+
+      .student-info-card > div:nth-last-child(-n+2) {
+
+        border-bottom: none;
 
       }
 
 
       .book-grid {
 
-        grid-template-columns:
-          1fr;
+        grid-template-columns: 1fr;
 
-        gap:
-          20px;
+        gap: 20px;
 
       }
 
 
-      .book-content,
-      .locked-content {
+      .book-content {
 
-        padding:
-          20px;
+        padding: 20px;
 
       }
 
 
-      .book-content h3,
-      .locked-content h3 {
+      .book-content h2 {
 
-        font-size:
-          21px;
+        font-size: 21px;
 
       }
 
 
-      .book-content p,
-      .locked-content p {
+      .book-content p {
 
-        font-size:
-          12px;
+        font-size: 12px;
 
       }
 
 
-      .status {
+      .assigned-badge {
 
-        left:
-          13px;
-
-        bottom:
-          13px;
+        left: 13px;
+        bottom: 13px;
 
         padding:
           7px 10px;
 
-        font-size:
-          8px;
+        font-size: 8px;
+
+      }
+
+
+      .access-status {
+
+        font-size: 8px;
 
       }
 
 
       .dashboard-footer {
 
-        width:
-          90%;
+        width: 90%;
 
-        font-size:
-          9px;
+        font-size: 9px;
 
       }
 
@@ -1364,24 +1455,47 @@
 
       .dashboard-main {
 
-        width:
-          92%;
+        width: 92%;
 
       }
 
 
       .dashboard-heading h1 {
 
-        font-size:
-          30px;
+        font-size: 30px;
 
       }
 
 
       .brand span:last-child {
 
-        display:
-          none;
+        display: none;
+
+      }
+
+
+      .student-info-card {
+
+        grid-template-columns: 1fr;
+
+      }
+
+
+      .student-info-card > div,
+      .student-info-card > div:nth-child(2n) {
+
+        border-right: none;
+
+        border-bottom:
+          1px solid
+          rgba(255,255,255,.07);
+
+      }
+
+
+      .student-info-card > div:last-child {
+
+        border-bottom: none;
 
       }
 
@@ -1422,7 +1536,6 @@
 
   <header class="dash-header">
 
-
     <a
       href="index.html"
       class="brand"
@@ -1448,7 +1561,6 @@
       Logout
     </button>
 
-
   </header>
 
 
@@ -1460,12 +1572,7 @@
   <main class="dashboard-main">
 
 
-    <!-- ===================================================
-         PAGE HEADING
-    =================================================== -->
-
     <section class="dashboard-heading">
-
 
       <div class="eyebrow">
         DIGITAL BOOK ACCESS
@@ -1483,15 +1590,9 @@
       </p>
 
 
-      <!--
-        dashboard.js fills this
-        after login.
-      -->
-
       <div id="studentInfo">
         Loading your account...
       </div>
-
 
     </section>
 
@@ -1506,13 +1607,11 @@
       id="bookGrid"
     >
 
-
       <div class="loading-state">
 
         Loading your books...
 
       </div>
-
 
     </section>
 
@@ -1523,7 +1622,7 @@
 
   <!-- =====================================================
        FOOTER
-  ===================================================== -->
+    ===================================================== -->
 
   <footer class="dashboard-footer">
 
@@ -1536,15 +1635,12 @@
 
   <!-- =====================================================
        DASHBOARD JAVASCRIPT
-
-       IMPORTANT:
-       v=10 forces the browser to load
-       the latest dashboard.js.
+       Cache version updated
   ===================================================== -->
 
   <script
     type="module"
-    src="dashboard.js?v=10"
+    src="dashboard.js?v=11"
   ></script>
 
 
