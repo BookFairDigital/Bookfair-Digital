@@ -9460,8 +9460,125 @@ BookFair Digital`;
 
       }
     );
+<script>
+/* =====================================================
+   BOOKFAIR DIGITAL
+   AUTO OPEN ORDER FROM DASHBOARD
+===================================================== */
 
-  </script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const params = new URLSearchParams(
+    window.location.search
+  );
+
+  const buyBook = params.get("buy");
+
+  if (!buyBook) {
+    return;
+  }
+
+  const bookKey = decodeURIComponent(buyBook)
+    .trim()
+    .toLowerCase();
+
+  const books = {
+
+    "book 01": {
+      code: "Book 01",
+      name: "A/L Accounting",
+      price: 1500,
+      image: "assets/accounting.jpg"
+    },
+
+    "book 02": {
+      code: "Book 02",
+      name: "LKAS & SLFRS Part-I",
+      price: 1800,
+      image: "assets/book-02.jpg"
+    },
+
+    "book 03": {
+      code: "Book 03",
+      name: "LKAS & SLFRS Part-II",
+      price: 1800,
+      image: "assets/book-03.jpg"
+    }
+
+  };
+
+  const selectedBook = books[bookKey];
+
+  if (!selectedBook) {
+    console.warn(
+      "Unknown book:",
+      buyBook
+    );
+    return;
+  }
+
+  /*
+    Wait until the existing page scripts
+    finish loading and define openOrder().
+  */
+
+  let attempts = 0;
+
+  const tryOpenOrder = setInterval(function () {
+
+    attempts++;
+
+    if (
+      typeof window.openOrder === "function"
+    ) {
+
+      clearInterval(tryOpenOrder);
+
+      window.openOrder(
+        selectedBook.code,
+        selectedBook.name,
+        selectedBook.price,
+        selectedBook.image
+      );
+
+      /*
+        Remove ?buy=... from the address bar
+        without reloading the page.
+      */
+
+      const cleanUrl =
+        window.location.pathname +
+        "#store";
+
+      window.history.replaceState(
+        {},
+        document.title,
+        cleanUrl
+      );
+
+      return;
+    }
+
+    /*
+      Stop trying after approximately
+      5 seconds.
+    */
+
+    if (attempts >= 50) {
+
+      clearInterval(tryOpenOrder);
+
+      console.error(
+        "openOrder() was not found."
+      );
+
+    }
+
+  }, 100);
+
+});
+</script>
+  
 
 </body>
 </html>
