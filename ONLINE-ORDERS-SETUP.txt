@@ -1,0 +1,29 @@
+ONLINE ORDERS + REVENUE UPDATE
+
+Replace:
+- admin.html -> admin-orders.html
+- admin.js -> admin-orders.js
+- firebase.js -> firebase-updated.js
+- index.html -> index-orders-firestore.html
+
+The updated store writes orders to Firestore collection:
+orders/{orderNumber}
+
+and uploads bank slips to Firebase Storage:
+order-slips/{orderNumber}-{filename}
+
+Admin dashboard adds:
+- Total Orders
+- Pending Orders
+- Today Revenue
+- This Month Revenue
+- Total Revenue
+- Online Orders table
+- Customer details
+- Bank slip View Slip
+- Payment status update
+
+Revenue counts only orders whose status is Paid or Completed.
+
+IMPORTANT:
+Firebase Storage security rules must be configured. The current student login is not Firebase Auth, so a secure per-student Storage write rule is not available with the current architecture. Do not use a completely open Storage read rule in production.
