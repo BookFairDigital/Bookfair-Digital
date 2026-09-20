@@ -48,27 +48,6 @@ const BOOKS = [
     answerPage: "#"
   },
 
-  {
-    number: "04",
-    name: "Book 04",
-    title: "Book 04",
-    description:
-      "Digital answer resource for Book 04.",
-    image: "",
-    answerPage: "#"
-  },
-
-  {
-    number: "05",
-    name: "Book 05",
-    title: "Book 05",
-    description:
-      "Digital answer resource for Book 05.",
-    image: "",
-    answerPage: "#"
-  }
-];
-
 
 /* =========================
    NORMALIZE BOOK NAME
