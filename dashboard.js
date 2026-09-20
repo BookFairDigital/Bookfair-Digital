@@ -12,7 +12,7 @@ import {
 
 /* =====================================================
    STORAGE KEYS
-===================================================== */
+   ===================================================== */
 
 const LOGIN_KEY = "bf_login";
 const STUDENT_KEY = "bf_student";
@@ -21,7 +21,7 @@ const STUDENT_DOC_KEY = "bf_student_doc";
 
 /* =====================================================
    BOOK DATA
-===================================================== */
+   ===================================================== */
 
 const BOOKS = [
   {
@@ -63,19 +63,22 @@ const BOOKS = [
 
 
 /* =====================================================
-   HELPERS
-===================================================== */
+   GET SAVED STUDENT
+   ===================================================== */
 
 function getStoredStudent() {
   try {
     const raw =
       localStorage.getItem(STUDENT_KEY);
 
-    if (!raw) return null;
+    if (!raw) {
+      return null;
+    }
 
     return JSON.parse(raw);
 
   } catch (error) {
+
     console.error(
       "Could not read saved student:",
       error
@@ -86,6 +89,10 @@ function getStoredStudent() {
 }
 
 
+/* =====================================================
+   NORMALIZE BOOK NAME
+   ===================================================== */
+
 function normalizeBook(value) {
   return String(value || "")
     .trim()
@@ -94,6 +101,10 @@ function normalizeBook(value) {
     .replace(/\s+/g, " ");
 }
 
+
+/* =====================================================
+   CHECK ASSIGNED BOOK
+   ===================================================== */
 
 function isAssignedBook(
   assignedBook,
@@ -105,6 +116,10 @@ function isAssignedBook(
   );
 }
 
+
+/* =====================================================
+   ESCAPE HTML
+   ===================================================== */
 
 function escapeHtml(value) {
   return String(value ?? "")
@@ -118,38 +133,59 @@ function escapeHtml(value) {
 
 /* =====================================================
    LOGOUT
-===================================================== */
+   ===================================================== */
 
 function logoutStudent() {
 
-  localStorage.removeItem(LOGIN_KEY);
-  localStorage.removeItem(STUDENT_KEY);
-  localStorage.removeItem(STUDENT_DOC_KEY);
+  localStorage.removeItem(
+    LOGIN_KEY
+  );
 
-  location.replace("login.html");
+  localStorage.removeItem(
+    STUDENT_KEY
+  );
+
+  localStorage.removeItem(
+    STUDENT_DOC_KEY
+  );
+
+  location.replace(
+    "login.html"
+  );
 }
 
 
-window.logout = logoutStudent;
+/* =====================================================
+   GLOBAL LOGOUT
+   ===================================================== */
+
+window.logout =
+  logoutStudent;
 
 
 /* =====================================================
-   ELEMENTS
-===================================================== */
+   PAGE ELEMENTS
+   ===================================================== */
 
 const studentInfo =
-  document.getElementById("studentInfo");
+  document.getElementById(
+    "studentInfo"
+  );
 
 const bookGrid =
-  document.getElementById("bookGrid");
+  document.getElementById(
+    "bookGrid"
+  );
 
 const logoutButton =
-  document.getElementById("logout");
+  document.getElementById(
+    "logout"
+  );
 
 
 /* =====================================================
    LOGOUT BUTTON
-===================================================== */
+   ===================================================== */
 
 if (logoutButton) {
 
@@ -162,12 +198,17 @@ if (logoutButton) {
 
 
 /* =====================================================
-   RENDER STUDENT INFO
-===================================================== */
+   STUDENT INFORMATION
+   ===================================================== */
 
-function renderStudentInfo(student) {
+function renderStudentInfo(
+  student
+) {
 
-  if (!studentInfo) return;
+  if (!studentInfo) {
+    return;
+  }
+
 
   const fullName =
     student.fullName ||
@@ -175,120 +216,282 @@ function renderStudentInfo(student) {
     student.name ||
     "";
 
+
   const username =
     student.username ||
     student.Username ||
-    localStorage.getItem(LOGIN_KEY) ||
+    localStorage.getItem(
+      LOGIN_KEY
+    ) ||
     "";
+
 
   const district =
     student.district ||
     student.District ||
     "";
 
+
   const assignedBook =
     student.assignedBook ||
     student["Assigned Book"] ||
     "";
 
+
   studentInfo.innerHTML = `
+
     <div class="student-info-card">
 
       <div>
+
         <span class="info-label">
           STUDENT
         </span>
 
         <strong>
-          ${escapeHtml(fullName || username)}
+          ${escapeHtml(
+            fullName || username
+          )}
         </strong>
+
       </div>
 
+
       <div>
+
         <span class="info-label">
           USERNAME
         </span>
 
         <strong>
-          ${escapeHtml(username)}
+          ${escapeHtml(
+            username
+          )}
         </strong>
+
       </div>
+
 
       ${
         district
           ? `
             <div>
+
               <span class="info-label">
                 DISTRICT
               </span>
 
               <strong>
-                ${escapeHtml(district)}
+                ${escapeHtml(
+                  district
+                )}
               </strong>
+
             </div>
           `
           : ""
       }
 
+
       <div>
+
         <span class="info-label">
           ASSIGNED BOOK
         </span>
 
         <strong>
-          ${escapeHtml(assignedBook || "Not assigned")}
+          ${escapeHtml(
+            assignedBook ||
+            "Not assigned"
+          )}
         </strong>
+
       </div>
 
     </div>
+
   `;
 }
 
 
 /* =====================================================
-   RENDER BOOKS
-===================================================== */
+   RENDER BOOK CARDS
+   ===================================================== */
 
-function renderBooks(student) {
+function renderBooks(
+  student
+) {
 
-  if (!bookGrid) return;
+  if (!bookGrid) {
+    return;
+  }
+
 
   const assignedBook =
     student.assignedBook ||
     student["Assigned Book"] ||
     "";
 
+
   bookGrid.innerHTML = "";
 
-  BOOKS.forEach((book) => {
 
-    const assigned =
-      isAssignedBook(
-        assignedBook,
-        book.code
-      );
+  BOOKS.forEach(
+    (book) => {
+
+      const assigned =
+        isAssignedBook(
+          assignedBook,
+          book.code
+        );
 
 
-    /* ===============================================
-       ASSIGNED BOOK
-    =============================================== */
+      /* =================================================
+         ASSIGNED BOOK
+         ================================================= */
 
-    if (assigned) {
+      if (assigned) {
+
+        bookGrid.insertAdjacentHTML(
+          "beforeend",
+          `
+
+          <article
+            class="book-card unlocked"
+          >
+
+            <div class="book-cover">
+
+              <img
+                src="${book.image}"
+                alt="${escapeHtml(
+                  book.title
+                )}"
+              >
+
+              <div
+                class="assigned-badge"
+              >
+                ✓ ASSIGNED TO YOU
+              </div>
+
+            </div>
+
+
+            <div class="book-content">
+
+              <div class="book-label">
+                ${escapeHtml(
+                  book.label
+                )}
+              </div>
+
+
+              <h2>
+                ${escapeHtml(
+                  book.title
+                )}
+              </h2>
+
+
+              <p>
+                Complete digital answer
+                resource for your
+                ${escapeHtml(
+                  book.title
+                )} book.
+              </p>
+
+
+              <div
+                class="book-action-area"
+              >
+
+                <a
+                  href="${book.assignedLink}"
+                  class="
+                    book-action
+                    unlocked-action
+                  "
+                >
+
+                  <span>
+                    Open Answers
+                  </span>
+
+                  <span
+                    class="action-arrow"
+                  >
+                    →
+                  </span>
+
+                </a>
+
+
+                <div
+                  class="
+                    access-status
+                    unlocked-status
+                  "
+                >
+
+                  <span
+                    class="status-dot"
+                  ></span>
+
+                  DIGITAL ACCESS ACTIVE
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </article>
+
+          `
+        );
+
+        return;
+      }
+
+
+      /* =================================================
+         LOCKED BOOK
+         ================================================= */
 
       bookGrid.insertAdjacentHTML(
         "beforeend",
         `
-        <article class="book-card unlocked">
+
+        <article
+          class="book-card locked"
+        >
 
           <div class="book-cover">
 
             <img
               src="${book.image}"
-              alt="${escapeHtml(book.title)}"
+              alt="${escapeHtml(
+                book.title
+              )}"
             >
 
-            <div class="assigned-badge">
-              ✓ ASSIGNED TO YOU
+
+            <div
+              class="locked-overlay"
+            >
+
+              <div
+                class="lock-icon"
+              >
+                🔒
+              </div>
+
+              <span>
+                LOCKED
+              </span>
+
             </div>
 
           </div>
@@ -297,129 +500,112 @@ function renderBooks(student) {
           <div class="book-content">
 
             <div class="book-label">
-              ${escapeHtml(book.label)}
+              ${escapeHtml(
+                book.label
+              )}
             </div>
 
+
             <h2>
-              ${escapeHtml(book.title)}
+              ${escapeHtml(
+                book.title
+              )}
             </h2>
 
+
             <p>
-              Complete digital answer resource
-              for your ${escapeHtml(book.title)} book.
+              This digital resource has
+              not been assigned to your
+              account.
             </p>
 
 
-            <a
-              href="${book.assignedLink}"
-              class="book-action unlocked-action"
+            <div
+              class="book-action-area"
             >
-              ${escapeHtml(book.assignedButton)}
-              <span>→</span>
-            </a>
+
+              <a
+                href="${book.buyLink}"
+                class="
+                  book-action
+                  locked-buy
+                "
+              >
+
+                <span>
+                  Buy Book
+                </span>
+
+                <span
+                  class="action-arrow"
+                >
+                  →
+                </span>
+
+              </a>
+
+
+              <div
+                class="
+                  access-status
+                  locked-status
+                "
+              >
+
+                <span
+                  class="status-lock"
+                >
+                  🔒
+                </span>
+
+                ACCESS NOT ASSIGNED
+
+              </div>
+
+            </div>
 
           </div>
 
         </article>
+
         `
       );
 
-      return;
     }
-
-
-    /* ===============================================
-       LOCKED BOOK
-    =============================================== */
-
-    bookGrid.insertAdjacentHTML(
-      "beforeend",
-      `
-      <article class="book-card locked">
-
-        <div class="book-cover">
-
-          <img
-            src="${book.image}"
-            alt="${escapeHtml(book.title)}"
-          >
-
-          <div class="locked-overlay">
-
-            <div class="lock-icon">
-              🔒
-            </div>
-
-            <span>
-              LOCKED
-            </span>
-
-          </div>
-
-        </div>
-
-
-        <div class="book-content">
-
-          <div class="book-label">
-            ${escapeHtml(book.label)}
-          </div>
-
-          <h2>
-            ${escapeHtml(book.title)}
-          </h2>
-
-          <p>
-            This digital resource has not
-            been assigned to your account.
-          </p>
-
-
-          <a
-            href="${book.buyLink}"
-            class="book-action locked-buy"
-          >
-            Buy Book
-            <span>→</span>
-          </a>
-
-
-          <div class="access-note">
-            ACCESS NOT ASSIGNED
-          </div>
-
-        </div>
-
-      </article>
-      `
-    );
-
-  });
+  );
 }
 
 
 /* =====================================================
-   SHOW SESSION MESSAGE
-===================================================== */
+   SESSION MESSAGE
+   ===================================================== */
 
 function showSessionMessage() {
 
   if (studentInfo) {
 
     studentInfo.innerHTML = `
-      <div class="student-info-card">
+
+      <div
+        class="student-info-card"
+      >
 
         <div>
-          <span class="info-label">
+
+          <span
+            class="info-label"
+          >
             SESSION
           </span>
 
           <strong>
             Student information is unavailable.
           </strong>
+
         </div>
 
       </div>
+
     `;
   }
 
@@ -427,6 +613,7 @@ function showSessionMessage() {
   if (bookGrid) {
 
     bookGrid.innerHTML = `
+
       <div
         style="
           grid-column: 1 / -1;
@@ -439,31 +626,48 @@ function showSessionMessage() {
           Session not found
         </h2>
 
-        <p style="margin: 10px 0 20px;">
-          Please login again to access your digital books.
+        <p
+          style="
+            margin: 10px 0 20px;
+          "
+        >
+          Please login again to access
+          your digital books.
         </p>
+
 
         <a
           href="login.html"
-          class="book-action unlocked-action"
+          class="
+            book-action
+            unlocked-action
+          "
           style="
             max-width: 260px;
             margin: auto;
           "
         >
-          Go to Login
-          <span>→</span>
+
+          <span>
+            Go to Login
+          </span>
+
+          <span>
+            →
+          </span>
+
         </a>
 
       </div>
+
     `;
   }
 }
 
 
 /* =====================================================
-   FIRESTORE REFRESH
-===================================================== */
+   REFRESH STUDENT FROM FIRESTORE
+   ===================================================== */
 
 async function refreshStudentFromFirestore(
   student
@@ -493,10 +697,14 @@ async function refreshStudentFromFirestore(
 
 
     const studentSnapshot =
-      await getDoc(studentRef);
+      await getDoc(
+        studentRef
+      );
 
 
-    if (!studentSnapshot.exists()) {
+    if (
+      !studentSnapshot.exists()
+    ) {
 
       console.warn(
         "Student Firestore document not found."
@@ -511,58 +719,52 @@ async function refreshStudentFromFirestore(
 
 
     const updatedStudent = {
+
       ...student,
+
       ...freshData,
+
       docId: docId
+
     };
 
-
-    /*
-      Keep the original username if
-      Firestore data does not contain it.
-    */
 
     if (
       !updatedStudent.username &&
       student.username
     ) {
+
       updatedStudent.username =
         student.username;
+
     }
 
-
-    /*
-      Keep Assigned Book from either
-      naming style.
-    */
 
     if (
       !updatedStudent.assignedBook &&
       updatedStudent["Assigned Book"]
     ) {
+
       updatedStudent.assignedBook =
-        updatedStudent["Assigned Book"];
+        updatedStudent[
+          "Assigned Book"
+        ];
+
     }
 
 
     localStorage.setItem(
       STUDENT_KEY,
-      JSON.stringify(updatedStudent)
+      JSON.stringify(
+        updatedStudent
+      )
     );
 
 
     return updatedStudent;
 
+
   } catch (error) {
-
-    /*
-      IMPORTANT:
-      Do not redirect the student if
-      Firestore refresh fails.
-
-      Dashboard can still work using
-      the locally saved login data.
-    */
 
     console.error(
       "Dashboard Firestore refresh failed:",
@@ -575,8 +777,8 @@ async function refreshStudentFromFirestore(
 
 
 /* =====================================================
-   INITIALIZE DASHBOARD
-===================================================== */
+   DASHBOARD INITIALIZATION
+   ===================================================== */
 
 async function initDashboard() {
 
@@ -585,17 +787,21 @@ async function initDashboard() {
       LOGIN_KEY
     );
 
+
   let student =
     getStoredStudent();
 
 
   /*
-    We intentionally DO NOT automatically
-    redirect to login here.
+    IMPORTANT:
 
-    This prevents the dashboard from
-    bouncing back to the login page.
+    Do NOT automatically redirect
+    to login from dashboard.
+
+    This prevents the dashboard
+    login bounce problem.
   */
+
 
   if (!student) {
 
@@ -609,10 +815,6 @@ async function initDashboard() {
   }
 
 
-  /*
-    Make sure username exists.
-  */
-
   if (
     !student.username &&
     loginUsername
@@ -620,34 +822,28 @@ async function initDashboard() {
 
     student.username =
       loginUsername;
+
   }
 
 
-  /*
-    Render immediately from localStorage.
-    This makes dashboard appear without
-    waiting for Firestore.
-  */
+  /* Render immediately */
 
-  renderStudentInfo(student);
-  renderBooks(student);
+  renderStudentInfo(
+    student
+  );
+
+  renderBooks(
+    student
+  );
 
 
-  /*
-    Then silently refresh student data
-    from Firestore.
-  */
+  /* Refresh Firestore data */
 
   const freshStudent =
     await refreshStudentFromFirestore(
       student
     );
 
-
-  /*
-    Re-render only if Firestore returned
-    updated data.
-  */
 
   if (freshStudent) {
 
@@ -658,13 +854,14 @@ async function initDashboard() {
     renderBooks(
       freshStudent
     );
+
   }
 
 }
 
 
 /* =====================================================
-   START
-===================================================== */
+   START DASHBOARD
+   ===================================================== */
 
 initDashboard();
