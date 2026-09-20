@@ -47,10 +47,12 @@ const studentAuth = getAuth(studentApp);
 
 
 function studentEmail(username) {
+
   return (
     username.trim().toLowerCase() +
     "@bookfairdigital.local"
   );
+
 }
 
 
@@ -63,9 +65,14 @@ onAuthStateChanged(
   async (user) => {
 
     if (!user) {
-      window.location.href = "admin-login.html";
+
+      window.location.href =
+        "admin-login.html";
+
       return;
+
     }
+
 
     if (user.uid !== ADMIN_UID) {
 
@@ -73,15 +80,22 @@ onAuthStateChanged(
         await signOut(auth);
       } catch (_) {}
 
+
       alert(
         "This account is not authorized as an administrator."
       );
 
-      window.location.href = "admin-login.html";
+
+      window.location.href =
+        "admin-login.html";
+
       return;
+
     }
 
+
     initAdmin();
+
   }
 );
 
@@ -155,6 +169,7 @@ async function initAdmin() {
     }
 
     return "Not assigned";
+
   }
 
 
@@ -175,7 +190,9 @@ async function initAdmin() {
       text === "book 01" ||
       text.includes("book 01")
     ) {
+
       return "01";
+
     }
 
 
@@ -184,7 +201,9 @@ async function initAdmin() {
       text === "book 02" ||
       text.includes("book 02")
     ) {
+
       return "02";
+
     }
 
 
@@ -193,11 +212,14 @@ async function initAdmin() {
       text === "book 03" ||
       text.includes("book 03")
     ) {
+
       return "03";
+
     }
 
 
     return "";
+
   }
 
 
@@ -222,6 +244,7 @@ async function initAdmin() {
 
     const chars =
       "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789";
+
 
     return Array.from(
       { length: 10 },
@@ -249,26 +272,39 @@ async function initAdmin() {
       return;
     }
 
-    toast.textContent = text;
+
+    toast.textContent =
+      text;
+
 
     toast.className =
       "toast show" +
       (error ? " error" : "");
 
 
-    setTimeout(() => {
+    setTimeout(
+      () => {
 
-      toast.classList.remove(
-        "show"
-      );
+        toast.classList.remove(
+          "show"
+        );
 
-    }, 2800);
+      },
+      2800
+    );
 
   }
 
 
   /* ===================================================
      LOAD STUDENTS
+     
+     IMPORTANT:
+     NO REALTIME LISTENER
+     NO onSnapshot
+     NO setInterval
+     
+     Data loads only when this function is called.
   =================================================== */
 
   async function loadStudents() {
@@ -280,9 +316,14 @@ async function initAdmin() {
     try {
 
       if (status) {
+
         status.textContent =
           "● Loading students...";
-        status.classList.remove("error");
+
+        status.classList.remove(
+          "error"
+        );
+
       }
 
 
@@ -344,7 +385,88 @@ async function initAdmin() {
         true
       );
 
+
+      throw error;
+
     }
+
+  }
+
+
+  /* ===================================================
+     MANUAL REFRESH BUTTON
+     
+     This is the ONLY normal way to refresh the
+     student list after the initial page load.
+  =================================================== */
+
+  const refreshBtn =
+    $("refreshBtn");
+
+
+  if (refreshBtn) {
+
+    refreshBtn.addEventListener(
+      "click",
+      async () => {
+
+        if (
+          refreshBtn.disabled
+        ) {
+          return;
+        }
+
+
+        refreshBtn.disabled =
+          true;
+
+
+        const originalText =
+          refreshBtn.textContent;
+
+
+        refreshBtn.textContent =
+          "Refreshing…";
+
+
+        try {
+
+          await loadStudents();
+
+
+          showToast(
+            "Student data refreshed."
+          );
+
+
+        } catch (error) {
+
+          console.error(
+            "MANUAL REFRESH ERROR:",
+            error
+          );
+
+
+          showToast(
+            "Could not refresh student data.",
+            true
+          );
+
+
+        } finally {
+
+          refreshBtn.disabled =
+            false;
+
+
+          refreshBtn.textContent =
+            originalText ||
+            "Refresh";
+
+        }
+
+      }
+    );
 
   }
 
@@ -386,20 +508,26 @@ async function initAdmin() {
 
 
     if ($("book1Count")) {
+
       $("book1Count").textContent =
         book01;
+
     }
 
 
     if ($("book2Count")) {
+
       $("book2Count").textContent =
         book02;
+
     }
 
 
     if ($("book3Count")) {
+
       $("book3Count").textContent =
         book03;
+
     }
 
   }
@@ -742,7 +870,9 @@ async function initAdmin() {
                   ".delete-student"
                 )
               ) {
+
                 return;
+
               }
 
 
@@ -797,6 +927,7 @@ async function initAdmin() {
               button.disabled =
                 true;
 
+
               button.textContent =
                 "Deleting…";
 
@@ -837,6 +968,7 @@ async function initAdmin() {
 
                 button.disabled =
                   false;
+
 
                 button.textContent =
                   "Delete";
@@ -987,6 +1119,7 @@ async function initAdmin() {
         </div>
 
       </div>
+
     `;
 
 
@@ -1009,6 +1142,7 @@ async function initAdmin() {
 
     username =
       username.trim();
+
 
     password =
       password.trim();
@@ -1310,13 +1444,16 @@ async function initAdmin() {
 
 
         if ($("newUser")) {
-          $("newUser").value = "";
+          $("newUser").value =
+            "";
         }
 
 
         if ($("newPass")) {
+
           $("newPass").value =
             randomPassword();
+
         }
 
 
@@ -1408,8 +1545,8 @@ async function initAdmin() {
 
 
       const book =
-        $("newBook")
-          ?.value || "01";
+        $("newBook")?.value ||
+        "01";
 
 
       if (
@@ -1429,6 +1566,7 @@ async function initAdmin() {
 
       button.disabled =
         true;
+
 
       button.textContent =
         "Creating…";
@@ -1505,6 +1643,7 @@ async function initAdmin() {
 
         button.disabled =
           false;
+
 
         button.textContent =
           "Create Student";
@@ -2331,6 +2470,13 @@ async function initAdmin() {
         }
 
 
+        /*
+          IMPORTANT:
+          After import finishes, data is explicitly
+          reloaded once.
+          There is still NO automatic refresh.
+        */
+
         await loadStudents();
 
 
@@ -2713,6 +2859,8 @@ async function initAdmin() {
 
   /* ===================================================
      INITIAL LOAD
+     
+     ONLY LOADS ONCE WHEN ADMIN PAGE OPENS.
   =================================================== */
 
   await loadStudents();
