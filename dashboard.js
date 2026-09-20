@@ -37,13 +37,12 @@ const BOOKS = [
       "accounting.html"
   },
 
-
   {
     number: "02",
     name: "Book 02",
 
     title:
-      "Book 02",
+      "LKAS & SLFRS · Part-I",
 
     description:
       "Digital answer resource for Book 02.",
@@ -55,13 +54,12 @@ const BOOKS = [
       "#"
   },
 
-
   {
     number: "03",
     name: "Book 03",
 
     title:
-      "Book 03",
+      "LKAS & SLFRS · Part-II",
 
     description:
       "Digital answer resource for Book 03.",
@@ -96,9 +94,7 @@ function normalizeBook(value) {
 
 function getAssignedBook(student) {
 
-  if (
-    student.assignedBook
-  ) {
+  if (student.assignedBook) {
 
     return String(
       student.assignedBook
@@ -106,17 +102,13 @@ function getAssignedBook(student) {
 
   }
 
-
-  if (
-    student["Assigned Book"]
-  ) {
+  if (student["Assigned Book"]) {
 
     return String(
       student["Assigned Book"]
     ).trim();
 
   }
-
 
   return "";
 
@@ -137,13 +129,6 @@ function logoutStudent() {
     STUDENT_KEY
   );
 
-
-  /*
-   * Replace instead of normal
-   * navigation so dashboard
-   * won't remain in browser history.
-   */
-
   location.replace(
     "login.html"
   );
@@ -153,7 +138,6 @@ function logoutStudent() {
 
 /* =====================================================
    GLOBAL LOGOUT
-   Supports old onclick="logout()"
 ===================================================== */
 
 window.logout =
@@ -169,10 +153,7 @@ document.addEventListener(
   () => {
 
     const logoutButton =
-      document.getElementById(
-        "logout"
-      );
-
+      document.getElementById("logout");
 
     if (logoutButton) {
 
@@ -194,286 +175,267 @@ document.addEventListener(
 function renderBooks(student) {
 
   const grid =
-    document.getElementById(
-      "bookGrid"
-    );
-
+    document.getElementById("bookGrid");
 
   if (!grid) {
-
     return;
-
   }
 
 
-  /*
-   * Get student's assigned book.
-   */
+  /* -----------------------------------------------
+     STUDENT ASSIGNED BOOK
+  ------------------------------------------------ */
 
   const assignedBook =
-    getAssignedBook(
-      student
-    );
-
+    getAssignedBook(student);
 
   const assignedNormalized =
-    normalizeBook(
-      assignedBook
-    );
+    normalizeBook(assignedBook);
 
 
   console.log(
-    "Student:",
-    student.username
+    "BookFair Digital student:",
+    student.username ||
+    student.Username ||
+    "unknown"
   );
 
-
   console.log(
-    "Assigned Book:",
+    "Assigned book:",
     assignedBook
   );
 
 
-  /*
-   * Clear existing cards.
-   */
+  /* -----------------------------------------------
+     CLEAR LOADING STATE
+  ------------------------------------------------ */
 
   grid.innerHTML = "";
 
 
-  /*
-   * Render Book 01 / 02 / 03.
-   */
+  /* -----------------------------------------------
+     CREATE 3 BOOK CARDS
+  ------------------------------------------------ */
 
-  BOOKS.forEach(
-    (book) => {
+  BOOKS.forEach((book) => {
 
-
-      const allowed =
-        assignedNormalized ===
-        normalizeBook(
-          book.name
-        );
+    const allowed =
+      assignedNormalized ===
+      normalizeBook(book.name);
 
 
-      const card =
-        document.createElement(
-          "article"
-        );
+    const card =
+      document.createElement("article");
 
 
-      card.dataset.book =
-        book.name;
+    card.dataset.book =
+      book.name;
 
 
-      /* =================================================
-         ASSIGNED / UNLOCKED BOOK
-      ================================================= */
+    /* =================================================
+       ASSIGNED BOOK
+    ================================================= */
 
-      if (allowed) {
+    if (allowed) {
 
-        card.className =
-          "book-card book-unlocked";
-
-
-        card.innerHTML = `
-
-          <div class="book-cover">
-
-            <img
-              src="${book.image}"
-              alt="${book.title}"
-            >
+      card.className =
+        "book-card book-unlocked";
 
 
-            <div class="status">
-              ● ASSIGNED TO YOU
-            </div>
+      card.innerHTML = `
+
+        <div class="book-cover">
+
+          <img
+            src="${book.image}"
+            alt="${book.title}"
+            loading="lazy"
+          >
+
+          <div class="status">
+            ● ASSIGNED TO YOU
+          </div>
+
+        </div>
+
+
+        <div class="book-content">
+
+          <div class="book-meta">
+
+            <span>
+              BOOK ${book.number}
+            </span>
+
+            <span>
+              •
+            </span>
+
+            <span>
+              DIGITAL RESOURCE
+            </span>
 
           </div>
 
 
-          <div class="book-content">
-
-            <div class="book-meta">
-
-              <span>
-                BOOK ${book.number}
-              </span>
-
-              <span>
-                •
-              </span>
-
-              <span>
-                DIGITAL RESOURCE
-              </span>
-
-            </div>
+          <h3>
+            ${book.title}
+          </h3>
 
 
-            <h3>
-              ${book.title}
-            </h3>
+          <p>
+            ${book.description}
+          </p>
 
 
-            <p>
-              ${book.description}
-            </p>
+          ${
+            book.answerPage !== "#"
 
+              ? `
 
-            ${
-              book.answerPage !== "#"
+                <a
+                  class="open-btn"
+                  href="${book.answerPage}"
+                >
 
-                ? `
+                  <span>
+                    Open Answers
+                  </span>
 
-                  <a
-                    class="open-btn"
-                    href="${book.answerPage}"
-                  >
+                  <span>
+                    →
+                  </span>
 
-                    <span>
-                      Open Answers
-                    </span>
+                </a>
 
-                    <span>
-                      →
-                    </span>
+              `
 
-                  </a>
+              : `
 
-                `
+                <button
+                  class="open-btn"
+                  type="button"
+                  disabled
+                  style="
+                    opacity:.45;
+                    cursor:not-allowed;
+                    border:0;
+                  "
+                >
 
-                : `
+                  <span>
+                    Coming Soon
+                  </span>
 
-                  <button
-                    class="open-btn"
-                    type="button"
-                    disabled
-                    style="
-                      opacity:.45;
-                      cursor:not-allowed;
-                      border:0;
-                    "
-                  >
+                  <span>
+                    →
+                  </span>
 
-                    <span>
-                      Coming Soon
-                    </span>
+                </button>
 
-                    <span>
-                      →
-                    </span>
+              `
+          }
 
-                  </button>
+        </div>
 
-                `
-            }
-
-          </div>
-
-        `;
-
-      }
-
-
-      /* =================================================
-         LOCKED BOOK
-         COVER IMAGE ALSO SHOWN
-      ================================================= */
-
-      else {
-
-        card.className =
-          "book-card locked-card";
-
-
-        card.innerHTML = `
-
-          <div class="book-cover">
-
-            <img
-              src="${book.image}"
-              alt="${book.title}"
-            >
-
-
-            <div class="status">
-              🔒 LOCKED
-            </div>
-
-          </div>
-
-
-          <div class="locked-content">
-
-            <div class="locked-label">
-              LOCKED
-            </div>
-
-
-            <div class="book-meta">
-
-              <span>
-                BOOK ${book.number}
-              </span>
-
-              <span>
-                •
-              </span>
-
-              <span>
-                DIGITAL RESOURCE
-              </span>
-
-            </div>
-
-
-            <h3>
-              ${book.title}
-            </h3>
-
-
-            <p>
-              This digital resource has not
-              been assigned to your account.
-            </p>
-
-
-            <button
-              type="button"
-              class="buy-btn"
-              data-buy-book="${book.name}"
-            >
-
-              <span>
-                Buy Book
-              </span>
-
-              <span>
-                →
-              </span>
-
-            </button>
-
-
-            <div class="locked-access">
-              ACCESS NOT ASSIGNED
-            </div>
-
-          </div>
-
-        `;
-
-      }
-
-
-      grid.appendChild(
-        card
-      );
+      `;
 
     }
-  );
+
+
+    /* =================================================
+       LOCKED BOOK
+    ================================================= */
+
+    else {
+
+      card.className =
+        "book-card locked-card";
+
+
+      card.innerHTML = `
+
+        <div class="book-cover">
+
+          <img
+            src="${book.image}"
+            alt="${book.title}"
+            loading="lazy"
+          >
+
+          <div class="status">
+            🔒 LOCKED
+          </div>
+
+        </div>
+
+
+        <div class="locked-content">
+
+          <div class="locked-label">
+            LOCKED
+          </div>
+
+
+          <div class="book-meta">
+
+            <span>
+              BOOK ${book.number}
+            </span>
+
+            <span>
+              •
+            </span>
+
+            <span>
+              DIGITAL RESOURCE
+            </span>
+
+          </div>
+
+
+          <h3>
+            ${book.title}
+          </h3>
+
+
+          <p>
+            This digital resource has not
+            been assigned to your account.
+          </p>
+
+
+          <button
+            type="button"
+            class="buy-btn"
+            data-buy-book="${book.name}"
+          >
+
+            <span>
+              Buy Book
+            </span>
+
+            <span>
+              →
+            </span>
+
+          </button>
+
+
+          <div class="locked-access">
+            ACCESS NOT ASSIGNED
+          </div>
+
+        </div>
+
+      `;
+
+    }
+
+
+    grid.appendChild(card);
+
+  });
 
 
   /* =================================================
@@ -481,29 +443,30 @@ function renderBooks(student) {
   ================================================= */
 
   grid
-    .querySelectorAll(
-      "[data-buy-book]"
-    )
-    .forEach(
-      (button) => {
+    .querySelectorAll("[data-buy-book]")
+    .forEach((button) => {
 
-        button.addEventListener(
-          "click",
-          () => {
+      button.addEventListener(
+        "click",
+        () => {
 
-            const bookName =
-              button.dataset.buyBook;
+          const bookName =
+            button.dataset.buyBook;
 
 
-            alert(
-              `${bookName} purchase option will be available soon.`
-            );
+          /*
+           * Current dashboard behaviour.
+           * Ecommerce purchase can be connected later.
+           */
 
-          }
-        );
+          alert(
+            `${bookName} purchase option will be available soon.`
+          );
 
-      }
-    );
+        }
+      );
+
+    });
 
 }
 
@@ -514,9 +477,9 @@ function renderBooks(student) {
 
 async function loadStudent() {
 
-
   /*
-   * Get logged-in username.
+   * IMPORTANT:
+   * The username saved during login is used here.
    */
 
   const username =
@@ -525,9 +488,9 @@ async function loadStudent() {
     );
 
 
-  /*
-   * No login.
-   */
+  /* =================================================
+     NOT LOGGED IN
+  ================================================= */
 
   if (!username) {
 
@@ -542,9 +505,8 @@ async function loadStudent() {
 
   try {
 
-
     /* =================================================
-       GET STUDENT DOCUMENT
+       GET EXACT STUDENT DOCUMENT
     ================================================= */
 
     const studentRef =
@@ -561,11 +523,17 @@ async function loadStudent() {
       );
 
 
-    /*
-     * Student document doesn't exist.
-     */
+    /* =================================================
+       DOCUMENT NOT FOUND
+    ================================================= */
 
     if (!snapshot.exists()) {
+
+      console.error(
+        "Student document not found:",
+        username
+      );
+
 
       localStorage.removeItem(
         LOGIN_KEY
@@ -585,16 +553,16 @@ async function loadStudent() {
     }
 
 
-    /*
-     * Student data.
-     */
+    /* =================================================
+       STUDENT DATA
+    ================================================= */
 
     const student =
       snapshot.data();
 
 
     /* =================================================
-       ACTIVE CHECK
+       ACTIVE ACCOUNT CHECK
     ================================================= */
 
     if (
@@ -625,9 +593,7 @@ async function loadStudent() {
 
     localStorage.setItem(
       STUDENT_KEY,
-      JSON.stringify(
-        student
-      )
+      JSON.stringify(student)
     );
 
 
@@ -643,18 +609,16 @@ async function loadStudent() {
 
     if (studentInfo) {
 
-
       const name =
         student.fullName ||
         student["Full Name"] ||
         student.username ||
+        student.Username ||
         username;
 
 
       const assigned =
-        getAssignedBook(
-          student
-        );
+        getAssignedBook(student);
 
 
       studentInfo.innerHTML = `
@@ -677,7 +641,7 @@ async function loadStudent() {
 
 
     /* =================================================
-       RENDER BOOK CARDS
+       RENDER BOOKS
     ================================================= */
 
     renderBooks(
@@ -685,17 +649,35 @@ async function loadStudent() {
     );
 
 
+    /*
+     * IMPORTANT:
+     *
+     * There is intentionally NO:
+     *
+     * location.href = "index.html"
+     *
+     * here.
+     *
+     * Once dashboard.html is loaded,
+     * the student stays on the dashboard.
+     */
+
   }
 
 
   catch (error) {
-
 
     console.error(
       "Dashboard error:",
       error
     );
 
+
+    /*
+     * Only return to login if the
+     * dashboard cannot verify the
+     * student account.
+     */
 
     localStorage.removeItem(
       LOGIN_KEY
@@ -716,7 +698,7 @@ async function loadStudent() {
 
 
 /* =====================================================
-   START
+   START DASHBOARD
 ===================================================== */
 
 loadStudent();
