@@ -1,0 +1,33 @@
+BOOKFAIR DIGITAL — INDEX.HTML REPLACEMENT INSTRUCTIONS
+
+The current repository already contains:
+- google-orders.js
+- order-tracking.html
+- order-tracking.js
+
+You only need to update index.html.
+
+1. Open index.html in GitHub.
+2. Find:
+   <div class="nav-links">
+3. Find the Collection link:
+   <a href="#collection">
+     Collection
+   </a>
+4. Immediately AFTER that Collection link and BEFORE the Login link, add:
+
+<a href="order-tracking.html">
+  Track Order
+</a>
+
+5. At the very end of index.html, immediately BEFORE:
+   </body>
+   add:
+
+<script src="google-orders.js?v=2"></script>
+
+6. Commit directly to main.
+
+IMPORTANT:
+Do not delete or replace the existing order form JavaScript.
+The google-orders.js file uses the existing form fields and intercepts the submit event.
