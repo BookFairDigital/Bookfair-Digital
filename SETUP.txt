@@ -1,0 +1,33 @@
+BOOKFAIR GOOGLE ORDERS INTEGRATION
+
+Google Apps Script Web App:
+https://script.google.com/macros/s/AKfycbyJPyMYQy10tYPWoonku6i319WIT7dIukMaXjJXeIgYIRWEKXkeVUzfHebxkLx_ygYdUA/exec
+
+Files:
+1. google-orders.js
+   - Website order submit override
+   - Saves order + bank slip to Google Apps Script
+
+2. google-orders-admin.js
+   - Admin Online Orders override
+   - Loads orders from Google Sheet
+   - Status: Payment Checking / Paid / Completed / Cancelled
+   - Delete button
+   - Auto refresh every 15 seconds
+
+3. order-tracking.html
+4. order-tracking.js
+   - Public order tracking page
+   - Reads status from the same Google Sheet API
+
+GITHUB INSTALL:
+A) Upload all four files to the repository root.
+B) In index.html, add this line immediately before </body>:
+   <script src="google-orders.js"></script>
+C) In admin.html, add this line immediately after the existing admin-orders.js script:
+   <script src="google-orders-admin.js"></script>
+D) Add a main website navigation link:
+   <a href="order-tracking.html">Track Order</a>
+
+IMPORTANT:
+The Apps Script code currently uses a hard-coded admin token. This is suitable for a prototype but is not a strong security boundary. For production, replace the token approach with authenticated server-side admin authorization.

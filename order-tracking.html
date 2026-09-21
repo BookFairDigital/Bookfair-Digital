@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BookFair Digital — Track Order</title>
+<style>
+:root{--navy:#071525;--green:#22c55e;--green2:#4ade80;--white:#f8fafc;--muted:#9fb0c0;--border:rgba(255,255,255,.10)}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;color:var(--white);background:radial-gradient(circle at 15% 20%,rgba(34,197,94,.10),transparent 28%),radial-gradient(circle at 85% 25%,rgba(36,91,136,.20),transparent 30%),var(--navy)}
+a{text-decoration:none;color:inherit}.wrap{max-width:900px;margin:0 auto;padding:28px 18px 70px}.top{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:55px}.brand{font-size:21px;font-weight:900}.brand span{color:var(--green2)}.back{padding:10px 14px;border:1px solid var(--border);border-radius:10px;color:#cbd7e2;font-size:12px;font-weight:800}.hero{text-align:center;margin-bottom:30px}.hero .mini{color:var(--green2);font-size:11px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}h1{font-size:clamp(34px,6vw,58px);margin:10px 0 12px;letter-spacing:-.04em}.hero p{margin:0;color:var(--muted);font-size:14px}.card{max-width:620px;margin:0 auto;padding:25px;border:1px solid var(--border);border-radius:20px;background:linear-gradient(145deg,rgba(13,41,68,.72),rgba(7,21,37,.88));box-shadow:0 25px 70px rgba(0,0,0,.25)}label{display:block;color:#8fa3b5;font-size:10px;font-weight:900;letter-spacing:.1em;margin-bottom:7px}.row{display:flex;gap:10px}input{flex:1;height:48px;border-radius:11px;border:1px solid rgba(255,255,255,.12);background:#091a2b;color:#fff;padding:0 14px;outline:none;font-size:15px}input:focus{border-color:rgba(74,222,128,.45)}button{height:48px;border:0;border-radius:11px;background:var(--green);color:#05200e;padding:0 20px;font-weight:900}button:disabled{opacity:.6}.result{margin-top:22px}.notice{padding:16px;border-radius:12px;background:rgba(255,255,255,.035);border:1px solid var(--border);color:#aebdcb;font-size:13px}.order-head{display:flex;align-items:flex-start;justify-content:space-between;gap:15px;padding-bottom:18px;border-bottom:1px solid var(--border)}.order-no{font-size:20px;font-weight:900}.date{color:#7890a4;font-size:11px;margin-top:4px}.status{display:inline-flex;padding:8px 11px;border-radius:999px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.20);color:#86efac;font-size:10px;font-weight:900}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding-top:20px}.item{padding:13px;border-radius:11px;background:rgba(255,255,255,.025)}.item small{display:block;color:#71869a;font-size:9px;letter-spacing:.08em;font-weight:900}.item strong{display:block;margin-top:4px;color:#fff;font-size:13px}.refresh{margin-top:18px;width:100%;background:rgba(255,255,255,.06);color:#fff;border:1px solid var(--border)}@media(max-width:600px){.top{margin-bottom:38px}.row{flex-direction:column}button{width:100%}.grid{grid-template-columns:1fr}.order-head{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><a class="brand" href="index.html">BookFair <span>Digital</span></a><a class="back" href="index.html#store">← Back to Store</a></div>
+  <div class="hero"><div class="mini">Order Tracking</div><h1>Track your order</h1><p>Enter your BookFair order number to see the latest payment and delivery status.</p></div>
+  <section class="card"><label for="orderNo">ORDER NUMBER</label><div class="row"><input id="orderNo" type="text" placeholder="Example: BF-0001" autocomplete="off"><button id="trackBtn" type="button">Track Order</button></div><div id="result" class="result"></div></section>
+</div>
+<script src="order-tracking.js"></script>
+</body>
+</html>
