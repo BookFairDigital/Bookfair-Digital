@@ -1,0 +1,14 @@
+BookFair Digital — Google Sheet Admin Orders
+
+1. Upload google-orders-admin.js to the GitHub repository root.
+2. In admin.html, find:
+   <script type="module" src="admin-orders.js?v=14"></script>
+
+3. Immediately AFTER it, add:
+   <script src="google-orders-admin.js?v=1"></script>
+
+4. Commit the changes.
+5. Open the Admin Panel and hard refresh the page.
+
+The Online Orders section will then read from the Google Apps Script / Google Sheet,
+refresh every 15 seconds, allow status changes, and allow order deletion.
