@@ -1,0 +1,8 @@
+
+// Add this block inside your existing
+// service cloud.firestore { match /databases/{database}/documents { ... }
+
+match /books/{bookId} {
+  allow read: if true;
+  allow create, update, delete: if isAdmin();
+}

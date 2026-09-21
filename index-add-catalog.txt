@@ -1,0 +1,2 @@
+In index.html, add this immediately before </body>:
+<script type="module" src="book-catalog.js?v=1"></script>
