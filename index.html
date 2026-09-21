@@ -3504,6 +3504,8 @@
             Place Order &amp; Continue →
           </button>
 
+          <div id="orderSubmitStatus" style="margin-top:10px;text-align:center;font-size:12px;color:#647587;"></div>
+
 
         </form>
 
@@ -4359,6 +4361,15 @@
 
         event.preventDefault();
 
+        const submitButton =
+          document.getElementById("submitOrderBtn");
+
+        if (submitButton) {
+          submitButton.disabled = true;
+          submitButton.textContent = "Processing order…";
+        }
+
+        try {
 
         const name =
           document.getElementById(
@@ -4661,6 +4672,28 @@
 
         document.body.style.overflow =
           "hidden";
+
+        } catch (error) {
+          console.error("ORDER SUBMIT ERROR:", error);
+
+          let message = "Could not place the order. Please try again.";
+
+          if (error && error.code === "storage/unauthorized") {
+            message = "Bank slip upload was blocked by Firebase Storage rules. Please check Firebase Storage permissions.";
+          } else if (error && error.code === "permission-denied") {
+            message = "Firebase denied the order request. Please check Firestore security rules.";
+          } else if (error && error.message) {
+            message = "Could not place the order: " + error.message;
+          }
+
+          alert(message);
+
+        } finally {
+          if (submitButton) {
+            submitButton.disabled = false;
+            submitButton.textContent = "Place Order & Continue →";
+          }
+        }
 
       }
     );
