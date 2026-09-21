@@ -3791,13 +3791,18 @@
 
     import {
       db,
-      storage,
       doc,
-      setDoc,
+      setDoc
+    } from "./firebase.js";
+
+    import {
+      getStorage,
       ref,
       uploadBytes,
       getDownloadURL
-    } from "./firebase.js";
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-storage.js";
+
+    const storage = getStorage();
 
 
     /* =====================================================
@@ -4023,6 +4028,14 @@
         "";
 
     }
+
+    /*
+      Expose modal functions globally because the Buy Now
+      and close buttons use inline onclick handlers.
+    */
+    window.openOrder = openOrder;
+    window.closeOrder = closeOrder;
+    window.closeSuccess = closeSuccess;
 
 
 
@@ -4342,7 +4355,7 @@
 
     orderForm.addEventListener(
       "submit",
-      function(event) {
+      async function(event) {
 
         event.preventDefault();
 
