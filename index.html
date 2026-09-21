@@ -2506,6 +2506,10 @@
           Collection
         </a>
 
+        <a href="order-tracking.html">
+          Track Order
+        </a>
+
         <a
           href="login.html"
           class="login-btn"
@@ -3800,7 +3804,7 @@
     import {
       getStorage,
       ref,
-      uploadBytesResumable,
+      uploadBytes,
       getDownloadURL
     } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-storage.js";
 
@@ -4366,7 +4370,7 @@
 
         if (submitButton) {
           submitButton.disabled = true;
-          submitButton.textContent = "Saving order…";
+          submitButton.textContent = "Processing order…";
         }
 
         try {
@@ -4528,319 +4532,48 @@
 
         /* =================================================
            SAVE ORDER + BANK SLIP TO FIREBASE
-           Fast flow: save order first, then upload the slip.
         ================================================= */
 
-        order.slipStatus = "Uploading";
-        order.slipStoragePath = "";
-        order.slipDownloadURL = "";
+        const safeSlipName =
+          uploadedSlip.name.replace(
+            /[^a-zA-Z0-9._-]/g,
+            "_"
+          );
 
-        // Save the order immediately. The customer will never
-        // be stuck waiting for Firebase Storage before the
-        // order exists in the admin panel.
+        const slipRef =
+          ref(
+            storage,
+            `order-slips/${orderNumber}-${safeSlipName}`
+          );
+
+        await uploadBytes(
+          slipRef,
+          uploadedSlip
+        );
+
+        order.slipStoragePath =
+          slipRef.fullPath;
+
+        order.slipDownloadURL =
+          await getDownloadURL(
+            slipRef
+          );
+
         await setDoc(
-          doc(db, "orders", orderNumber),
+          doc(
+            db,
+            "orders",
+            orderNumber
+          ),
           order
         );
 
-        function compressSlipImage(file) {
-          return new Promise((resolve, reject) => {
-            if (!file.type.startsWith("image/")) {
-              resolve(file);
-              return;
-            }
-
-            const reader = new FileReader();
-
-            reader.onload = function () {
-              const img = new Image();
-
-              img.onload = function () {
-                const maxSize = 1600;
-                let width = img.naturalWidth;
-                let height = img.naturalHeight;
-
-                if (width > maxSize || height > maxSize) {
-                  const scale = Math.min(
-                    maxSize / width,
-                    maxSize / height
-                  );
-
-                  width = Math.round(width * scale);
-                  height = Math.round(height * scale);
-                }
-
-                const canvas = document.createElement("canvas");
-                canvas.width = width;
-                canvas.height = height;
-
-                const ctx = canvas.getContext("2d");
-                ctx.fillStyle = "#ffffff";
-                ctx.fillRect(0, 0, width, height);
-                ctx.drawImage(img, 0, 0, width, height);
-
-                canvas.toBlob(
-                  function (blob) {
-                    if (!blob) {
-                      reject(
-                        new Error(
-                          "Could not prepare the slip image."
-                        )
-                      );
-                      return;
-                    }
-
-                    const baseName =
-                      file.name.replace(/\.[^.]+$/, "");
-
-                    resolve(
-                      new File(
-                        [blob],
-                        baseName + ".jpg",
-                        {
-                          type: "image/jpeg",
-                          lastModified: Date.now()
-                        }
-                      )
-                    );
-                  },
-                  "image/jpeg",
-                  0.78
-                );
-              };
-
-              img.onerror = function () {
-                reject(
-                  new Error(
-                    "Could not read the slip image."
-                  )
-                );
-              };
-
-              img.src = reader.result;
-            };
-
-            reader.onerror = function () {
-              reject(
-                new Error(
-                  "Could not read the slip file."
-                )
-              );
-            };
-
-            reader.readAsDataURL(file);
-          });
-        }
-
-        function uploadSlipWithProgress(
-          file,
-          storageRef,
-          timeoutMs
-        ) {
-          return new Promise((resolve, reject) => {
-
-            const task =
-              uploadBytesResumable(
-                storageRef,
-                file
-              );
-
-            let finished = false;
-
-            const timeout =
-              setTimeout(
-                () => {
-
-                  if (finished) return;
-
-                  finished = true;
-
-                  try {
-                    task.cancel();
-                  } catch (_) {}
-
-                  const error =
-                    new Error(
-                      "Bank slip upload timed out."
-                    );
-
-                  error.code =
-                    "slip-upload-timeout";
-
-                  reject(error);
-
-                },
-                timeoutMs
-              );
-
-            task.on(
-              "state_changed",
-
-              snapshot => {
-
-                const totalBytes =
-                  snapshot.totalBytes || 1;
-
-                const percent =
-                  Math.round(
-                    (
-                      snapshot.bytesTransferred /
-                      totalBytes
-                    ) * 100
-                  );
-
-                if (submitButton) {
-                  submitButton.textContent =
-                    "Uploading slip " +
-                    percent +
-                    "%…";
-                }
-
-              },
-
-              error => {
-
-                if (finished) return;
-
-                finished = true;
-
-                clearTimeout(timeout);
-
-                reject(error);
-
-              },
-
-              async () => {
-
-                if (finished) return;
-
-                finished = true;
-
-                clearTimeout(timeout);
-
-                try {
-
-                  const url =
-                    await getDownloadURL(
-                      task.snapshot.ref
-                    );
-
-                  resolve({
-                    ref:
-                      task.snapshot.ref,
-
-                    url:
-                      url
-                  });
-
-                } catch (error) {
-
-                  reject(error);
-
-                }
-
-              }
-            );
-          });
-        }
-
-        try {
-
-          let slipForUpload =
-            await compressSlipImage(
-              uploadedSlip
-            );
-
-          if (submitButton) {
-            submitButton.textContent =
-              "Uploading slip…";
-          }
-
-          const safeSlipName =
-            slipForUpload.name.replace(
-              /[^a-zA-Z0-9._-]/g,
-              "_"
-            );
-
-          const slipRef =
-            ref(
-              storage,
-              "order-slips/" +
-              orderNumber +
-              "-" +
-              safeSlipName
-            );
-
-          try {
-
-            const uploaded =
-              await uploadSlipWithProgress(
-                slipForUpload,
-                slipRef,
-                20000
-              );
-
-            order.slipStoragePath =
-              uploaded.ref.fullPath;
-
-            order.slipDownloadURL =
-              uploaded.url;
-
-            order.slipFileName =
-              slipForUpload.name;
-
-            order.slipStatus =
-              "Uploaded";
-
-            await setDoc(
-              doc(
-                db,
-                "orders",
-                orderNumber
-              ),
-              order
-            );
-
-          } catch (slipError) {
-
-            console.error(
-              "SLIP UPLOAD ERROR:",
-              slipError
-            );
-
-            order.slipStatus =
-              "Upload Failed";
-
-            order.slipUploadError =
-              slipError?.message ||
-              "Slip upload failed";
-
-            // The order stays saved even when
-            // Storage is unavailable.
-            await setDoc(
-              doc(
-                db,
-                "orders",
-                orderNumber
-              ),
-              order
-            );
-          }
-
-        } catch (orderError) {
-
-          console.error(
-            "ORDER SAVE ERROR:",
-            orderError
-          );
-
-          throw orderError;
-        }
-
+        /* Keep local confirmation data too. */
         localStorage.setItem(
           "bf_last_order",
           JSON.stringify(order)
         );
+
 
         /* SUCCESS DATA */
 
@@ -4871,9 +4604,7 @@
         document.getElementById(
           "successSlip"
         ).textContent =
-          order.slipStatus === "Uploaded"
-            ? (order.slipFileName || uploadedSlip.name)
-            : (uploadedSlip.name + " — upload pending");
+          uploadedSlip.name;
 
 
 
@@ -5213,6 +4944,8 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
   
+
+<script src="google-orders.js?v=2"></script>
 
 </body>
 </html>
