@@ -33,6 +33,10 @@ input,select,textarea{width:auto;height:38px;border-radius:9px;border:1px solid 
 #importStatus{display:none}.progress{height:7px;background:#071525;border-radius:99px;overflow:hidden;margin-top:10px}#importProgress{height:100%;background:var(--green);width:0;transition:width .2s}.failed-item{font-size:10px;color:#aebdcb;border-bottom:1px solid rgba(255,255,255,.05);padding:7px 0}
 .toast{position:fixed;right:20px;bottom:20px;z-index:900;display:none;max-width:380px;padding:13px 16px;border-radius:11px;background:#102b45;border:1px solid rgba(74,222,128,.25);color:#fff;font-size:11px;box-shadow:0 20px 50px rgba(0,0,0,.35)}.toast.show{display:block}.toast.error{border-color:rgba(239,68,68,.35)}
 @media(max-width:1150px){.stats{grid-template-columns:repeat(3,1fr)}.book-grid{grid-template-columns:repeat(2,1fr)}.hero-grid{grid-template-columns:1fr}.sidebar{width:205px;flex-basis:205px}}@media(max-width:760px){.sidebar{display:none}.main{padding:18px 13px}.topline{align-items:flex-start;flex-direction:column}.stats{grid-template-columns:repeat(2,1fr)}.book-grid{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}}
+
+.student-bulk-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:14px 18px 18px;border-top:1px solid var(--border)}
+.student-bulk-actions .btn{width:100%;min-height:40px}
+@media(max-width:760px){.student-bulk-actions{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -89,6 +93,11 @@ input,select,textarea{width:auto;height:38px;border-radius:9px;border:1px solid 
   <div class="topline"><div><div class="eyebrow">STUDENT MANAGEMENT</div><h1>Student Accounts</h1><p class="subtitle">Search, inspect, create and delete student records.</p></div><div class="actions"><button class="btn" id="refreshBtn2" type="button" onclick="document.getElementById('refreshBtn').click()">↻ Refresh</button><button class="btn primary" id="newBtn2" type="button" onclick="document.getElementById('newBtn').click()">+ New Student</button></div></div>
   <div class="panel"><div class="panel-head"><div><div class="panel-title">Student Database</div><div class="panel-sub">Exact Excel usernames and passwords are preserved.</div></div><div class="filters"><input id="search" type="search" placeholder="Search username, name, district…"><select id="bookFilter"><option value="all">All Books</option><option value="01">Book 01</option><option value="02">Book 02</option><option value="03">Book 03</option></select><select id="registrationFilter"><option value="all">All Registration</option><option value="registered">Registered</option><option value="pending">Pending</option></select></div></div>
     <div class="table-wrap"><table><thead><tr><th>USERNAME</th><th>PASSWORD</th><th>ASSIGNED BOOK</th><th>FULL NAME</th><th>DISTRICT</th><th>CONTACT</th><th>REGISTRATION</th><th>STATUS</th><th>ACTION</th></tr></thead><tbody id="rows"></tbody></table><div id="empty" class="empty" style="display:none">No students found.</div></div>
+    <div class="student-bulk-actions">
+      <button class="btn danger" id="deleteBook01" type="button">Delete All Book 01 Students</button>
+      <button class="btn danger" id="deleteBook02" type="button">Delete All Book 02 Students</button>
+      <button class="btn danger" id="deleteBook03" type="button">Delete All Book 03 Students</button>
+    </div>
   </div>
 </section>
 
