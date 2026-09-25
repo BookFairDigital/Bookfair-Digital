@@ -2304,6 +2304,57 @@
 
  
 
+
+  <!-- BookFair Digital WhatsApp Support -->
+  <style>
+    .bf-wa-fab{position:fixed;right:22px;bottom:22px;width:58px;height:58px;border:0;border-radius:50%;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:9998;box-shadow:0 14px 34px rgba(0,0,0,.38),0 0 0 5px rgba(34,197,94,.10);transition:.2s}
+    .bf-wa-fab:hover{transform:translateY(-2px) scale(1.03)}
+    .bf-wa-fab svg{width:31px;height:31px}
+    .bf-wa-panel{position:fixed;right:22px;bottom:92px;width:min(390px,calc(100vw - 28px));background:linear-gradient(145deg,#0d2944,#071525);border:1px solid rgba(34,197,94,.22);border-radius:22px;overflow:hidden;box-shadow:0 28px 70px rgba(0,0,0,.55);z-index:9999;display:none;color:#f8fafc}
+    .bf-wa-panel.show{display:block;animation:bfWaIn .2s ease-out}
+    @keyframes bfWaIn{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
+    .bf-wa-head{display:flex;align-items:center;gap:12px;padding:18px;border-bottom:1px solid rgba(255,255,255,.08)}
+    .bf-wa-logo{width:42px;height:42px;border-radius:12px;background:#22c55e;display:flex;align-items:center;justify-content:center;flex:0 0 42px}
+    .bf-wa-logo svg{width:25px;height:25px}
+    .bf-wa-title{font-weight:800;font-size:15px}.bf-wa-sub{font-size:10px;letter-spacing:1px;color:#86efac;margin-top:3px;text-transform:uppercase}
+    .bf-wa-close{margin-left:auto;background:none;border:0;color:#9fb0c1;font-size:28px;line-height:1;cursor:pointer}
+    .bf-wa-welcome{margin:16px;padding:17px;border-radius:16px;background:linear-gradient(135deg,rgba(34,197,94,.13),rgba(13,41,68,.65));border:1px solid rgba(34,197,94,.20)}
+    .bf-wa-welcome strong{display:block;font-size:16px;margin-bottom:7px}.bf-wa-welcome p{margin:0;color:#b8c7d6;font-size:12px;line-height:1.55}.bf-wa-online{display:flex;align-items:center;gap:7px;margin-top:10px;color:#cbd5e1;font-size:11px}.bf-wa-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 4px rgba(34,197,94,.10)}
+    .bf-wa-label{padding:0 18px 10px;font-size:17px;font-weight:800}
+    .bf-wa-contact{margin:0 16px 11px;padding:13px;border-radius:15px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:11px}
+    .bf-wa-avatar{width:46px;height:46px;border-radius:50%;flex:0 0 46px;background:#dbeafe;display:flex;align-items:center;justify-content:center;overflow:hidden}
+    .bf-wa-avatar svg{width:44px;height:44px}
+    .bf-wa-info{min-width:0;flex:1}.bf-wa-name{font-size:13px;font-weight:800}.bf-wa-desc{font-size:10px;color:#94a3b8;margin-top:4px;line-height:1.35}
+    .bf-wa-chat{border:0;border-radius:10px;background:#16a34a;color:#fff;font-size:11px;font-weight:800;padding:10px 12px;cursor:pointer;white-space:nowrap}
+    .bf-wa-foot{display:flex;margin-top:14px;border-top:1px solid rgba(255,255,255,.08);background:rgba(2,10,20,.28)}
+    .bf-wa-foot span{flex:1;text-align:center;padding:13px;color:#9fb0c1;font-size:11px;font-weight:700}.bf-wa-foot span:first-child{color:#fff;background:rgba(34,197,94,.13)}
+    @media(max-width:520px){.bf-wa-fab{right:14px;bottom:14px;width:54px;height:54px}.bf-wa-panel{right:12px;bottom:78px;width:calc(100vw - 24px);border-radius:19px}.bf-wa-contact{padding:11px}.bf-wa-chat{padding:9px 10px}.bf-wa-desc{display:none}}
+  </style>
+  <div class="bf-wa-panel" id="bfWaPanel" aria-hidden="true">
+    <div class="bf-wa-head">
+      <div class="bf-wa-logo"><svg viewBox="0 0 32 32" fill="none"><path d="M16 3.5a12 12 0 0 0-10.4 18.1L4 28l6.6-1.5A12 12 0 1 0 16 3.5Z" stroke="#fff" stroke-width="2.2"/><path d="M11.2 10.8c.4-.7.9-.7 1.5-.6l1.1 2.6c.2.5.1.8-.2 1.1l-.7.7c.9 1.6 2.1 2.7 3.8 3.6l.8-.8c.3-.3.7-.4 1.1-.2l2.5 1.2c.5.2.6.6.4 1.2-.4 1.3-1.3 2-2.5 2-4.1-.2-8.9-4.6-9.3-8.5-.1-.8.3-1.6 1.5-2.3Z" fill="#fff"/></svg></div>
+      <div><div class="bf-wa-title">BookFair Digital</div><div class="bf-wa-sub">Chat with BookFair Digital</div></div>
+      <button class="bf-wa-close" id="bfWaClose" aria-label="Close">×</button>
+    </div>
+    <div class="bf-wa-welcome"><strong>Hi there! 👋 Welcome to BookFair Digital.</strong><p>How can we help you today?</p><div class="bf-wa-online"><i class="bf-wa-dot"></i> We usually reply within a few minutes</div></div>
+    <div class="bf-wa-label">Choose Who to Chat With</div>
+    <div class="bf-wa-contact">
+      <div class="bf-wa-avatar"><svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="29" fill="#dbeafe"/><circle cx="30" cy="22" r="10" fill="#f2b37f"/><path d="M20 22c1-11 19-15 22 0-5-3-13-5-22 0Z" fill="#334155"/><path d="M16 51c2-13 26-13 28 0" fill="#2563eb"/></svg></div>
+      <div class="bf-wa-info"><div class="bf-wa-name">System Administrator</div><div class="bf-wa-desc">Account access, technical issues and support.</div></div>
+      <button class="bf-wa-chat" data-wa="94705680746">▣ Chat Now</button>
+    </div>
+    <div class="bf-wa-contact">
+      <div class="bf-wa-avatar"><svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="29" fill="#e2e8f0"/><circle cx="30" cy="22" r="10" fill="#d49b76"/><path d="M19 23c0-13 22-16 24 0-4-6-18-7-24 0Z" fill="#475569"/><path d="M15 52c2-15 28-15 30 0" fill="#475569"/></svg></div>
+      <div class="bf-wa-info"><div class="bf-wa-name">Online Order</div><div class="bf-wa-desc">Orders, payments and delivery inquiries.</div></div>
+      <button class="bf-wa-chat" data-wa="94715680746">▣ Chat Now</button>
+    </div>
+    <div class="bf-wa-foot"><span>▰<br>Chat</span><span>❔<br>Help</span></div>
+  </div>
+  <button class="bf-wa-fab" id="bfWaFab" aria-label="Open WhatsApp support"><svg viewBox="0 0 32 32" fill="none"><path d="M16 3.5a12 12 0 0 0-10.4 18.1L4 28l6.6-1.5A12 12 0 1 0 16 3.5Z" stroke="#fff" stroke-width="2.2"/><path d="M11.2 10.8c.4-.7.9-.7 1.5-.6l1.1 2.6c.2.5.1.8-.2 1.1l-.7.7c.9 1.6 2.1 2.7 3.8 3.6l.8-.8c.3-.3.7-.4-2-.2l2.5 1.2c.5.2.6.6.4 1.2-.4 1.3-1.3 2-2.5 2-4.1-.2-8.9-4.6-9.3-8.5-.1-.8.3-1.6 1.5-2.3Z" fill="#fff"/></svg></button>
+  <script>
+  (()=>{const p=document.getElementById('bfWaPanel'),f=document.getElementById('bfWaFab'),c=document.getElementById('bfWaClose');f.addEventListener('click',()=>p.classList.toggle('show'));c.addEventListener('click',()=>p.classList.remove('show'));document.querySelectorAll('.bf-wa-chat').forEach(b=>b.addEventListener('click',()=>window.open('https://wa.me/'+b.dataset.wa,'_blank','noopener,noreferrer')));})();
+  </script>
+
 </body>
 
 </html>
