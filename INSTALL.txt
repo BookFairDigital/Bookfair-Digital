@@ -1,14 +1,14 @@
-BookFair Digital — Google Sheet Admin Orders
+BOOKFAIR DIGITAL — BOOK 01 FIX
 
-1. Upload google-orders-admin.js to the GitHub repository root.
-2. In admin.html, find:
-   <script type="module" src="admin-orders.js?v=14"></script>
+Replace ONLY these two files:
+1. book01-papers.html
+2. dashboard.js
 
-3. Immediately AFTER it, add:
-   <script src="google-orders-admin.js?v=1"></script>
+The Book 01 page now displays Paper 01 through Paper 10 correctly. The previous literal ${...} code is removed.
 
-4. Commit the changes.
-5. Open the Admin Panel and hard refresh the page.
+Paper links point to the existing:
+answers/book01-paper01/answer.html through answers/book01-paper10/answer.html
 
-The Online Orders section will then read from the Google Apps Script / Google Sheet,
-refresh every 15 seconds, allow status changes, and allow order deletion.
+No PDF files or answer files are included/changed.
+
+Protection added to the collection page: right-click, copy/cut/paste, text selection, drag, Ctrl/Cmd+C/X/V/S/P/U/A and print are blocked as browser-level deterrents. Note that no client-side website can guarantee protection against screenshots, browser developer tools, or determined copying.
